@@ -55,7 +55,7 @@ code {
   background: rgba(0, 0, 0, 0.041);
 }
 
-:where(.css-dev-only-do-not-override-1lq5t2e).ant-btn-primary:not(
+:where(.css-dev-only-do-not-override-1cswy67).ant-btn-primary:not(
     :disabled
   ):not(.ant-btn-disabled) {
   color: #fff;

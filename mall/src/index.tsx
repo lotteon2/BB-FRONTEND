@@ -11,7 +11,7 @@ import { RecoilRoot } from "recoil";
 
 import router from "./routes";
 import Loading from "./components/common/Loading";
-
+import { ConfigProvider } from "antd";
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
@@ -19,10 +19,19 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <RecoilRoot>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} fallbackElement={<Loading />} />
-      <ReactQueryDevtools initialIsOpen={true} />
-    </QueryClientProvider>
-  </RecoilRoot>
+  <ConfigProvider
+    theme={{
+      token: {
+        colorPrimary: "#85C031",
+        fontFamily: "regular",
+      },
+    }}
+  >
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} fallbackElement={<Loading />} />
+        <ReactQueryDevtools initialIsOpen={true} />
+      </QueryClientProvider>
+    </RecoilRoot>
+  </ConfigProvider>
 );
