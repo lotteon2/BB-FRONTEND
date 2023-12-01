@@ -1,19 +1,14 @@
 import { Outlet } from "react-router";
-import { ConfigProvider } from "antd";
+
+import Header from "../components/common/Header";
 
 export default function MainLayout() {
   return (
-    <div>
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: "#F4CE14",
-            fontFamily: "regular",
-          },
-        }}
-      >
-        <Outlet />
-      </ConfigProvider>
+    <div className="w-[1920px] h-screen font-regular flex flex-row">
+      <div className="w-[300px] bg-grayscale7 relative">
+        <Header />
+      </div>
+      <Outlet />
     </div>
   );
 }
