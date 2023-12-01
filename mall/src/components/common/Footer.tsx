@@ -3,7 +3,7 @@ import Logo from "../../assets/images/logo.png";
 /* eslint-disable jsx-a11y/anchor-is-valid */
 export default function Footer() {
   return (
-    <div className="my-10 border-t-[1px] border-grayscale3">
+    <div className="border-t-[1px] border-grayscale3">
       <footer className="bg-white">
         <div className="mx-auto w-full max-w-screen-xl">
           <div className="grid grid-cols-2 gap-8 px-4 py-6 lg:py-8 md:grid-cols-4 flex flex-start">
