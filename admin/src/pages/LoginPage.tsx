@@ -1,0 +1,79 @@
+import { useState } from "react";
+import { Button, Form, Input } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { useRecoilValue } from "recoil";
+import { loginState } from "../recoil/atom/common";
+import { useNavigate } from "react-router";
+
+export default function LoginPage() {
+  const navigate = useNavigate();
+  const isLogin = useRecoilValue<boolean>(loginState);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const defaultValues = {
+    email: "",
+    password: "",
+  };
+
+  if (isLogin) {
+    navigate("/");
+  }
+
+  return (
+    <div className="relative top-72 left-[550px] w-[800px] h-[350px] bg-grayscale1 shadow-lg z-10 rounded-lg">
+      <p className="relative top-[-40px] logo text-8xl text-primary1 text-center">
+        Blooming Blooms
+      </p>
+      <Form
+        name="loginForm"
+        initialValues={defaultValues}
+        autoComplete="off"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 18 }}
+        style={{ marginLeft: 150, marginTop: 20 }}
+      >
+        <Form.Item
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: "이메일을 입력해주세요",
+              type: "email",
+            },
+          ]}
+        >
+          <Input
+            placeholder="이메일 입력"
+            value={email}
+            prefix={<UserOutlined className="site-form-item-icon" />}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "비밀번호을 입력해주세요",
+            },
+          ]}
+        >
+          <Input.Password
+            placeholder="비밀번호 입력"
+            value={password}
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Form.Item>
+        <Button
+          type="primary"
+          htmlType="submit"
+          size="large"
+          className="w-[490px]"
+        >
+          로그인
+        </Button>
+      </Form>
+    </div>
+  );
+}
