@@ -55,13 +55,14 @@ code {
   background: rgba(0, 0, 0, 0.041);
 }
 
-:where(.css-dev-only-do-not-override-1lq5t2e).ant-btn-primary:not(
-    :disabled
-  ):not(.ant-btn-disabled) {
+:where(.css-dev-only-do-not-override-1vszgto).ant-btn-primary {
   color: #fff;
   background-color: #a843d6;
 }
 
+:where(.css-dev-only-do-not-override-2q8sxy).ant-btn-primary:hover {
+  opacity: 80;
+}
 .logo {
   font-family: "Aguafina Script", cursive;
 }
