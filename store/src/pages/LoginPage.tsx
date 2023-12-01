@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Form, Input } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useRecoilValue } from "recoil";
 import { loginState } from "../recoil/atom/common";
 import { useNavigate } from "react-router";
+import { useMutation } from "react-query";
+import { signin } from "../apis/auth";
+import { signinDto } from "../recoil/common/interfaces";
+import { SuccessToast } from "../components/common/toast/SuccessToast";
+import { FailToast } from "../components/common/toast/FailToast";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -15,9 +20,34 @@ export default function LoginPage() {
     password: "",
   };
 
-  // if (isLogin) {
-  //   navigate("/");
-  // }
+  // 로그인 요청
+  const handleSignin = () => {
+    const signinDto = {
+      email: email,
+      password: password,
+    };
+
+    signinMutation.mutate(signinDto);
+  };
+
+  const signinMutation = useMutation(
+    ["signin"],
+    (signinDto: signinDto) => signin(signinDto),
+    {
+      onSuccess: () => {
+        SuccessToast("로그인되었습니다.");
+        navigate("/");
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
+  useEffect(() => {
+    if (isLogin) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className="relative top-72 left-[550px] w-[800px] h-[350px] bg-grayscale1 shadow-lg z-10 rounded-lg">
@@ -70,6 +100,7 @@ export default function LoginPage() {
           htmlType="submit"
           size="large"
           className="w-[490px]"
+          onClick={handleSignin}
         >
           로그인
         </Button>
