@@ -8,10 +8,18 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { sideMenuState } from "../recoil/atom/common";
+import { useRecoilValue } from "recoil";
+import { loginState } from "../recoil/atom/common";
 
 export default function MainLayout() {
   const navigate = useNavigate();
+  const isLogin = useRecoilValue<boolean>(loginState);
+
   const setSideMenuState = useSetRecoilState<number>(sideMenuState);
+
+  if (!isLogin) {
+    navigate("/login");
+  }
 
   return (
     <div className="font-regular">
