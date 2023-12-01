@@ -106,7 +106,10 @@ export default function LoginPage() {
       </Form>
       <div className="flex flex-row gap-3 justify-end mt-10 mr-5">
         <span className="font-light text-grayscale4">계정이 없으신가요?</span>
-        <span className="text-primary1 font-bold cursor-pointer hover:opacity-80">
+        <span
+          className="text-primary1 font-bold cursor-pointer hover:opacity-80"
+          onClick={() => navigate("/register")}
+        >
           회원가입
         </span>
       </div>
