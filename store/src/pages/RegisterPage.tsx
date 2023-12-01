@@ -152,11 +152,12 @@ export default function RegisterPage() {
       },
     }
   );
-  // useEffect(() => {
-  //   if (isLogin) {
-  //     navigate("/");
-  //   }
-  // }, []);
+
+  useEffect(() => {
+    if (isLogin) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className="relative top-32 left-[550px] w-[800px] h-[600px] bg-grayscale1 shadow-lg z-10 rounded-lg">
