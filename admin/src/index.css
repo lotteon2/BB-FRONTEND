@@ -1,0 +1,67 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@font-face {
+  font-family: "thin";
+  src: url("/src/assets/fonts/jamsil-thin.ttf");
+}
+@font-face {
+  font-family: "light";
+  src: url("/src/assets/fonts/jamsil-light.ttf");
+}
+@font-face {
+  font-family: "regular";
+  src: url("/src/assets/fonts/jamsil-regular.ttf");
+}
+@font-face {
+  font-family: "medium";
+  src: url("/src/assets/fonts/jamsil-medium.ttf");
+}
+@font-face {
+  font-family: "bold";
+  src: url("/src/assets/fonts/jamsil-bold.ttf");
+}
+@font-face {
+  font-family: "extrabold";
+  src: url("/src/assets/fonts/jamsil-extrabold.ttf");
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Aguafina+Script&display=swap");
+
+body {
+  margin: 0;
+  font-family: "regular";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+/* 스크롤 */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  height: 30%;
+  background: #f4ce14;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.041);
+}
+
+:where(.css-dev-only-do-not-override-1lq5t2e).ant-btn-primary:not(
+    :disabled
+  ):not(.ant-btn-disabled) {
+  color: #fff;
+  background-color: #f4ce14;
+}
+
+.logo {
+  font-family: "Aguafina Script", cursive;
+}
