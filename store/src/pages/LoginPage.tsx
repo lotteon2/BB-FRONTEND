@@ -44,9 +44,8 @@ export default function LoginPage() {
     }
   );
   useEffect(() => {
-    if (isLogin) {
-      navigate("/");
-    }
+    if (isLogin) navigate("/");
+    // eslint-disable-next-line
   }, []);
 
   return (

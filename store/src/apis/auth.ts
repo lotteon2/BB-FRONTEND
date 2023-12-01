@@ -1,4 +1,3 @@
-import { async } from "q";
 import { signinDto, signupDto } from "../recoil/common/interfaces";
 import { defaultInstance } from "./utils";
 
