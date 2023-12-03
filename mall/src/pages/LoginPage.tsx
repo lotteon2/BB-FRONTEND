@@ -1,5 +1,6 @@
 import LoginBg from "../assets/images/loginbg.png";
 import LoginBtn from "../assets/images/kakaobtn.png";
+import { KAKAO_OAUTH_URL } from "../recoil/common/data";
 
 export default function LoginPage() {
   return (
@@ -12,11 +13,13 @@ export default function LoginPage() {
           간편하게 시작하기
         </p>
         <div className="z-20">
-          <img
-            className="relative mx-auto mt-5 pb-10 w-[50%] max-w-[400px] z-20"
-            src={LoginBtn}
-            alt=""
-          />
+          <a className="cursor-pointer" href={KAKAO_OAUTH_URL}>
+            <img
+              className="relative mx-auto mt-5 pb-10 w-[50%] max-w-[400px] z-20"
+              src={LoginBtn}
+              alt="로그인 버튼"
+            />
+          </a>
         </div>
       </div>
       <div className="absolute bottom-0 w-full">

@@ -33,3 +33,19 @@ export const sideMenuState = atom({
   key: "sideMenuState",
   default: 0,
 });
+
+/**
+ * 닉네임
+ */
+export const nicknameState = atom({
+  key: "nicknameState",
+  default: "",
+});
+
+/**
+ * 프로필이미지
+ */
+export const profileImageState = atom({
+  key: "profileImageState",
+  default: "",
+});
