@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button, Form, Input } from "antd";
 import { useRecoilValue } from "recoil";
 import { loginState } from "../recoil/atom/common";
@@ -32,6 +32,12 @@ export default function RegisterPage() {
     name: "",
     businessNumberImage: "",
   };
+  const email_pattern =
+    /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+.[a-zA-Z]+$/i;
+  const blank_pattern = "/^s+|s+$/g";
+  const password_pattern =
+    /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+  const korean_pattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
   // 이메일 중복 확인
   const handleCheckEmail = () => {
@@ -65,11 +71,17 @@ export default function RegisterPage() {
       alert("인증 코드 확인이 필요합니다.");
     } else if (
       email !== "" &&
+      email_pattern.test(email) &&
+      !email.match(blank_pattern) &&
       isValid &&
       emailcode !== "" &&
       isConfirm &&
       password !== "" &&
+      password.match(password_pattern) &&
+      !password.match(blank_pattern) &&
+      !password.match(korean_pattern) &&
       name !== "" &&
+      !name.match(blank_pattern) &&
       businessNumberImage !== ""
     ) {
       const signupDto = {
@@ -83,6 +95,47 @@ export default function RegisterPage() {
       signupMutation.mutate(signupDto);
     }
   };
+
+  const rightEmail = useCallback((_: any, value: string) => {
+    if (!value) {
+      return Promise.reject(new Error("이메일을 입력해주세요."));
+    }
+    if (!email_pattern.test(value)) {
+      return Promise.reject(new Error("이메일 형식으로 입력해주세요."));
+    }
+    if (value.match(blank_pattern)) {
+      return Promise.reject(new Error("공백을 입력할 수 없습니다."));
+    }
+    return Promise.resolve();
+  }, []);
+
+  const rightName = useCallback((_: any, value: string) => {
+    if (!value) {
+      return Promise.reject(new Error("이름을 입력해주세요."));
+    }
+    if (value.match(blank_pattern)) {
+      return Promise.reject(new Error("공백을 입력할 수 없습니다."));
+    }
+    return Promise.resolve();
+  }, []);
+
+  const rightPassword = useCallback((_: any, value: string) => {
+    if (!value) {
+      return Promise.reject(new Error("비밀번호를 입력해주세요."));
+    }
+    if (!value.match(password_pattern)) {
+      return Promise.reject(
+        new Error("8~16자의 영문자, 숫자, 특수문자를 사용해 주세요.")
+      );
+    }
+    if (value.match(blank_pattern)) {
+      return Promise.reject(new Error("공백을 입력할 수 없습니다."));
+    }
+    if (value.match(korean_pattern)) {
+      return Promise.reject(new Error("한글을 입력할 수 없습니다."));
+    }
+    return Promise.resolve();
+  }, []);
 
   const emailCheckMutation = useMutation(
     ["checkEmail"],
@@ -154,7 +207,7 @@ export default function RegisterPage() {
   );
 
   useEffect(() => {
-    if (isLogin) navigate("/");
+    // if (isLogin) navigate("/");
     // eslint-disable-next-line
   }, []);
 
@@ -176,9 +229,7 @@ export default function RegisterPage() {
           label="이메일"
           rules={[
             {
-              required: true,
-              message: "이메일을 입력해주세요",
-              type: "email",
+              validator: rightEmail,
             },
           ]}
         >
@@ -209,8 +260,7 @@ export default function RegisterPage() {
           label="비밀번호"
           rules={[
             {
-              required: true,
-              message: "비밀번호를 입력해주세요",
+              validator: rightPassword,
             },
           ]}
         >
@@ -249,8 +299,7 @@ export default function RegisterPage() {
           label="이름"
           rules={[
             {
-              required: true,
-              message: "이름을 입력해주세요",
+              validator: rightName,
             },
           ]}
         >
