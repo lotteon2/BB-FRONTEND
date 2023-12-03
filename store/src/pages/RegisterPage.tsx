@@ -207,7 +207,7 @@ export default function RegisterPage() {
   );
 
   useEffect(() => {
-    // if (isLogin) navigate("/");
+    if (isLogin) navigate("/");
     // eslint-disable-next-line
   }, []);
 
