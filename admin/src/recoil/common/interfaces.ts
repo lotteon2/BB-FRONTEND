@@ -24,3 +24,15 @@ export interface storeStatusModifyDto {
   storeManagerId: number;
   status: string;
 }
+
+export interface storeItemDto {
+  key: number;
+  storeCode: string;
+  storeName: string;
+  phoneNumber: string;
+  bank: string;
+  accountNumber: string;
+  averageRating: number;
+  totalAmount: number;
+  regDate: string;
+}

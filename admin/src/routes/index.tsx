@@ -4,6 +4,7 @@ import NotFound from "../components/common/NotFound";
 import DashboardPage from "../pages/DashboardPage";
 import LoginPage from "../pages/LoginPage";
 import LoginLayout from "../layouts/LoginLayout";
+import StorePage from "../pages/StorePage";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,12 @@ const router = createBrowserRouter([
     element: <LoginLayout />,
     errorElement: <NotFound />,
     children: [{ index: true, path: "", element: <LoginPage /> }],
+  },
+  {
+    path: "/store",
+    element: <MainLayout />,
+    errorElement: <NotFound />,
+    children: [{ index: true, path: "", element: <StorePage /> }],
   },
 ]);
 
