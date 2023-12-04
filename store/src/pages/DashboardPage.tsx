@@ -37,7 +37,7 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="w-[1620px] h-[897px] bg-grayscale3 flex flex-col gap-2 p-2">
+    <div className="w-[1620px] h-[897px] bg-grayscale3 flex flex-col gap-2 p-2 relative">
       <div className="flex flex-row gap-2">
         <div
           className="w-[805px] h-[436px] bg-grayscale1 rounded-lg"

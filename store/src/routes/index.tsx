@@ -5,13 +5,17 @@ import LoginLayout from "../layouts/LoginLayout";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import DashboardPage from "../pages/DashboardPage";
+import StorePage from "../pages/StorePage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
     errorElement: <NotFound />,
-    children: [{ index: true, path: "", element: <DashboardPage /> }],
+    children: [
+      { index: true, path: "", element: <DashboardPage /> },
+      { path: "store", element: <StorePage /> },
+    ],
   },
   {
     path: "/",
