@@ -1,31 +1,20 @@
 import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
-import { weeklySaleProductData } from "../../mocks/dashboard";
+import { productStockGraph } from "../../mocks/dashboard";
 
-export default function BestProductsGraph() {
-  const data = weeklySaleProductData;
+export default function DashboardStockGraph() {
+  const data = productStockGraph;
 
-  // const { data, isLoading } = useQuery({
+  //  const { data, isLoading } = useQuery({
   //   queryKey: ["getWeeklyProduct"],
   //   queryFn: () => getWeeklySaleProductGraph(),
   // });
-  // const isLoading = true;
+  //   const isLoading = true;
 
-  // if (!data || isLoading) return <QuarterDiv />;
+  //   if (!data || isLoading) return <HalfDiv />;
 
   const options: ApexOptions = {
-    colors: [
-      "#42009E",
-      "#6900AB",
-      "#7C00B1",
-      "#9100B8",
-      "#A000BE",
-      "#B036C8",
-      "#D08EDE",
-      "#D08EDE",
-      "#E3BBEB",
-      "#F4E5F8",
-    ],
+    colors: ["#A843D6"],
     chart: {
       type: "bar",
       fontFamily: "regular",
@@ -43,7 +32,7 @@ export default function BestProductsGraph() {
       enabled: false,
     },
     title: {
-      text: "베스트셀러 TOP 10",
+      text: "재고량",
       align: "center",
     },
     stroke: {
@@ -52,25 +41,14 @@ export default function BestProductsGraph() {
       colors: ["transparent"],
     },
     xaxis: {
-      categories: ["판매량"],
+      categories: ["재고"],
       labels: {
         show: false,
       },
     },
     fill: {
       opacity: 1,
-      colors: [
-        "#42009E",
-        "#6900AB",
-        "#7C00B1",
-        "#9100B8",
-        "#A000BE",
-        "#B036C8",
-        "#D08EDE",
-        "#D08EDE",
-        "#E3BBEB",
-        "#F4E5F8",
-      ],
+      colors: ["#A843D6"],
     },
     yaxis: {
       title: {
@@ -87,7 +65,7 @@ export default function BestProductsGraph() {
 
   return (
     <div className="p-3">
-      <Chart options={options} series={series} type="bar" height={410} />
+      <Chart options={options} series={series} type="bar" height={400} />
     </div>
   );
 }

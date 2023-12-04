@@ -53,3 +53,77 @@ export const weeklySaleProductData = [
     data: [100],
   },
 ];
+
+export const productStockGraph = [
+  {
+    id: 1,
+    name: "꽃이름",
+    data: [100],
+  },
+  {
+    id: 2,
+    name: "꽃이름",
+    data: [100],
+  },
+  {
+    id: 3,
+    name: "꽃이름",
+    data: [100],
+  },
+  {
+    id: 4,
+    name: "꽃이름",
+    data: [100],
+  },
+  {
+    id: 5,
+    name: "꽃이름",
+    data: [100],
+  },
+  {
+    id: 6,
+    name: "꽃이름",
+    data: [100],
+  },
+  {
+    id: 7,
+    name: "꽃이름",
+    data: [100],
+  },
+  {
+    id: 8,
+    name: "꽃이름",
+    data: [100],
+  },
+  {
+    id: 9,
+    name: "꽃이름",
+    data: [100],
+  },
+  {
+    id: 10,
+    name: "꽃이름",
+    data: [100],
+  },
+  {
+    id: 11,
+    name: "꽃이름",
+    data: [100],
+  },
+  { id: 12, name: "꽃이름", data: [100] },
+  {
+    id: 13,
+    name: "꽃이름",
+    data: [100],
+  },
+  { id: 14, name: "꽃이름", data: [100] },
+  { id: 15, name: "꽃이름", data: [100] },
+  { id: 16, name: "꽃이름", data: [100] },
+  { id: 17, name: "꽃이름", data: [100] },
+  { id: 18, name: "꽃이름", data: [100] },
+  { id: 19, name: "꽃이름", data: [100] },
+  { id: 20, name: "꽃이름", data: [100] },
+  { id: 21, name: "꽃이름", data: [100] },
+  { id: 22, name: "꽃이름", data: [100] },
+  { id: 23, name: "꽃이름", data: [100] },
+];

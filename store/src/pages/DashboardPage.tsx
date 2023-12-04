@@ -4,6 +4,7 @@ import { Button, Empty } from "antd";
 import { useNavigate } from "react-router";
 import WeeklySaleGraph from "../components/dashboard/WeeklySaleGraph";
 import BestProductsGraph from "../components/dashboard/BestProductsGraph";
+import DashboardStockGraph from "../components/dashboard/DashboardStockGraph";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -29,7 +30,9 @@ export default function DashboardPage() {
               <BestProductsGraph />
             </div>
           </div>
-          <div className="w-[1605px] h-[436px] bg-grayscale1 rounded-lg"></div>
+          <div className="w-[1605px] h-[436px] bg-grayscale1 rounded-lg">
+            <DashboardStockGraph />
+          </div>
         </div>
       )}
     </div>

@@ -1,10 +1,10 @@
 import { Skeleton } from "antd";
 
-export default function WholeDiv() {
+export default function HalfDiv() {
   return (
     <Skeleton.Node
       active
-      style={{ width: "1604px", height: "825px", borderRadius: "8px" }}
+      style={{ width: "1605px", height: "436px", borderRadius: "8px" }}
     >
       <div></div>
     </Skeleton.Node>

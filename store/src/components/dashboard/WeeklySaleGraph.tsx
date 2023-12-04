@@ -1,7 +1,6 @@
 import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
 import { weeklySaleData } from "../../mocks/dashboard";
-import QuarterDiv from "../fallbacks/QuarterDiv";
 
 export default function WeeklySaleGraph() {
   // const storeId = useRecoilValue<number>(storeIdState);
