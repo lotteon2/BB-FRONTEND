@@ -340,7 +340,11 @@ export default function RegisterPage() {
       </Form>
       <div className="absolute right-20 top-[115px] flex flex-col gap-6">
         <div className="flex flex-row gap-2 justify-start w-52">
-          <Button type="primary" onClick={handleCheckEmail}>
+          <Button
+            type="primary"
+            onClick={handleCheckEmail}
+            disabled={isValid ? true : false}
+          >
             중복확인
           </Button>
           {isValid ? (
@@ -350,7 +354,11 @@ export default function RegisterPage() {
           )}
         </div>
         {isConfirm ? (
-          <Button type="primary" onClick={handleCheckEmailCode}>
+          <Button
+            type="primary"
+            onClick={handleCheckEmailCode}
+            disabled={isConfirm ? true : false}
+          >
             인증하기
           </Button>
         ) : (
