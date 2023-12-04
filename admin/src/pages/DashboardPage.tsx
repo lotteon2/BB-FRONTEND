@@ -1,5 +1,6 @@
 import LastMonthSettlementTable from "../components/dashbaord/LastMonthSettlementTable";
 import MonthlyStoreSalesGraph from "../components/dashbaord/MonthlyStoreSalesGraph";
+import RegisterRequestList from "../components/dashbaord/RegisterRequestList";
 
 export default function DashboardPage() {
   return (
@@ -8,7 +9,9 @@ export default function DashboardPage() {
         <div className="w-[805px] h-[436px] bg-grayscale1 rounded-lg">
           <MonthlyStoreSalesGraph />
         </div>
-        <div className="w-[805px] h-[436px] bg-grayscale1 rounded-lg"></div>
+        <div className="w-[805px] h-[436px] bg-grayscale1 rounded-lg">
+          <RegisterRequestList />
+        </div>
       </div>
       <div className="w-[1605px] h-[436px] bg-grayscale1 rounded-lg">
         <LastMonthSettlementTable />

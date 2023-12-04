@@ -10,7 +10,7 @@ export default function LastMonthSettlementTable() {
   const data = settlementForDashbaordData;
 
   //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getLastMonthSettlement"],
+  //     queryKey: ["getLastMonthSettlement", page],
   //     queryFn: () => getLastMonthSettlement(page - 1, 6),
   //   });
 

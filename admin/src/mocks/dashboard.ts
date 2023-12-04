@@ -100,3 +100,44 @@ export const settlementForDashbaordData = {
     },
   ],
 };
+
+export const registerRequestListData = {
+  totalCnt: 4,
+  data: [
+    {
+      key: 1,
+      storeManagerName: "가가가",
+      storeManagerPhoneNumber: "01012345678",
+      storeManagerBusinessNumber: "text.jpg",
+      requestDate: "2023-11-11",
+    },
+    {
+      key: 2,
+      storeManagerName: "가가가",
+      storeManagerPhoneNumber: "01012345678",
+      storeManagerBusinessNumber: "text.jpg",
+      requestDate: "2023-11-11",
+    },
+    {
+      key: 3,
+      storeManagerName: "가가가",
+      storeManagerPhoneNumber: "01012345678",
+      storeManagerBusinessNumber: "text.jpg",
+      requestDate: "2023-11-11",
+    },
+    {
+      key: 4,
+      storeManagerName: "가가가",
+      storeManagerPhoneNumber: "01012345678",
+      storeManagerBusinessNumber: "text.jpg",
+      requestDate: "2023-11-11",
+    },
+    {
+      key: 5,
+      storeManagerName: "가가가",
+      storeManagerPhoneNumber: "01012345678",
+      storeManagerBusinessNumber: "text.jpg",
+      requestDate: "2023-11-11",
+    },
+  ],
+};

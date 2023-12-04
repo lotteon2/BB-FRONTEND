@@ -11,3 +11,16 @@ export interface settlementItem {
   bankName: string;
   accountNumber: string;
 }
+
+export interface registerRequestItemDto {
+  key: number;
+  storeManagerName: string;
+  storeManagerPhoneNumber: string;
+  storeManagerBusinessNumber: string;
+  requestDate: string;
+}
+
+export interface storeStatusModifyDto {
+  storeManagerId: number;
+  status: string;
+}
