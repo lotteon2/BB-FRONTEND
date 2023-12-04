@@ -65,3 +65,16 @@ code {
 .logo {
   font-family: "Aguafina Script", cursive;
 }
+
+.swal2-icon {
+  border: none;
+}
+.swal2-title {
+  text-align: left;
+  font-size: 25px;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: "#000" !important;
+}

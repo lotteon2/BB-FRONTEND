@@ -63,6 +63,20 @@ code {
 :where(.css-dev-only-do-not-override-2q8sxy).ant-btn-primary:hover {
   opacity: 80;
 }
+
 .logo {
   font-family: "Aguafina Script", cursive;
+}
+
+.swal2-icon {
+  border: none;
+}
+.swal2-title {
+  text-align: left;
+  font-size: 25px;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: "#000" !important;
 }

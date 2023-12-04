@@ -13,3 +13,21 @@ export const loginState = atom({
   default: true,
   effects_UNSTABLE: [persistAtom],
 });
+
+/**
+ * 이름
+ */
+export const nameState = atom({
+  key: "nameState",
+  default: "",
+  effects_UNSTABLE: [persistAtom],
+});
+
+/**
+ * 가게 ID
+ */
+export const storeIdState = atom({
+  key: "storeIdState",
+  default: 0,
+  effects_UNSTABLE: [persistAtom],
+});
