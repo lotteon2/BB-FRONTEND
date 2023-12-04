@@ -40,3 +40,63 @@ export const MonthlyStoreSalesGraphData = [
     data: [2840000],
   },
 ];
+
+export const settlementForDashbaordData = {
+  totalCnt: 6,
+  settlement: [
+    {
+      key: 1,
+      storeName: "가게명",
+      settlementDate: "2022-11-23",
+      totalAmountPerMonth: 1810000,
+      settlementAmount: 1629000,
+      bankName: "카카오뱅크",
+      accountNumber: "3333123456789",
+    },
+    {
+      key: 2,
+      storeName: "가게명",
+      settlementDate: "2022-11-23",
+      totalAmountPerMonth: 1810000,
+      settlementAmount: 1629000,
+      bankName: "카카오뱅크",
+      accountNumber: "3333123456789",
+    },
+    {
+      key: 3,
+      storeName: "가게명",
+      settlementDate: "2022-11-23",
+      totalAmountPerMonth: 1810000,
+      settlementAmount: 1629000,
+      bankName: "카카오뱅크",
+      accountNumber: "3333123456789",
+    },
+    {
+      key: 4,
+      storeName: "가게명",
+      settlementDate: "2022-11-23",
+      totalAmountPerMonth: 1810000,
+      settlementAmount: 1629000,
+      bankName: "카카오뱅크",
+      accountNumber: "3333123456789",
+    },
+    {
+      key: 5,
+      storeName: "가게명",
+      settlementDate: "2022-11-23",
+      totalAmountPerMonth: 1810000,
+      settlementAmount: 1629000,
+      bankName: "카카오뱅크",
+      accountNumber: "3333123456789",
+    },
+    {
+      key: 6,
+      storeName: "가게명",
+      settlementDate: "2022-11-23",
+      totalAmountPerMonth: 1810000,
+      settlementAmount: 1629000,
+      bankName: "카카오뱅크",
+      accountNumber: "3333123456789",
+    },
+  ],
+};
