@@ -1,6 +1,7 @@
 import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
 import { weeklySaleData } from "../../mocks/dashboard";
+import QuarterDiv from "../fallbacks/QuarterDiv";
 
 export default function WeeklySaleGraph() {
   // const storeId = useRecoilValue<number>(storeIdState);
@@ -11,9 +12,9 @@ export default function WeeklySaleGraph() {
   //   queryFn: () => getWeeklySaleGraph(storeId),
   // });
 
-  //   const isLoading = true;
+  // const isLoading = true;
 
-  //   if (!data || isLoading) return <QuarterDiv />;
+  // if (!data || isLoading) return <QuarterDiv />;
 
   const options: ApexOptions = {
     colors: ["#A843D6"],

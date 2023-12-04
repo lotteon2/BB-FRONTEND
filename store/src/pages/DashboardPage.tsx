@@ -3,6 +3,7 @@ import { storeIdState } from "../recoil/atom/common";
 import { Button, Empty } from "antd";
 import { useNavigate } from "react-router";
 import WeeklySaleGraph from "../components/dashboard/WeeklySaleGraph";
+import BestProductsGraph from "../components/dashboard/BestProductsGraph";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -24,7 +25,9 @@ export default function DashboardPage() {
             <div className="w-[805px] h-[436px] bg-grayscale1 rounded-lg">
               <WeeklySaleGraph />
             </div>
-            <div className="w-[805px] h-[436px] bg-grayscale1 rounded-lg"></div>
+            <div className="w-[805px] h-[436px] bg-grayscale1 rounded-lg">
+              <BestProductsGraph />
+            </div>
           </div>
           <div className="w-[1605px] h-[436px] bg-grayscale1 rounded-lg"></div>
         </div>
