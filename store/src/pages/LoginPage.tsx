@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Button, Form, Input } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { useRecoilValue } from "recoil";
-import { loginState } from "../recoil/atom/common";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { loginState, nameState } from "../recoil/atom/common";
 import { useNavigate } from "react-router";
 import { useMutation } from "react-query";
 import { signin } from "../apis/auth";
@@ -13,6 +13,7 @@ import { FailToast } from "../components/common/toast/FailToast";
 export default function LoginPage() {
   const navigate = useNavigate();
   const isLogin = useRecoilValue<boolean>(loginState);
+  const setName = useSetRecoilState<string>(nameState);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const defaultValues = {
@@ -34,7 +35,8 @@ export default function LoginPage() {
     ["signin"],
     (signinDto: signinDto) => signin(signinDto),
     {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        setName(data.name);
         SuccessToast("로그인되었습니다.");
         navigate("/");
       },
@@ -43,6 +45,7 @@ export default function LoginPage() {
       },
     }
   );
+
   useEffect(() => {
     if (isLogin) navigate("/");
     // eslint-disable-next-line

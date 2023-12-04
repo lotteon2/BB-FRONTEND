@@ -1,5 +1,5 @@
 import { signinDto, signupDto } from "../recoil/common/interfaces";
-import { defaultInstance } from "./utils";
+import { authInstance, defaultInstance } from "./utils";
 
 // 로그인
 export const signin = async (signinDto: signinDto) => {
@@ -28,5 +28,11 @@ export const sendEmailCode = async (email: string) => {
 // 이메일 인증코드 확인
 export const verifyEmailCode = async (email: string) => {
   const { data } = await defaultInstance.patch("/emails/" + email);
+  return data;
+};
+
+// 로그아웃
+export const logout = async () => {
+  const { data } = await authInstance.post("/stores/logout");
   return data;
 };
