@@ -1,16 +1,11 @@
 import { useState, useRef } from "react";
-import { useRecoilValue } from "recoil";
-import { storeIdState } from "../recoil/atom/common";
-import { Button, Empty, Tour, TourProps } from "antd";
-import { useNavigate } from "react-router";
+import { Tour, TourProps } from "antd";
 import WeeklySaleGraph from "../components/dashboard/WeeklySaleGraph";
 import BestProductsGraph from "../components/dashboard/BestProductsGraph";
 import DashboardStockGraph from "../components/dashboard/DashboardStockGraph";
 import { QuestionCircleFilled } from "@ant-design/icons";
 
 export default function DashboardPage() {
-  const navigate = useNavigate();
-  const storeId = useRecoilValue<number | null>(storeIdState);
   const [open, setOpen] = useState<boolean>(false);
 
   const ref1 = useRef(null);
@@ -42,47 +37,32 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div>
-      {storeId === null ? (
-        <div className="w-full h-full mt-80">
-          <Empty description="등록된 가게정보가 없습니다.">
-            <Button onClick={() => navigate("/store")}>
-              가게 등록하러 가기
-            </Button>
-          </Empty>
+    <div className="w-[1620px] h-[897px] bg-grayscale3 flex flex-col gap-2 p-2">
+      <div className="flex flex-row gap-2">
+        <div
+          className="w-[805px] h-[436px] bg-grayscale1 rounded-lg"
+          ref={ref1}
+        >
+          <WeeklySaleGraph />
         </div>
-      ) : (
-        <div className="w-[1620px] h-[897px] bg-grayscale3 flex flex-col gap-2 p-2">
-          <div className="flex flex-row gap-2">
-            <div
-              className="w-[805px] h-[436px] bg-grayscale1 rounded-lg"
-              ref={ref1}
-            >
-              <WeeklySaleGraph />
-            </div>
-            <div
-              className="w-[805px] h-[436px] bg-grayscale1 rounded-lg"
-              ref={ref2}
-            >
-              <BestProductsGraph />
-            </div>
-          </div>
-          <div
-            className="w-[1605px] h-[436px] bg-grayscale1 rounded-lg"
-            ref={ref3}
-          >
-            <DashboardStockGraph />
-          </div>
-          <button
-            className="absolute bottom-1 right-1"
-            onClick={() => setOpen(true)}
-          >
-            <QuestionCircleFilled style={{ fontSize: 20 }} />
-          </button>
+        <div
+          className="w-[805px] h-[436px] bg-grayscale1 rounded-lg"
+          ref={ref2}
+        >
+          <BestProductsGraph />
+        </div>
+      </div>
+      <div className="w-[1605px] h-[436px] bg-grayscale1 rounded-lg" ref={ref3}>
+        <DashboardStockGraph />
+      </div>
+      <button
+        className="absolute bottom-1 right-1"
+        onClick={() => setOpen(true)}
+      >
+        <QuestionCircleFilled style={{ fontSize: 20 }} />
+      </button>
 
-          <Tour open={open} onClose={() => setOpen(false)} steps={steps} />
-        </div>
-      )}
+      <Tour open={open} onClose={() => setOpen(false)} steps={steps} />
     </div>
   );
 }
