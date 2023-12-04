@@ -107,6 +107,7 @@ export default function RegisterPage() {
       return Promise.reject(new Error("공백을 입력할 수 없습니다."));
     }
     return Promise.resolve();
+    // eslint-disable-next-line
   }, []);
 
   const rightName = useCallback((_: any, value: string) => {
@@ -117,6 +118,7 @@ export default function RegisterPage() {
       return Promise.reject(new Error("공백을 입력할 수 없습니다."));
     }
     return Promise.resolve();
+    // eslint-disable-next-line
   }, []);
 
   const rightPassword = useCallback((_: any, value: string) => {
@@ -135,6 +137,7 @@ export default function RegisterPage() {
       return Promise.reject(new Error("한글을 입력할 수 없습니다."));
     }
     return Promise.resolve();
+    // eslint-disable-next-line
   }, []);
 
   const emailCheckMutation = useMutation(

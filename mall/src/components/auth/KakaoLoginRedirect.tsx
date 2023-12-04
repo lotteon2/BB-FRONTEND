@@ -77,6 +77,7 @@ export default function KakaoLoginRedirect() {
     } else {
       loginMutation.mutate();
     }
+    // eslint-disable-next-line
   }, []);
 
   return (
