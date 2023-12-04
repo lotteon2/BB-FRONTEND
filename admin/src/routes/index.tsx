@@ -5,6 +5,7 @@ import DashboardPage from "../pages/DashboardPage";
 import LoginPage from "../pages/LoginPage";
 import LoginLayout from "../layouts/LoginLayout";
 import StorePage from "../pages/StorePage";
+import SettlementPage from "../pages/SettlementPage";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,12 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     errorElement: <NotFound />,
     children: [{ index: true, path: "", element: <StorePage /> }],
+  },
+  {
+    path: "/settlement",
+    element: <MainLayout />,
+    errorElement: <NotFound />,
+    children: [{ index: true, path: "", element: <SettlementPage /> }],
   },
 ]);
 

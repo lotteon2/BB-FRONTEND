@@ -38,12 +38,6 @@ export default function StoreList(param: param) {
       ellipsis: true,
     },
     {
-      title: "연락처",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
-      ellipsis: true,
-    },
-    {
       title: "대표 계좌",
       dataIndex: "",
       key: "accountNumber",
@@ -68,6 +62,15 @@ export default function StoreList(param: param) {
       dataIndex: "phoneNumber",
       key: "phoneNumber",
       ellipsis: true,
+      render: (record) => (
+        <p>
+          {record.slice(0, 3) +
+            "-" +
+            record.slice(3, 7) +
+            "-" +
+            record.slice(7, 11)}
+        </p>
+      ),
     },
     {
       title: "총 매출액",
@@ -75,12 +78,6 @@ export default function StoreList(param: param) {
       key: "totalAmount",
       ellipsis: true,
       render: (record) => <p>{record.toLocaleString()}원</p>,
-    },
-    {
-      title: "연락처",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
-      ellipsis: true,
     },
     {
       title: "등록일",

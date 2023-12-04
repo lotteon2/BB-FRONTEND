@@ -36,3 +36,8 @@ export interface storeItemDto {
   totalAmount: number;
   regDate: string;
 }
+
+export interface options {
+  value: number;
+  label: string;
+}
