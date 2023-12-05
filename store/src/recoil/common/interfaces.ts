@@ -224,3 +224,13 @@ export interface questionDetailDto {
   isReplied: boolean;
   reply: replyDto;
 }
+
+export interface settlementDto {
+  key: number;
+  storeName: string;
+  settlementDate: string;
+  totalAmountPerMonth: number;
+  settlementAmount: number;
+  bankName: string;
+  accountNumber: string;
+}

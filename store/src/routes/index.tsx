@@ -11,6 +11,7 @@ import OrderPage from "../pages/OrderPage";
 import SchedulePage from "../pages/SchedulePage";
 import StockPage from "../pages/StockPage";
 import ManagePage from "../pages/ManagePage";
+import SettlementPage from "../pages/SettlementPage";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
       { path: "schedule", element: <SchedulePage /> },
       { path: "stock", element: <StockPage /> },
       { path: "manage", element: <ManagePage /> },
+      { path: "settlement", element: <SettlementPage /> },
     ],
   },
   {
