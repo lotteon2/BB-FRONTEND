@@ -225,3 +225,18 @@ export const deliverStatusSecond = [
     label: "배송완료",
   },
 ];
+
+export const reviewOptions = [
+  {
+    value: "DATE",
+    label: "최신순",
+  },
+  {
+    value: "HIGH",
+    label: "별점 높은순",
+  },
+  {
+    value: "LOW",
+    label: "별점 낮은순",
+  },
+];

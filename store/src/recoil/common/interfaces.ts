@@ -189,3 +189,14 @@ export interface stockModifyDto {
   flowerId: number;
   stock: number;
 }
+
+export interface reviewDto {
+  reviewId: number;
+  createdAt: string;
+  profileImage: string;
+  rating: number;
+  nickname: string;
+  productName: string;
+  content: string;
+  reviewImages: string[];
+}
