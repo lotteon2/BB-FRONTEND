@@ -3,10 +3,24 @@ import styled from "styled-components";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { mallState, loginState, sideMenuState } from "../../recoil/atom/common";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  mallState,
+  loginState,
+  sideMenuState,
+  nicknameState,
+  profileImageState,
+} from "../../recoil/atom/common";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from "recoil";
 import Logo from "../../assets/images/logo.png";
 import { Select, ConfigProvider } from "antd";
+import { useMutation } from "react-query";
+import { logout } from "../../apis/auth";
+import { FailToast } from "./toast/FailToast";
 
 interface parameter {
   istoggled: string;
@@ -90,6 +104,10 @@ const HeaderStyle = styled.div<parameter>`
 `;
 
 export default function Header() {
+  const resetLoginState = useResetRecoilState(loginState);
+  const resetMallState = useResetRecoilState(mallState);
+  const resetNicknameState = useResetRecoilState(nicknameState);
+  const resetProfileImage = useResetRecoilState(profileImageState);
   const [isToggled, setIsToggled] = useState<boolean>(false);
   const [userToggled, setUserToggled] = useState<boolean>(false);
   const [mallStae, setMallState] = useRecoilState<boolean>(mallState);
@@ -114,6 +132,23 @@ export default function Header() {
       navigate("/");
     }
   };
+
+  const handleLogout = () => {
+    logouMutation.mutate();
+  };
+
+  const logouMutation = useMutation(["logout"], () => logout("kakao"), {
+    onSuccess: () => {
+      resetLoginState();
+      resetMallState();
+      resetNicknameState();
+      resetProfileImage();
+      navigate("/");
+    },
+    onError: () => {
+      FailToast(null);
+    },
+  });
 
   return (
     <div className="mt-5">
@@ -251,7 +286,9 @@ export default function Header() {
               </NavLink>
             </li>
             <li>
-              <button className="font-light">로그아웃</button>
+              <button className="font-light" onClick={handleLogout}>
+                로그아웃
+              </button>
             </li>
           </ul>
         ) : (
