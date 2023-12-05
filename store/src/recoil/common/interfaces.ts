@@ -152,3 +152,29 @@ export interface productRead {
   quantity: number;
   totalAmount: number; // price*quantity 계산하기
 }
+
+export interface subscriptionInfoDto {
+  storeSubscriptionId: number;
+  subscriptionCode: string;
+  productName: string; // feign
+  productThumbnailImage: string; // feign
+  deliveryRecipientName: string; // feign
+  deliveryRecipientPhoneNumber: string; // feign
+  deliveryRoadName: string; // feign
+  deliveryAddressDetail: string; // feign
+  productPrice: number; // feign
+}
+
+export interface reservationInfoDto {
+  pickupReservationId: number;
+  reservationCode: string;
+  productName: string; // feign
+  productThumbnailImage: string; // feign
+  count: number; // feign
+  orderPickupTotalAmount: number; // feign
+  nickname: string; // feign
+  phoneNumber: string; // feign
+  pickupDate: string;
+  pickupTime: string;
+  isCanceled: boolean;
+}

@@ -8,6 +8,7 @@ import DashboardPage from "../pages/DashboardPage";
 import StorePage from "../pages/StorePage";
 import ProductPage from "../pages/ProductPage";
 import OrderPage from "../pages/OrderPage";
+import SchedulePage from "../pages/SchedulePage";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       { path: "store", element: <StorePage /> },
       { path: "product", element: <ProductPage /> },
       { path: "order", element: <OrderPage /> },
+      { path: "schedule", element: <SchedulePage /> },
     ],
   },
   {
