@@ -125,3 +125,30 @@ export interface productModifyInfoDto {
   representativeFlower: flowers;
   flowers: flowers[];
 }
+
+export interface orderDeliveryDetail {
+  productId: number;
+  thumbnailImage: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+export interface orderDelivery {
+  key: string;
+  products: orderDeliveryDetail[];
+  orderDeliveryStatus: string;
+  paymentAmount: number;
+  paymentDate: string;
+  zipcode: string;
+  roadName: string;
+  addressDetail: string;
+  deliveryRequest: string;
+}
+export interface productRead {
+  productId: number;
+  thumbnailImage: string;
+  name: string;
+  price: number;
+  quantity: number;
+  totalAmount: number; // price*quantity 계산하기
+}
