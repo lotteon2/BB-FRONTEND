@@ -147,7 +147,7 @@ export default function Header() {
         <li className="w-[90%]" ref={ref7}>
           <NavLink
             style={({ isActive }) => (isActive ? activeStyle : {})}
-            to="/review"
+            to="/manage"
           >
             <RateReviewIcon sx={{ fontSize: 40, marginRight: 2 }} />
             리뷰/문의 관리

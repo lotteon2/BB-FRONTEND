@@ -28,6 +28,17 @@ export const nameState = atom({
  */
 export const storeIdState = atom({
   key: "storeIdState",
-  default: 0,
+  default: 1,
   effects_UNSTABLE: [persistAtom],
+});
+
+/**
+ * 날짜
+ */
+export const dateState = atom({
+  key: "date",
+  default: {
+    year: new Date().getFullYear(),
+    month: new Date().getMonth(),
+  },
 });

@@ -10,11 +10,21 @@ const axiosApi = (baseURL: string | undefined) => {
   return instance;
 };
 
-const axiosAuthApi = (baseURL: string | undefined) => {
+const axiosAuthApi = (baseURL: any) => {
   const instance = axios.create({
     baseURL,
-    withCredentials: true,
+    // withCredentials: true,
   });
+
+  instance.interceptors.request.use(
+    (config) => {
+      config.headers["userId"] = 1;
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
   return instance;
 };
 
