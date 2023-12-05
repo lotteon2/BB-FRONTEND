@@ -6,7 +6,6 @@ import { useRecoilValue } from "recoil";
 import { questionItemDto } from "../../recoil/common/interfaces";
 import { storeIdState } from "../../recoil/atom/common";
 import { getQuestions } from "../../apis/manage";
-import ReviewFallback from "../fallbacks/ReviewFallback";
 import QuestionDetailModal from "./modal/QuestionDetailModal";
 import QuestionAnswerRegisterModal from "./modal/QuestionAnswerRegisterModal";
 import QuestionTableFallback from "../fallbacks/QuestionTableFallback";

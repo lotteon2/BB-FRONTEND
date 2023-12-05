@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Empty, Pagination, PaginationProps, Rate, Select } from "antd";
-import { reviewList } from "../../mocks/manage";
 import { reviewDto } from "../../recoil/common/interfaces";
 import { reviewOptions } from "../../recoil/common/options";
 import ReviewDetailModal from "./modal/ReviewDetailModal";
