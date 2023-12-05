@@ -178,3 +178,14 @@ export interface reservationInfoDto {
   pickupTime: string;
   isCanceled: boolean;
 }
+
+export interface stockDto {
+  id: number;
+  name: string;
+  data: number[];
+}
+
+export interface stockModifyDto {
+  flowerId: number;
+  stock: number;
+}

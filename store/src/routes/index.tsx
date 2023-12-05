@@ -9,6 +9,7 @@ import StorePage from "../pages/StorePage";
 import ProductPage from "../pages/ProductPage";
 import OrderPage from "../pages/OrderPage";
 import SchedulePage from "../pages/SchedulePage";
+import StockPage from "../pages/StockPage";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
       { path: "product", element: <ProductPage /> },
       { path: "order", element: <OrderPage /> },
       { path: "schedule", element: <SchedulePage /> },
+      { path: "stock", element: <StockPage /> },
     ],
   },
   {

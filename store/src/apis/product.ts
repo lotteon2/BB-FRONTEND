@@ -1,6 +1,7 @@
 import {
   productModifyInfoDto,
   productRegisterDto,
+  stockModifyDto,
 } from "../recoil/common/interfaces";
 import { authInstance } from "./utils";
 
@@ -51,5 +52,17 @@ export const getProductList = async (
 // 상품 상세 조회
 export const getProductDetailInfo = async (productId: number) => {
   const { data } = await authInstance.get("/api/products/" + productId);
+  return data;
+};
+
+// 재고 수정
+export const modifyFlowerStocks = async (
+  storeId: number,
+  stocks: stockModifyDto[]
+) => {
+  const { data } = await authInstance.put(
+    "/api/stores/" + storeId + "/flowers/stocks",
+    stocks
+  );
   return data;
 };
