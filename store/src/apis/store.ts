@@ -14,3 +14,15 @@ export const getStoreInfo = async (storeId: number) => {
   );
   return data;
 };
+
+// 가게정보 상세 조회
+export const getStoreDetail = async (storeId: number) => {
+  const { data } = await authInstance.get("/api/stores/" + storeId);
+  return data;
+};
+
+// 가게정보 수정
+export const modifyStore = async (storeId: number, storeInfo: storeInfoDto) => {
+  const { data } = await authInstance.put("/api/stores/" + storeId, storeInfo);
+  return data;
+};
