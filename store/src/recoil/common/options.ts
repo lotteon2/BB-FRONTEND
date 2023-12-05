@@ -184,3 +184,44 @@ export const saleStatusOptions = [
     label: "상품 삭제",
   },
 ];
+
+export const deliveryStatusOptions = [
+  {
+    value: "PENDING",
+    label: "주문 접수",
+  },
+  {
+    value: "PROCESSING",
+    label: "배송 시작",
+  },
+  {
+    value: "COMPLETED",
+    label: "배송 완료",
+  },
+];
+
+export const deliverStatusFirst = [
+  {
+    value: "ORDER_RECEIVED",
+    label: "주문접수",
+  },
+  {
+    value: "DELIVERY_STARTED",
+    label: "배송시작",
+  },
+  {
+    value: "DELIVERY_COMPLETED",
+    label: "배송완료",
+  },
+];
+
+export const deliverStatusSecond = [
+  {
+    value: "DELIVERY_STARTED",
+    label: "배송시작",
+  },
+  {
+    value: "DELIVERY_COMPLETED",
+    label: "배송완료",
+  },
+];
