@@ -16,6 +16,7 @@ import CouponRegisterModal from "./moddal/CouponRegisterModal";
 import CouponModifyModal from "./moddal/CouponModifyModal";
 import { SuccessToast } from "../common/toast/SuccessToast";
 import { FailToast } from "../common/toast/FailToast";
+import CouponTableFallback from "../fallbacks/CouponTableFallback";
 
 type DataIndex = keyof couponItemDto;
 export default function CouponTable() {
@@ -277,7 +278,7 @@ export default function CouponTable() {
     },
   ];
 
-  if (!data || isLoading) return null;
+  if (!data || isLoading) return <CouponTableFallback />;
 
   return (
     <div className="w-full h-full p-3 relative">
