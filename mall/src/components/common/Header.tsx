@@ -17,7 +17,7 @@ import {
   useSetRecoilState,
 } from "recoil";
 import Logo from "../../assets/images/logo.png";
-import { Select, ConfigProvider } from "antd";
+import { Select } from "antd";
 import { useMutation } from "react-query";
 import { logout } from "../../apis/auth";
 import { FailToast } from "./toast/FailToast";
@@ -110,7 +110,7 @@ export default function Header() {
   const resetProfileImage = useResetRecoilState(profileImageState);
   const [isToggled, setIsToggled] = useState<boolean>(false);
   const [userToggled, setUserToggled] = useState<boolean>(false);
-  const [mallStae, setMallState] = useRecoilState<boolean>(mallState);
+  const [mall, setMallState] = useRecoilState<boolean>(mallState);
   const isLogin = useRecoilValue(loginState);
   const setSideMenuState = useSetRecoilState<number>(sideMenuState);
   const navigate = useNavigate();
@@ -153,28 +153,26 @@ export default function Header() {
   return (
     <div className="mt-5">
       <div className="ml-5">
-        <ConfigProvider
-          theme={{
-            token: {
-              // Seed Token
-              colorPrimary: "#85C031",
-            },
-          }}
-        >
-          <Select
-            defaultValue={mallStae ? "shoppingmall" : "pickup"}
-            style={{ width: 120 }}
-            onChange={handleChange}
-            options={[
-              { value: "shoppingmall", label: "꽃 쇼핑몰" },
-              { value: "pickup", label: "픽업/예약" },
-            ]}
-          />
-        </ConfigProvider>
+        <Select
+          defaultValue={mall ? "shoppingmall" : "pickup"}
+          style={{ width: 120 }}
+          onChange={handleChange}
+          options={[
+            { value: "shoppingmall", label: "꽃 쇼핑몰" },
+            { value: "pickup", label: "픽업/예약" },
+          ]}
+        />
       </div>
-      <NavLink to={mallStae ? "/" : "/pickup"}>
-        <img className="w-36 mx-auto" src={Logo} alt="로고" />
-      </NavLink>
+
+      <img
+        className="w-36 mx-auto cursor-pointer"
+        src={Logo}
+        alt="로고"
+        onClick={() => {
+          mall ? navigate("/") : navigate("/pickup");
+        }}
+      />
+
       <HeaderStyle
         istoggled={isToggled.toString()}
         usertoggled={userToggled.toString()}
@@ -196,7 +194,7 @@ export default function Header() {
         >
           <FontAwesomeIcon icon={!userToggled ? faUser : faTimes} />
         </div>
-        {mallStae ? (
+        {mall ? (
           <ul className="header__menulist">
             <li className="font-regular">
               <NavLink
