@@ -8,7 +8,7 @@ export const getReviews = async (
   sort: string
 ) => {
   const { data } = await authInstance.get(
-    "/api/products/stores/" +
+    "/stores/" +
       storeId +
       "/reviews?page=" +
       page +

@@ -1,3 +1,4 @@
+import QuestionList from "../components/manage/QuestionList";
 import ReviewList from "../components/manage/ReviewList";
 
 export default function ManagePage() {
@@ -6,7 +7,9 @@ export default function ManagePage() {
       <div className="w-1/2 h-full bg-grayscale1 rounded-lg p-3">
         <ReviewList />
       </div>
-      <div className="w-1/2 h-full bg-grayscale1 rounded-lg"></div>
+      <div className="w-1/2 h-full bg-grayscale1 rounded-lg p-3">
+        <QuestionList />
+      </div>
     </div>
   );
 }

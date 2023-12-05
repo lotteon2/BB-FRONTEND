@@ -200,3 +200,27 @@ export interface reviewDto {
   content: string;
   reviewImages: string[];
 }
+
+export interface questionItemDto {
+  key: string;
+  productName: string; // feign
+  nickname: string; // feign
+  title: string;
+  createdAt: string;
+  isReplied: boolean; // answer 테이블
+  isRead: boolean;
+}
+
+export interface replyDto {
+  content: string;
+  repliedAt: string;
+}
+
+export interface questionDetailDto {
+  nickname: string;
+  createdAt: string;
+  productName: string;
+  content: string;
+  isReplied: boolean;
+  reply: replyDto;
+}
