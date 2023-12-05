@@ -5,7 +5,7 @@ import { Button } from "antd";
 import { useQuery } from "react-query";
 import { getStoreInfo } from "../../apis/store";
 import StoreInfoFallback from "../fallbacks/StoreInfoFallback";
-import StoreModifyModal from "./StoreModifyModal";
+import StoreModifyModal from "./moddal/StoreModifyModal";
 
 export default function StoreInfo() {
   const storeId = useRecoilValue<number>(storeIdState);

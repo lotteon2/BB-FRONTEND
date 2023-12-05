@@ -1,4 +1,7 @@
-import { storeInfoDto } from "../recoil/common/interfaces";
+import {
+  storeInfoDto,
+  subscriptionRegisterDto,
+} from "../recoil/common/interfaces";
 import { authInstance } from "./utils";
 
 // 가게 정보 등록
@@ -24,5 +27,37 @@ export const getStoreDetail = async (storeId: number) => {
 // 가게정보 수정
 export const modifyStore = async (storeId: number, storeInfo: storeInfoDto) => {
   const { data } = await authInstance.put("/api/stores/" + storeId, storeInfo);
+  return data;
+};
+
+// 구독상품 조회
+export const getSubscriptionInfo = async (storeId: number) => {
+  const { data } = await authInstance.get(
+    "/store/" + storeId + "/subscribe-product"
+  );
+  return data;
+};
+
+// 구독상품 등록
+export const registerSubscriptionInfo = async (
+  storeId: number,
+  subscriptionInfo: subscriptionRegisterDto
+) => {
+  const { data } = await authInstance.post(
+    "/store/" + storeId + "/subscribe-product",
+    subscriptionInfo
+  );
+  return data;
+};
+
+// 구독상품 수정
+export const modifySubscriptionInfo = async (
+  productId: number,
+  subscriptionInfo: subscriptionRegisterDto
+) => {
+  const { data } = await authInstance.put(
+    "/" + productId + "/subscribe-product",
+    subscriptionInfo
+  );
   return data;
 };

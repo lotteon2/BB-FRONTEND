@@ -29,3 +29,21 @@ export interface storeInfoDto {
   lat: number;
   lon: number;
 }
+
+export interface subscriptionRegisterDto {
+  productName: string;
+  productSummary: string;
+  productPrice: number | null;
+  productDescriptionImage: string;
+  productThumbnail: string;
+}
+
+export interface subscriptionInfoDto {
+  productId: number;
+  productThumbnail: string;
+  productName: string;
+  productPrice: number;
+  productSummary: string;
+  productDescriptionImage: string;
+  averageRating: number;
+}

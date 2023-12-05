@@ -2,6 +2,7 @@ import { QuestionCircleFilled } from "@ant-design/icons";
 import { Tour, TourProps } from "antd";
 import { useState, useRef } from "react";
 import StoreInfo from "../components/store/StoreInfo";
+import SubscriptionInfo from "../components/store/SubscriptionInfo";
 
 export default function StorePage() {
   const [open, setOpen] = useState<boolean>(false);
@@ -46,7 +47,9 @@ export default function StorePage() {
           <div
             className="w-[805px] h-[436px] bg-grayscale1 rounded-lg"
             ref={ref2}
-          ></div>
+          >
+            <SubscriptionInfo />
+          </div>
         </div>
         <div
           className="w-[805px] h-[881px] bg-grayscale1 rounded-lg"

@@ -5,7 +5,7 @@ import ProfileBar from "../components/common/ProfileBar";
 import { storeIdState } from "../recoil/atom/common";
 import { useRecoilValue } from "recoil";
 import { Button, Empty } from "antd";
-import StoreRegisterModal from "../components/store/StoreRegisterModal";
+import StoreRegisterModal from "../components/store/moddal/StoreRegisterModal";
 
 export default function MainLayout() {
   const storeId = useRecoilValue<number | null>(storeIdState);

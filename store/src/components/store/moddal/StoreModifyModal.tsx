@@ -1,20 +1,20 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Button, Form, Input, InputNumber, Modal, Select } from "antd";
-import { storeInfoDto } from "../../recoil/common/interfaces";
-import { PictureFilled } from "@ant-design/icons";
-import { useMutation } from "react-query";
-import { getImageUrl } from "../../apis/image";
-import { FailToast } from "../common/toast/FailToast";
+import { storeInfoDto } from "../../../recoil/common/interfaces";
+import { useMutation, useQuery } from "react-query";
+import { getImageUrl } from "../../../apis/image";
+import { FailToast } from "../../common/toast/FailToast";
 import DaumPostcodeEmbed from "react-daum-postcode";
-import { bankOptions } from "../../recoil/common/options";
-import { registerStore } from "../../apis/store";
-import { SuccessToast } from "../common/toast/SuccessToast";
-import { useSetRecoilState } from "recoil";
-import { storeIdState } from "../../recoil/atom/common";
+import { bankOptions } from "../../../recoil/common/options";
+import { getStoreDetail, modifyStore } from "../../../apis/store";
+import { SuccessToast } from "../../common/toast/SuccessToast";
+import { useRecoilValue } from "recoil";
+import { storeIdState } from "../../../recoil/atom/common";
 
 interface param {
   isModalOpen: boolean;
   handleCancel: () => void;
+  handleComplete: () => void;
 }
 
 declare global {
@@ -25,11 +25,11 @@ declare global {
 
 const { TextArea } = Input;
 
-export default function StoreRegisterModal(param: param) {
-  const setStoreId = useSetRecoilState<number>(storeIdState);
+export default function StoreModifyModal(param: param) {
+  const storeId = useRecoilValue<number>(storeIdState);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState<boolean>(false);
-  const [registerValues, setRegisterValues] = useState<storeInfoDto>({
+  const [modifyValues, setModifyValues] = useState<storeInfoDto>({
     storeName: "",
     detailInfo: "",
     storeThumbnailImage:
@@ -49,25 +49,15 @@ export default function StoreRegisterModal(param: param) {
     lon: 0,
   });
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["getStoreDetail"],
+    queryFn: () => getStoreDetail(storeId),
+  });
+
   const handleResetValues = () => {
-    setRegisterValues({
-      storeName: "",
-      detailInfo: "",
-      storeThumbnailImage: "",
-      phoneNumber: "",
-      accountNumber: "",
-      bank: "",
-      minOrderPrice: null,
-      deliveryPrice: null,
-      freeDeliveryMinPrice: null,
-      sido: "",
-      gugun: "",
-      address: "",
-      detailAddress: "",
-      zipCode: "",
-      lat: 0,
-      lon: 0,
-    });
+    if (data) {
+      setModifyValues(data);
+    }
 
     param.handleCancel();
   };
@@ -105,7 +95,7 @@ export default function StoreRegisterModal(param: param) {
         var lat = new window.kakao.maps.LatLng(result[0].y);
         var lon = new window.kakao.maps.LatLng(result[0].x);
 
-        setRegisterValues((prev) => ({
+        setModifyValues((prev) => ({
           ...prev,
           zipCode: data.zonecode,
           address: roadAddr,
@@ -122,17 +112,17 @@ export default function StoreRegisterModal(param: param) {
 
   const handleRegister = () => {
     if (
-      registerValues.storeName !== "" &&
-      registerValues.zipCode !== "" &&
-      registerValues.address !== "" &&
-      registerValues.detailInfo !== "" &&
-      registerValues.phoneNumber !== "" &&
-      registerValues.accountNumber !== "" &&
-      registerValues.minOrderPrice !== null &&
-      registerValues.deliveryPrice !== null &&
-      registerValues.freeDeliveryMinPrice !== null
+      modifyValues.storeName !== "" &&
+      modifyValues.zipCode !== "" &&
+      modifyValues.address !== "" &&
+      modifyValues.detailInfo !== "" &&
+      modifyValues.phoneNumber !== "" &&
+      modifyValues.accountNumber !== "" &&
+      modifyValues.minOrderPrice !== null &&
+      modifyValues.deliveryPrice !== null &&
+      modifyValues.freeDeliveryMinPrice !== null
     ) {
-      registerMutation.mutate();
+      modifyMutation.mutate();
     }
   };
 
@@ -141,7 +131,7 @@ export default function StoreRegisterModal(param: param) {
     (image: FormData) => getImageUrl(image),
     {
       onSuccess: (data) => {
-        setRegisterValues((prev) => ({ ...prev, storeThumbnailImage: data }));
+        setModifyValues((prev) => ({ ...prev, storeThumbnailImage: data }));
       },
       onError: () => {
         FailToast(null);
@@ -149,14 +139,14 @@ export default function StoreRegisterModal(param: param) {
     }
   );
 
-  const registerMutation = useMutation(
-    ["registerStore"],
-    () => registerStore(registerValues),
+  const modifyMutation = useMutation(
+    ["modifyStore"],
+    () => modifyStore(storeId, modifyValues),
     {
-      onSuccess: (data) => {
-        setStoreId(data);
-        SuccessToast("가게 정보가 등록되었습니다.");
+      onSuccess: () => {
+        SuccessToast("수정되었습니다.");
         param.handleCancel();
+        param.handleComplete();
       },
       onError: () => {
         FailToast(null);
@@ -170,8 +160,16 @@ export default function StoreRegisterModal(param: param) {
 
   const [form] = Form.useForm();
   useEffect(() => {
-    form.setFieldsValue(registerValues);
-  }, [form, registerValues]);
+    form.setFieldsValue(modifyValues);
+  }, [form, modifyValues]);
+
+  useEffect(() => {
+    if (data) {
+      setModifyValues(data);
+    }
+  }, [data]);
+
+  if (!data || isLoading) return null;
 
   return (
     <div>
@@ -188,7 +186,7 @@ export default function StoreRegisterModal(param: param) {
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           autoCapitalize="off"
-          initialValues={registerValues}
+          initialValues={modifyValues}
           onFinish={handleRegister}
         >
           <div className="flex flex-row gap-3">
@@ -204,18 +202,11 @@ export default function StoreRegisterModal(param: param) {
                 style={{ display: "none" }}
                 onChange={handleImage}
               />
-              {registerValues.storeThumbnailImage === "" ? (
-                <div className="text-center">
-                  <PictureFilled style={{ fontSize: 150 }} />
-                  <p className="text-[1rem]">썸네일 이미지 등록</p>
-                </div>
-              ) : (
-                <img
-                  src={registerValues.storeThumbnailImage}
-                  alt="썸네일 이미지"
-                  className="w-full h-full rounded-lg"
-                />
-              )}
+              <img
+                src={modifyValues.storeThumbnailImage}
+                alt="썸네일 이미지"
+                className="w-full h-full rounded-lg"
+              />
             </div>
             <div className="w-[250px]">
               <Form.Item
@@ -226,9 +217,9 @@ export default function StoreRegisterModal(param: param) {
               >
                 <Input
                   placeholder="가게 이름"
-                  value={registerValues.storeName}
+                  value={modifyValues.storeName}
                   onChange={(e) =>
-                    setRegisterValues((prev) => ({
+                    setModifyValues((prev) => ({
                       ...prev,
                       storeName: e.target.value,
                     }))
@@ -243,7 +234,7 @@ export default function StoreRegisterModal(param: param) {
                 >
                   <Input
                     placeholder="우편번호"
-                    value={registerValues.zipCode}
+                    value={modifyValues.zipCode}
                     disabled
                   />
                 </Form.Item>
@@ -258,14 +249,14 @@ export default function StoreRegisterModal(param: param) {
               >
                 <Input
                   placeholder="주소"
-                  value={registerValues.address}
+                  value={modifyValues.address}
                   disabled
                 />
               </Form.Item>
               <Form.Item name="detailAddress">
                 <Input
                   placeholder="상세주소"
-                  value={registerValues.detailAddress}
+                  value={modifyValues.detailAddress}
                   style={{ marginLeft: 60, width: 190 }}
                 />
               </Form.Item>
@@ -281,7 +272,7 @@ export default function StoreRegisterModal(param: param) {
                 placeholder="상세 설명"
                 autoSize={{ minRows: 3, maxRows: 5 }}
                 onChange={(e) =>
-                  setRegisterValues((prev) => ({
+                  setModifyValues((prev) => ({
                     ...prev,
                     detailInfo: e.target.value,
                   }))
@@ -300,7 +291,7 @@ export default function StoreRegisterModal(param: param) {
             >
               <Input
                 onChange={(e) =>
-                  setRegisterValues((prev) => ({
+                  setModifyValues((prev) => ({
                     ...prev,
                     phoneNumber: e.target.value,
                   }))
@@ -317,17 +308,17 @@ export default function StoreRegisterModal(param: param) {
               <div className="flex flex-row gap-2">
                 <Select
                   options={bankOptions}
-                  value={registerValues.bank}
+                  value={modifyValues.bank}
                   style={{ width: 170 }}
                   onChange={(e) =>
-                    setRegisterValues((prev) => ({ ...prev, bank: e }))
+                    setModifyValues((prev) => ({ ...prev, bank: e }))
                   }
                 />
                 <Input
                   placeholder="계좌번호"
-                  value={registerValues.accountNumber}
+                  value={modifyValues.accountNumber}
                   onChange={(e) =>
-                    setRegisterValues((prev) => ({
+                    setModifyValues((prev) => ({
                       ...prev,
                       accountNumber: e.target.value,
                     }))
@@ -347,9 +338,9 @@ export default function StoreRegisterModal(param: param) {
             >
               <InputNumber
                 placeholder="최소 주문금액"
-                value={registerValues.minOrderPrice}
+                value={modifyValues.minOrderPrice}
                 onChange={(e) =>
-                  setRegisterValues((prev) => ({ ...prev, minOrderPrice: e }))
+                  setModifyValues((prev) => ({ ...prev, minOrderPrice: e }))
                 }
                 style={{ width: "100%" }}
               />
@@ -361,23 +352,23 @@ export default function StoreRegisterModal(param: param) {
             >
               <InputNumber
                 placeholder="기본 배송금액"
-                value={registerValues.deliveryPrice}
+                value={modifyValues.deliveryPrice}
                 onChange={(e) =>
-                  setRegisterValues((prev) => ({ ...prev, deliveryPrice: e }))
+                  setModifyValues((prev) => ({ ...prev, deliveryPrice: e }))
                 }
                 style={{ width: "100%" }}
               />
             </Form.Item>
             <Form.Item
-              name="freedeliveryMinPrice"
+              name="freeDeliveryMinPrice"
               label="무료배송 최소금액"
               rules={[{ required: true, message: "필수 입력값입니다." }]}
             >
               <InputNumber
                 placeholder="무료배송 최소금액"
-                value={registerValues.freeDeliveryMinPrice}
+                value={modifyValues.freeDeliveryMinPrice}
                 onChange={(e) =>
-                  setRegisterValues((prev) => ({
+                  setModifyValues((prev) => ({
                     ...prev,
                     freeDeliveryMinPrice: e,
                   }))
@@ -390,7 +381,7 @@ export default function StoreRegisterModal(param: param) {
           <div className="flex flex-row gap-2 justify-end mt-5">
             <Button onClick={handleResetValues}>취소</Button>
             <Button type="primary" htmlType="submit">
-              등록
+              수정
             </Button>
           </div>
         </Form>
