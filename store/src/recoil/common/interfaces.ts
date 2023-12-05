@@ -78,3 +78,50 @@ export interface couponRegisterDto {
   startDate: string;
   endDate: string;
 }
+
+export interface flowers {
+  flowerId: number | undefined;
+  flowerCount: number | null;
+}
+export interface productRegisterDto {
+  productName: string;
+  productSummary: string;
+  productDescriptionImage: string;
+  productThumbnail: string;
+  productPrice: number | null;
+  categoryId: number | undefined;
+  productTag: number[];
+  representativeFlower: flowers;
+  flowers: flowers[];
+}
+
+export interface productItemDto {
+  key: number;
+  productThumbnail: string;
+  productName: string;
+  representativeFlower: string;
+  category: string;
+  productPrice: number;
+  productSaleAmount: number;
+  averageRating: number;
+  productSaleStatus: string;
+}
+
+export interface flowersDetail {
+  flowerId: number;
+  flowerName: string;
+  flowerCount: number;
+}
+
+export interface productModifyInfoDto {
+  productName: string;
+  productSummary: string;
+  productDescriptionImage: string;
+  productThumbnail: string;
+  productPrice: number | null;
+  productSaleStatus: string;
+  categoryId: number;
+  productTag: number[];
+  representativeFlower: flowers;
+  flowers: flowers[];
+}

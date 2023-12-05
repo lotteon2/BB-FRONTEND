@@ -24,3 +24,163 @@ export const bankOptions = [
     label: "하나은행",
   },
 ];
+
+export const categoryOptions = [
+  {
+    value: 1,
+    label: "꽃다발",
+  },
+  {
+    value: 2,
+    label: "꽃바구니",
+  },
+  {
+    value: 3,
+    label: "꽃상자",
+  },
+  {
+    value: 4,
+    label: "화분",
+  },
+  {
+    value: 5,
+    label: "화환",
+  },
+];
+
+export const tagOptions = [
+  {
+    value: 1,
+    label: "연인 선물",
+  },
+  {
+    value: 2,
+    label: "친구 선물",
+  },
+  {
+    value: 3,
+    label: "공기 정화",
+  },
+  {
+    value: 4,
+    label: "개업 축하",
+  },
+  {
+    value: 5,
+    label: "승진 취임",
+  },
+  {
+    value: 6,
+    label: "결혼식",
+  },
+  {
+    value: 7,
+    label: "장례식",
+  },
+];
+
+export const flowerOptions = [
+  {
+    value: 1,
+    label: "빨간 장미",
+  },
+  {
+    value: 2,
+    label: "하얀 장미",
+  },
+  {
+    value: 3,
+    label: "주황 장미",
+  },
+  {
+    value: 4,
+    label: "분홍 장미",
+  },
+  {
+    value: 5,
+    label: "파랑 장미",
+  },
+  {
+    value: 6,
+    label: "보라 장미",
+  },
+  {
+    value: 7,
+    label: "노랑 장미",
+  },
+  {
+    value: 8,
+    label: "리시안셔스",
+  },
+  {
+    value: 9,
+    label: "수국",
+  },
+  {
+    value: 10,
+    label: "라벤더",
+  },
+  {
+    value: 11,
+    label: "국화",
+  },
+  {
+    value: 12,
+    label: "해바라기",
+  },
+  {
+    value: 13,
+    label: "카네이션",
+  },
+  {
+    value: 14,
+    label: "거베라",
+  },
+  {
+    value: 15,
+    label: "프리지아",
+  },
+  {
+    value: 16,
+    label: "튤립",
+  },
+  {
+    value: 17,
+    label: "라넌큘러스",
+  },
+  {
+    value: 18,
+    label: "안개꽃",
+  },
+  {
+    value: 19,
+    label: "스타티스",
+  },
+  {
+    value: 20,
+    label: "데이지",
+  },
+  {
+    value: 21,
+    label: "작약꽃",
+  },
+  {
+    value: 22,
+    label: "델피늄",
+  },
+];
+
+export const saleStatusOptions = [
+  {
+    value: "SALE",
+    label: "판매중",
+  },
+  {
+    value: "DISCONTINUED",
+    label: "판매 중단",
+  },
+  {
+    value: "DELETED",
+    label: "상품 삭제",
+  },
+];
