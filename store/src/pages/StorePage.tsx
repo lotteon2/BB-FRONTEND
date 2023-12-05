@@ -3,6 +3,7 @@ import { Tour, TourProps } from "antd";
 import { useState, useRef } from "react";
 import StoreInfo from "../components/store/StoreInfo";
 import SubscriptionInfo from "../components/store/SubscriptionInfo";
+import CouponTable from "../components/store/CouponTable";
 
 export default function StorePage() {
   const [open, setOpen] = useState<boolean>(false);
@@ -39,22 +40,24 @@ export default function StorePage() {
       <div className="flex flex-row gap-2">
         <div className="flex flex-col gap-2">
           <div
-            className="w-[805px] h-[436px] bg-grayscale1 rounded-lg"
+            className="w-[550px] h-[436px] bg-grayscale1 rounded-lg"
             ref={ref1}
           >
             <StoreInfo />
           </div>
           <div
-            className="w-[805px] h-[436px] bg-grayscale1 rounded-lg"
+            className="w-[550px] h-[436px] bg-grayscale1 rounded-lg"
             ref={ref2}
           >
             <SubscriptionInfo />
           </div>
         </div>
         <div
-          className="w-[805px] h-[881px] bg-grayscale1 rounded-lg"
+          className="w-[1200px] h-[881px] bg-grayscale1 rounded-lg"
           ref={ref3}
-        ></div>
+        >
+          <CouponTable />
+        </div>
       </div>
       <button
         className="absolute bottom-1 right-1"

@@ -1,23 +1,26 @@
 import { useState } from "react";
 import { Button, Empty, Rate } from "antd";
-import { subscriptionProductInfoData } from "../../mocks/store";
 import SubscriptionRegisterModal from "./moddal/SubscriptionRegisterModal";
 import SubscriptionModifyModal from "./moddal/SubscriptionModifyModal";
+import { useRecoilValue } from "recoil";
+import { storeIdState } from "../../recoil/atom/common";
+import { useQuery } from "react-query";
+import { getSubscriptionInfo } from "../../apis/store";
+import SubscriptionInfoFallback from "../fallbacks/SubscriptionInfoFallback";
 
 export default function SubscriptionInfo() {
-  //   const storeId = useRecoilValue<number>(storeIdState);
+  const storeId = useRecoilValue<number>(storeIdState);
   const [isRegisterModalOpen, setIsRegisterModalOpen] =
     useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isChange, setIsChange] = useState<boolean>(false);
 
-  const data = subscriptionProductInfoData;
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getSubscriptionInfo", isChange],
-  //     queryFn: () => getSubscriptionInfo(storeId),
-  //   });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getSubscriptionInfo", isChange],
+    queryFn: () => getSubscriptionInfo(storeId),
+  });
 
-  //   if (!data || isLoading) return null;
+  if (!data || isLoading) return <SubscriptionInfoFallback />;
 
   const handleCancel = () => {
     setIsRegisterModalOpen(false);

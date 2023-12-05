@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export interface signinDto {
   email: string;
   password: string;
@@ -46,4 +48,33 @@ export interface subscriptionInfoDto {
   productSummary: string;
   productDescriptionImage: string;
   averageRating: number;
+}
+
+export interface couponItemDto {
+  key: number;
+  couponCode: string;
+  couponName: string;
+  minPrice: number;
+  discountPrice: number;
+  unusedCount: number;
+  startDate: string;
+  endDate: string;
+}
+
+export interface couponDto {
+  couponName: string;
+  discountPrice: number | null;
+  minPrice: number | null;
+  limitCount: number | null;
+  startDate: null | Dayjs;
+  endDate: null | Dayjs;
+}
+
+export interface couponRegisterDto {
+  couponName: string;
+  discountPrice: number | null;
+  minPrice: number | null;
+  limitCount: number | null;
+  startDate: string;
+  endDate: string;
 }

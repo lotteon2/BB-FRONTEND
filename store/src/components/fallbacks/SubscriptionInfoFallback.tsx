@@ -1,11 +1,11 @@
 import { Button, Skeleton } from "antd";
 
-export default function StoreInfoFallback() {
+export default function SubscriptionInfoFallback() {
   return (
     <div className="w-full h-full p-3 relative">
-      <span className="text-xl font-bold">가게정보 관리</span>
+      <span className="text-xl font-bold">구독상품 관리</span>
       <Button className="absolute top-3 right-3" type="primary">
-        가게정보 수정
+        구독상품 수정
       </Button>
       <div className="flex flex-row gap-3 mt-2">
         <Skeleton.Node active style={{ width: 200, height: 200 }}>

@@ -1,4 +1,5 @@
 import {
+  couponRegisterDto,
   storeInfoDto,
   subscriptionRegisterDto,
 } from "../recoil/common/interfaces";
@@ -58,6 +59,34 @@ export const modifySubscriptionInfo = async (
   const { data } = await authInstance.put(
     "/" + productId + "/subscribe-product",
     subscriptionInfo
+  );
+  return data;
+};
+
+// 쿠폰 조회
+export const getCouponList = async (storeId: number) => {
+  const { data } = await authInstance.get(
+    "/api/stores/" + storeId + "/coupons"
+  );
+  return data;
+};
+
+// 쿠폰 등록
+export const registerCoupon = async (
+  storeId: number,
+  couponInfo: couponRegisterDto
+) => {
+  const { data } = await authInstance.post(
+    "/api/stores/" + storeId + "/coupons",
+    couponInfo
+  );
+  return data;
+};
+
+// 쿠폰 삭제
+export const deleteCoupon = async (storeId: number, couponId: number) => {
+  const { data } = await authInstance.delete(
+    "/api/stores/" + storeId + "/coupons/" + couponId
   );
   return data;
 };
