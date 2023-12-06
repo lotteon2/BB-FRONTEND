@@ -1,4 +1,5 @@
-import { Outlet } from "react-router";
+import { useEffect } from "react";
+import { Outlet, useLocation } from "react-router";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
@@ -6,13 +7,55 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import HistoryIcon from "@mui/icons-material/History";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { sideMenuState } from "../recoil/atom/common";
 import { ConfigProvider } from "antd";
+import { useMutation } from "react-query";
+import { modifyWishList } from "../apis/member";
+import { productWishState } from "../recoil/atom/member";
+import { FailToast } from "../components/common/toast/FailToast";
 
 export default function MainLayout() {
   const navigate = useNavigate();
+  const productWishList = useRecoilValue<string[]>(productWishState);
+  const resetProductWishList = useResetRecoilState(productWishState);
   const setSideMenuState = useSetRecoilState<number>(sideMenuState);
+  const location = useLocation();
+
+  const handleRefresh = () => {
+    if (productWishList.length !== 0) {
+      wishMutation.mutate();
+    }
+  };
+
+  const wishMutation = useMutation(
+    ["modifyWishList"],
+    () => modifyWishList(productWishList),
+    {
+      onSuccess: () => {
+        resetProductWishList();
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
+
+  useEffect(() => {
+    handleRefresh();
+    // eslint-disable-next-line
+  }, [location]);
+
+  useEffect(() => {
+    (() => {
+      window.addEventListener("beforeunload", handleRefresh);
+    })();
+
+    return () => {
+      window.removeEventListener("beforeunload", handleRefresh);
+    };
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="font-regular">

@@ -11,6 +11,8 @@ import {
 } from "../../recoil/atom/common";
 import { Modal, Button, Form, Input } from "antd";
 import MainPage from "../../pages/MainPage";
+import { registerPhoneNumber } from "../../apis/member";
+import { SuccessToast } from "../common/toast/SuccessToast";
 
 export default function KakaoLoginRedirect() {
   const url = new URL(window.location.href);
@@ -50,6 +52,10 @@ export default function KakaoLoginRedirect() {
     }
   }, []);
 
+  const handleSubmit = () => {
+    phoneNumberMutation.mutate();
+  };
+
   const loginMutation = useMutation(["kakaoLogin"], () => kakaoLogin(code), {
     onSuccess: (data) => {
       setIsLogin(true);
@@ -69,7 +75,18 @@ export default function KakaoLoginRedirect() {
     },
   });
 
-  // const phoneNumberMutation = useMutation();
+  const phoneNumberMutation = useMutation(
+    ["registerPhoneNumber"],
+    () => registerPhoneNumber(phoneNumber),
+    {
+      onSuccess: () => {
+        SuccessToast("저장되었습니다.");
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
 
   useEffect(() => {
     if (!!error && !!errorDescription) {
@@ -82,7 +99,6 @@ export default function KakaoLoginRedirect() {
 
   return (
     <div>
-      <button onClick={() => setIsModalOpen(true)}>클릭</button>
       <MainPage />
       <Modal
         open={isModalOpen}
@@ -96,6 +112,7 @@ export default function KakaoLoginRedirect() {
             type="primary"
             style={{ width: "100%" }}
             htmlType="submit"
+            onClick={handleSubmit}
           >
             저장
           </Button>,

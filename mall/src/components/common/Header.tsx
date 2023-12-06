@@ -163,7 +163,6 @@ export default function Header() {
           ]}
         />
       </div>
-
       <img
         className="w-36 mx-auto cursor-pointer"
         src={Logo}
@@ -172,7 +171,6 @@ export default function Header() {
           mall ? navigate("/") : navigate("/pickup");
         }}
       />
-
       <HeaderStyle
         istoggled={isToggled.toString()}
         usertoggled={userToggled.toString()}
