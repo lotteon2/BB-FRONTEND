@@ -11,3 +11,9 @@ export const modifyWishList = async (list: string[]) => {
   const { data } = await authInstance.post("/likes/product", list);
   return data;
 };
+
+// 가게 찜
+export const modifyStoreWishList = async (list: number[]) => {
+  const { data } = await authInstance.post("/likes/store", list);
+  return data;
+};

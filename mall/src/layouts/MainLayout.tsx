@@ -11,29 +11,47 @@ import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { sideMenuState } from "../recoil/atom/common";
 import { ConfigProvider } from "antd";
 import { useMutation } from "react-query";
-import { modifyWishList } from "../apis/member";
-import { productWishState } from "../recoil/atom/member";
+import { modifyStoreWishList, modifyWishList } from "../apis/member";
+import { productWishState, storeWishState } from "../recoil/atom/member";
 import { FailToast } from "../components/common/toast/FailToast";
 
 export default function MainLayout() {
   const navigate = useNavigate();
   const productWishList = useRecoilValue<string[]>(productWishState);
   const resetProductWishList = useResetRecoilState(productWishState);
+  const storeWishList = useRecoilValue<number[]>(storeWishState);
+  const resetStoreWishList = useResetRecoilState(storeWishState);
   const setSideMenuState = useSetRecoilState<number>(sideMenuState);
   const location = useLocation();
 
   const handleRefresh = () => {
     if (productWishList.length !== 0) {
-      wishMutation.mutate();
+      productWishMutation.mutate();
+    }
+    if (storeWishList.length !== 0) {
+      storeWishMutation.mutate();
     }
   };
 
-  const wishMutation = useMutation(
+  const productWishMutation = useMutation(
     ["modifyWishList"],
     () => modifyWishList(productWishList),
     {
       onSuccess: () => {
         resetProductWishList();
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
+
+  const storeWishMutation = useMutation(
+    ["modifyStoreWishList"],
+    () => modifyStoreWishList(storeWishList),
+    {
+      onSuccess: () => {
+        resetStoreWishList();
       },
       onError: () => {
         FailToast(null);

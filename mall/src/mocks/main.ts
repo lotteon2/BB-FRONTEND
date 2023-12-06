@@ -44,3 +44,14 @@ export const mainProductList = [
     isLiked: false,
   },
 ];
+
+export const mainStoreList = [
+  {
+    storeId: 1,
+    storeThumbnailImage:
+      "https://f-mans.com/data/goods/1/2023/10/681_temp_16972473985275view.jpg",
+    storeName: "플라워포유",
+    detailInfo: "강남역에 위치한 꽃가게입니다.",
+    averageRating: 4.2,
+  },
+];

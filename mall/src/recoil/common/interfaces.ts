@@ -8,6 +8,15 @@ export interface mainProductListDto {
   isLiked: boolean;
 }
 
+export interface mainStoreListDto {
+  storeId: number;
+  storeThumbnailImage: string;
+  storeName: string;
+  detailInfo: string;
+  averageRating: number;
+  isLiked: boolean;
+}
+
 export interface productWishDto {
   productId: string;
   productName: string;
