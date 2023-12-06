@@ -303,3 +303,45 @@ export const productListData = {
   ],
   totalCnt: 4,
 };
+
+export const productDetailData = {
+  data: {
+    productId: "1",
+    productName: "산토리니",
+    productSummary:
+      "해외로 떠나고 싶은 마음을 담아 준비한 산토리니의 매력을 담은 꽃다발입니다.",
+    productThumbnail:
+      "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+    productDetailImage:
+      "https://f-mans.com/data/products/flower/bouquet/FA00200/1.jpg",
+    productPrice: 55000,
+    productSaleStatus: "SALE",
+    salesCount: 223,
+    averageRating: 4.6,
+    reviewCount: 3,
+    storeName: "플라워포유",
+    storeId: 1,
+    isLiked: false,
+    category: {
+      categoryId: 1,
+      categoryName: "꽃다발",
+    },
+    tag: [
+      {
+        key: 1,
+        tagName: "연인 선물",
+      },
+      {
+        key: 2,
+        tagName: "친구 선물",
+      },
+      {
+        key: 3,
+        tagName: "공기 정화",
+      },
+    ],
+  },
+  message: "",
+  errorCode: null,
+  result: "",
+};

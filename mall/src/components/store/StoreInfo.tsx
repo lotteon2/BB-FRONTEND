@@ -57,7 +57,9 @@ export default function StoreInfo(param: param) {
               maxWidth: "300px",
             }}
             type="primary"
-            onClick={() => navigate("/subscription/detail/" + param.storeId)}
+            onClick={() =>
+              navigate("/product/subscription/detail/" + param.storeId)
+            }
           >
             정기구독 신청
           </Button>

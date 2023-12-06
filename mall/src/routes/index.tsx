@@ -10,6 +10,7 @@ import StoreDetailPage from "../pages/StoreDetailPage";
 import SubscriptionDetailPage from "../pages/SubscriptionDetailPage";
 import ProductByCategoryPage from "../pages/product/ProductByCategoryPage";
 import ProductByTagPage from "../pages/product/ProductByTagPage";
+import ProductDetailPage from "../pages/product/ProductDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -21,12 +22,12 @@ const router = createBrowserRouter([
       { path: "pickup", element: <PickupPage /> },
       { path: "store/detail/:storeId", element: <StoreDetailPage /> },
       {
-        path: "subscription/detail/:storeId",
+        path: "product/subscription/detail/:storeId",
         element: <SubscriptionDetailPage />,
       },
       { path: "product/:categoryId", element: <ProductByCategoryPage /> },
       { path: "product/tag/:tagId", element: <ProductByTagPage /> },
-      // {path: "product/detail/:productId", element: <ProductDetailPage />}
+      { path: "product/detail/:productId", element: <ProductDetailPage /> },
     ],
   },
   {

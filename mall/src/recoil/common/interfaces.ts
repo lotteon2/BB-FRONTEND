@@ -63,3 +63,13 @@ export interface productListDto {
   isLiked: boolean;
   averageRating: number;
 }
+
+export interface couponDto {
+  couponId: number;
+  couponName: string;
+  discountPrice: number;
+  endDate: string;
+  isIssued: boolean;
+  minPrice: number;
+  storeName: string;
+}
