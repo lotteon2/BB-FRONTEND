@@ -1,21 +1,39 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useQuery } from "react-query";
 import { HeartFilled, StarFilled } from "@ant-design/icons";
 import { useNavigate } from "react-router";
 import { Empty } from "antd";
 import { getFlowerShopsNearBy } from "../../../apis/store";
-import { locationstate } from "../../../recoil/atom/common";
+import { locationstate, loginState } from "../../../recoil/atom/common";
 import PickupListFallback from "../../fallbacks/PickupListFallback";
 import { storeListNearByDto } from "../../../recoil/common/interfaces";
+import { storeWishState } from "../../../recoil/atom/member";
 
 export default function NearbyStoreList() {
-  const state = useRecoilValue(locationstate);
   const navigate = useNavigate();
+  const state = useRecoilValue(locationstate);
+  const isLogin = useRecoilValue<boolean>(loginState);
+  const [storeWishList, setStoreWishList] =
+    useRecoilState<number[]>(storeWishState);
 
   const { data, isLoading } = useQuery({
     queryKey: ["getFlowerShopsNearByList", state],
     queryFn: () => getFlowerShopsNearBy(state.lat, state.lng, state.level),
   });
+
+  const handleWishButton = (e: React.MouseEvent, storeId: number) => {
+    e.stopPropagation();
+
+    if (isLogin) {
+      if (storeWishList.includes(storeId)) {
+        setStoreWishList(storeWishList.filter((prev) => prev !== storeId));
+      } else {
+        setStoreWishList((prev) => [...prev, storeId]);
+      }
+    } else if (window.confirm("회원만 사용가능합니다. 로그인하시겠습니까?")) {
+      navigate("/login");
+    }
+  };
 
   if (!data || isLoading) return <PickupListFallback />;
 
@@ -40,12 +58,34 @@ export default function NearbyStoreList() {
                   alt="가게 썸네일"
                   className="w-[12vw] h-[12vw] max-w-[150px] max-h-[150px] min-w-[100px] min-h-[100px] rounded-lg"
                 />
-                {item.isLiked ? (
-                  <div className="absolute bottom-0 right-2 text-[#FF6464] text-[25px] hover:-translate-y-[2px]">
+                {storeWishList.includes(item.storeId) ? (
+                  !item.isLiked ? (
+                    <div
+                      className="absolute bottom-0 right-2 text-[#FF6464] text-[25px] hover:-translate-y-[2px] cursor-pointer"
+                      onClick={(e) => handleWishButton(e, item.storeId)}
+                    >
+                      <HeartFilled />
+                    </div>
+                  ) : (
+                    <div
+                      className="absolute bottom-0 right-2 text-[#02020233] text-[25px] hover:-translate-y-[2px] cursor-pointer"
+                      onClick={(e) => handleWishButton(e, item.storeId)}
+                    >
+                      <HeartFilled />
+                    </div>
+                  )
+                ) : item.isLiked ? (
+                  <div
+                    className="absolute bottom-0 right-2 text-[#FF6464] text-[25px] hover:-translate-y-[2px] cursor-pointer"
+                    onClick={(e) => handleWishButton(e, item.storeId)}
+                  >
                     <HeartFilled />
                   </div>
                 ) : (
-                  <div className="absolute bottom-0 right-2 text-[#02020233] text-[25px] hover:-translate-y-[2px]">
+                  <div
+                    className="absolute bottom-0 right-2 text-[#02020233] text-[25px] hover:-translate-y-[2px] cursor-pointer"
+                    onClick={(e) => handleWishButton(e, item.storeId)}
+                  >
                     <HeartFilled />
                   </div>
                 )}
