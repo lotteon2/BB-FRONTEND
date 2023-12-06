@@ -51,3 +51,12 @@ export const profileImageState = atom({
   default: "",
   effects_UNSTABLE: [persistAtom],
 });
+
+export const locationstate = atom({
+  key: "locationState",
+  default: {
+    lat: 37.4923615,
+    lng: 127.0292881,
+    level: 5,
+  },
+});

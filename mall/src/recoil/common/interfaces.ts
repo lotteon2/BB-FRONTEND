@@ -1,3 +1,10 @@
+export interface loginData {
+  socialId: number;
+  nickname: string;
+  email: string;
+  phoneNumber: string;
+}
+
 export interface mainProductListDto {
   productId: string;
   productThumbnail: string;
@@ -30,4 +37,17 @@ export interface storeWishDto {
   storeName: string;
   detailInfo: string;
   averageRating: number;
+}
+
+export interface storeListNearByDto {
+  storeId: number;
+  storeName: string;
+  isLiked: boolean;
+  detailInfo: string;
+  thumbnailImage: string;
+  averageRating: number;
+  position: {
+    lat: number;
+    lon: number;
+  };
 }

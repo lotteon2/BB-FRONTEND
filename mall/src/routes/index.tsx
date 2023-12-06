@@ -5,13 +5,17 @@ import MainPage from "../pages/MainPage";
 import LoginLayout from "../layouts/LoginLayout";
 import LoginPage from "../pages/LoginPage";
 import KakaoLoginRedirect from "../components/auth/KakaoLoginRedirect";
+import PickupPage from "../pages/PickupPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
     errorElement: <NotFound />,
-    children: [{ index: true, path: "", element: <MainPage /> }],
+    children: [
+      { index: true, path: "", element: <MainPage /> },
+      { path: "pickup", element: <PickupPage /> },
+    ],
   },
   {
     path: "/login",

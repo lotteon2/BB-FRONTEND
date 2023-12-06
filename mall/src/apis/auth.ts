@@ -1,10 +1,14 @@
 import { authInstance, defaultInstance } from "./utils";
 
-// 로그인
+// 인가코드 전달
 export const kakaoLogin = async (code: string | null) => {
-  const { data } = await defaultInstance.get("/kakao/token?code=" + code);
+  const { data } = await defaultInstance.get(
+    "/login/oauth2/code/kakao?code=" + code
+  );
   return data;
 };
+
+// 로그인
 
 // 로그아웃
 export const logout = async (type: string) => {
