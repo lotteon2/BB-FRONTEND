@@ -60,8 +60,8 @@ export const getProductDetail = async (productId: string | undefined) => {
 
 // 구독상품 상세 조회
 export const getSubscriptionProductDetail = async (
-  storeId: number | undefined
+  productId: string | undefined
 ) => {
-  const { data } = await defaultInstance.get("/subscription/" + storeId);
+  const { data } = await defaultInstance.get("/subscription/" + productId);
   return data;
 };

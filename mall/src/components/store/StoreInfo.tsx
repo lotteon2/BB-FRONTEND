@@ -58,7 +58,9 @@ export default function StoreInfo(param: param) {
             }}
             type="primary"
             onClick={() =>
-              navigate("/product/subscription/detail/" + param.storeId)
+              navigate(
+                "/product/subscription/detail/" + data.subscriptionProductId
+              )
             }
           >
             정기구독 신청

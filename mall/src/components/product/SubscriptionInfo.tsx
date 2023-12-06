@@ -12,7 +12,7 @@ import { useNavigate } from "react-router";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
 
 interface param {
-  storeId: number | undefined;
+  productId: string | undefined;
 }
 
 export default function SubscriptionInfo(param: param) {
@@ -22,10 +22,9 @@ export default function SubscriptionInfo(param: param) {
   const [productWishList, setProductWishList] =
     useRecoilState<string[]>(productWishState);
 
-  //   const data = subscriptionDetailData;
   const { data, isLoading } = useQuery({
     queryKey: ["getSubscriptionDetail"],
-    queryFn: () => getSubscriptionProductDetail(param.storeId),
+    queryFn: () => getSubscriptionProductDetail(param.productId),
   });
 
   const handleWishButton = (productId: string) => {
@@ -55,6 +54,12 @@ export default function SubscriptionInfo(param: param) {
   return (
     <div className="w-full flex flex-row gap-10 flex-wrap justify-center">
       <div className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px">
+        <p
+          className="cursor-pointer"
+          onClick={() => navigate("/store/detail/" + data.storeId)}
+        >
+          {data.storeName}
+        </p>
         <img
           src="https://f-mans.com/data/goods/1/2023/10/681_temp_16972473985275view.jpg"
           alt=""
@@ -147,7 +152,7 @@ export default function SubscriptionInfo(param: param) {
             onCancel={handleCancel}
             footer={[]}
           >
-            <CouponModal storeId={param.storeId} />
+            <CouponModal storeId={data.storeId} />
           </Modal>
         ) : (
           ""
