@@ -40,3 +40,11 @@ export const getFlowerShopsRegion = async (
   );
   return data;
 };
+
+// 가게정보 조회
+export const getStoreDetailInfo = async (storeId: number) => {
+  const { data } = await defaultInstance.get(
+    "/api/stores/" + storeId + "/user"
+  );
+  return data;
+};

@@ -43,12 +43,16 @@ export default function NewProduct() {
   return (
     <div className="my-10">
       <p className="text-[1.8rem] font-bold">베스트 샵 🌸</p>
+      <p className="flex justify-end text-primary4 font-bold cursor-pointer">
+        전체보기
+      </p>
       <div className="mt-5">
-        <div className="flex flex-row gap-3 text-center flex-wrap">
+        <div className="flex flex-row gap-3 text-center flex-wrap cursor-pointer">
           {data.simpleStores.map((item: mainStoreListDto) => (
             <div
               className="flex flex-col gap-1 text-left mx-auto w-[23vw] min-w-[180px] max-w-[320px]"
               key={item.storeId}
+              onClick={() => navigate("/store/detail/" + item.storeId)}
             >
               <div className="h-[23vw] min-h-[180px] max-h-[320px] relative">
                 <img
