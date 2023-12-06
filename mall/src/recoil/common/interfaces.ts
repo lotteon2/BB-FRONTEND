@@ -73,3 +73,11 @@ export interface couponDto {
   minPrice: number;
   storeName: string;
 }
+
+export interface reviewItemDto {
+  profileImage: string;
+  rating: number;
+  nickname: string;
+  content: string;
+  reviewImages: string[];
+}

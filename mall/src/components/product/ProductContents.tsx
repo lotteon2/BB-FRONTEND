@@ -1,6 +1,9 @@
 import { useState } from "react";
+import ProductDescription from "./detail/ProductDescription";
+import ProductReview from "./detail/ProductReview";
 
 interface param {
+  productId: string | undefined;
   productDescription: string;
 }
 export default function ProductContents(param: param) {
@@ -8,7 +11,7 @@ export default function ProductContents(param: param) {
 
   return (
     <div className="w-full h-full mt-10">
-      <div className="w-full sticky top-0 bg-grayscale1 border-b-[1px]">
+      <div className="w-full sticky top-0 bg-grayscale1 border-b-[1px] relative z-20">
         <div className="flex flex-row justify-center">
           <a
             className={`text-[1rem] py-3 px-10 border-[1px] border-grayscale3 border-b-0 corsor-pointer ${
@@ -40,13 +43,18 @@ export default function ProductContents(param: param) {
         </div>
       </div>
 
-      <div className="w-[70%] py-10 mx-auto max-[500px]:w-[100vw]" id="detail">
-        <img src={param.productDescription} alt="상품 상세 설명" />
+      <div className="w-[70%] py-20 mx-auto max-[600px]:w-[100vw]" id="detail">
+        <ProductDescription productDescription={param.productDescription} />
       </div>
-      <div className="w-full h-[500px] py-20" id="review">
-        상품 후기
+      <div className="border-b-[1px]"></div>
+      <div className="w-[80%] py-20 mx-auto max-[600px]:w-[100vw]" id="review">
+        <ProductReview productId={param.productId} />
       </div>
-      <div className="w-full h-[500px] py-20" id="question">
+      <div className="border-b-[1px]"></div>
+      <div
+        className="w-[70%] py-20 mx-auto max-[500px]:w-[100vw]"
+        id="question"
+      >
         상품 문의
       </div>
     </div>

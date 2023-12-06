@@ -13,7 +13,10 @@ export default function ProductDetailPage() {
         productId={param}
         setProductDescription={setProductDescription}
       />
-      <ProductContents productDescription={productDescription} />
+      <ProductContents
+        productId={param}
+        productDescription={productDescription}
+      />
     </div>
   );
 }

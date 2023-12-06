@@ -65,3 +65,23 @@ export const getSubscriptionProductDetail = async (
   const { data } = await defaultInstance.get("/subscription/" + productId);
   return data;
 };
+
+// 상품 후기
+export const getProductReviewList = async (
+  productId: string | undefined,
+  page: number,
+  size: number,
+  sortOption: string
+) => {
+  const { data } = await defaultInstance.get(
+    "/" +
+      productId +
+      "/reviews?page=" +
+      page +
+      "&size=" +
+      size +
+      "&sort-option=" +
+      sortOption
+  );
+  return data;
+};

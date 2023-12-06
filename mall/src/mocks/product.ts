@@ -360,6 +360,135 @@ export const subscriptionDetailData = {
   salesCount: 223,
   averageRating: 4.6,
   storeName: "플라워포유",
+  storeId: 1,
   isLiked: true,
   reviewCount: 6,
+};
+
+export const reviewListData = {
+  data: {
+    totalCnt: 5,
+    productReview: [
+      {
+        profileImage:
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        rating: 5,
+        nickname: "김정윤",
+        content: "좋아요",
+        reviewImages: [
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        ],
+      },
+      {
+        profileImage:
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        rating: 5,
+        nickname: "김정윤",
+        content: "좋아요",
+        reviewImages: [
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        ],
+      },
+      {
+        profileImage:
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        rating: 5,
+        nickname: "김정윤",
+        content: "좋아요",
+        reviewImages: [
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        ],
+      },
+      {
+        profileImage:
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        rating: 5,
+        nickname: "김정윤",
+        content: "좋아요",
+        reviewImages: [
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        ],
+      },
+      {
+        profileImage:
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        rating: 5,
+        nickname: "김정윤",
+        content: "좋아요",
+        reviewImages: [
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        ],
+      },
+      {
+        profileImage:
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        rating: 5,
+        nickname: "김정윤",
+        content: "좋아요",
+        reviewImages: [
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        ],
+      },
+      {
+        profileImage:
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        rating: 5,
+        nickname: "김정윤",
+        content: "좋아요",
+        reviewImages: [
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        ],
+      },
+      {
+        profileImage:
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        rating: 5,
+        nickname: "김정윤",
+        content: "좋아요",
+        reviewImages: [
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        ],
+      },
+      {
+        profileImage:
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        rating: 5,
+        nickname: "김정윤",
+        content: "좋아요",
+        reviewImages: [
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        ],
+      },
+      {
+        profileImage:
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        rating: 5,
+        nickname: "김정윤",
+        content: "좋아요",
+        reviewImages: [
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        ],
+      },
+    ],
+  },
 };

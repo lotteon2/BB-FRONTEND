@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { getSubscriptionProductDetail } from "../../apis/product";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Modal, Rate } from "antd";
 import ShareIcon from "@mui/icons-material/Share";
 import { HeartFilled } from "@ant-design/icons";
@@ -10,9 +10,11 @@ import { loginState } from "../../recoil/atom/common";
 import { productWishState } from "../../recoil/atom/member";
 import { useNavigate } from "react-router";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
+import { subscriptionDetailData } from "../../mocks/product";
 
 interface param {
   productId: string | undefined;
+  setProductDescription: (image: string) => void;
 }
 
 export default function SubscriptionInfo(param: param) {
@@ -22,10 +24,11 @@ export default function SubscriptionInfo(param: param) {
   const [productWishList, setProductWishList] =
     useRecoilState<string[]>(productWishState);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["getSubscriptionDetail"],
-    queryFn: () => getSubscriptionProductDetail(param.productId),
-  });
+  const data = subscriptionDetailData;
+  // const { data, isLoading } = useQuery({
+  //   queryKey: ["getSubscriptionDetail"],
+  //   queryFn: () => getSubscriptionProductDetail(param.productId),
+  // });
 
   const handleWishButton = (productId: string) => {
     if (isLogin) {
@@ -49,13 +52,18 @@ export default function SubscriptionInfo(param: param) {
     setIsModalOpen(false);
   };
 
-  if (!data || isLoading) return <ProductInfoFallback />;
+  useEffect(() => {
+    if (data) {
+      param.setProductDescription(data.productDetailImage);
+    }
+  }, []);
+  // if (!data || isLoading) return <ProductInfoFallback />;
 
   return (
     <div className="w-full flex flex-row gap-10 flex-wrap justify-center">
-      <div className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px">
+      <div className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px]">
         <p
-          className="cursor-pointer"
+          className="cursor-pointer text-grayscale5 font-light text-[0.8rem]"
           onClick={() => navigate("/store/detail/" + data.storeId)}
         >
           {data.storeName}
