@@ -9,7 +9,7 @@ import { loginState } from "../../recoil/atom/common";
 import { useNavigate } from "react-router";
 import { getStoreList } from "../../apis/store";
 
-export default function NewProduct() {
+export default function BestShop() {
   const navigate = useNavigate();
   const isLogin = useRecoilValue<boolean>(loginState);
   const [storeWishList, setStoreWishList] =

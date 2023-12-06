@@ -7,10 +7,11 @@ import LoginPage from "../pages/LoginPage";
 import KakaoLoginRedirect from "../components/auth/KakaoLoginRedirect";
 import PickupPage from "../pages/PickupPage";
 import StoreDetailPage from "../pages/StoreDetailPage";
-import SubscriptionDetailPage from "../pages/SubscriptionDetailPage";
+import SubscriptionDetailPage from "../pages/subscription/SubscriptionDetailPage";
 import ProductByCategoryPage from "../pages/product/ProductByCategoryPage";
 import ProductByTagPage from "../pages/product/ProductByTagPage";
 import ProductDetailPage from "../pages/product/ProductDetailPage";
+import SubscriptionPage from "../pages/subscription/SubscriptionPage";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
       { index: true, path: "", element: <MainPage /> },
       { path: "pickup", element: <PickupPage /> },
       { path: "store/detail/:storeId", element: <StoreDetailPage /> },
+      { path: "subscription", element: <SubscriptionPage /> },
       {
         path: "product/subscription/detail/:storeId",
         element: <SubscriptionDetailPage />,
