@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Input, Modal, Rate } from "antd";
 import ShareIcon from "@mui/icons-material/Share";
 import { HeartFilled, MinusOutlined, PlusOutlined } from "@ant-design/icons";
@@ -11,9 +11,11 @@ import { useNavigate } from "react-router";
 import { useQuery } from "react-query";
 import { getProductDetail } from "../../apis/product";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
+import { productDetailData } from "../../mocks/product";
 
 interface param {
   productId: string | undefined;
+  setProductDescription: (image: string) => void;
 }
 
 export default function ProductInfo(param: param) {
@@ -24,10 +26,11 @@ export default function ProductInfo(param: param) {
   const [productWishList, setProductWishList] =
     useRecoilState<string[]>(productWishState);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["getProductDetail"],
-    queryFn: () => getProductDetail(param.productId),
-  });
+  const data = productDetailData;
+  // const { data, isLoading } = useQuery({
+  //   queryKey: ["getProductDetail"],
+  //   queryFn: () => getProductDetail(param.productId),
+  // });
 
   const handleWishButton = (productId: string) => {
     if (isLogin) {
@@ -72,11 +75,17 @@ export default function ProductInfo(param: param) {
     setIsModalOpen(false);
   };
 
-  if (!data || isLoading) return <ProductInfoFallback />;
+  useEffect(() => {
+    if (data) {
+      param.setProductDescription(data.data.productDetailImage);
+    }
+  }, []);
+
+  // if (!data || isLoading) return <ProductInfoFallback />;
 
   return (
     <div className="w-full flex flex-row gap-10 flex-wrap justify-center">
-      <div className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px">
+      <div className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px]">
         <div className="flex flex-row gap-3 text-grayscale5 font-light text-[0.8rem]">
           <p
             className="cursor-pointer"
@@ -107,6 +116,7 @@ export default function ProductInfo(param: param) {
           </div>
         </div>
         <img
+          className="w-full h-full"
           src="https://f-mans.com/data/goods/1/2023/10/681_temp_16972473985275view.jpg"
           alt=""
         />
@@ -121,7 +131,7 @@ export default function ProductInfo(param: param) {
             <ShareIcon /> <span>공유</span>
           </div>
           <div className="flex flex-row gap-2 cursor-pointer">
-            {productWishList.includes(data.data.isLiked) ? (
+            {productWishList.includes(data.data.productId) ? (
               !data.data.isLiked ? (
                 <div className="mt-[-4px] text-[#FF6464] text-[25px] hover:-translate-y-[2px]">
                   <HeartFilled
