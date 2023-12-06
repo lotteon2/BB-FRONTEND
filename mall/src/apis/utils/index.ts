@@ -26,8 +26,6 @@ const axiosAuthApi = (baseURL: string | undefined) => {
     }
   );
   return instance;
-
-  return instance;
 };
 
 export const defaultInstance = axiosApi(BASE_URL);

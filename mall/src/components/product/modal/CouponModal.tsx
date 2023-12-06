@@ -14,7 +14,7 @@ import Loading from "../../common/Loading";
 import { couponDto } from "../../../recoil/common/interfaces";
 
 interface param {
-  storeId: number;
+  storeId: number | undefined;
 }
 export default function CouponModal(param: param) {
   const [isChange, setIsChange] = useState<boolean>(false);

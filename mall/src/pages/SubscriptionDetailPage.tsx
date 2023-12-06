@@ -1,3 +1,12 @@
+import { useParams } from "react-router";
+import SubscriptionInfo from "../components/product/SubscriptionInfo";
+
 export default function SubscriptionDetailPage() {
-  return <div></div>;
+  const param = useParams().storeId;
+
+  return (
+    <div>
+      <SubscriptionInfo storeId={Number(param)} />
+    </div>
+  );
 }

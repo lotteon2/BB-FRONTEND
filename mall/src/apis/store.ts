@@ -50,7 +50,9 @@ export const getStoreDetailInfo = async (storeId: number) => {
 };
 
 // 상세페이지 쿠폰 조회
-export const getCouponListFromProductDetail = async (storeId: number) => {
+export const getCouponListFromProductDetail = async (
+  storeId: number | undefined
+) => {
   const { data } = await authInstance.get(
     "/api/stores/" + storeId + "/coupons/product"
   );
@@ -58,13 +60,13 @@ export const getCouponListFromProductDetail = async (storeId: number) => {
 };
 
 // 쿠폰 개별 다운로드
-export const downloadSingleCoupon = async (couponId: number) => {
+export const downloadSingleCoupon = async (couponId: number | undefined) => {
   const { data } = await authInstance.post("/api/stores/coupons/" + couponId);
   return data;
 };
 
 // 쿠폰 전체 다운로드
-export const downloadAllCoupons = async (storeId: number) => {
+export const downloadAllCoupons = async (storeId: number | undefined) => {
   const { data } = await authInstance.post(
     "/api/stores/" + storeId + "/coupons/all"
   );
