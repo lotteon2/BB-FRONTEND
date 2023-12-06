@@ -9,7 +9,6 @@ import Tag05 from "../../assets/images/tag/005.png";
 import Tag06 from "../../assets/images/tag/006.png";
 import Tag07 from "../../assets/images/tag/007.png";
 import { HeartFilled } from "@ant-design/icons";
-import { productListData } from "../../mocks/product";
 import { productListDto } from "../../recoil/common/interfaces";
 import { categoryOptions } from "../../recoil/common/data";
 import { useRecoilState, useRecoilValue } from "recoil";
