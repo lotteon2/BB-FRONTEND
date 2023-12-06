@@ -99,7 +99,9 @@ export default function SubscriptionPage() {
           </div>
         </div>
       </div>
-      <div className="my-20">{/* <BestShop /> */}</div>
+      <div className="my-20">
+        <BestShop />
+      </div>
     </div>
   );
 }
