@@ -197,7 +197,7 @@ export default function Header() {
             <li className="font-regular">
               <NavLink
                 style={({ isActive }) => (isActive ? activeStyle : {})}
-                to="/product/shoppingmall/1"
+                to="/product/1"
               >
                 꽃다발
               </NavLink>
@@ -205,7 +205,7 @@ export default function Header() {
             <li className="font-regular">
               <NavLink
                 style={({ isActive }) => (isActive ? activeStyle : {})}
-                to="/product/shoppingmall/2"
+                to="/product/2"
               >
                 꽃바구니
               </NavLink>
@@ -213,7 +213,7 @@ export default function Header() {
             <li className="font-regular">
               <NavLink
                 style={({ isActive }) => (isActive ? activeStyle : {})}
-                to="/product/shoppingmall/3"
+                to="/product/3"
               >
                 꽃상자
               </NavLink>
@@ -221,7 +221,7 @@ export default function Header() {
             <li className="font-regular">
               <NavLink
                 style={({ isActive }) => (isActive ? activeStyle : {})}
-                to="/product/shoppingmall/4"
+                to="/product/4"
               >
                 화분
               </NavLink>
@@ -229,7 +229,7 @@ export default function Header() {
             <li className="font-regular">
               <NavLink
                 style={({ isActive }) => (isActive ? activeStyle : {})}
-                to="/product/shoppingmall/5"
+                to="/product/5"
               >
                 화환
               </NavLink>

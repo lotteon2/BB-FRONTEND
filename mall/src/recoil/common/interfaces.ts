@@ -51,3 +51,15 @@ export interface storeListNearByDto {
     lon: number;
   };
 }
+
+export interface productListDto {
+  key: string;
+  productName: string;
+  productSummary: string;
+  productThumbnail: string;
+  productPrice: number;
+  salesCount: number;
+  reviewCount: number;
+  isLiked: boolean;
+  averageRating: number;
+}
