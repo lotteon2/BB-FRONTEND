@@ -28,3 +28,26 @@ export const getProductListByCategory = async (
   );
   return data;
 };
+
+// 태그별 상품목록 조회
+export const getProductListByTag = async (
+  tagId: number,
+  categoryId: number | null | undefined,
+  page: number,
+  size: number,
+  sortOption: string
+) => {
+  const { data } = await defaultInstance.get(
+    "/api/products/tag/" +
+      tagId +
+      "?category=" +
+      categoryId +
+      "?page=" +
+      page +
+      "&size=" +
+      size +
+      "&sort-option=" +
+      sortOption
+  );
+  return data;
+};

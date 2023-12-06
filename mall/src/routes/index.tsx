@@ -9,6 +9,7 @@ import PickupPage from "../pages/PickupPage";
 import StoreDetailPage from "../pages/StoreDetailPage";
 import SubscriptionDetailPage from "../pages/SubscriptionDetailPage";
 import ProductByCategoryPage from "../pages/product/ProductByCategoryPage";
+import ProductByTagPage from "../pages/product/ProductByTagPage";
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
         element: <SubscriptionDetailPage />,
       },
       { path: "product/:categoryId", element: <ProductByCategoryPage /> },
-      // {path: "product/tag/:tagId", element: <ProductByTagPage />},
+      { path: "product/tag/:tagId", element: <ProductByTagPage /> },
       // {path: "product/detail/:productId", element: <ProductDetailPage />}
     ],
   },

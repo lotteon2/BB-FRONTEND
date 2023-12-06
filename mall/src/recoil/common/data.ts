@@ -103,3 +103,26 @@ export const getRegionSelectList = (list: any) => {
     return { ...item, d: dList[index] };
   });
 };
+
+export const categoryOptions = [
+  {
+    value: 1,
+    label: "꽃다발",
+  },
+  {
+    value: 2,
+    label: "꽃바구니",
+  },
+  {
+    value: 3,
+    label: "꽃상지",
+  },
+  {
+    value: 4,
+    label: "화분",
+  },
+  {
+    value: 5,
+    label: "화환",
+  },
+];
