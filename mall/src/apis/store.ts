@@ -72,3 +72,11 @@ export const downloadAllCoupons = async (storeId: number | undefined) => {
   );
   return data;
 };
+
+// 배송 정책
+export const getStoreDeliveryPolicy = async (storeId: number) => {
+  const { data } = await defaultInstance.get(
+    "/" + storeId + "/api/stores/delivery-policy"
+  );
+  return data;
+};

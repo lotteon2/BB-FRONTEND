@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Input, Modal, Rate } from "antd";
+import { Button, Input, Modal, Rate, Calendar } from "antd";
 import ShareIcon from "@mui/icons-material/Share";
 import { HeartFilled, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import ButtonGroup from "antd/es/button/button-group";
@@ -12,6 +12,9 @@ import { useMutation, useQuery } from "react-query";
 import { getProductDetail } from "../../apis/product";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
 import { productDetailData } from "../../mocks/product";
+import type { Dayjs } from "dayjs";
+import type { CalendarProps } from "antd";
+import type { DatePickerProps } from "antd";
 import { getStoreDeliveryPolicy } from "../../apis/store";
 import { storeDeliveryPolicyDto } from "../../recoil/common/interfaces";
 
@@ -22,7 +25,7 @@ interface param {
   setStoreId: (id: number) => void;
 }
 
-export default function ProductInfo(param: param) {
+export default function PickupProductInfo(param: param) {
   const navigate = useNavigate();
   const [count, setCount] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -81,6 +84,10 @@ export default function ProductInfo(param: param) {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+
+  const handleCalendar = (value: Dayjs) => {
+    console.log(value.format());
   };
 
   const getPolilcyMutation = useMutation(
@@ -261,14 +268,76 @@ export default function ProductInfo(param: param) {
             {(data.data.productPrice * count).toLocaleString()}원
           </b>
         </p>
+        <div className="flex flex-row gap-3 p-2 my-3 justify-center flex-wrap border-[1px]">
+          <div className="w-[320px] h-[320px]">
+            <Calendar fullscreen={false} onChange={handleCalendar} />
+          </div>
+          <div className="w-[300px] h-[320px] flex flex-row flex-wrap pt-5 gap-1">
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              11:00
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              11:30
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              12:00
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              12:30
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              13:00
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              13:30
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              14:00
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              14:30
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              15:00
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              15:30
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              16:00
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              16:30
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              17:00
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              17:30
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              18:00
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              18:30
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              19:00
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              19:30
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              20:00
+            </div>
+            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
+              20:30
+            </div>
+          </div>
+        </div>
         <div className="flex flex-row gap-2 mt-3">
-          <Button
-            style={{ width: "50%", height: "3rem", backgroundColor: "#fff" }}
-          >
-            장바구니
-          </Button>
-          <Button type="primary" style={{ width: "50%", height: "3rem" }}>
-            구매하기
+          <Button type="primary" style={{ width: "100%", height: "3rem" }}>
+            예약하기
           </Button>
         </div>
         {isModalOpen ? (

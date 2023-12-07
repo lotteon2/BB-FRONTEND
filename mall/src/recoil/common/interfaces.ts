@@ -104,3 +104,8 @@ export interface questionRegisterDto {
   isSecret: boolean;
   nickname: string;
 }
+
+export interface storeDeliveryPolicyDto {
+  deliveryPrice: number;
+  freeDeliveryMinPrice: number;
+}

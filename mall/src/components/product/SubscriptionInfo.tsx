@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { getSubscriptionProductDetail } from "../../apis/product";
 import { useState, useEffect } from "react";
 import { Button, Modal, Rate } from "antd";
@@ -11,6 +11,8 @@ import { productWishState } from "../../recoil/atom/member";
 import { useNavigate } from "react-router";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
 import { subscriptionDetailData } from "../../mocks/product";
+import { storeDeliveryPolicyDto } from "../../recoil/common/interfaces";
+import { getStoreDeliveryPolicy } from "../../apis/store";
 
 interface param {
   productId: string | undefined;
@@ -25,6 +27,10 @@ export default function SubscriptionInfo(param: param) {
   const isLogin = useRecoilValue<boolean>(loginState);
   const [productWishList, setProductWishList] =
     useRecoilState<string[]>(productWishState);
+  const [deliveryPolicy, setDeliveryPolicy] = useState<storeDeliveryPolicyDto>({
+    deliveryPrice: 0,
+    freeDeliveryMinPrice: 0,
+  });
 
   const data = subscriptionDetailData;
   // const { data, isLoading } = useQuery({
@@ -54,11 +60,23 @@ export default function SubscriptionInfo(param: param) {
     setIsModalOpen(false);
   };
 
+  const getPolilcyMutation = useMutation(
+    ["getStorePolicy"],
+    (storeId: number) => getStoreDeliveryPolicy(storeId),
+    {
+      onSuccess: (data) => {
+        setDeliveryPolicy(data);
+      },
+      onError: () => {},
+    }
+  );
+
   useEffect(() => {
     if (data) {
       param.setProductDescription(data.productDetailImage);
       param.setProductName(data.productName);
       param.setStoreId(data.storeId);
+      getPolilcyMutation.mutate(data.storeId);
     }
   }, []);
   // if (!data || isLoading) return <ProductInfoFallback />;
@@ -146,6 +164,22 @@ export default function SubscriptionInfo(param: param) {
           <p className="text-[2.3rem] font-bold text-primary4 mt-2">
             {data.productPrice.toLocaleString()}원
           </p>
+        </div>
+        <div className="text-[0.9rem] border-b-[1px] pb-2 flex flex-row gap-2">
+          <span>택배 배송</span>
+          {deliveryPolicy.deliveryPrice === 0 ? (
+            <span className="font-bold">무료배송</span>
+          ) : (
+            <div className="flex flex-row gap-2">
+              <span className="font-bold">
+                {deliveryPolicy.deliveryPrice.toLocaleString()}원
+              </span>
+              <span className="font-light">
+                ({deliveryPolicy.freeDeliveryMinPrice.toLocaleString()}원 이상
+                결제 시 무료)
+              </span>
+            </div>
+          )}
         </div>
         <p className="text-[1.2rem] font-regular flex flex-row gap-2 justify-end">
           <span className="mt-3">총 상품금액</span>

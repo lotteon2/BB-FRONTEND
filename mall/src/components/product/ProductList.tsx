@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { HeartFilled } from "@ant-design/icons";
 import { productListDto } from "../../recoil/common/interfaces";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { loginState } from "../../recoil/atom/common";
+import { loginState, mallState } from "../../recoil/atom/common";
 import { productWishState } from "../../recoil/atom/member";
 import { useQuery } from "react-query";
 import { getProductListByCategory } from "../../apis/product";
@@ -17,6 +17,7 @@ interface param {
 
 export default function ProductList(param: param) {
   const navigate = useNavigate();
+  const isMall = useRecoilValue<boolean>(mallState);
   const [page, setPage] = useState<number>(1);
   const [sortOption, setSortOption] = useState<string>("NEW");
   const isLogin = useRecoilValue<boolean>(loginState);
@@ -178,7 +179,11 @@ export default function ProductList(param: param) {
           <div
             className="flex flex-col text-left mx-auto cursor-pointer"
             key={item.key}
-            onClick={() => navigate("/product/detail/" + item.key)}
+            onClick={() =>
+              isMall
+                ? navigate("/product/detail/" + item.key)
+                : navigate("/pickup/product/detail/" + item.key)
+            }
           >
             <div className="relative">
               <img

@@ -12,6 +12,7 @@ import ProductByCategoryPage from "../pages/product/ProductByCategoryPage";
 import ProductByTagPage from "../pages/product/ProductByTagPage";
 import ProductDetailPage from "../pages/product/ProductDetailPage";
 import SubscriptionPage from "../pages/subscription/SubscriptionPage";
+import PickupProductDetailPage from "../pages/product/PickupProductDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -20,9 +21,13 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { index: true, path: "", element: <MainPage /> },
-      { path: "pickup", element: <PickupPage /> },
       { path: "store/detail/:storeId", element: <StoreDetailPage /> },
       { path: "subscription", element: <SubscriptionPage /> },
+      { path: "pickup", element: <PickupPage /> },
+      {
+        path: "pickup/product/detail/:productId",
+        element: <PickupProductDetailPage />,
+      },
       {
         path: "product/subscription/detail/:storeId",
         element: <SubscriptionDetailPage />,
