@@ -86,7 +86,7 @@ export default function MainLayout() {
         }}
       >
         <Header />
-        <div className="fixed right-20 top-60 max-[1320px]:right-3 flex flex-col gap-3 z-20 bg-grayscale1 p-3 rounded-full border-2 shadow-xl">
+        <div className="fixed right-20 top-60 max-[1320px]:right-3 flex flex-col gap-3 z-20 bg-grayscale1 p-3 rounded-full border-2 shadow-xl z-30">
           <button onClick={() => navigate("/cart")} title="장바구니">
             <ShoppingBagIcon />
           </button>

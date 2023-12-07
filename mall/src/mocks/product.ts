@@ -375,11 +375,7 @@ export const reviewListData = {
         rating: 5,
         nickname: "김정윤",
         content: "좋아요",
-        reviewImages: [
-          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
-          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
-          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
-        ],
+        reviewImages: [],
       },
       {
         profileImage:

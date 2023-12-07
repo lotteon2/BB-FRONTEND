@@ -5,6 +5,7 @@ import { reviewListData } from "../../../mocks/product";
 import { reviewItemDto } from "../../../recoil/common/interfaces";
 import { Rate, Pagination, PaginationProps } from "antd";
 import ReviewListFallback from "../../fallbacks/ReviewListFallback";
+import ReviewModal from "../modal/ReviewModal";
 
 interface param {
   productId: string | undefined;
@@ -12,6 +13,14 @@ interface param {
 export default function ProductReview(param: param) {
   const [page, setPage] = useState<number>(1);
   const [sortOption, setSortOption] = useState<string>("DATE");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [review, setReview] = useState<reviewItemDto>({
+    profileImage: "",
+    rating: 0,
+    nickname: "",
+    content: "",
+    reviewImages: [],
+  });
 
   const data = reviewListData;
 
@@ -25,6 +34,10 @@ export default function ProductReview(param: param) {
     setPage(pageNumber);
   };
 
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   //   if (!data || isLoading) return <ReviewListFallback />;
 
   return (
@@ -32,11 +45,49 @@ export default function ProductReview(param: param) {
       <p className="text-[1.2rem] mb-5">
         상품후기 {data.data.totalCnt.toLocaleString()}개
       </p>
+      <p className="flex flex-row gap-3 justify-end">
+        <span
+          className={
+            sortOption === "DATE"
+              ? "text-primary4 font-bold cursor-pointer"
+              : "cursor-pointer"
+          }
+          onClick={() => setSortOption("DATE")}
+        >
+          최신순
+        </span>
+        <span>|</span>
+        <span
+          className={
+            sortOption === "HIGH"
+              ? "text-primary4 font-bold cursor-pointer"
+              : "cursor-pointer"
+          }
+          onClick={() => setSortOption("HIGH")}
+        >
+          별점 높은순
+        </span>
+        <span>|</span>
+        <span
+          className={
+            sortOption === "LOW"
+              ? "text-primary4 font-bold cursor-pointer"
+              : "cursor-pointer"
+          }
+          onClick={() => setSortOption("LOW")}
+        >
+          별점 낮은순
+        </span>
+      </p>
       <div className="w-full flex flex-col gap-5 justify-center">
         {data.data.productReview.map((item: reviewItemDto, index: number) => (
           <div
-            className="flex flex-row gap-2 flex-wrap justify-center cursor-pointer"
+            className="flex flex-row gap-2 flex-wrap justify-center cursor-pointer py-2 hover:translate-y-[-4px]"
             key={index}
+            onClick={() => {
+              setReview(item);
+              setIsModalOpen(true);
+            }}
           >
             <img
               src={item.profileImage}
@@ -53,11 +104,15 @@ export default function ProductReview(param: param) {
               <p>{item.nickname}</p>
               <p className="line-clamp-1">{item.content}</p>
             </div>
-            <img
-              src={item.reviewImages[0]}
-              alt="리뷰 이미지"
-              className="w-[4vw] h-[4vw] min-w-[100px] min-h-[100px]"
-            />
+            {item.reviewImages.length === 0 ? (
+              <div className="w-[4vw] h-[4vw] min-w-[100px] min-h-[100px]"></div>
+            ) : (
+              <img
+                src={item.reviewImages[0]}
+                alt="리뷰 이미지"
+                className="w-[4vw] h-[4vw] min-w-[100px] min-h-[100px]"
+              />
+            )}
           </div>
         ))}
       </div>
@@ -68,6 +123,15 @@ export default function ProductReview(param: param) {
           onChange={handlePage}
         />
       </div>
+      {isModalOpen ? (
+        <ReviewModal
+          isModalOpen={isModalOpen}
+          handleCancel={handleCancel}
+          data={review}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 }
