@@ -1,4 +1,5 @@
-import { defaultInstance } from "./utils";
+import { questionRegisterDto } from "../recoil/common/interfaces";
+import { authInstance, defaultInstance } from "./utils";
 
 // 메인페이지 상품 조회
 export const getMainProductList = async (type: string) => {
@@ -82,6 +83,50 @@ export const getProductReviewList = async (
       size +
       "&sort-option=" +
       sortOption
+  );
+  return data;
+};
+
+// 상품 문의
+export const getProductQuestionList = async (
+  productId: string | undefined,
+  page: number,
+  size: number,
+  replied: boolean | undefined,
+  isMine: boolean
+) => {
+  if (isMine) {
+    const { data } = await authInstance.get(
+      "/api/stores/questions/product/" +
+        productId +
+        "?page=" +
+        page +
+        "&size=" +
+        size +
+        "&is-replied=" +
+        (!replied ? null : replied)
+    );
+    return data;
+  } else {
+    const { data } = await defaultInstance.get(
+      "/api/stores/questions/product/" +
+        productId +
+        "/my?page=" +
+        page +
+        "&size=" +
+        size +
+        "&is-replied=" +
+        (!replied ? null : replied)
+    );
+    return data;
+  }
+};
+
+// 상품 문의 등록
+export const registerQuestion = async (registerDto: questionRegisterDto) => {
+  const { data } = await authInstance.post(
+    "/api/stores/questions",
+    registerDto
   );
   return data;
 };

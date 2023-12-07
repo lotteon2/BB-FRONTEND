@@ -488,3 +488,58 @@ export const reviewListData = {
     ],
   },
 };
+
+// 문의
+export const questionList = {
+  data: [
+    {
+      key: 1,
+      isReplied: false, // reply null검사
+      title: "질문있어요",
+      content: "문의 내용",
+      nickname: "김정윤",
+      createdAt: "2023-12-12",
+      isSecret: false,
+      isMine: false,
+      reply: "", // answer 테이블
+      repliedAt: "", // answer 테이블
+    },
+    {
+      key: 2,
+      isReplied: true, // reply null검사
+      title: "질문있어요",
+      content: "문의 내용",
+      nickname: "김정윤",
+      createdAt: "2023-12-12",
+      isSecret: false,
+      isMine: false,
+      reply: "답변 내용", // answer 테이블
+      repliedAt: "2023-12-15", // answer 테이블
+    },
+    {
+      key: 3,
+      isReplied: true, // reply null검사
+      title: "질문있어요",
+      content: "문의 내용",
+      nickname: "김정윤",
+      createdAt: "2023-12-12",
+      isSecret: true,
+      isMine: true,
+      reply: "답변 내용", // answer 테이블
+      repliedAt: "2023-12-15", // answer 테이블
+    },
+    {
+      key: 4,
+      isReplied: false, // reply null검사
+      title: "비밀글입니다.",
+      content: "비밀글입니다.",
+      nickname: "김정윤",
+      createdAt: "2023-12-12",
+      isSecret: true,
+      isMine: false,
+      reply: "", // answer 테이블
+      repliedAt: "", // answer 테이블
+    },
+  ],
+  totalCnt: 0,
+};

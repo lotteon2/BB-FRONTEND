@@ -16,6 +16,8 @@ import { productDetailData } from "../../mocks/product";
 interface param {
   productId: string | undefined;
   setProductDescription: (image: string) => void;
+  setProductName: (name: string) => void;
+  setStoreId: (id: number) => void;
 }
 
 export default function ProductInfo(param: param) {
@@ -78,6 +80,8 @@ export default function ProductInfo(param: param) {
   useEffect(() => {
     if (data) {
       param.setProductDescription(data.data.productDetailImage);
+      param.setProductName(data.data.productName);
+      param.setStoreId(data.data.storeId);
     }
   }, []);
 

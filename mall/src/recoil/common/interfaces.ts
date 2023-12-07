@@ -81,3 +81,26 @@ export interface reviewItemDto {
   content: string;
   reviewImages: string[];
 }
+
+export interface questionItemDto {
+  key: number;
+  isReplied: boolean; // reply null검사
+  title: string;
+  content: string;
+  nickname: string;
+  createdAt: string;
+  isSecret: boolean;
+  isMine: boolean;
+  reply: string; // answer 테이블
+  repliedAt: string; // answer 테이블
+}
+
+export interface questionRegisterDto {
+  storeId: number;
+  productId: string | undefined;
+  productName: string;
+  title: string;
+  content: string;
+  isSecret: boolean;
+  nickname: string;
+}

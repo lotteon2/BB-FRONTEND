@@ -1,10 +1,13 @@
 import { useState } from "react";
 import ProductDescription from "./detail/ProductDescription";
 import ProductReview from "./detail/ProductReview";
+import ProductQuestion from "./detail/ProductQuestion";
 
 interface param {
   productId: string | undefined;
   productDescription: string;
+  productName: string;
+  storeId: number;
 }
 export default function ProductContents(param: param) {
   const [contenntIndex, setContentIndex] = useState<number>(0);
@@ -52,10 +55,14 @@ export default function ProductContents(param: param) {
       </div>
       <div className="border-b-[1px]"></div>
       <div
-        className="w-[70%] py-20 mx-auto max-[500px]:w-[100vw]"
+        className="w-[80%] py-20 mx-auto max-[600px]:w-[100vw]"
         id="question"
       >
-        상품 문의
+        <ProductQuestion
+          productId={param.productId}
+          productName={param.productName}
+          storeId={param.storeId}
+        />
       </div>
     </div>
   );

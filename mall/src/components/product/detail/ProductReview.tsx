@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { getProductReviewList } from "../../../apis/product";
-import { reviewListData } from "../../../mocks/product";
 import { reviewItemDto } from "../../../recoil/common/interfaces";
 import { Rate, Pagination, PaginationProps } from "antd";
 import ReviewListFallback from "../../fallbacks/ReviewListFallback";
@@ -22,13 +21,11 @@ export default function ProductReview(param: param) {
     reviewImages: [],
   });
 
-  const data = reviewListData;
-
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getProductReviewList", page, sortOption],
-  //     queryFn: () =>
-  //       getProductReviewList(param.productId, page - 1, 10, sortOption),
-  //   });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getProductReviewList", page, sortOption],
+    queryFn: () =>
+      getProductReviewList(param.productId, page - 1, 10, sortOption),
+  });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
@@ -38,7 +35,7 @@ export default function ProductReview(param: param) {
     setIsModalOpen(false);
   };
 
-  //   if (!data || isLoading) return <ReviewListFallback />;
+  if (!data || isLoading) return <ReviewListFallback />;
 
   return (
     <div>

@@ -15,6 +15,8 @@ import { subscriptionDetailData } from "../../mocks/product";
 interface param {
   productId: string | undefined;
   setProductDescription: (image: string) => void;
+  setProductName: (name: string) => void;
+  setStoreId: (id: number) => void;
 }
 
 export default function SubscriptionInfo(param: param) {
@@ -55,6 +57,8 @@ export default function SubscriptionInfo(param: param) {
   useEffect(() => {
     if (data) {
       param.setProductDescription(data.productDetailImage);
+      param.setProductName(data.productName);
+      param.setStoreId(data.storeId);
     }
   }, []);
   // if (!data || isLoading) return <ProductInfoFallback />;
