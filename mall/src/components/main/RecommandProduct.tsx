@@ -20,7 +20,8 @@ export default function RecommandProduct() {
     queryFn: () => getMainProductList("recommand"),
   });
 
-  const handleWishButton = (productId: string) => {
+  const handleWishButton = (e: React.MouseEvent, productId: string) => {
+    e.stopPropagation();
     if (isLogin) {
       if (productWishList.includes(productId)) {
         setProductWishList(
@@ -62,14 +63,14 @@ export default function RecommandProduct() {
                   !item.isLiked ? (
                     <div
                       className="absolute bottom-0 right-2 text-[#FF6464] text-[30px] hover:-translate-y-[2px] cursor-pointer"
-                      onClick={() => handleWishButton(item.productId)}
+                      onClick={(e) => handleWishButton(e, item.productId)}
                     >
                       <HeartFilled />
                     </div>
                   ) : (
                     <div
                       className="absolute bottom-0 right-2 text-[#02020233] text-[30px] hover:-translate-y-[2px] cursor-pointer"
-                      onClick={() => handleWishButton(item.productId)}
+                      onClick={(e) => handleWishButton(e, item.productId)}
                     >
                       <HeartFilled />
                     </div>
@@ -77,14 +78,14 @@ export default function RecommandProduct() {
                 ) : item.isLiked ? (
                   <div
                     className="absolute bottom-0 right-2 text-[#FF6464] text-[30px] hover:-translate-y-[2px] cursor-pointer"
-                    onClick={() => handleWishButton(item.productId)}
+                    onClick={(e) => handleWishButton(e, item.productId)}
                   >
                     <HeartFilled />
                   </div>
                 ) : (
                   <div
                     className="absolute bottom-0 right-2 text-[#02020233] text-[30px] hover:-translate-y-[2px] cursor-pointer"
-                    onClick={() => handleWishButton(item.productId)}
+                    onClick={(e) => handleWishButton(e, item.productId)}
                   >
                     <HeartFilled />
                   </div>

@@ -20,7 +20,8 @@ export default function BestShop() {
     queryFn: () => getStoreList(0, 4),
   });
 
-  const handleWishButton = (storeId: number) => {
+  const handleWishButton = (e: React.MouseEvent, storeId: number) => {
+    e.stopPropagation();
     if (isLogin) {
       if (storeWishList.includes(storeId)) {
         setStoreWishList(storeWishList.filter((prev) => prev !== storeId));
@@ -64,14 +65,14 @@ export default function BestShop() {
                   !item.isLiked ? (
                     <div
                       className="absolute bottom-0 right-2 text-[#FF6464] text-[30px] hover:-translate-y-[2px] cursor-pointer"
-                      onClick={() => handleWishButton(item.storeId)}
+                      onClick={(e) => handleWishButton(e, item.storeId)}
                     >
                       <HeartFilled />
                     </div>
                   ) : (
                     <div
                       className="absolute bottom-0 right-2 text-[#02020233] text-[30px] hover:-translate-y-[2px] cursor-pointer"
-                      onClick={() => handleWishButton(item.storeId)}
+                      onClick={(e) => handleWishButton(e, item.storeId)}
                     >
                       <HeartFilled />
                     </div>
@@ -79,14 +80,14 @@ export default function BestShop() {
                 ) : item.isLiked ? (
                   <div
                     className="absolute bottom-0 right-2 text-[#FF6464] text-[30px] hover:-translate-y-[2px] cursor-pointer"
-                    onClick={() => handleWishButton(item.storeId)}
+                    onClick={(e) => handleWishButton(e, item.storeId)}
                   >
                     <HeartFilled />
                   </div>
                 ) : (
                   <div
                     className="absolute bottom-0 right-2 text-[#02020233] text-[30px] hover:-translate-y-[2px] cursor-pointer"
-                    onClick={() => handleWishButton(item.storeId)}
+                    onClick={(e) => handleWishButton(e, item.storeId)}
                   >
                     <HeartFilled />
                   </div>

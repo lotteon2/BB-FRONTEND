@@ -18,6 +18,7 @@ import QuestionModal from "../modal/QuestionModal";
 import { useRecoilValue } from "recoil";
 import { loginState } from "../../../recoil/atom/common";
 import QuestionRegisterModal from "../modal/QuestionRegisterModal";
+import { useNavigate } from "react-router";
 
 interface param {
   productId: string | undefined;
@@ -25,6 +26,7 @@ interface param {
   storeId: number;
 }
 export default function ProductQuestion(param: param) {
+  const navigate = useNavigate();
   const isLogin = useRecoilValue(loginState);
   const [page, setPage] = useState<number>(1);
   const [replied, setReplied] = useState<boolean>();
@@ -51,6 +53,15 @@ export default function ProductQuestion(param: param) {
 
   const handleChange = () => {
     setIsChange((cur) => !cur);
+  };
+
+  const handleRegisterQuestion = () => {
+    console.log("!!!!!!!");
+    if (isLogin) {
+      setIsRegister(true);
+    } else if (window.confirm("회원만 사용가능합니다. 로그인하시겠습니까?")) {
+      navigate("/login");
+    }
   };
 
   const columns: ColumnsType<questionItemDto> = [
@@ -103,16 +114,18 @@ export default function ProductQuestion(param: param) {
           구매하시려는 상품에 대해 궁금한 점이 있으신 경우 문의해주세요.
         </p>
         <div className="flex flex-row my-3 relative">
-          {isLogin ? (
-            <div className="flex flex-row gap-3">
-              <Button type="primary">문의 작성하기</Button>
+          <div className="flex flex-row gap-3">
+            <Button type="primary" onClick={handleRegisterQuestion}>
+              문의 작성하기
+            </Button>
+            {isLogin ? (
               <Button>
                 {findMine ? "모든 문의내역 보기" : "내 문의내역 보기"}
               </Button>
-            </div>
-          ) : (
-            <div className="py-5"></div>
-          )}
+            ) : (
+              <div className="py-5"></div>
+            )}
+          </div>
           <div className="absolute right-0">
             <Select
               placeholder="답변 상태"
@@ -145,18 +158,18 @@ export default function ProductQuestion(param: param) {
         구매하시려는 상품에 대해 궁금한 점이 있으신 경우 문의해주세요.
       </p>
       <div className="flex flex-row my-3 relative">
-        {isLogin ? (
-          <div className="flex flex-row gap-3">
-            <Button type="primary" onClick={() => setIsRegister(true)}>
-              문의 작성하기
-            </Button>
-            <Button onClick={() => setFindMine((cur) => !cur)}>
+        <div className="flex flex-row gap-3">
+          <Button type="primary" onClick={handleRegisterQuestion}>
+            문의 작성하기
+          </Button>
+          {isLogin ? (
+            <Button>
               {findMine ? "모든 문의내역 보기" : "내 문의내역 보기"}
             </Button>
-          </div>
-        ) : (
-          ""
-        )}
+          ) : (
+            <div className="py-5"></div>
+          )}
+        </div>
         <div className="absolute right-0">
           <Select
             placeholder="답변 상태"
