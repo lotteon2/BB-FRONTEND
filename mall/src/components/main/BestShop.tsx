@@ -48,10 +48,10 @@ export default function BestShop() {
         전체보기
       </p>
       <div className="mt-5">
-        <div className="flex flex-row gap-3 text-center flex-wrap cursor-pointer">
+        <div className="flex flex-row gap-3 text-center flex-wrap">
           {data.simpleStores.map((item: mainStoreListDto) => (
             <div
-              className="flex flex-col gap-1 text-left mx-auto w-[23vw] min-w-[180px] max-w-[320px]"
+              className="flex flex-col gap-1 text-left mx-auto w-[23vw] min-w-[180px] max-w-[320px] cursor-pointer"
               key={item.storeId}
               onClick={() => navigate("/store/detail/" + item.storeId)}
             >

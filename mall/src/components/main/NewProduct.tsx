@@ -50,7 +50,7 @@ export default function NewProduct() {
         <div className="flex flex-row gap-3 text-center flex-wrap">
           {data.map((item: mainProductListDto) => (
             <div
-              className="flex flex-col gap-1 text-left mx-auto w-[23vw] min-w-[180px] max-w-[320px]"
+              className="flex flex-col gap-1 text-left mx-auto w-[23vw] min-w-[180px] max-w-[320px]  cursor-pointer"
               key={item.productId}
             >
               <div className="h-[23vw] min-h-[180px] max-h-[320px] relative">
