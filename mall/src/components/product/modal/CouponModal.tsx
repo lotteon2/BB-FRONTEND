@@ -64,7 +64,7 @@ export default function CouponModal(param: param) {
     <div className="flex flex-col gap-3 h-[500px] overflow-auto">
       {data.data.map((item: couponDto) => (
         <div key={item.couponId} className="w-[80%] mx-auto relative pb-5 pr-3">
-          <img src={CouponBg} alt="쿠폰 배경" className="w-full rounded-lg" />
+          <img src={CouponBg} alt="쿠폰 배경" className="w-full" />
           <div className="absolute top-0 left-0 w-full h-full text-grayscale1 p-3">
             <p className="max-[600px]:text-[0.8rem] max-[400px]:text-[0.6rem]">
               {item.storeName}

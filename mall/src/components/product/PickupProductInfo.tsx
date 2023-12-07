@@ -4,7 +4,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import { HeartFilled, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import ButtonGroup from "antd/es/button/button-group";
 import CouponModal from "./modal/CouponModal";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loginState } from "../../recoil/atom/common";
 import { productWishState } from "../../recoil/atom/member";
 import { useNavigate } from "react-router";
@@ -12,11 +12,17 @@ import { useMutation, useQuery } from "react-query";
 import { getProductDetail } from "../../apis/product";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
 import { productDetailData } from "../../mocks/product";
-import type { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import type { CalendarProps } from "antd";
 import type { DatePickerProps } from "antd";
 import { getStoreDeliveryPolicy } from "../../apis/store";
-import { storeDeliveryPolicyDto } from "../../recoil/common/interfaces";
+import {
+  pickupOrderDto,
+  storeDeliveryPolicyDto,
+} from "../../recoil/common/interfaces";
+import { pickupTime } from "../../recoil/common/data";
+import { pickupOrderState } from "../../recoil/atom/order";
+import dayjs from "dayjs";
 
 interface param {
   productId: string | undefined;
@@ -36,6 +42,10 @@ export default function PickupProductInfo(param: param) {
     deliveryPrice: 0,
     freeDeliveryMinPrice: 0,
   });
+  const [pickupDate, setPickupDate] = useState<string>("");
+  const [selectedTime, setSelectedTime] = useState<string>("");
+  const [date, setDate] = useState<Dayjs>(dayjs());
+  const setPickupOrder = useSetRecoilState<pickupOrderDto>(pickupOrderState);
 
   const data = productDetailData;
   // const { data, isLoading } = useQuery({
@@ -87,7 +97,55 @@ export default function PickupProductInfo(param: param) {
   };
 
   const handleCalendar = (value: Dayjs) => {
-    console.log(value.format());
+    const selectedDate = value.toDate();
+    const today = new Date();
+    if (selectedDate < today) {
+      alert("당일 및 이전 날짜는 선택할 수 없습니다.");
+    } else {
+      setDate(value);
+      setPickupDate(value.format().split("T")[0]);
+    }
+  };
+
+  const handleReservation = () => {
+    if (pickupDate === "") {
+      alert("픽업 날짜를 선택해주세요.");
+    } else if (selectedTime === "") {
+      alert("픽업 시간을 선택해주세요.");
+    } else {
+      const productCreate = {
+        productId: data.data.productId,
+        productName: data.data.productName,
+        quantity: count,
+        price: data.data.productPrice,
+        productThumbnailImage: data.data.productDetailImage,
+      };
+
+      const pickupOrder = {
+        storeId: data.data.storeId,
+        storeName: data.data.storeName,
+        pickupDate: pickupDate,
+        pickupTime: selectedTime,
+        products: productCreate,
+        totalAmount: data.data.productPrice * count,
+        deliveryCost:
+          data.data.productPrice * count >= deliveryPolicy.freeDeliveryMinPrice
+            ? 0
+            : deliveryPolicy.deliveryPrice,
+        couponId: 0,
+        couponAmount: 0,
+        actualAmount:
+          data.data.productPrice * count >= deliveryPolicy.freeDeliveryMinPrice
+            ? data.data.productPrice * count
+            : data.data.productPrice * count + deliveryPolicy.deliveryPrice,
+        ordererName: "",
+        ordererPhoneNumber: "",
+        ordererEmail: "",
+      };
+
+      setPickupOrder(pickupOrder);
+      navigate("/pickup/order");
+    }
   };
 
   const getPolilcyMutation = useMutation(
@@ -270,73 +328,32 @@ export default function PickupProductInfo(param: param) {
         </p>
         <div className="flex flex-row gap-3 p-2 my-3 justify-center flex-wrap border-[1px]">
           <div className="w-[320px] h-[320px]">
-            <Calendar fullscreen={false} onChange={handleCalendar} />
+            <Calendar
+              fullscreen={false}
+              onChange={handleCalendar}
+              value={date}
+            />
           </div>
           <div className="w-[300px] h-[320px] flex flex-row flex-wrap pt-5 gap-1">
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              11:00
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              11:30
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              12:00
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              12:30
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              13:00
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              13:30
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              14:00
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              14:30
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              15:00
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              15:30
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              16:00
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              16:30
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              17:00
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              17:30
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              18:00
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              18:30
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              19:00
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              19:30
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              20:00
-            </div>
-            <div className="w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg">
-              20:30
-            </div>
+            {pickupTime.map((item: string, index: number) => (
+              <div
+                key={index}
+                className={`w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg cursor-pointer hover:border-primary4 hover:text-primary4 ${
+                  selectedTime === item ? "border-primary4 text-primary4" : ""
+                }`}
+                onClick={() => setSelectedTime(item)}
+              >
+                {item}
+              </div>
+            ))}
           </div>
         </div>
         <div className="flex flex-row gap-2 mt-3">
-          <Button type="primary" style={{ width: "100%", height: "3rem" }}>
+          <Button
+            type="primary"
+            style={{ width: "100%", height: "3rem" }}
+            onClick={handleReservation}
+          >
             예약하기
           </Button>
         </div>

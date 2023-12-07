@@ -109,3 +109,37 @@ export interface storeDeliveryPolicyDto {
   deliveryPrice: number;
   freeDeliveryMinPrice: number;
 }
+
+export interface productCreate {
+  productId: string;
+  productName: string;
+  quantity: number;
+  price: number;
+  productThumbnailImage: string;
+}
+
+export interface pickupOrderDto {
+  storeId: number;
+  storeName: string;
+  pickupDate: string;
+  pickupTime: string;
+  products: productCreate;
+  totalAmount: number; // 총 상품금액
+  deliveryCost: number; // 총 배송비
+  couponId: number;
+  couponAmount: number; // 총 할인금액
+  actualAmount: number; //  실 결제금액
+  ordererName: string;
+  ordererPhoneNumber: string;
+  ordererEmail: string;
+}
+
+export interface couponForPayDto {
+  couponId: number;
+  couponName: string;
+  storeName: string;
+  discountPrice: number;
+  endDate: string;
+  minPrice: number;
+  canUse: boolean;
+}

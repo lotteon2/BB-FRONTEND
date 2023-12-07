@@ -80,3 +80,14 @@ export const getStoreDeliveryPolicy = async (storeId: number) => {
   );
   return data;
 };
+
+// 결제 시 사용할 수 있는 쿠폰 조회
+export const getValidCouponListForPayment = async (
+  storeId: number,
+  totalAmount: number
+) => {
+  const { data } = await authInstance.get(
+    "/" + storeId + "/coupons/payment?totalAmount=" + totalAmount
+  );
+  return data;
+};

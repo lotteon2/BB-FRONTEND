@@ -17,3 +17,9 @@ export const modifyStoreWishList = async (list: number[]) => {
   const { data } = await authInstance.post("/likes/store", list);
   return data;
 };
+
+// 내 정보 조회
+export const getMyInfo = async () => {
+  const { data } = await authInstance.get("/social");
+  return data;
+};
