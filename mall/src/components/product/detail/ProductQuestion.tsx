@@ -12,7 +12,6 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 import { getProductQuestionList } from "../../../apis/product";
 import ReviewListFallback from "../../fallbacks/ReviewListFallback";
-import { questionList } from "../../../mocks/product";
 import { questionItemDto } from "../../../recoil/common/interfaces";
 import { LockFilled } from "@ant-design/icons";
 import QuestionModal from "../modal/QuestionModal";
@@ -26,7 +25,7 @@ interface param {
   storeId: number;
 }
 export default function ProductQuestion(param: param) {
-  const isLogin = true;
+  const isLogin = useRecoilValue(loginState);
   const [page, setPage] = useState<number>(1);
   const [replied, setReplied] = useState<boolean>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -35,12 +34,11 @@ export default function ProductQuestion(param: param) {
   const [findMine, setFindMine] = useState<boolean>(false);
   const [isChange, setIsChange] = useState<boolean>(false);
 
-  const data = questionList;
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getProductQuestionList", page, replied, findMine, isChange],
-  //     queryFn: () =>
-  //       getProductQuestionList(param.productId, page - 1, 10, replied, findMine),
-  //   });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getProductQuestionList", page, replied, findMine, isChange],
+    queryFn: () =>
+      getProductQuestionList(param.productId, page - 1, 10, replied, findMine),
+  });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
@@ -97,7 +95,48 @@ export default function ProductQuestion(param: param) {
     },
   ];
 
-  //   if (!data || isLoading) return <ReviewListFallback />;
+  if (!data || isLoading)
+    return (
+      <div>
+        <p className="text-[1.2rem] font-bold">상품문의</p>
+        <p className="text-grayscale5">
+          구매하시려는 상품에 대해 궁금한 점이 있으신 경우 문의해주세요.
+        </p>
+        <div className="flex flex-row my-3 relative">
+          {isLogin ? (
+            <div className="flex flex-row gap-3">
+              <Button type="primary">문의 작성하기</Button>
+              <Button>
+                {findMine ? "모든 문의내역 보기" : "내 문의내역 보기"}
+              </Button>
+            </div>
+          ) : (
+            <div className="py-5"></div>
+          )}
+          <div className="absolute right-0">
+            <Select
+              placeholder="답변 상태"
+              value={replied}
+              options={[
+                {
+                  value: true,
+                  label: "답변완료",
+                },
+                {
+                  value: false,
+                  label: "답변대기",
+                },
+              ]}
+              allowClear
+              style={{ width: 120 }}
+            />
+          </div>
+        </div>
+        <div>
+          <ReviewListFallback />
+        </div>
+      </div>
+    );
 
   return (
     <div>
