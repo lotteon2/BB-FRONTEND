@@ -1,6 +1,10 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { orderDto, pickupOrderDto } from "../common/interfaces";
+import {
+  orderDto,
+  pickupOrderDto,
+  subscriptionOrderDto,
+} from "../common/interfaces";
 
 const { persistAtom } = recoilPersist();
 
@@ -12,6 +16,12 @@ export const pickupOrderState = atom<pickupOrderDto>({
 
 export const orderState = atom<orderDto>({
   key: "orderState",
+  default: undefined,
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const subscriptionOrderState = atom<subscriptionOrderDto>({
+  key: "subscriptionOrderState",
   default: undefined,
   effects_UNSTABLE: [persistAtom],
 });

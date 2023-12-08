@@ -1,6 +1,7 @@
 import { useParams } from "react-router";
 import PickupOrderDetail from "../../components/order/PickupOrderDetail";
 import OrderDetail from "../../components/order/OrderDetail";
+import SubscriptionOrderDetail from "../../components/order/SubscriptionOrderDetail";
 
 export default function OrderPage() {
   const param = useParams().type;
@@ -13,7 +14,7 @@ export default function OrderPage() {
       {param === "pickup" ? (
         <PickupOrderDetail />
       ) : param === "subscription" ? (
-        <></>
+        <SubscriptionOrderDetail />
       ) : (
         <OrderDetail />
       )}

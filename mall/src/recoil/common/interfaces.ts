@@ -154,6 +154,28 @@ export interface orderDto {
   deliveryRequest: string;
 }
 
+export interface subscriptionOrderDto {
+  storeId: number;
+  storeName: string;
+  paymentDay: number;
+  deliveryDay: number; // == paymentDay+3
+  products: productCreate;
+  totalAmount: number; // 총 상품금액
+  deliveryCost: number; // 총 배송비
+  couponId: number;
+  couponAmount: number; // 총 할인금액
+  actualAmount: number; //  실 결제금액
+  ordererName: string;
+  ordererPhoneNumber: string;
+  ordererEmail: string;
+  recipientName: string;
+  deliveryZipcode: string;
+  deliveryRoadName: string;
+  deliveryAddressDetail: string;
+  recipientPhone: string;
+  deliveryRequest: string;
+}
+
 export interface couponForPayDto {
   couponId: number;
   couponName: string;

@@ -5,14 +5,18 @@ import { Button, Modal, Rate } from "antd";
 import ShareIcon from "@mui/icons-material/Share";
 import { HeartFilled } from "@ant-design/icons";
 import CouponModal from "./modal/CouponModal";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loginState } from "../../recoil/atom/common";
 import { productWishState } from "../../recoil/atom/member";
 import { useNavigate } from "react-router";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
 import { subscriptionDetailData } from "../../mocks/product";
-import { storeDeliveryPolicyDto } from "../../recoil/common/interfaces";
+import {
+  storeDeliveryPolicyDto,
+  subscriptionOrderDto,
+} from "../../recoil/common/interfaces";
 import { getStoreDeliveryPolicy } from "../../apis/store";
+import { subscriptionOrderState } from "../../recoil/atom/order";
 
 interface param {
   productId: string | undefined;
@@ -21,8 +25,12 @@ interface param {
   setStoreId: (id: number) => void;
 }
 
+const today = new Date();
 export default function SubscriptionInfo(param: param) {
   const navigate = useNavigate();
+  const setSubscriptionOrder = useSetRecoilState<subscriptionOrderDto>(
+    subscriptionOrderState
+  );
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const isLogin = useRecoilValue<boolean>(loginState);
   const [productWishList, setProductWishList] =
@@ -58,6 +66,47 @@ export default function SubscriptionInfo(param: param) {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+
+  const handleSubscriptionOrder = () => {
+    const productCreate = {
+      productId: data.productId,
+      productName: data.productName,
+      quantity: 1,
+      price: data.productPrice,
+      productThumbnailImage: data.productDetailImage,
+    };
+
+    const subscriptionOrder = {
+      storeId: data.storeId,
+      storeName: data.storeName,
+      paymentDay: today.getDay(),
+      deliveryDay: today.getDay() + 3,
+      products: productCreate,
+      totalAmount: data.productPrice,
+      deliveryCost:
+        data.productPrice >= deliveryPolicy.freeDeliveryMinPrice
+          ? 0
+          : deliveryPolicy.deliveryPrice,
+      couponId: 0,
+      couponAmount: 0,
+      actualAmount:
+        data.productPrice >= deliveryPolicy.freeDeliveryMinPrice
+          ? data.productPrice
+          : data.productPrice + deliveryPolicy.deliveryPrice,
+      ordererName: "",
+      ordererPhoneNumber: "",
+      ordererEmail: "",
+      recipientName: "",
+      deliveryZipcode: "",
+      deliveryRoadName: "",
+      deliveryAddressDetail: "",
+      recipientPhone: "",
+      deliveryRequest: "",
+    };
+
+    setSubscriptionOrder(subscriptionOrder);
+    navigate("/order/subscription");
   };
 
   const getPolilcyMutation = useMutation(
@@ -181,6 +230,9 @@ export default function SubscriptionInfo(param: param) {
             </div>
           )}
         </div>
+        <p className="text-right text-grayscale5 font-light text-[0.8rem]">
+          정기배송의 경우 매월 결제일 기준 3일 후에 배송됩니다.
+        </p>
         <p className="text-[1.2rem] font-regular flex flex-row gap-2 justify-end">
           <span className="mt-3">총 상품금액</span>
           <b className="text-primary4 text-[2rem] font-bold">
@@ -188,7 +240,11 @@ export default function SubscriptionInfo(param: param) {
           </b>
         </p>
 
-        <Button type="primary" style={{ width: "100%", height: "3rem" }}>
+        <Button
+          type="primary"
+          style={{ width: "100%", height: "3rem" }}
+          onClick={handleSubscriptionOrder}
+        >
           정기구독 신청
         </Button>
         {isModalOpen ? (
