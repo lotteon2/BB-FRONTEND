@@ -9,17 +9,19 @@ import { Modal, Form, Input, Button } from "antd";
 import MyCouponModal from "./modal/MyCouponModal";
 import PayIcon from "../../assets/images/pay.png";
 import DaumPostcodeEmbed from "react-daum-postcode";
+import RecentDeliveryPlaceModal from "./modal/RecentDeliveryPlaceModal";
 
 const { TextArea } = Input;
 
 export default function SubscriptionOrderDetail() {
   const ButtonRef = useRef<HTMLButtonElement | null>(null);
-  const ButtonRef2 = useRef<HTMLButtonElement | null>(null);
   const [order, setOrder] = useRecoilState<subscriptionOrderDto>(
     subscriptionOrderState
   );
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState<boolean>(false);
+  const [isRecentDeliveryOpen, setIsRecentDeliveryOpen] =
+    useState<boolean>(false);
 
   const email_pattern =
     /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+.[a-zA-Z]+$/i;
@@ -54,6 +56,7 @@ export default function SubscriptionOrderDetail() {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    setIsRecentDeliveryOpen(false);
   };
 
   const handleComplete = (data: any) => {
@@ -139,16 +142,15 @@ export default function SubscriptionOrderDetail() {
 
   const clickPayButton = useCallback(() => {
     ButtonRef.current?.click();
-    ButtonRef2.current?.click();
     handleOrder();
   }, []);
 
   const [form] = Form.useForm();
   useEffect(() => {
+    console.log("CHANGE");
     form.setFieldsValue(order);
   }, [form, order]);
 
-  console.log(order);
   return (
     <div>
       <div className="flex flex-row gap-5 flex-wrap justify-center mt-5">
@@ -229,24 +231,24 @@ export default function SubscriptionOrderDetail() {
               </div>
             </div>
           </div>
-          {/* 주문자 정보 */}
-          <div className="mt-10">
-            <div className="border-b-[1px] border-grayscale7  relative">
-              <p className="text-[1.5rem]">주문자</p>
-              <div className="absolute bottom-1 right-0">
-                <Button onClick={handleMyInfo}>내 정보 불러오기</Button>
+          <Form
+            form={form}
+            name="orderForm"
+            labelCol={{ span: 4 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 600, width: "100%" }}
+            autoComplete="off"
+            initialValues={order}
+            onFinish={handleOrder}
+          >
+            {/* 주문자 정보 */}
+            <div className="mt-10">
+              <div className="border-b-[1px] border-grayscale7  relative">
+                <p className="text-[1.5rem]">주문자</p>
+                <div className="absolute bottom-1 right-0">
+                  <Button onClick={handleMyInfo}>내 정보 불러오기</Button>
+                </div>
               </div>
-            </div>
-            <Form
-              form={form}
-              name="ordererForm"
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 16 }}
-              style={{ maxWidth: 600, width: "100%" }}
-              autoComplete="off"
-              initialValues={order}
-              onFinish={handleOrder}
-            >
               <div className="flex flex-col gap-5 mt-10">
                 <Form.Item
                   name="ordererName"
@@ -317,42 +319,34 @@ export default function SubscriptionOrderDetail() {
                   />
                 </Form.Item>
               </div>
-              <Button htmlType="submit" className="hidden" ref={ButtonRef2}>
-                결제
-              </Button>
-            </Form>
-          </div>
-          {/* 배송지 정보 */}
-          <div className="mt-10">
-            <div className="border-b-[1px] border-grayscale7  relative">
-              <p className="text-[1.5rem]">배송지</p>
-              <div className="flex flex-row gap-2 absolute bottom-1 right-0">
-                <Button
-                  onClick={() =>
-                    setOrder((prev) => ({
-                      ...prev,
-                      recipientName: prev.ordererName,
-                      recipientPhone: prev.ordererPhoneNumber,
-                    }))
-                  }
-                >
-                  주문자 정보와 동일
-                </Button>
-                <Button type="primary">최근 배송지 불러오기</Button>
-              </div>
             </div>
-            <Form
-              name="receiverForm"
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 16 }}
-              style={{ maxWidth: 600, width: "100%" }}
-              autoComplete="off"
-              initialValues={order}
-              onFinish={handleOrder}
-            >
+            {/* 배송지 정보 */}
+            <div className="mt-10">
+              <div className="border-b-[1px] border-grayscale7  relative">
+                <p className="text-[1.5rem]">배송지</p>
+                <div className="flex flex-row gap-2 absolute bottom-1 right-0">
+                  <Button
+                    onClick={() =>
+                      setOrder((prev) => ({
+                        ...prev,
+                        recipientName: prev.ordererName,
+                        recipientPhone: prev.ordererPhoneNumber,
+                      }))
+                    }
+                  >
+                    주문자 정보와 동일
+                  </Button>
+                  <Button
+                    type="primary"
+                    onClick={() => setIsRecentDeliveryOpen(true)}
+                  >
+                    최근 배송지 불러오기
+                  </Button>
+                </div>
+              </div>
               <div className="flex flex-col gap-5 mt-10">
                 <Form.Item
-                  name="ordererName"
+                  name="recipientName"
                   label="성함"
                   rules={[
                     {
@@ -361,21 +355,24 @@ export default function SubscriptionOrderDetail() {
                     },
                   ]}
                 >
-                  <Input
-                    value={order.ordererName}
-                    placeholder="성함을 입력해주세요."
-                    maxLength={6}
-                    showCount
-                    onChange={(e) =>
-                      setOrder((prev) => ({
-                        ...prev,
-                        ordererName: e.target.value,
-                      }))
-                    }
-                  />
+                  <div>
+                    <Input
+                      value={order.recipientName}
+                      placeholder="성함을 입력해주세요."
+                      maxLength={6}
+                      showCount
+                      onChange={(e) =>
+                        setOrder((prev) => ({
+                          ...prev,
+                          recipientName: e.target.value,
+                        }))
+                      }
+                    />
+                    {/* <div className="hidden">{order.recipientName}</div> */}
+                  </div>
                 </Form.Item>
                 <Form.Item
-                  name="ordererPhoneNumber"
+                  name="recipientPhone"
                   label="연락처"
                   rules={[
                     {
@@ -385,7 +382,7 @@ export default function SubscriptionOrderDetail() {
                   ]}
                 >
                   <Input
-                    value={order.ordererPhoneNumber}
+                    value={order.recipientPhone}
                     placeholder="연락처를 입력해주세요(- 없이 숫자만 입력해주세요)"
                     maxLength={11}
                     minLength={11}
@@ -393,7 +390,7 @@ export default function SubscriptionOrderDetail() {
                     onChange={(e) =>
                       setOrder((prev) => ({
                         ...prev,
-                        ordererPhoneNumber: e.target.value,
+                        recipientPhone: e.target.value,
                       }))
                     }
                   />
@@ -428,14 +425,11 @@ export default function SubscriptionOrderDetail() {
                     },
                   ]}
                 >
-                  <div>
-                    <Input
-                      value={order.deliveryRoadName}
-                      placeholder="주소"
-                      disabled
-                    />
-                    <div className="hidden">{order.deliveryRoadName}</div>
-                  </div>
+                  <Input
+                    value={order.deliveryRoadName}
+                    placeholder="주소"
+                    disabled
+                  />
                 </Form.Item>
                 <Form.Item name="deliveryAddressDetail" label=" ">
                   <Input
@@ -450,11 +444,11 @@ export default function SubscriptionOrderDetail() {
                   />
                 </Form.Item>
               </div>
-              <Button htmlType="submit" className="hidden" ref={ButtonRef}>
-                결제
-              </Button>
-            </Form>
-          </div>
+            </div>
+            <Button htmlType="submit" className="hidden" ref={ButtonRef}>
+              결제
+            </Button>
+          </Form>
           <div className="mt-10">
             <div className="border-b-[1px] border-grayscale7  relative">
               <p className="text-[1.5rem]">요청 사항</p>
@@ -531,6 +525,17 @@ export default function SubscriptionOrderDetail() {
           actualAmount={order.actualAmount}
           couponId={order.couponId}
           couponAmount={order.couponAmount}
+        />
+      </Modal>
+      <Modal
+        open={isRecentDeliveryOpen}
+        onCancel={handleCancel}
+        footer={[]}
+        title="최근 배송지"
+      >
+        <RecentDeliveryPlaceModal
+          handleCancel={handleCancel}
+          type="subscription"
         />
       </Modal>
     </div>

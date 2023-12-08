@@ -121,6 +121,7 @@ export default function ProductInfo(param: param) {
       deliveryAddressDetail: "",
       recipientPhone: "",
       deliveryRequest: "",
+      deliveryAddressId: 0,
     };
 
     setOrder(order);

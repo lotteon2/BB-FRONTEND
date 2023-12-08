@@ -152,6 +152,7 @@ export interface orderDto {
   deliveryAddressDetail: string;
   recipientPhone: string;
   deliveryRequest: string;
+  deliveryAddressId: number;
 }
 
 export interface subscriptionOrderDto {
@@ -174,6 +175,7 @@ export interface subscriptionOrderDto {
   deliveryAddressDetail: string;
   recipientPhone: string;
   deliveryRequest: string;
+  deliveryAddressId: number;
 }
 
 export interface couponForPayDto {
@@ -184,4 +186,13 @@ export interface couponForPayDto {
   endDate: string;
   minPrice: number;
   isAvailable: boolean;
+}
+
+export interface deliveryAddressDto {
+  deliveryAddressId: number;
+  recipientName: string;
+  zipcode: string;
+  roadName: string;
+  addressDetail: string;
+  phoneNumber: string;
 }

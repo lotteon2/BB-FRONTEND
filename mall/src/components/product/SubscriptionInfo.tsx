@@ -103,6 +103,7 @@ export default function SubscriptionInfo(param: param) {
       deliveryAddressDetail: "",
       recipientPhone: "",
       deliveryRequest: "",
+      deliveryAddressId: 0,
     };
 
     setSubscriptionOrder(subscriptionOrder);
