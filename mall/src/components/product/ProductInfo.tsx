@@ -4,7 +4,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import { HeartFilled, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import ButtonGroup from "antd/es/button/button-group";
 import CouponModal from "./modal/CouponModal";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loginState } from "../../recoil/atom/common";
 import { productWishState } from "../../recoil/atom/member";
 import { useNavigate } from "react-router";
@@ -13,7 +13,11 @@ import { getProductDetail } from "../../apis/product";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
 import { productDetailData } from "../../mocks/product";
 import { getStoreDeliveryPolicy } from "../../apis/store";
-import { storeDeliveryPolicyDto } from "../../recoil/common/interfaces";
+import {
+  orderDto,
+  storeDeliveryPolicyDto,
+} from "../../recoil/common/interfaces";
+import { orderState } from "../../recoil/atom/order";
 
 interface param {
   productId: string | undefined;
@@ -24,6 +28,7 @@ interface param {
 
 export default function ProductInfo(param: param) {
   const navigate = useNavigate();
+  const setOrder = useSetRecoilState<orderDto>(orderState);
   const [count, setCount] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const isLogin = useRecoilValue<boolean>(loginState);
@@ -81,6 +86,45 @@ export default function ProductInfo(param: param) {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+
+  const handleOrder = () => {
+    const productCreate = {
+      productId: data.data.productId,
+      productName: data.data.productName,
+      quantity: count,
+      price: data.data.productPrice,
+      productThumbnailImage: data.data.productDetailImage,
+    };
+
+    const order = {
+      storeId: data.data.storeId,
+      storeName: data.data.storeName,
+      products: productCreate,
+      totalAmount: data.data.productPrice * count,
+      deliveryCost:
+        data.data.productPrice * count >= deliveryPolicy.freeDeliveryMinPrice
+          ? 0
+          : deliveryPolicy.deliveryPrice,
+      couponId: 0,
+      couponAmount: 0,
+      actualAmount:
+        data.data.productPrice * count >= deliveryPolicy.freeDeliveryMinPrice
+          ? data.data.productPrice * count
+          : data.data.productPrice * count + deliveryPolicy.deliveryPrice,
+      ordererName: "",
+      ordererPhoneNumber: "",
+      ordererEmail: "",
+      recipientName: "",
+      deliveryZipcode: "",
+      deliveryRoadName: "",
+      deliveryAddressDetail: "",
+      recipientPhone: "",
+      deliveryRequest: "",
+    };
+
+    setOrder(order);
+    navigate("/order/general");
   };
 
   const getPolilcyMutation = useMutation(
@@ -267,7 +311,11 @@ export default function ProductInfo(param: param) {
           >
             장바구니
           </Button>
-          <Button type="primary" style={{ width: "50%", height: "3rem" }}>
+          <Button
+            type="primary"
+            style={{ width: "50%", height: "3rem" }}
+            onClick={handleOrder}
+          >
             구매하기
           </Button>
         </div>

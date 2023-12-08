@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { pickupOrderState } from "../../recoil/atom/order";
 import { pickupOrderDto } from "../../recoil/common/interfaces";
 import { useRecoilState } from "recoil";
@@ -11,6 +11,7 @@ import { FailToast } from "../common/toast/FailToast";
 import MyCouponModal from "./MyCouponModal";
 
 export default function PickupOrderDetail() {
+  const ButtonRef = useRef<HTMLButtonElement | null>(null);
   const [pickupOrder, setPickupOrder] =
     useRecoilState<pickupOrderDto>(pickupOrderState);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -33,12 +34,23 @@ export default function PickupOrderDetail() {
   };
 
   const handlePickupReservation = () => {
-    console.log(pickupOrder);
+    if (
+      pickupOrder.ordererName !== "" &&
+      pickupOrder.ordererPhoneNumber !== "" &&
+      pickupOrder.ordererEmail !== ""
+    ) {
+      console.log(pickupOrder);
+    }
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  const clickPayButton = useCallback(() => {
+    ButtonRef.current?.click();
+    handlePickupReservation();
+  }, []);
 
   const getMyInfoMutation = useMutation(["getMyInfo"], () => getMyInfo(), {
     onSuccess: (data) => {
@@ -194,6 +206,7 @@ export default function PickupOrderDetail() {
               style={{ maxWidth: 600, width: "100%" }}
               autoComplete="off"
               initialValues={pickupOrder}
+              onFinish={handlePickupReservation}
             >
               <div className="flex flex-col gap-5 mt-10">
                 <Form.Item
@@ -201,6 +214,7 @@ export default function PickupOrderDetail() {
                   label="이름"
                   rules={[
                     {
+                      required: true,
                       validator: rightName,
                     },
                   ]}
@@ -223,6 +237,7 @@ export default function PickupOrderDetail() {
                   label="연락처"
                   rules={[
                     {
+                      required: true,
                       validator: rightPhoneNumber,
                     },
                   ]}
@@ -246,6 +261,7 @@ export default function PickupOrderDetail() {
                   label="이메일"
                   rules={[
                     {
+                      required: true,
                       validator: rightEmail,
                     },
                   ]}
@@ -262,6 +278,9 @@ export default function PickupOrderDetail() {
                   />
                 </Form.Item>
               </div>
+              <Button htmlType="submit" className="hidden" ref={ButtonRef}>
+                결제
+              </Button>
             </Form>
           </div>
         </div>
@@ -296,7 +315,7 @@ export default function PickupOrderDetail() {
           </p>
           <div
             className="flex flex-row py-3 justify-center gap-5 w-full bg-[#FFEB00] rounded-lg cursor-pointer hover:bg-[#FFEB00CC]"
-            onClick={handlePickupReservation}
+            onClick={clickPayButton}
           >
             <img src={PayIcon} alt="" className="w-10" />
             <span className="text-[1.5rem] font-bold">카카오 페이</span>

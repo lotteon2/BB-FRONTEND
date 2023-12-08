@@ -144,7 +144,7 @@ export default function PickupProductInfo(param: param) {
       };
 
       setPickupOrder(pickupOrder);
-      navigate("/pickup/order");
+      navigate("/order/pickup");
     }
   };
 

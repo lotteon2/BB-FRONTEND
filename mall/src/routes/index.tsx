@@ -13,7 +13,7 @@ import ProductByTagPage from "../pages/product/ProductByTagPage";
 import ProductDetailPage from "../pages/product/ProductDetailPage";
 import SubscriptionPage from "../pages/subscription/SubscriptionPage";
 import PickupProductDetailPage from "../pages/product/PickupProductDetailPage";
-import PickupOrderPage from "../pages/order/PickupOrderPage";
+import OrderPage from "../pages/order/OrderPage";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         path: "pickup/product/detail/:productId",
         element: <PickupProductDetailPage />,
       },
-      { path: "pickup/order", element: <PickupOrderPage /> },
+      { path: "order/:type", element: <OrderPage /> },
       {
         path: "product/subscription/detail/:storeId",
         element: <SubscriptionDetailPage />,
