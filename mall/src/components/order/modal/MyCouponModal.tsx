@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { couponForPayDto } from "../../recoil/common/interfaces";
-import { getValidCouponListForPayment } from "../../apis/store";
-import Loading from "../common/Loading";
-import CouponBg from "../../assets/images/coupon.png";
+import { couponForPayDto } from "../../../recoil/common/interfaces";
+import { getValidCouponListForPayment } from "../../../apis/store";
+import Loading from "../../common/Loading";
+import CouponBg from "../../../assets/images/coupon.png";
 import { Button } from "antd";
 
 interface param {

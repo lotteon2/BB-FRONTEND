@@ -8,7 +8,7 @@ import { useCallback } from "react";
 import { useMutation } from "react-query";
 import { getMyInfo } from "../../apis/member";
 import { FailToast } from "../common/toast/FailToast";
-import MyCouponModal from "./MyCouponModal";
+import MyCouponModal from "./modal/MyCouponModal";
 
 export default function PickupOrderDetail() {
   const ButtonRef = useRef<HTMLButtonElement | null>(null);

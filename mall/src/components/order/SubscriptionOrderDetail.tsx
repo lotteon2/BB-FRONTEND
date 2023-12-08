@@ -6,7 +6,7 @@ import { useMutation } from "react-query";
 import { getMyInfo } from "../../apis/member";
 import { FailToast } from "../common/toast/FailToast";
 import { Modal, Form, Input, Button } from "antd";
-import MyCouponModal from "./MyCouponModal";
+import MyCouponModal from "./modal/MyCouponModal";
 import PayIcon from "../../assets/images/pay.png";
 import DaumPostcodeEmbed from "react-daum-postcode";
 
