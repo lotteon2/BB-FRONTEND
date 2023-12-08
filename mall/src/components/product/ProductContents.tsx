@@ -50,7 +50,7 @@ export default function ProductContents(param: param) {
         <div className="flex flex-row justify-center">
           <Link
             to="detail"
-            smooth={false}
+            smooth={true}
             className={`text-[1rem] py-3 px-10 border-[1px] border-grayscale3 border-b-0 cursor-pointer ${
               contenntIndex === 0 ? "border-primary4" : ""
             }`}
@@ -59,7 +59,7 @@ export default function ProductContents(param: param) {
           </Link>
           <Link
             to="review"
-            smooth={false}
+            smooth={true}
             className={`text-[1rem] py-3 px-10 border-[1px] border-grayscale3 border-b-0 cursor-pointer ${
               contenntIndex === 1 ? "border-primary4" : ""
             }`}
@@ -68,7 +68,7 @@ export default function ProductContents(param: param) {
           </Link>
           <Link
             to="question"
-            smooth={false}
+            smooth={true}
             className={`text-[1rem] py-3 px-10 border-[1px] border-grayscale3 border-b-0 cursor-pointer ${
               contenntIndex === 2 ? "border-primary4" : ""
             }`}

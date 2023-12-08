@@ -1,46 +1,28 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import {
-  couponForPayDto,
-  pickupOrderDto,
-} from "../../recoil/common/interfaces";
+import { couponForPayDto } from "../../recoil/common/interfaces";
 import { getValidCouponListForPayment } from "../../apis/store";
 import Loading from "../common/Loading";
-import { couponListForPay } from "../../mocks/order";
 import CouponBg from "../../assets/images/coupon.png";
-import { useRecoilState } from "recoil";
-import { pickupOrderState } from "../../recoil/atom/order";
 import { Button } from "antd";
 
 interface param {
   handleCancel: () => void;
+  handleCoupons: (couponId: number, couponAmount: number) => void;
+  storeId: number;
+  actualAmount: number;
+  couponId: number;
+  couponAmount: number;
 }
 export default function MyCouponModal(param: param) {
-  const [pickupOrder, setPickupOrder] =
-    useRecoilState<pickupOrderDto>(pickupOrderState);
-  const [couponId, setCouponId] = useState<number>(pickupOrder.couponId);
-  const [couponAmount, setCouponAmount] = useState<number>(
-    pickupOrder.couponAmount
-  );
+  const [couponId, setCouponId] = useState<number>(param.couponId);
+  const [couponAmount, setCouponAmount] = useState<number>(param.couponAmount);
 
-  const handleCoupon = () => {
-    setPickupOrder((prev) => ({
-      ...prev,
-      couponId: couponId,
-      couponAmount: couponAmount,
-    }));
-
-    param.handleCancel();
-  };
-
-  //   const data = couponListForPay;
+  // const data = couponListForPay;
   const { data, isLoading } = useQuery({
     queryKey: ["getValidCouponListForPayment"],
     queryFn: () =>
-      getValidCouponListForPayment(
-        pickupOrder.storeId,
-        pickupOrder.actualAmount
-      ),
+      getValidCouponListForPayment(param.storeId, param.actualAmount),
   });
 
   if (!data || isLoading) return <Loading />;
@@ -64,9 +46,7 @@ export default function MyCouponModal(param: param) {
             src={CouponBg}
             alt="쿠폰 배경"
             className={
-              pickupOrder.couponId === item.couponId
-                ? "border-4 border-primary4"
-                : ""
+              couponId === item.couponId ? "border-4 border-primary4" : ""
             }
           />
           <div className="absolute top-0 left-0 w-full h-full text-grayscale1 p-3">
@@ -97,7 +77,7 @@ export default function MyCouponModal(param: param) {
           marginRight: 10,
         }}
         type="primary"
-        onClick={handleCoupon}
+        onClick={() => param.handleCoupons(couponId, couponAmount)}
       >
         적용하기
       </Button>

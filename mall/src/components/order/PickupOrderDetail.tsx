@@ -23,6 +23,15 @@ export default function PickupOrderDetail() {
     getMyInfoMutation.mutate();
   };
 
+  const handleCoupons = (couponId: number, couponAmount: number) => {
+    setPickupOrder((prev) => ({
+      ...prev,
+      couponId: couponId,
+      couponAmount: couponAmount,
+    }));
+    handleCancel();
+  };
+
   const handlePickupReservation = () => {
     console.log(pickupOrder);
   };
@@ -295,7 +304,14 @@ export default function PickupOrderDetail() {
         </div>
       </div>
       <Modal open={isModalOpen} onCancel={handleCancel} footer={[]}>
-        <MyCouponModal handleCancel={handleCancel} />
+        <MyCouponModal
+          handleCancel={handleCancel}
+          handleCoupons={handleCoupons}
+          storeId={pickupOrder.storeId}
+          actualAmount={pickupOrder.actualAmount}
+          couponId={pickupOrder.couponId}
+          couponAmount={pickupOrder.couponAmount}
+        />
       </Modal>
     </div>
   );
