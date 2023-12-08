@@ -86,8 +86,9 @@ export const getValidCouponListForPayment = async (
   storeId: number,
   totalAmount: number
 ) => {
-  const { data } = await authInstance.get(
-    "/" + storeId + "/coupons/payment?totalAmount=" + totalAmount
+  const { data } = await authInstance.post(
+    "/" + storeId + "/coupons/payment",
+    totalAmount
   );
   return data;
 };

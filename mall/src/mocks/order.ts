@@ -7,7 +7,7 @@ export const couponListForPay = {
       discountPrice: 1000,
       endDate: "1234-56-78",
       minPrice: 1000,
-      canUse: true,
+      isAvailable: true,
     },
     {
       couponId: 2,
@@ -16,7 +16,7 @@ export const couponListForPay = {
       discountPrice: 1000,
       endDate: "1234-56-78",
       minPrice: 1000,
-      canUse: false,
+      isAvailable: false,
     },
   ],
 };

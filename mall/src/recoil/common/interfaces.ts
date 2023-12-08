@@ -141,5 +141,5 @@ export interface couponForPayDto {
   discountPrice: number;
   endDate: string;
   minPrice: number;
-  canUse: boolean;
+  isAvailable: boolean;
 }

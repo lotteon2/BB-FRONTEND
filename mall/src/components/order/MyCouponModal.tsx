@@ -18,15 +18,32 @@ interface param {
 export default function MyCouponModal(param: param) {
   const [pickupOrder, setPickupOrder] =
     useRecoilState<pickupOrderDto>(pickupOrderState);
+  const [couponId, setCouponId] = useState<number>(pickupOrder.couponId);
+  const [couponAmount, setCouponAmount] = useState<number>(
+    pickupOrder.couponAmount
+  );
 
-  const data = couponListForPay;
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getValidCouponListForPayment"],
-  //     queryFn: () =>
-  //       getValidCouponListForPayment(param.storeId, param.totalAmount),
-  //   });
+  const handleCoupon = () => {
+    setPickupOrder((prev) => ({
+      ...prev,
+      couponId: couponId,
+      couponAmount: couponAmount,
+    }));
 
-  //   if (!data || isLoading) return <Loading />;
+    param.handleCancel();
+  };
+
+  //   const data = couponListForPay;
+  const { data, isLoading } = useQuery({
+    queryKey: ["getValidCouponListForPayment"],
+    queryFn: () =>
+      getValidCouponListForPayment(
+        pickupOrder.storeId,
+        pickupOrder.actualAmount
+      ),
+  });
+
+  if (!data || isLoading) return <Loading />;
 
   return (
     <div className="w-full mt-10 text-center">
@@ -34,16 +51,12 @@ export default function MyCouponModal(param: param) {
         <div
           key={item.couponId}
           className={`w-[80%] mx-auto relative pb-5 pr-3 text-left ${
-            item.canUse ? "cursor-pointer" : "opacity-60"
+            item.isAvailable ? "cursor-pointer" : "opacity-60"
           }`}
           onClick={() => {
-            if (item.canUse) {
-              console.log(item.couponId);
-              setPickupOrder((prev) => ({
-                ...prev,
-                couponId: item.couponId,
-                couponAmount: item.discountPrice,
-              }));
+            if (item.isAvailable) {
+              setCouponId(item.couponId);
+              setCouponAmount(item.discountPrice);
             }
           }}
         >
@@ -84,7 +97,7 @@ export default function MyCouponModal(param: param) {
           marginRight: 10,
         }}
         type="primary"
-        onClick={param.handleCancel}
+        onClick={handleCoupon}
       >
         적용하기
       </Button>
