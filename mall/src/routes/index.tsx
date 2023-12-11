@@ -14,6 +14,7 @@ import ProductDetailPage from "../pages/product/ProductDetailPage";
 import SubscriptionPage from "../pages/subscription/SubscriptionPage";
 import PickupProductDetailPage from "../pages/product/PickupProductDetailPage";
 import OrderPage from "../pages/order/OrderPage";
+import CartPage from "../pages/CartPage";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
       { path: "product/:categoryId", element: <ProductByCategoryPage /> },
       { path: "product/tag/:tagId", element: <ProductByTagPage /> },
       { path: "product/detail/:productId", element: <ProductDetailPage /> },
+      { path: "cart", element: <CartPage /> },
     ],
   },
   {

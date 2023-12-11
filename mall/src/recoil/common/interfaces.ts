@@ -196,3 +196,18 @@ export interface deliveryAddressDto {
   addressDetail: string;
   phoneNumber: string;
 }
+
+export interface productInfoDto {
+  productId: string;
+  productName: string;
+  quantity: number;
+  productThumbnailImage: string;
+  price: number;
+}
+
+export interface cartItemDto {
+  storeId: number;
+  storeName: string;
+  deliveryCost: number;
+  productInfo: productInfoDto[];
+}

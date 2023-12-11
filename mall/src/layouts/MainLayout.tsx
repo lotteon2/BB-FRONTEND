@@ -8,7 +8,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
-import { sideMenuState } from "../recoil/atom/common";
+import { loginState, sideMenuState } from "../recoil/atom/common";
 import { ConfigProvider } from "antd";
 import { useMutation } from "react-query";
 import { modifyStoreWishList, modifyWishList } from "../apis/member";
@@ -17,6 +17,7 @@ import { FailToast } from "../components/common/toast/FailToast";
 
 export default function MainLayout() {
   const navigate = useNavigate();
+  const isLogin = useRecoilValue<boolean>(loginState);
   const productWishList = useRecoilValue<string[]>(productWishState);
   const resetProductWishList = useResetRecoilState(productWishState);
   const storeWishList = useRecoilValue<number[]>(storeWishState);
@@ -86,35 +87,46 @@ export default function MainLayout() {
         }}
       >
         <Header />
-        <div className="fixed right-20 top-60 max-[1320px]:right-3 flex flex-col gap-3 z-20 bg-grayscale1 p-3 rounded-full border-2 shadow-xl z-30">
-          <button onClick={() => navigate("/cart")} title="장바구니">
-            <ShoppingBagIcon />
-          </button>
-          <button
-            onClick={() => {
-              navigate("/mypage");
-              setSideMenuState(1);
-            }}
-            title="찜한 상품"
-          >
-            <FavoriteIcon />
-          </button>
-          <button
-            onClick={() => {
-              navigate("/mypage");
-              setSideMenuState(2);
-            }}
-            title="최근 본 상품"
-          >
-            <HistoryIcon />
-          </button>
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            title="맨위로"
-          >
-            <ArrowUpwardIcon />
-          </button>
-        </div>
+        {isLogin ? (
+          <div className="fixed right-20 top-60 max-[1320px]:right-3 flex flex-col gap-3 z-20 bg-grayscale1 p-3 rounded-full border-2 shadow-xl z-30">
+            <button onClick={() => navigate("/cart")} title="장바구니">
+              <ShoppingBagIcon />
+            </button>
+            <button
+              onClick={() => {
+                navigate("/mypage");
+                setSideMenuState(1);
+              }}
+              title="찜한 상품"
+            >
+              <FavoriteIcon />
+            </button>
+            <button
+              onClick={() => {
+                navigate("/mypage");
+                setSideMenuState(2);
+              }}
+              title="최근 본 상품"
+            >
+              <HistoryIcon />
+            </button>
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              title="맨위로"
+            >
+              <ArrowUpwardIcon />
+            </button>
+          </div>
+        ) : (
+          <div className="fixed right-20 top-60 max-[1320px]:right-3 flex flex-col gap-3 z-20 bg-grayscale1 p-3 rounded-full border-2 shadow-xl z-30">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              title="맨위로"
+            >
+              <ArrowUpwardIcon />
+            </button>
+          </div>
+        )}
 
         <div className="max-w-[1320px] mx-auto">
           <Outlet />
