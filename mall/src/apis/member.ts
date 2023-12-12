@@ -36,3 +36,9 @@ export const modifyMemberInfo = async (modifyDto: modifyMemberDto) => {
   const { data } = await authInstance.patch("/social", modifyDto);
   return data;
 };
+
+// 발급받은 쿠폰 조회
+export const getMyCouponList = async () => {
+  const { data } = await authInstance.get("/coupons/my");
+  return data;
+};

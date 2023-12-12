@@ -7,3 +7,32 @@ export const infoData = {
   couponCnt: 3,
   likesCnt: 15,
 };
+
+export const couponListData = {
+  data: [
+    {
+      couponId: 1,
+      couponName: "쿠폰 이름",
+      storeName: "가게 이름",
+      discountPrice: 1000,
+      endDate: "2021-11-11",
+      minPrice: 50000,
+    },
+    {
+      couponId: 2,
+      couponName: "쿠폰 이름",
+      storeName: "가게 이름",
+      discountPrice: 1000,
+      endDate: "2021-11-11",
+      minPrice: 50000,
+    },
+    {
+      couponId: 3,
+      couponName: "쿠폰 이름",
+      storeName: "가게 이름",
+      discountPrice: 1000,
+      endDate: "2021-11-11",
+      minPrice: 50000,
+    },
+  ],
+};

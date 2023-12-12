@@ -6,6 +6,7 @@ import MyInfo from "../components/mypage/MyInfo";
 import MyPageHeader from "../components/mypage/MyPageHeader";
 import Withdraw from "../components/mypage/section/Withdraw";
 import ModifyMemberInfo from "../components/mypage/section/ModifyMemberInfo";
+import MyCouponList from "../components/mypage/section/MyCouponList";
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -72,6 +73,7 @@ export default function MyPage() {
           ) : selected === "쿠폰관리" ? (
             <div>
               <p className="text-2xl font-bold">쿠폰 관리</p>
+              <MyCouponList />
             </div>
           ) : (
             <div>

@@ -247,3 +247,12 @@ export interface modifyMemberDto {
   email: string;
   phoneNumber: string;
 }
+
+export interface couponItemDto {
+  couponId: number;
+  couponName: string;
+  storeName: string;
+  discountPrice: number;
+  endDate: string;
+  minPrice: number;
+}
