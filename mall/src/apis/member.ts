@@ -23,3 +23,9 @@ export const getMyInfo = async () => {
   const { data } = await authInstance.get("/social");
   return data;
 };
+
+// 회원탈퇴
+export const withdraw = async (type: string) => {
+  const { data } = await authInstance.delete("/" + type);
+  return data;
+};
