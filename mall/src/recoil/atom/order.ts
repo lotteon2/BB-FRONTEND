@@ -1,7 +1,9 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 import {
+  cartOrderDto,
   orderDto,
+  orderInfoByStore,
   pickupOrderDto,
   subscriptionOrderDto,
 } from "../common/interfaces";
@@ -22,6 +24,18 @@ export const orderState = atom<orderDto>({
 
 export const subscriptionOrderState = atom<subscriptionOrderDto>({
   key: "subscriptionOrderState",
+  default: undefined,
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const orderInfoState = atom<orderInfoByStore[]>({
+  key: "orderInfoByStore",
+  default: undefined,
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const cartOrderState = atom<cartOrderDto>({
+  key: "cartOrderState",
   default: undefined,
   effects_UNSTABLE: [persistAtom],
 });

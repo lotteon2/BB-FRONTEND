@@ -195,7 +195,7 @@ export default function SubscriptionOrderDetail() {
                       </div>
                     </div>
                   </div>
-                  <div className="font-bold text-[2rem] my-auto max-[1200px]:w-full max-[1200px]:text-right">
+                  <div className="font-bold text-[1.5rem] my-auto max-[1200px]:w-full max-[1200px]:text-right">
                     {order.actualAmount.toLocaleString()}원
                   </div>
                 </div>
@@ -445,28 +445,28 @@ export default function SubscriptionOrderDetail() {
                 </Form.Item>
               </div>
             </div>
+            <div className="mt-10">
+              <div className="border-b-[1px] border-grayscale7  relative">
+                <p className="text-[1.5rem]">요청 사항</p>
+              </div>
+              <div className="mt-3">
+                <TextArea
+                  value={order.deliveryRequest}
+                  placeholder="요청사항을 입력해주세요."
+                  autoSize={{ minRows: 5, maxRows: 5 }}
+                  onChange={(e) =>
+                    setOrder((prev) => ({
+                      ...prev,
+                      deliveryRequest: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+            </div>
             <Button htmlType="submit" className="hidden" ref={ButtonRef}>
               결제
             </Button>
           </Form>
-          <div className="mt-10">
-            <div className="border-b-[1px] border-grayscale7  relative">
-              <p className="text-[1.5rem]">요청 사항</p>
-            </div>
-            <div className="mt-3">
-              <TextArea
-                value={order.deliveryRequest}
-                placeholder="요청사항을 입력해주세요."
-                autoSize={{ minRows: 5, maxRows: 5 }}
-                onChange={(e) =>
-                  setOrder((prev) => ({
-                    ...prev,
-                    deliveryRequest: e.target.value,
-                  }))
-                }
-              />
-            </div>
-          </div>
           {isAddressModalOpen && (
             <Modal
               title="주소 검색"

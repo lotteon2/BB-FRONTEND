@@ -156,7 +156,7 @@ export default function PickupOrderDetail() {
                       </div>
                     </div>
                   </div>
-                  <div className="font-bold text-[2rem] my-auto max-[1200px]:w-full max-[1200px]:text-right">
+                  <div className="font-bold text-[1.5rem] my-auto max-[1200px]:w-full max-[1200px]:text-right">
                     {pickupOrder.actualAmount.toLocaleString()}원
                   </div>
                 </div>

@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { couponForPayDto } from "../../../recoil/common/interfaces";
 import { getValidCouponListForPayment } from "../../../apis/store";
 import Loading from "../../common/Loading";
 import CouponBg from "../../../assets/images/coupon.png";
 import { Button } from "antd";
+import { couponListForPay } from "../../../mocks/order";
 
 interface param {
   handleCancel: () => void;
@@ -18,14 +19,18 @@ export default function MyCouponModal(param: param) {
   const [couponId, setCouponId] = useState<number>(param.couponId);
   const [couponAmount, setCouponAmount] = useState<number>(param.couponAmount);
 
-  // const data = couponListForPay;
-  const { data, isLoading } = useQuery({
-    queryKey: ["getValidCouponListForPayment"],
-    queryFn: () =>
-      getValidCouponListForPayment(param.storeId, param.actualAmount),
-  });
+  const data = couponListForPay;
+  // const { data, isLoading } = useQuery({
+  //   queryKey: ["getValidCouponListForPayment"],
+  //   queryFn: () =>
+  //     getValidCouponListForPayment(param.storeId, param.actualAmount),
+  // });
 
-  if (!data || isLoading) return <Loading />;
+  // if (!data || isLoading) return <Loading />;
+
+  useEffect(() => {
+    setCouponId(param.couponId);
+  }, []);
 
   return (
     <div className="w-full mt-10 text-center">

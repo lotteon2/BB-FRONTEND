@@ -178,6 +178,30 @@ export interface subscriptionOrderDto {
   deliveryAddressId: number;
 }
 
+export interface orderInfoByStore {
+  storeId: number;
+  storeName: string;
+  products: productCreate[];
+  totalAmount: number; // 총 상품금액
+  deliveryCost: number; // 총 배송비
+  couponId: number;
+  couponAmount: number; // 총 할인금액
+  actualAmount: number; //  실 결제금액
+}
+
+export interface cartOrderDto {
+  sumOfActualAmount: number; // 총 실 결제금액
+  ordererName: string;
+  ordererPhoneNumber: string;
+  ordererEmail: string;
+  recipientName: string;
+  deliveryZipcode: string;
+  deliveryRoadName: string;
+  deliveryAddressDetail: string;
+  recipientPhone: string;
+  deliveryRequest: string;
+}
+
 export interface couponForPayDto {
   couponId: number;
   couponName: string;
@@ -209,5 +233,11 @@ export interface cartItemDto {
   storeId: number;
   storeName: string;
   deliveryCost: number;
+  freeDeliveryMinCost: number;
   productInfo: productInfoDto[];
+}
+
+export interface modifyCartCountDto {
+  productId: string;
+  selectedQuantity: number;
 }
