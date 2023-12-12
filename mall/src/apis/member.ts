@@ -1,3 +1,4 @@
+import { modifyMemberDto } from "../recoil/common/interfaces";
 import { authInstance } from "./utils";
 
 // 회원 휴대폰 번호 등록
@@ -27,5 +28,11 @@ export const getMyInfo = async () => {
 // 회원탈퇴
 export const withdraw = async (type: string) => {
   const { data } = await authInstance.delete("/" + type);
+  return data;
+};
+
+// 회원정보 수정
+export const modifyMemberInfo = async (modifyDto: modifyMemberDto) => {
+  const { data } = await authInstance.patch("/social", modifyDto);
   return data;
 };

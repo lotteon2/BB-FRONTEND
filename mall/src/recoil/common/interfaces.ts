@@ -241,3 +241,9 @@ export interface modifyCartCountDto {
   productId: string;
   selectedQuantity: number;
 }
+
+export interface modifyMemberDto {
+  nickname: string;
+  email: string;
+  phoneNumber: string;
+}

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import MyInfo from "../components/mypage/MyInfo";
 import MyPageHeader from "../components/mypage/MyPageHeader";
 import Withdraw from "../components/mypage/section/Withdraw";
+import ModifyMemberInfo from "../components/mypage/section/ModifyMemberInfo";
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -66,6 +67,7 @@ export default function MyPage() {
           ) : selected === "회원정보" ? (
             <div>
               <p className="text-2xl font-bold">회원정보 수정</p>
+              <ModifyMemberInfo />
             </div>
           ) : selected === "쿠폰관리" ? (
             <div>
