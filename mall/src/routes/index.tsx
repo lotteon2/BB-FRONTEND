@@ -15,6 +15,7 @@ import SubscriptionPage from "../pages/subscription/SubscriptionPage";
 import PickupProductDetailPage from "../pages/product/PickupProductDetailPage";
 import OrderPage from "../pages/order/OrderPage";
 import CartPage from "../pages/CartPage";
+import MyPage from "../pages/MyPage";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { index: true, path: "", element: <MainPage /> },
+      { path: "mypage", element: <MyPage /> },
       { path: "store/detail/:storeId", element: <StoreDetailPage /> },
       { path: "subscription", element: <SubscriptionPage /> },
       { path: "pickup", element: <PickupPage /> },
