@@ -8,6 +8,7 @@ import { useRecoilState } from "recoil";
 import { productWishState } from "../../../../recoil/atom/member";
 import { HeartFilled } from "@ant-design/icons";
 import { Pagination, PaginationProps, Rate } from "antd";
+import MypageBigListFallback from "../../../fallbacks/MypageBigListFallback";
 
 export default function WishProductList() {
   const navigate = useNavigate();
@@ -15,10 +16,10 @@ export default function WishProductList() {
   const [productWishList, setProductWishList] =
     useRecoilState<string[]>(productWishState);
 
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getMyWishList", page],
-  //     queryFn: () => getMyWishList(page-1, 6),
-  //   });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getMyWishList", page],
+    queryFn: () => getMyWishList(page - 1, 6),
+  });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
@@ -33,9 +34,9 @@ export default function WishProductList() {
       setProductWishList((prev) => [...prev, productId]);
     }
   };
-  //   if (!data || isLoading) return null;
+  if (!data || isLoading) return <MypageBigListFallback />;
 
-  const data = productWishListData;
+  //   const data = productWishListData;
 
   return (
     <div className="flex flex-row gap-3 text-center flex-wrap mt-5">

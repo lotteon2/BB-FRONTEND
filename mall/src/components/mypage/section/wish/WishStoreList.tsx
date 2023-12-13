@@ -1,19 +1,14 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { getMyWishList } from "../../../../apis/member";
-import {
-  productWishListData,
-  storeWishListData,
-} from "../../../../mocks/mypage";
-import {
-  myWishProductItemDto,
-  myWishStoreItemDto,
-} from "../../../../recoil/common/interfaces";
+import { storeWishListData } from "../../../../mocks/mypage";
+import { myWishStoreItemDto } from "../../../../recoil/common/interfaces";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { storeWishState } from "../../../../recoil/atom/member";
 import { HeartFilled } from "@ant-design/icons";
 import { Pagination, PaginationProps, Rate } from "antd";
+import MypageBigListFallback from "../../../fallbacks/MypageBigListFallback";
 
 export default function WishStoreList() {
   const navigate = useNavigate();
@@ -21,10 +16,10 @@ export default function WishStoreList() {
   const [storeWishList, setStoreWishList] =
     useRecoilState<number[]>(storeWishState);
 
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getMyWishList", page],
-  //     queryFn: () => getMyWishList(page-1, 6),
-  //   });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getMyWishList", page],
+    queryFn: () => getMyWishList(page - 1, 6),
+  });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
@@ -39,9 +34,9 @@ export default function WishStoreList() {
       setStoreWishList((prev) => [...prev, storeId]);
     }
   };
-  //   if (!data || isLoading) return null;
+  if (!data || isLoading) return <MypageBigListFallback />;
 
-  const data = storeWishListData;
+  // const data = storeWishListData;
 
   return (
     <div className="flex flex-row gap-3 text-center flex-wrap mt-5">
