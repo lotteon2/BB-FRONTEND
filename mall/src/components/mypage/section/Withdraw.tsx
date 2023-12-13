@@ -76,13 +76,16 @@ export default function Withdraw() {
   });
 
   return (
-    <div>
-      <div className="border-b-[1px] border-grayscale7 my-2"></div>
+    <div className="mt-2">
       <p className="mb-5 text-[1.2rem]">회원탈퇴 전 유의사항을 확인해주세요.</p>
       <ul className="flex flex-col gap-3 font-light">
         <li>
           • 부정 이용을 방지하기 위해 회원탈퇴 후 24시간 이내로 재가입이
           불가합니다.
+        </li>
+        <li>
+          • 회원탈퇴 시 정기구독이 취소되어 이전 결제건은 정상 배송되며, 이후
+          결제 및 배송이 진행되지 않습니다.
         </li>
         <li>• 회원탈퇴 후 사용하시던 쿠폰 혜택은 복원할 수 없습니다.</li>
         <li>

@@ -65,7 +65,7 @@ export default function MyQuestions() {
 
   return (
     <div className="w-full h-full">
-      <div className="flex justify-end">
+      <div className="flex justify-end mt-2">
         <Select
           value={isReplied}
           onChange={(e) => setIsReplied(e)}
@@ -86,9 +86,9 @@ export default function MyQuestions() {
       </div>
       <div>
         {data.totalCnt === 0 ? (
-          <Empty description="등록된 문의 내역이 없습니다." className="mt-72" />
+          <Empty description="등록된 문의 내역이 없습니다." />
         ) : (
-          <div className="mt-5">
+          <div className="mt-3">
             <Table
               dataSource={data.data}
               columns={columns}

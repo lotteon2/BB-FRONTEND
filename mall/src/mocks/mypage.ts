@@ -165,3 +165,102 @@ export const mySubscriptionsData = {
     },
   ],
 };
+
+export const productWishListData = {
+  totalCnt: 15,
+  data: [
+    {
+      productId: "1",
+      productName: "겨울 하늘",
+      productSummary:
+        "해외로 떠나고 싶은 마음을 담아 준비한 산토리니의 매력을 담은 꽃다발입니다.",
+      productThumbnail:
+        "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+      productPrice: 55000,
+      averageRating: 4.6,
+    },
+    {
+      productId: "2",
+      productName: "겨울 하늘",
+      productSummary:
+        "해외로 떠나고 싶은 마음을 담아 준비한 산토리니의 매력을 담은 꽃다발입니다.",
+      productThumbnail:
+        "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+      productPrice: 55000,
+      averageRating: 4.6,
+    },
+    {
+      productId: "3",
+      productName: "겨울 하늘",
+      productSummary:
+        "해외로 떠나고 싶은 마음을 담아 준비한 산토리니의 매력을 담은 꽃다발입니다.",
+      productThumbnail:
+        "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+      productPrice: 55000,
+      averageRating: 4.6,
+    },
+    {
+      productId: "4",
+      productName: "겨울 하늘",
+      productSummary:
+        "해외로 떠나고 싶은 마음을 담아 준비한 산토리니의 매력을 담은 꽃다발입니다.",
+      productThumbnail:
+        "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+      productPrice: 55000,
+      averageRating: 4.6,
+    },
+    {
+      productId: "5",
+      productName: "겨울 하늘",
+      productSummary:
+        "해외로 떠나고 싶은 마음을 담아 준비한 산토리니의 매력을 담은 꽃다발입니다.",
+      productThumbnail:
+        "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+      productPrice: 55000,
+      averageRating: 4.6,
+    },
+    {
+      productId: "6",
+      productName: "겨울 하늘",
+      productSummary:
+        "해외로 떠나고 싶은 마음을 담아 준비한 산토리니의 매력을 담은 꽃다발입니다.",
+      productThumbnail:
+        "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+      productPrice: 55000,
+      averageRating: 4.6,
+    },
+  ],
+};
+
+export const storeWishListData = {
+  totalCnt: 15,
+  data: [
+    {
+      storeId: 1,
+      storeName: "겨울 하늘",
+      detailInfo:
+        "해외로 떠나고 싶은 마음을 담아 준비한 산토리니의 매력을 담은 꽃다발입니다.",
+      storeThumbnail:
+        "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+      averageRating: 4.6,
+    },
+    {
+      storeId: 2,
+      storeName: "겨울 하늘",
+      detailInfo:
+        "해외로 떠나고 싶은 마음을 담아 준비한 산토리니의 매력을 담은 꽃다발입니다.",
+      storeThumbnail:
+        "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+      averageRating: 4.6,
+    },
+    {
+      storeId: 3,
+      storeName: "겨울 하늘",
+      detailInfo:
+        "해외로 떠나고 싶은 마음을 담아 준비한 산토리니의 매력을 담은 꽃다발입니다.",
+      storeThumbnail:
+        "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+      averageRating: 4.6,
+    },
+  ],
+};

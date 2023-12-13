@@ -9,6 +9,7 @@ import ModifyMemberInfo from "../components/mypage/section/ModifyMemberInfo";
 import MyCouponList from "../components/mypage/section/MyCouponList";
 import MyQuestions from "../components/mypage/section/MyQuestions";
 import MySubscription from "../components/mypage/section/MySubscription";
+import MyWishList from "../components/mypage/section/MyWishList";
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -41,47 +42,68 @@ export default function MyPage() {
         <div className="mt-10">
           {selected === "주문/배송" ? (
             <div>
-              <p className="text-2xl font-bold">주문/배송</p>
+              <p className="text-2xl font-bold pb-2 border-b-[1px]">
+                주문/배송
+              </p>
             </div>
           ) : selected === "예약/픽업" ? (
             <div>
-              <p className="text-2xl font-bold">예약/픽업</p>
+              <p className="text-2xl font-bold pb-2 border-b-[1px]">
+                예약/픽업
+              </p>
             </div>
           ) : selected === "위시리스트" ? (
             <div>
-              <p className="text-2xl font-bold">위시리스트</p>
+              <p className="text-2xl font-bold pb-2 border-b-[1px]">
+                위시리스트
+              </p>
+              <MyWishList />
             </div>
           ) : selected === "최근상품" ? (
             <div>
-              <p className="text-2xl font-bold">최근 본 상품</p>
+              <p className="text-2xl font-bold pb-2 border-b-[1px]">
+                최근 본 상품
+              </p>
             </div>
           ) : selected === "구독관리" ? (
             <div>
-              <p className="text-2xl font-bold">구독 관리</p>
+              <p className="text-2xl font-bold pb-2 border-b-[1px]">
+                구독 관리
+              </p>
               <MySubscription />
             </div>
           ) : selected === "상품문의" ? (
             <div>
-              <p className="text-2xl font-bold">상품 문의</p>
+              <p className="text-2xl font-bold pb-2 border-b-[1px]">
+                상품 문의
+              </p>
               <MyQuestions />
             </div>
           ) : selected === "상품후기" ? (
             <div>
-              <p className="text-2xl font-bold">상품 후기</p>
+              <p className="text-2xl font-bold pb-2 border-b-[1px]">
+                상품 후기
+              </p>
             </div>
           ) : selected === "회원정보" ? (
             <div>
-              <p className="text-2xl font-bold">회원정보 수정</p>
+              <p className="text-2xl font-bold pb-2 border-b-[1px]">
+                회원정보 수정
+              </p>
               <ModifyMemberInfo />
             </div>
           ) : selected === "쿠폰관리" ? (
             <div>
-              <p className="text-2xl font-bold">쿠폰 관리</p>
+              <p className="text-2xl font-bold pb-2 border-b-[1px]">
+                쿠폰 관리
+              </p>
               <MyCouponList />
             </div>
           ) : (
             <div>
-              <p className="text-2xl font-bold">회원 탈퇴 안내</p>
+              <p className="text-2xl font-bold pb-2 border-b-[1px]">
+                회원 탈퇴 안내
+              </p>
               <Withdraw />
             </div>
           )}

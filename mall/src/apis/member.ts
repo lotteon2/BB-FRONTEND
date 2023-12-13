@@ -73,3 +73,19 @@ export const cancelSubscription = async (orderSubscriptionId: string) => {
   );
   return data;
 };
+
+// 찜 상품 목록 조회
+export const getMyWishList = async (page: number, size: number) => {
+  const { data } = await authInstance.get(
+    "/wishlist/likes/products?page=" + page + "&size=" + size
+  );
+  return data;
+};
+
+// 찜 가게 목록 조회
+export const getMyWishStoreList = async (page: number, size: number) => {
+  const { data } = await authInstance.get(
+    "/wishlist/likes/stores?page=" + page + "&size=" + size
+  );
+  return data;
+};

@@ -276,3 +276,20 @@ export interface mySubscriptionItemDto {
   paymentDate: string;
   deliveryDate: string;
 }
+
+export interface myWishProductItemDto {
+  productId: string;
+  productThumbnail: string;
+  productName: string;
+  productSummary: string;
+  productPrice: number;
+  averageRating: number;
+}
+
+export interface myWishStoreItemDto {
+  storeId: number;
+  storeThumbnail: string;
+  storeName: string;
+  detailInfo: string;
+  averageRating: number;
+}
