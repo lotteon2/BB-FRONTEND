@@ -62,6 +62,13 @@ code {
   background-color: #85c031;
 }
 
+:where(.css-dev-only-do-not-override-1lq5t2e).ant-table-wrapper
+  .ant-table-row-expand-icon:focus,
+:where(.css-dev-only-do-not-override-1lq5t2e).ant-table-wrapper
+  .ant-table-row-expand-icon:hover {
+  color: #85c031;
+}
+
 .logo {
   font-family: "Aguafina Script", cursive;
 }

@@ -3,18 +3,24 @@ import { authInstance } from "./utils";
 
 // 카트 조회
 export const getCartList = async () => {
-  const { data } = await authInstance.get("/carts");
+  const { data } = await authInstance.get("/wishlist/carts");
   return data;
 };
 
 // 카트 수량 변경
 export const modifyCartCount = async (cartDto: modifyCartCountDto) => {
-  const { data } = await authInstance.patch("/carts/products", cartDto);
+  const { data } = await authInstance.patch(
+    "/wishlist/carts/products",
+    cartDto
+  );
   return data;
 };
 
 // 카트 상품 삭제
 export const deleteCartProduct = async (deleteDto: string[]) => {
-  const { data } = await authInstance.put("/carts/products", deleteDto);
+  const { data } = await authInstance.put(
+    "/wishlist/carts/products",
+    deleteDto
+  );
   return data;
 };

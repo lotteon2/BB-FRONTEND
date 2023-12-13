@@ -3,7 +3,7 @@ import { authInstance, defaultInstance } from "./utils";
 // 가게 리스트
 export const getStoreList = async (page: number, size: number) => {
   const { data } = await defaultInstance.get(
-    "/api/stores/list?page=" + page + "&size=" + size
+    "/stores/list?page=" + page + "&size=" + size
   );
   return data;
 };
@@ -15,7 +15,7 @@ export const getFlowerShopsNearBy = async (
   level: number
 ) => {
   const { data } = await defaultInstance.get(
-    "/api/stores/map/location?lat=" + lat + "&lon=" + lon + "&level=" + level
+    "/stores/map/location?lat=" + lat + "&lon=" + lon + "&level=" + level
   );
   return data;
 };
@@ -24,7 +24,7 @@ export const getFlowerShopsNearBy = async (
 export const getGugunList = async (sidoCode: string | null) => {
   if (sidoCode === null) return [];
   const { data } = await defaultInstance.get(
-    "/api/stores/address/gugun?sido=" + sidoCode
+    "/stores/address/gugun?sido=" + sidoCode
   );
   return data;
 };
@@ -36,16 +36,14 @@ export const getFlowerShopsRegion = async (
 ) => {
   if (sido === null && gugun === "") return "ready";
   const { data } = await defaultInstance.get(
-    "/api/stores/map/region?sido=" + sido + "&gugun=" + gugun
+    "/stores/map/region?sido=" + sido + "&gugun=" + gugun
   );
   return data;
 };
 
 // 가게정보 조회
 export const getStoreDetailInfo = async (storeId: number) => {
-  const { data } = await defaultInstance.get(
-    "/api/stores/" + storeId + "/user"
-  );
+  const { data } = await defaultInstance.get("/stores/" + storeId + "/user");
   return data;
 };
 
@@ -54,21 +52,21 @@ export const getCouponListFromProductDetail = async (
   storeId: number | undefined
 ) => {
   const { data } = await authInstance.get(
-    "/api/stores/" + storeId + "/coupons/product"
+    "/stores/" + storeId + "/coupons/product"
   );
   return data;
 };
 
 // 쿠폰 개별 다운로드
 export const downloadSingleCoupon = async (couponId: number | undefined) => {
-  const { data } = await authInstance.post("/api/stores/coupons/" + couponId);
+  const { data } = await authInstance.post("/stores/coupons/" + couponId);
   return data;
 };
 
 // 쿠폰 전체 다운로드
 export const downloadAllCoupons = async (storeId: number | undefined) => {
   const { data } = await authInstance.post(
-    "/api/stores/" + storeId + "/coupons/all"
+    "/stores/" + storeId + "/coupons/all"
   );
   return data;
 };
@@ -76,7 +74,7 @@ export const downloadAllCoupons = async (storeId: number | undefined) => {
 // 배송 정책
 export const getStoreDeliveryPolicy = async (storeId: number) => {
   const { data } = await defaultInstance.get(
-    "/" + storeId + "/api/stores/delivery-policy"
+    "/stores/" + storeId + "/delivery-policy"
   );
   return data;
 };
@@ -87,7 +85,7 @@ export const getValidCouponListForPayment = async (
   totalAmount: number
 ) => {
   const { data } = await authInstance.post(
-    "/" + storeId + "/coupons/payment",
+    "/stores/" + storeId + "/coupons/payment",
     totalAmount
   );
   return data;

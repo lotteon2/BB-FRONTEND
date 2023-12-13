@@ -256,3 +256,15 @@ export interface couponItemDto {
   endDate: string;
   minPrice: number;
 }
+
+export interface myQuestionItemDto {
+  key: number;
+  isReplied: boolean; // reply null검사
+  title: string;
+  content: string;
+  nickname: string;
+  createdAt: string;
+  reply: string; // answer 테이블
+  repliedAt: string; // answer 테이블
+  productName: string;
+}

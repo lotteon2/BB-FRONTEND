@@ -58,18 +58,20 @@ export default function KakaoLoginRedirect() {
 
   const loginMutation = useMutation(["kakaoLogin"], () => kakaoLogin(code), {
     onSuccess: (data) => {
-      setIsLogin(true);
-      setNickname(data.nickname);
-      setProfileImageState(data.profileImage);
+      console.log(data);
+      // setIsLogin(true);
+      // setNickname(data.nickname);
+      // setProfileImageState(data.profileImage);
 
-      if (data.phoneNumberIsRegistered) {
-        // 핸드폰번호 강제 입력
-        setIsModalOpen(true);
-      }
+      // if (data.phoneNumberIsRegistered) {
+      //   // 핸드폰번호 강제 입력
+      //   setIsModalOpen(true);
+      // }
 
-      localStorage.setItem("accessToken", data["accessToken"]);
+      // localStorage.setItem("accessToken", data["accessToken"]);
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.log(error);
       FailToast(null);
       navigate("/login");
     },

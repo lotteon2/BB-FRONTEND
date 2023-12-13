@@ -3,7 +3,7 @@ import { authInstance, defaultInstance } from "./utils";
 
 // 메인페이지 상품 조회
 export const getMainProductList = async (type: string) => {
-  const { data } = await defaultInstance.get("/main/" + type);
+  const { data } = await defaultInstance.get("/products/main/" + type);
   return data;
 };
 
@@ -16,7 +16,7 @@ export const getProductListByCategory = async (
   storeId: number | null
 ) => {
   const { data } = await defaultInstance.get(
-    "/category/" +
+    "/products/category/" +
       categoryId +
       "?page=" +
       page +
@@ -39,7 +39,7 @@ export const getProductListByTag = async (
   sortOption: string
 ) => {
   const { data } = await defaultInstance.get(
-    "/api/products/tag/" +
+    "/products/tag/" +
       tagId +
       "?category=" +
       categoryId +
@@ -55,7 +55,7 @@ export const getProductListByTag = async (
 
 // 상품 상세 조회
 export const getProductDetail = async (productId: string | undefined) => {
-  const { data } = await defaultInstance.get("/" + productId);
+  const { data } = await defaultInstance.get("/products/" + productId);
   return data;
 };
 
@@ -63,7 +63,9 @@ export const getProductDetail = async (productId: string | undefined) => {
 export const getSubscriptionProductDetail = async (
   productId: string | undefined
 ) => {
-  const { data } = await defaultInstance.get("/subscription/" + productId);
+  const { data } = await defaultInstance.get(
+    "/products/subscription/" + productId
+  );
   return data;
 };
 
@@ -75,7 +77,7 @@ export const getProductReviewList = async (
   sortOption: string
 ) => {
   const { data } = await defaultInstance.get(
-    "/" +
+    "/products/" +
       productId +
       "/reviews?page=" +
       page +
@@ -97,7 +99,7 @@ export const getProductQuestionList = async (
 ) => {
   if (isMine) {
     const { data } = await authInstance.get(
-      "/api/stores/questions/product/" +
+      "/stores/questions/product/" +
         productId +
         "?page=" +
         page +
@@ -109,7 +111,7 @@ export const getProductQuestionList = async (
     return data;
   } else {
     const { data } = await defaultInstance.get(
-      "/api/stores/questions/product/" +
+      "/stores/questions/product/" +
         productId +
         "/my?page=" +
         page +
@@ -124,9 +126,6 @@ export const getProductQuestionList = async (
 
 // 상품 문의 등록
 export const registerQuestion = async (registerDto: questionRegisterDto) => {
-  const { data } = await authInstance.post(
-    "/api/stores/questions",
-    registerDto
-  );
+  const { data } = await authInstance.post("/stores/questions", registerDto);
   return data;
 };

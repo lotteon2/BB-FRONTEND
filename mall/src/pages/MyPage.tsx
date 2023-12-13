@@ -7,6 +7,7 @@ import MyPageHeader from "../components/mypage/MyPageHeader";
 import Withdraw from "../components/mypage/section/Withdraw";
 import ModifyMemberInfo from "../components/mypage/section/ModifyMemberInfo";
 import MyCouponList from "../components/mypage/section/MyCouponList";
+import MyQuestions from "../components/mypage/section/MyQuestions";
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -60,6 +61,7 @@ export default function MyPage() {
           ) : selected === "상품문의" ? (
             <div>
               <p className="text-2xl font-bold">상품 문의</p>
+              <MyQuestions />
             </div>
           ) : selected === "상품후기" ? (
             <div>
