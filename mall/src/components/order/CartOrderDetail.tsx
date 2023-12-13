@@ -284,7 +284,9 @@ export default function CartOrderDetail() {
                     </div>
                     <div className="flex flex-col gap-2 text-right">
                       <p>{item.totalAmount.toLocaleString()}원</p>
-                      <p>{item.couponAmount}원</p>
+                      <p className="text-[#FF5555]">
+                        {item.couponAmount.toLocaleString()}원
+                      </p>
                       <p>{item.deliveryCost.toLocaleString()}원</p>
                       <p className="font-bold text-primary4">
                         {item.actualAmount.toLocaleString()}원
@@ -556,7 +558,9 @@ export default function CartOrderDetail() {
             </div>
             <div className="flex flex-col gap-2 text-right">
               <p>{totalAmount.toLocaleString()}원</p>
-              <p>{totalCouponAmount}원</p>
+              <p className="text-[#FF5555]">
+                {totalCouponAmount.toLocaleString()}원
+              </p>
               <p>{totalDeliveryCost.toLocaleString()}원</p>
               <p className="font-bold text-primary4 text-[1.5rem]">
                 {totalActualAmount.toLocaleString()}원

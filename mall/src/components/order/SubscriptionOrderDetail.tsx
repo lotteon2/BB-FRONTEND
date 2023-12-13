@@ -220,7 +220,9 @@ export default function SubscriptionOrderDetail() {
                   </div>
                   <div className="flex flex-col gap-2 text-right">
                     <p>{order.actualAmount.toLocaleString()}원</p>
-                    <p>{order.couponAmount.toLocaleString()}원</p>
+                    <p className="text-[#FF5555]">
+                      {order.couponAmount.toLocaleString()}원
+                    </p>
                     <p>{order.deliveryCost.toLocaleString()}원</p>
                     <p className="font-bold text-primary4">
                       {(
@@ -496,7 +498,9 @@ export default function SubscriptionOrderDetail() {
             </div>
             <div className="flex flex-col gap-2 text-right">
               <p>{order.actualAmount.toLocaleString()}원</p>
-              <p>{order.couponAmount.toLocaleString()}원</p>
+              <p className="text-[#FF5555]">
+                {order.couponAmount.toLocaleString()}원
+              </p>
               <p>{order.deliveryCost.toLocaleString()}원</p>
               <p className="font-bold text-primary4 text-[1.5rem]">
                 {(

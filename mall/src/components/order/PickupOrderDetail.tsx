@@ -177,7 +177,9 @@ export default function PickupOrderDetail() {
                   </div>
                   <div className="flex flex-col gap-2 text-right">
                     <p>{pickupOrder.actualAmount.toLocaleString()}원</p>
-                    <p>{pickupOrder.couponAmount.toLocaleString()}원</p>
+                    <p className="text-[#FF5555]">
+                      {pickupOrder.couponAmount.toLocaleString()}원
+                    </p>
                     <p>{pickupOrder.deliveryCost.toLocaleString()}원</p>
                     <p className="font-bold text-primary4">
                       {(
@@ -297,7 +299,9 @@ export default function PickupOrderDetail() {
             </div>
             <div className="flex flex-col gap-2 text-right">
               <p>{pickupOrder.actualAmount.toLocaleString()}원</p>
-              <p>{pickupOrder.couponAmount.toLocaleString()}원</p>
+              <p className="text-[#FF5555]">
+                {pickupOrder.couponAmount.toLocaleString()}원
+              </p>
               <p>{pickupOrder.deliveryCost.toLocaleString()}원</p>
               <p className="font-bold text-primary4 text-[1.5rem]">
                 {(
