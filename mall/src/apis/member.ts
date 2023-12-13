@@ -89,3 +89,23 @@ export const getMyWishStoreList = async (page: number, size: number) => {
   );
   return data;
 };
+
+// 주문 목록 조회
+export const getMyOrderList = async (
+  page: number,
+  size: number,
+  sort: string
+) => {
+  const { data } = await authInstance.get(
+    "/orders/delivery?page=" + page + "&sort=" + sort + "&size=" + size
+  );
+  return data;
+};
+
+// 픽업 주문 목록 조히
+export const getMyPickupOrderList = async (page: number, size: number) => {
+  const { data } = await authInstance.get(
+    "/stores/reservations?page=" + page + "&size=" + size
+  );
+  return data;
+};

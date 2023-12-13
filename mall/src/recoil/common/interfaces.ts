@@ -270,7 +270,7 @@ export interface myQuestionItemDto {
 }
 
 export interface mySubscriptionItemDto {
-  storeSubscriptionId: string;
+  subscriptionId: string;
   subscriptionProductName: string;
   subscriptionProductThumbnail: string;
   paymentDate: string;
@@ -292,4 +292,28 @@ export interface myWishStoreItemDto {
   storeName: string;
   detailInfo: string;
   averageRating: number;
+}
+
+export interface orderDeliveryGroupInfo {
+  key: string; // orderGroupId
+  orderStatus: string;
+  thumbnailImage: string; // feign
+  productName: string; // feign
+  quantity: number; // feign 주문에 들어간 상품 종류
+  storeCount: number;
+  paymentAmount: number; // payment테이블의 actual_amount사용.
+  paymentDate: string;
+}
+
+export interface pickupOrderItemDto {
+  key: string;
+  reservationCode: string;
+  productThumbnail: string; // feign
+  productName: string; // feign
+  quantity: number; // feign
+  storeAddress: string;
+  actualPrice: number; // feign
+  reservationStatus: string;
+  pickupDate: string;
+  pickupTime: string;
 }

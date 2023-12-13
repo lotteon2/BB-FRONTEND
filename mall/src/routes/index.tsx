@@ -16,6 +16,8 @@ import PickupProductDetailPage from "../pages/product/PickupProductDetailPage";
 import OrderPage from "../pages/order/OrderPage";
 import CartPage from "../pages/CartPage";
 import MyPage from "../pages/MyPage";
+import OrderDetailPage from "../pages/order/OrderDetailPage";
+import PickupOrderDetailPage from "../pages/order/PickupOrderDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +35,8 @@ const router = createBrowserRouter([
         element: <PickupProductDetailPage />,
       },
       { path: "order/:type", element: <OrderPage /> },
+      { path: "order/detail/:id", element: <OrderDetailPage /> },
+      { path: "order/detail/pickup/:id", element: <PickupOrderDetailPage /> },
       {
         path: "product/subscription/detail/:storeId",
         element: <SubscriptionDetailPage />,

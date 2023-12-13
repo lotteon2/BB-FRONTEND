@@ -156,7 +156,7 @@ export const myQuestionsData = {
 export const mySubscriptionsData = {
   data: [
     {
-      storeSubscriptionId: "1",
+      subscriptionId: "1",
       subscriptionProductName: "상품명",
       subscriptionProductThumbnail:
         "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
@@ -261,6 +261,42 @@ export const storeWishListData = {
       storeThumbnail:
         "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
       averageRating: 4.6,
+    },
+  ],
+};
+
+export const myOrderListData = {
+  totalCnt: 10,
+  orders: [
+    {
+      key: "1", // orderGroupId
+      orderStatus: "PENDING",
+      thumbnailImage:
+        "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg", // feign
+      productName: "상품명", // feign
+      storeCount: 2,
+      quantity: 2, // feign 주문에 들어간 상품 종류
+      paymentAmount: 135000, // payment테이블의 actual_amount사용.
+      paymentDate: "2023-11-11",
+    },
+  ],
+};
+
+export const myPickupOrderListData = {
+  totalCnt: 10,
+  data: [
+    {
+      key: "1",
+      reservationCode: "ASDFASDFD",
+      productThumbnail:
+        "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg", // feign
+      productName: "상품명", // feign
+      quantity: 3, // feign
+      storeAddress: "가게 주소",
+      actualPrice: 55000, // feign
+      reservationStatus: "PENDING",
+      pickupDate: "2023-12-12",
+      pickupTime: "11:30",
     },
   ],
 };

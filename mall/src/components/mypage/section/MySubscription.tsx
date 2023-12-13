@@ -71,7 +71,7 @@ export default function MySubscription() {
           {data.data.map((item: mySubscriptionItemDto) => (
             <div
               className="w-[370px] shadow-lg rounded-lg p-2 gap-3"
-              key={item.storeSubscriptionId}
+              key={item.subscriptionId}
             >
               <div className="flex flex-row gap-3">
                 <img
@@ -91,7 +91,7 @@ export default function MySubscription() {
                 <Button
                   size="large"
                   type="primary"
-                  onClick={() => handleCancel(item.storeSubscriptionId)}
+                  onClick={() => handleCancel(item.subscriptionId)}
                 >
                   구독 취소
                 </Button>

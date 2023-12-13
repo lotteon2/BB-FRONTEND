@@ -44,7 +44,7 @@ export default function WishStoreList() {
         <div
           className="flex flex-col text-left mx-auto cursor-pointer"
           key={item.storeId}
-          onClick={() => navigate("/product/detail/" + item.storeId)}
+          onClick={() => navigate("/store/detail/" + item.storeId)}
         >
           <div className="relative">
             <img

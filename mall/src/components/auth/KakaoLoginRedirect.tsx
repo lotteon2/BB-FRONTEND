@@ -101,7 +101,6 @@ export default function KakaoLoginRedirect() {
 
   return (
     <div>
-      <MainPage />
       <Modal
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}

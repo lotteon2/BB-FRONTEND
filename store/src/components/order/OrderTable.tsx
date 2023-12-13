@@ -107,16 +107,16 @@ export default function OrderTable(param: param) {
         <Tag
           bordered={false}
           color={
-            record === "ORDER_RECEIVED"
+            record === "PENDING"
               ? "purple"
-              : record === "DELIVERY_STARTED"
+              : record === "PROCESSING"
               ? "green"
               : ""
           }
         >
-          {record === "ORDER_RECEIVED"
+          {record === "PENDING"
             ? "주문접수"
-            : record === "DELIVERY_STARTED"
+            : record === "PROCESSING"
             ? "배송시작"
             : "배송완료"}
         </Tag>

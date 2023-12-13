@@ -10,6 +10,8 @@ import MyCouponList from "../components/mypage/section/MyCouponList";
 import MyQuestions from "../components/mypage/section/MyQuestions";
 import MySubscription from "../components/mypage/section/MySubscription";
 import MyWishList from "../components/mypage/section/MyWishList";
+import MyOrderList from "../components/mypage/section/MyOrderList";
+import MyPickupOrderList from "../components/mypage/section/MyPickupOrderList";
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -45,12 +47,14 @@ export default function MyPage() {
               <p className="text-2xl font-bold pb-2 border-b-[1px]">
                 주문/배송
               </p>
+              <MyOrderList />
             </div>
           ) : selected === "예약/픽업" ? (
             <div>
               <p className="text-2xl font-bold pb-2 border-b-[1px]">
                 예약/픽업
               </p>
+              <MyPickupOrderList />
             </div>
           ) : selected === "위시리스트" ? (
             <div>
