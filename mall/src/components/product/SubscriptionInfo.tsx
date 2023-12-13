@@ -80,8 +80,12 @@ export default function SubscriptionInfo(param: param) {
     const subscriptionOrder = {
       storeId: data.storeId,
       storeName: data.storeName,
-      paymentDay: today.getDay(),
-      deliveryDay: today.getDay() + 3,
+      paymentDay: today,
+      deliveryDay: new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() + 3
+      ),
       products: productCreate,
       totalAmount: data.productPrice,
       deliveryCost:

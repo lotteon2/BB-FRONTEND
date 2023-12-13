@@ -152,3 +152,16 @@ export const myQuestionsData = {
     },
   ],
 };
+
+export const mySubscriptionsData = {
+  data: [
+    {
+      storeSubscriptionId: "1",
+      subscriptionProductName: "상품명",
+      subscriptionProductThumbnail:
+        "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+      paymentDate: "2023-11-11",
+      deliveryDate: "2023-11-14",
+    },
+  ],
+};

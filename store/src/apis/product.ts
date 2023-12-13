@@ -10,7 +10,10 @@ export const registerProduct = async (
   storeId: number,
   productInfo: productRegisterDto
 ) => {
-  const { data } = await authInstance.post("/store/" + storeId, productInfo);
+  const { data } = await authInstance.post(
+    "/products/store/" + storeId,
+    productInfo
+  );
   return data;
 };
 
@@ -19,7 +22,10 @@ export const modifyProduct = async (
   productId: number,
   productInfo: productModifyInfoDto
 ) => {
-  const { data } = await authInstance.post("/" + productId, productInfo);
+  const { data } = await authInstance.post(
+    "/products/" + productId,
+    productInfo
+  );
   return data;
 };
 
@@ -33,7 +39,7 @@ export const getProductList = async (
   size: number
 ) => {
   const { data } = await authInstance.get(
-    "/store/" +
+    "/products/store/" +
       storeId +
       "?category=" +
       category +
@@ -51,7 +57,7 @@ export const getProductList = async (
 
 // 상품 상세 조회
 export const getProductDetailInfo = async (productId: number) => {
-  const { data } = await authInstance.get("/api/products/" + productId);
+  const { data } = await authInstance.get("/products/" + productId);
   return data;
 };
 
@@ -61,7 +67,7 @@ export const modifyFlowerStocks = async (
   stocks: stockModifyDto[]
 ) => {
   const { data } = await authInstance.put(
-    "/api/stores/" + storeId + "/flowers/stocks",
+    "/stores/" + storeId + "/flowers/stocks",
     stocks
   );
   return data;

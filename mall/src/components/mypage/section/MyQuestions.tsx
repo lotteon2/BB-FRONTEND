@@ -5,6 +5,8 @@ import { getMyQuestionsList } from "../../../apis/member";
 import { Empty, Pagination, PaginationProps, Select, Table, Tag } from "antd";
 import { myQuestionItemDto } from "../../../recoil/common/interfaces";
 import { ColumnsType } from "antd/es/table";
+import SquareFallback from "../../fallbacks/SquareFallback";
+import MypageTableFallback from "../../fallbacks/MypageTableFallback";
 
 export default function MyQuestions() {
   const [page, setPage] = useState<number>(1);
@@ -12,10 +14,10 @@ export default function MyQuestions() {
 
   const data = myQuestionsData;
 
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getMyQuestionsList"],
-  //     queryFn: () => getMyQuestionsList(page, 10, isReplied),
-  //   });
+  // const { data, isLoading } = useQuery({
+  //   queryKey: ["getMyQuestionsList"],
+  //   queryFn: () => getMyQuestionsList(page, 10, isReplied),
+  // });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
@@ -25,6 +27,7 @@ export default function MyQuestions() {
     {
       title: "답변상태",
       dataIndex: "isReplied",
+      ellipsis: true,
       render: (record) => (
         <Tag color={record ? "" : "purple"} bordered={false}>
           {record ? "답변완료" : "답변대기"}
@@ -58,7 +61,7 @@ export default function MyQuestions() {
     },
   ];
 
-  //   if (!data || isLoading) return null;
+  // if (!data || isLoading) return <MypageTableFallback />;
 
   return (
     <div className="w-full h-full">
@@ -85,7 +88,7 @@ export default function MyQuestions() {
         {data.totalCnt === 0 ? (
           <Empty description="등록된 문의 내역이 없습니다." className="mt-72" />
         ) : (
-          <div>
+          <div className="mt-5">
             <Table
               dataSource={data.data}
               columns={columns}

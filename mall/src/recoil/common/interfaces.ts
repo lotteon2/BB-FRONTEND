@@ -158,8 +158,8 @@ export interface orderDto {
 export interface subscriptionOrderDto {
   storeId: number;
   storeName: string;
-  paymentDay: number;
-  deliveryDay: number; // == paymentDay+3
+  paymentDay: Date;
+  deliveryDay: Date; // == paymentDay+3
   products: productCreate;
   totalAmount: number; // 총 상품금액
   deliveryCost: number; // 총 배송비
@@ -267,4 +267,12 @@ export interface myQuestionItemDto {
   reply: string; // answer 테이블
   repliedAt: string; // answer 테이블
   productName: string;
+}
+
+export interface mySubscriptionItemDto {
+  storeSubscriptionId: string;
+  subscriptionProductName: string;
+  subscriptionProductThumbnail: string;
+  paymentDate: string;
+  deliveryDate: string;
 }

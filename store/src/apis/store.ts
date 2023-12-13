@@ -7,27 +7,25 @@ import { authInstance } from "./utils";
 
 // 가게 정보 등록
 export const registerStore = async (storeInfo: storeInfoDto) => {
-  const { data } = await authInstance.post("/api/stores", storeInfo);
+  const { data } = await authInstance.post("/stores", storeInfo);
   return data;
 };
 
 // 가게 정보 조회
 export const getStoreInfo = async (storeId: number) => {
-  const { data } = await authInstance.get(
-    "/api/stores/" + storeId + "/manager"
-  );
+  const { data } = await authInstance.get("/stores/" + storeId + "/manager");
   return data;
 };
 
 // 가게정보 상세 조회
 export const getStoreDetail = async (storeId: number) => {
-  const { data } = await authInstance.get("/api/stores/" + storeId);
+  const { data } = await authInstance.get("/stores/" + storeId);
   return data;
 };
 
 // 가게정보 수정
 export const modifyStore = async (storeId: number, storeInfo: storeInfoDto) => {
-  const { data } = await authInstance.put("/api/stores/" + storeId, storeInfo);
+  const { data } = await authInstance.put("/stores/" + storeId, storeInfo);
   return data;
 };
 
@@ -57,7 +55,7 @@ export const modifySubscriptionInfo = async (
   subscriptionInfo: subscriptionRegisterDto
 ) => {
   const { data } = await authInstance.put(
-    "/" + productId + "/subscribe-product",
+    "/products" + productId + "/subscribe-product",
     subscriptionInfo
   );
   return data;
@@ -65,9 +63,7 @@ export const modifySubscriptionInfo = async (
 
 // 쿠폰 조회
 export const getCouponList = async (storeId: number) => {
-  const { data } = await authInstance.get(
-    "/api/stores/" + storeId + "/coupons"
-  );
+  const { data } = await authInstance.get("/stores/" + storeId + "/coupons");
   return data;
 };
 
@@ -77,7 +73,7 @@ export const registerCoupon = async (
   couponInfo: couponRegisterDto
 ) => {
   const { data } = await authInstance.post(
-    "/api/stores/" + storeId + "/coupons",
+    "/stores/" + storeId + "/coupons",
     couponInfo
   );
   return data;
@@ -86,7 +82,7 @@ export const registerCoupon = async (
 // 쿠폰 삭제
 export const deleteCoupon = async (storeId: number, couponId: number) => {
   const { data } = await authInstance.delete(
-    "/api/stores/" + storeId + "/coupons/" + couponId
+    "/stores/" + storeId + "/coupons/" + couponId
   );
   return data;
 };
@@ -100,7 +96,7 @@ export const getSettlementList = async (
   size: number
 ) => {
   const { data } = await authInstance.get(
-    "/settlement?year=" +
+    "/admin/settlement?year=" +
       year +
       "&month=" +
       month +

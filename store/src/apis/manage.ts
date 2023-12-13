@@ -8,7 +8,7 @@ export const getReviews = async (
   sort: string
 ) => {
   const { data } = await authInstance.get(
-    "/stores/" +
+    "/products/stores/" +
       storeId +
       "/reviews?page=" +
       page +
@@ -28,7 +28,7 @@ export const getQuestions = async (
   isReplied: boolean | null
 ) => {
   const { data } = await authInstance.get(
-    "/api/stores/" +
+    "/stores/" +
       storeId +
       "/questions?is-replied=" +
       isReplied +
@@ -42,9 +42,7 @@ export const getQuestions = async (
 
 // 문의 상세 조회
 export const getQuestionDetail = async (questionId: string | undefined) => {
-  const { data } = await authInstance.get(
-    "/api/stores/questions/" + questionId
-  );
+  const { data } = await authInstance.get("/stores/questions/" + questionId);
   return data;
 };
 
@@ -54,7 +52,7 @@ export const registerAnswer = async (
   content: string
 ) => {
   const { data } = await authInstance.post(
-    "/api/stores/questions/" + questionId + "/answers",
+    "/stores/questions/" + questionId + "/answers",
     content
   );
   return data;

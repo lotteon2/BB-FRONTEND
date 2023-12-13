@@ -185,13 +185,17 @@ export default function SubscriptionOrderDetail() {
                         <span className="border-[1px] px-2 py-1 rounded-lg">
                           결제일
                         </span>
-                        <span className="mt-1">매월 {order.paymentDay}일</span>
+                        <span className="mt-1">
+                          매월 {order.paymentDay.getDate()}일
+                        </span>
                       </div>
                       <div className="flex flex-row gap-3">
                         <span className="border-[1px] px-2 py-1 rounded-lg">
                           배송일
                         </span>
-                        <span className="mt-1">매월 {order.deliveryDay}일</span>
+                        <span className="mt-1">
+                          매월 {order.deliveryDay.getDate()}일
+                        </span>
                       </div>
                     </div>
                   </div>

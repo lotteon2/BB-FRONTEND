@@ -16,7 +16,7 @@ export const getOrderList = async (
   sort: string | undefined
 ) => {
   const { data } = await authInstance.get(
-    "/api/orders/store/" +
+    "/orders/store/" +
       storeId +
       "/delivery?page=" +
       page +
@@ -31,7 +31,7 @@ export const getOrderList = async (
 // 주문 상세 조회
 export const getOrderDetail = async (orderGroupId: string) => {
   const { data } = await authInstance.get(
-    "/store/delivery/details/" + orderGroupId
+    "/orders/store/delivery/details/" + orderGroupId
   );
   return data;
 };
@@ -39,16 +39,15 @@ export const getOrderDetail = async (orderGroupId: string) => {
 // 구독/픽업 전체
 export const getScheduleInfo = async (storeId: number) => {
   const { data } = await authInstance.get(
-    "/api/stores/" + storeId + "/reservations/subscriptions"
+    "/stores/" + storeId + "/reservations/subscriptions"
   );
   return data;
 };
 
 // 구독 상세
 export const getSubscriptionsInfo = async (storeId: number, date: string) => {
-  console.log(date.split("-")[2]);
   const { data } = await authInstance.get(
-    "/api/stores/" +
+    "/stores/" +
       storeId +
       "/store-subscriptions?year=" +
       date.split("-")[0] +
@@ -63,7 +62,7 @@ export const getSubscriptionsInfo = async (storeId: number, date: string) => {
 // 픽업 상세
 export const getReservationsInfo = async (storeId: number, date: string) => {
   const { data } = await authInstance.get(
-    "/api/stores/" +
+    "/stores/" +
       storeId +
       "/reservations?year=" +
       date.split("-")[0] +

@@ -59,3 +59,17 @@ export const getMyQuestionsList = async (
   );
   return data;
 };
+
+// 마이페이지 구독 조회
+export const getMySubscriptionList = async () => {
+  const { data } = await authInstance.get("/stores/store-subscriptions");
+  return data;
+};
+
+// 구독 취소
+export const cancelSubscription = async (orderSubscriptionId: string) => {
+  const { data } = await authInstance.delete(
+    "/orders/subscription/" + orderSubscriptionId
+  );
+  return data;
+};
