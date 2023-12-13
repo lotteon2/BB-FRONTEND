@@ -143,7 +143,7 @@ export default function MyOrderList() {
         onRow={(render) => {
           return {
             onClick: () => {
-              navigate("/order/detail/" + render.key);
+              navigate("/order/detail/delivery/" + render.key);
             },
           };
         }}

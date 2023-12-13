@@ -143,7 +143,7 @@ export const productListData = {
       productName: "아리따움",
       productSummary: "아리따움은 빨간장미와 그린소재로 구성된 꽃다발입니다.",
       productThumbnail:
-        "	https://f-mans.com/data/goods/1/2023/10/70_temp_16972440461206list1.jpg",
+        "https://f-mans.com/data/goods/1/2023/10/70_temp_16972440461206list1.jpg",
       productPrice: 72000,
       salesCount: 1045,
       reviewCount: 36,

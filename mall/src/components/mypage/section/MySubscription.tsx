@@ -11,16 +11,19 @@ import { SuccessToast } from "../../common/toast/SuccessToast";
 import { FailToast } from "../../common/toast/FailToast";
 import Swal from "sweetalert2";
 import MypageDivFallback from "../../fallbacks/MypageDivFallback";
+import { useNavigate } from "react-router-dom";
 
 export default function MySubscription() {
+  const navigate = useNavigate();
   const [isChange, setIsChange] = useState<boolean>(false);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["getMySubscriptionList", isChange],
-    queryFn: () => getMySubscriptionList(),
-  });
+  // const { data, isLoading } = useQuery({
+  //   queryKey: ["getMySubscriptionList", isChange],
+  //   queryFn: () => getMySubscriptionList(),
+  // });
 
-  const handleCancel = (id: string) => {
+  const handleCancel = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
     Swal.fire({
       title: `<p style='text-align: center'>구독을 취소하시겠습니까?</p>`,
       text: " 이전 결제건에 대해서는 정상적으로 배송이 이루어지며, 이후 결제 및 배송이 진행되지 않습니다.",
@@ -58,20 +61,23 @@ export default function MySubscription() {
     }
   );
 
-  if (!data || isLoading) return <MypageDivFallback />;
+  // if (!data || isLoading) return <MypageDivFallback />;
 
-  // const data = mySubscriptionsData;
+  const data = mySubscriptionsData;
 
   return (
     <div>
       {data.data.length === 0 ? (
         <Empty description="구독중인 상품이 없습니다." />
       ) : (
-        <div className="flex flex-row gap-5 flex-wrap justify-center">
+        <div className="flex flex-row gap-5 flex-wrap justify-center mt-3">
           {data.data.map((item: mySubscriptionItemDto) => (
             <div
-              className="w-[370px] shadow-lg rounded-lg p-2 gap-3"
+              className="w-[370px] shadow-lg rounded-lg p-2 gap-3 cursor-pointer hover:shadow-none hover:border-2 hover:border-primary3"
               key={item.subscriptionId}
+              onClick={() =>
+                navigate("/order/detail/subscription/" + item.subscriptionId)
+              }
             >
               <div className="flex flex-row gap-3">
                 <img
@@ -91,7 +97,7 @@ export default function MySubscription() {
                 <Button
                   size="large"
                   type="primary"
-                  onClick={() => handleCancel(item.subscriptionId)}
+                  onClick={(e) => handleCancel(e, item.subscriptionId)}
                 >
                   구독 취소
                 </Button>

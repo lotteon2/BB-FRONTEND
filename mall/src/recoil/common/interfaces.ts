@@ -317,3 +317,29 @@ export interface pickupOrderItemDto {
   pickupDate: string;
   pickupTime: string;
 }
+
+export interface productRead {
+  productId: string;
+  thumbnailImage: string;
+  name: string;
+  price: number;
+  quantity: number;
+  totalAmount: number; // price*quantity 계산하기
+  reviewStatus: string;
+  // 배송 시작 전 DIS, 배송완료일때 ABLE, 작성 완료시 DONE
+  // 픽업일 이전 ABLE, 픽업일 후 DIS, 작성 완료 시 DONE
+  cardStatus: string;
+  // 배송 시작 전 ABLE, 배송완료 DIS, 작성 완료 시 DONE
+  // 픽업일 이전 ABLE, 픽업일 후 DIS, 작성 완료시 DONE
+}
+
+export interface orderInfoForStore {
+  storeId: number;
+  storeName: string;
+  products: productRead[];
+  orderDeliveryStatus: string;
+  totalAmount: number;
+  deliveryCost: number;
+  couponAmount: number;
+  paymentAmount: number;
+}
