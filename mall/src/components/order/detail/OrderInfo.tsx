@@ -7,6 +7,7 @@ import {
 import { useQuery } from "react-query";
 import { getDeliveryDetail } from "../../../apis/order";
 import Loading from "../../common/Loading";
+import { useNavigate } from "react-router-dom";
 
 interface param {
   id: string;
@@ -15,10 +16,15 @@ interface param {
 const { TextArea } = Input;
 
 export default function OrderInfo(param: param) {
+  const navigate = useNavigate();
   //   const { data, isLoading } = useQuery({
   //     queryKey: ["getDeliveryDetail"],
   //     queryFn: () => getDeliveryDetail(param.id),
   //   });
+
+  const handleGiftcard = (status: string, id: string) => {
+    if (status === "ABLE") navigate("/giftcard/pickup/" + id);
+  };
 
   const data = orderDeliveryDetailData;
   //   if (!data || isLoading) return <Loading />;
@@ -95,6 +101,12 @@ export default function OrderInfo(param: param) {
                             product.cardStatus === "ABLE" ? false : true
                           }
                           type="primary"
+                          onClick={() =>
+                            handleGiftcard(
+                              product.cardStatus,
+                              data.orderGroupId
+                            )
+                          }
                         >
                           {product.cardStatus === "DONE"
                             ? "작성 완료"

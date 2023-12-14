@@ -162,6 +162,7 @@ export const orderDeliveryDetailData = {
 };
 
 export const pickupOrderDetailData = {
+  productId: "1",
   productName: "상품명",
   productThumbnail:
     "https://f-mans.com/data/goods/1/2023/10/70_temp_16972440461206list1.jpg",
@@ -174,7 +175,7 @@ export const pickupOrderDetailData = {
   totalOrderPrice: 50000,
   totalDiscountPrice: 1000,
   actualPrice: 49000,
-  reviewStatus: "DISABLED", // DISABLED | ABLE | DONE
+  reviewStatus: "ABLE", // DISABLED | ABLE | DONE
   cardStatus: "ABLE", // DISABLED | ABLE | DONE
   ordererName: "김정윤",
   ordererPhoneNumber: "01012345678",
@@ -184,6 +185,7 @@ export const pickupOrderDetailData = {
 };
 
 export const subscriptionOrderDetailData = {
+  productId: "1",
   productName: "상품명",
   productThumbnail:
     "https://f-mans.com/data/goods/1/2023/10/70_temp_16972440461206list1.jpg",

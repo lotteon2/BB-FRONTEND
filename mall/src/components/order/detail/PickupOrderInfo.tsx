@@ -1,20 +1,37 @@
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { getPickupDetail } from "../../../apis/order";
 import Loading from "../../common/Loading";
 import { pickupOrderDetailData } from "../../../mocks/order";
-import { Button, Form, Input, Tag } from "antd";
+import { Button, Form, Input, Modal, Tag } from "antd";
+import { useNavigate } from "react-router-dom";
 
 interface param {
   id: string;
 }
 
 export default function PickupOrderInfo(param: param) {
+  const navigate = useNavigate();
+  const [productId, setProductId] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
   const data = pickupOrderDetailData;
 
   // const {data, isLoading} = useQuery({
   //   queryKey: [""],
   //   queryFn: () => getPickupDetail(param.id),
   // })
+
+  const handleGiftcard = (status: string) => {
+    if (status === "ABLE") navigate("/giftcard/pickup/" + param.id);
+  };
+
+  const handleReview = (status: string, productId: string) => {
+    if (status === "ABLE") {
+      setProductId(productId);
+      setIsModalOpen(true);
+    }
+  };
 
   // if (!data || isLoading) return <Loading />
   return (
@@ -77,12 +94,16 @@ export default function PickupOrderInfo(param: param) {
                   <div className="flex flex-row gap-2 my-auto max-[1200px]:w-full max-[1200px]:justify-end">
                     <Button
                       disabled={data.reviewStatus === "ABLE" ? false : true}
+                      onClick={() =>
+                        handleReview(data.reviewStatus, data.productId)
+                      }
                     >
                       {data.reviewStatus === "DONE" ? "작성 완료" : "리뷰 작성"}
                     </Button>
                     <Button
                       disabled={data.cardStatus === "ABLE" ? false : true}
                       type="primary"
+                      onClick={() => handleGiftcard(data.cardStatus)}
                     >
                       {data.cardStatus === "DONE" ? "작성 완료" : "카드 작성"}
                     </Button>
@@ -166,6 +187,12 @@ export default function PickupOrderInfo(param: param) {
           </div>
         </div>
       </div>
+      <Modal
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        title="리뷰 작성"
+        footer={[]}
+      ></Modal>
     </div>
   );
 }

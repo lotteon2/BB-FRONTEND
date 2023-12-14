@@ -17,6 +17,7 @@ import OrderPage from "../pages/order/OrderPage";
 import CartPage from "../pages/CartPage";
 import MyPage from "../pages/MyPage";
 import OrderDetailPage from "../pages/order/OrderDetailPage";
+import GiftCardPage from "../pages/GiftCartPage";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,7 @@ const router = createBrowserRouter([
       { path: "product/tag/:tagId", element: <ProductByTagPage /> },
       { path: "product/detail/:productId", element: <ProductDetailPage /> },
       { path: "cart", element: <CartPage /> },
+      { path: "giftcard/:type/:id", element: <GiftCardPage /> },
     ],
   },
   {
