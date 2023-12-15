@@ -236,6 +236,7 @@ export default function RegisterPage() {
           label="이메일"
           rules={[
             {
+              required: true,
               validator: rightEmail,
             },
           ]}
@@ -267,6 +268,7 @@ export default function RegisterPage() {
           label="비밀번호"
           rules={[
             {
+              required: true,
               validator: rightPassword,
             },
           ]}
@@ -306,6 +308,7 @@ export default function RegisterPage() {
           label="이름"
           rules={[
             {
+              required: true,
               validator: rightName,
             },
           ]}
@@ -328,12 +331,13 @@ export default function RegisterPage() {
             },
           ]}
         >
+          <Input className="hidden" value={businessNumberImage} />
           <input
-            value={businessNumberImage}
             type="file"
             accept="image/*"
             onChange={(e) => handleUploadImage(e)}
           />
+          <input type="text" />
         </Form.Item>
         <Button
           type="primary"
