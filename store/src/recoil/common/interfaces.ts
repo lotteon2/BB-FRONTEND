@@ -7,7 +7,7 @@ export interface signinDto {
 
 export interface signupDto {
   email: string;
-  emailVerified: boolean;
+  isEmailVerified: boolean;
   password: string;
   name: string;
   businessNumberImage: string;

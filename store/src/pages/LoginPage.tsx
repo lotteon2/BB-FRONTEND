@@ -40,8 +40,10 @@ export default function LoginPage() {
         SuccessToast("로그인되었습니다.");
         navigate("/");
       },
-      onError: () => {
-        FailToast(null);
+      onError: (error: any) => {
+        if (error.response.data.code === "401") {
+          FailToast(error.response.data.message);
+        }
       },
     }
   );

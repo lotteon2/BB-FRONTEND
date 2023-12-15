@@ -21,22 +21,25 @@ export default function RegisterPage() {
   const [email, setEmail] = useState<string>("");
   const [emailcode, setEmailCode] = useState<string>("");
   const [isValid, setIsValid] = useState<boolean>(false);
+  const [isShow, setIsShow] = useState<boolean>(false);
   const [isConfirm, setIsConfirm] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
-  const [businessNumberImage, setBusinessNumberImage] = useState<string>("");
+  const [businessNumberImage, setBusinessNumberImage] = useState<string>(
+    "https://f-mans.com/data/goods/1/2022/11/140_temp_16675233646624view.jpg"
+  );
   const defaultValues = {
     email: "",
     emailCode: "",
     password: "",
     name: "",
-    businessNumberImage: "",
+    businessNumberImage:
+      "https://f-mans.com/data/goods/1/2022/11/140_temp_16675233646624view.jpg",
   };
   const email_pattern =
     /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+.[a-zA-Z]+$/i;
   const blank_pattern = "/^s+|s+$/g";
-  const password_pattern =
-    /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+  const password_pattern = /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,16}$/;
   const korean_pattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
   // 이메일 중복 확인
@@ -86,7 +89,7 @@ export default function RegisterPage() {
     ) {
       const signupDto = {
         email: email,
-        emailVerified: isConfirm,
+        isEmailVerified: isConfirm,
         password: password,
         name: name,
         businessNumberImage: businessNumberImage,
@@ -127,7 +130,7 @@ export default function RegisterPage() {
     }
     if (!value.match(password_pattern)) {
       return Promise.reject(
-        new Error("8~16자의 영문자, 숫자, 특수문자를 사용해 주세요.")
+        new Error("8~16자의 영문자, 숫자를 사용해 주세요.")
       );
     }
     if (value.match(blank_pattern)) {
@@ -161,6 +164,7 @@ export default function RegisterPage() {
     {
       onSuccess: () => {
         SuccessToast("인증코드가 발송되었습니다.");
+        setIsShow(true);
       },
       onError: () => {
         FailToast(null);
@@ -170,7 +174,7 @@ export default function RegisterPage() {
 
   const checkEmailCodeMutation = useMutation(
     ["verifyEmailCode"],
-    () => verifyEmailCode(email),
+    () => verifyEmailCode(email, emailcode),
     {
       onSuccess: () => {
         SuccessToast("인증되었습니다.");
@@ -356,7 +360,7 @@ export default function RegisterPage() {
             ""
           )}
         </div>
-        {isConfirm ? (
+        {isShow ? (
           <Button
             type="primary"
             onClick={handleCheckEmailCode}

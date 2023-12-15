@@ -9,7 +9,8 @@ export const signin = async (signinDto: signinDto) => {
 
 // 회원가입
 export const signup = async (signupDto: signupDto) => {
-  const { data } = await defaultInstance.post("/auth/stores", signupDto);
+  console.log(signupDto);
+  const { data } = await defaultInstance.post("/auth/stores/signup", signupDto);
   return data;
 };
 
@@ -26,8 +27,9 @@ export const sendEmailCode = async (email: string) => {
 };
 
 // 이메일 인증코드 확인
-export const verifyEmailCode = async (email: string) => {
-  const { data } = await defaultInstance.patch("/auth/emails/" + email);
+export const verifyEmailCode = async (email: string, code: string) => {
+  console.log(code);
+  const { data } = await defaultInstance.patch("/auth/emails/" + email, code);
   return data;
 };
 
