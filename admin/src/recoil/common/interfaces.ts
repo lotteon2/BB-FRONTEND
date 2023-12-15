@@ -1,5 +1,5 @@
 export interface signinDto {
-  email: string;
+  id: string;
   password: string;
 }
 

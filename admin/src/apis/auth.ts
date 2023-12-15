@@ -3,8 +3,7 @@ import { authInstance, defaultInstance } from "./utils";
 
 // 로그인
 export const signin = async (signinDto: signinDto) => {
-  const { data } = await defaultInstance.post("/stores/login", signinDto);
-  return data;
+  return await defaultInstance.post("/auth/system/admin/login", signinDto);
 };
 
 // 로그아웃

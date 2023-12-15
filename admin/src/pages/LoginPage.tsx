@@ -16,14 +16,14 @@ export default function LoginPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const defaultValues = {
-    email: "",
+    id: "",
     password: "",
   };
 
   // 로그인 요청
   const handleSignin = () => {
     const signinDto = {
-      email: email,
+      id: email,
       password: password,
     };
 
@@ -34,7 +34,8 @@ export default function LoginPage() {
     ["signin"],
     (signinDto: signinDto) => signin(signinDto),
     {
-      onSuccess: () => {
+      onSuccess: (res) => {
+        console.log(res);
         SuccessToast("로그인되었습니다.");
         navigate("/");
       },
@@ -63,17 +64,16 @@ export default function LoginPage() {
         style={{ marginLeft: 150, marginTop: 20 }}
       >
         <Form.Item
-          name="email"
+          name="id"
           rules={[
             {
               required: true,
-              message: "이메일을 입력해주세요",
-              type: "email",
+              message: "아이디를 입력해주세요",
             },
           ]}
         >
           <Input
-            placeholder="이메일 입력"
+            placeholder="아이디 입력"
             value={email}
             prefix={<UserOutlined className="site-form-item-icon" />}
             onChange={(e) => setEmail(e.target.value)}
