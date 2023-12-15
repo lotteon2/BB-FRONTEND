@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button, Form, Input } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { loginState, nameState } from "../recoil/atom/common";
 import { useNavigate } from "react-router";
 import { useMutation } from "react-query";
@@ -12,7 +12,7 @@ import { FailToast } from "../components/common/toast/FailToast";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const isLogin = useRecoilValue<boolean>(loginState);
+  const setIsLogin = useSetRecoilState<boolean>(loginState);
   const setName = useSetRecoilState<string>(nameState);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -35,9 +35,11 @@ export default function LoginPage() {
     ["signin"],
     (signinDto: signinDto) => signin(signinDto),
     {
-      onSuccess: (data) => {
-        setName(data.name);
+      onSuccess: (res) => {
+        setName(res.data.name);
+        localStorage.setItem("accessToken", res.headers["authorization"]);
         SuccessToast("로그인되었습니다.");
+        setIsLogin(true);
         navigate("/");
       },
       onError: (error: any) => {
@@ -47,11 +49,6 @@ export default function LoginPage() {
       },
     }
   );
-
-  useEffect(() => {
-    if (isLogin) navigate("/");
-    // eslint-disable-next-line
-  }, []);
 
   return (
     <div className="relative top-72 left-[550px] w-[800px] h-[350px] bg-grayscale1 shadow-lg z-10 rounded-lg">

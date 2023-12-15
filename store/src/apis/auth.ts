@@ -3,8 +3,7 @@ import { authInstance, defaultInstance } from "./utils";
 
 // 로그인
 export const signin = async (signinDto: signinDto) => {
-  const { data } = await defaultInstance.post("/auth/stores/login", signinDto);
-  return data;
+  return await defaultInstance.post("/auth/stores/login", signinDto);
 };
 
 // 회원가입
