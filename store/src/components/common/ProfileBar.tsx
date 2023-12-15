@@ -11,12 +11,15 @@ import { useNavigate } from "react-router";
 export default function ProfileBar() {
   const navigate = useNavigate();
   const resetLoginState = useResetRecoilState(loginState);
-  const name = useRecoilValue<string>(nameState);
+  const resetNameState = useResetRecoilState(nameState);
+  const name = useRecoilValue(nameState);
 
   const logoutMutation = useMutation(["logout"], () => logout(), {
     onSuccess: () => {
       SuccessToast("로그아웃되었습니다.");
       resetLoginState();
+      resetNameState();
+      localStorage.removeItem("accessToken");
       navigate("/login");
     },
     onError: () => {

@@ -10,21 +10,25 @@ const axiosApi = (baseURL: string | undefined) => {
   return instance;
 };
 
-const axiosAuthApi = (baseURL: any) => {
+const axiosAuthApi = (baseURL: string | undefined) => {
   const instance = axios.create({
     baseURL,
-    // withCredentials: true,
+    withCredentials: true,
   });
 
   instance.interceptors.request.use(
     (config) => {
-      config.headers["userId"] = 1;
+      const access_token = localStorage.getItem("accessToken");
+      if (access_token) {
+        config.headers.Authorization = access_token;
+      }
       return config;
     },
     (error) => {
       return Promise.reject(error);
     }
   );
+
   return instance;
 };
 
