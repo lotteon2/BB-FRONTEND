@@ -55,7 +55,7 @@ export default function KakaoLoginRedirect() {
   }, []);
 
   return (
-    <div>
+    <div className="max-w-[1320px] mx-auto">
       <MainPage />
     </div>
   );

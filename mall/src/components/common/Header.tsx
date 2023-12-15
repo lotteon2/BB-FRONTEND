@@ -21,6 +21,7 @@ import { Select } from "antd";
 import { useMutation } from "react-query";
 import { logout } from "../../apis/auth";
 import { FailToast } from "./toast/FailToast";
+import { SuccessToast } from "./toast/SuccessToast";
 
 interface parameter {
   istoggled: string;
@@ -144,6 +145,7 @@ export default function Header() {
       resetNicknameState();
       resetProfileImage();
       navigate("/");
+      SuccessToast("로그아웃 되었습니다.");
     },
     onError: () => {
       FailToast(null);

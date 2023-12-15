@@ -39,11 +39,11 @@ export default function ProductInfo(param: param) {
     freeDeliveryMinPrice: 0,
   });
 
-  const data = productDetailData;
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ["getProductDetail"],
-  //   queryFn: () => getProductDetail(param.productId),
-  // });
+  // const data = productDetailData;
+  const { data, isLoading } = useQuery({
+    queryKey: ["getProductDetail"],
+    queryFn: () => getProductDetail(param.productId),
+  });
 
   const handleWishButton = (productId: string) => {
     if (isLogin) {
@@ -148,7 +148,7 @@ export default function ProductInfo(param: param) {
     }
   }, []);
 
-  // if (!data || isLoading) return <ProductInfoFallback />;
+  if (!data || isLoading) return <ProductInfoFallback />;
 
   return (
     <div className="w-full flex flex-row gap-10 flex-wrap justify-center">

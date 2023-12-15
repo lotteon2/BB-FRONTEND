@@ -1,8 +1,10 @@
-export interface loginData {
-  socialId: number;
-  nickname: string;
+export interface loginDto {
   email: string;
+  nickname: string;
   phoneNumber: string;
+  socialId: {
+    value: string;
+  };
 }
 
 export interface mainProductListDto {

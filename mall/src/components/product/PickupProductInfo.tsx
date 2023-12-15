@@ -11,10 +11,7 @@ import { useNavigate } from "react-router";
 import { useMutation, useQuery } from "react-query";
 import { getProductDetail } from "../../apis/product";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
-import { productDetailData } from "../../mocks/product";
 import { Dayjs } from "dayjs";
-import type { CalendarProps } from "antd";
-import type { DatePickerProps } from "antd";
 import { getStoreDeliveryPolicy } from "../../apis/store";
 import {
   pickupOrderDto,
@@ -23,6 +20,7 @@ import {
 import { pickupTime } from "../../recoil/common/data";
 import { pickupOrderState } from "../../recoil/atom/order";
 import dayjs from "dayjs";
+import { productDetailData } from "../../mocks/product";
 
 interface param {
   productId: string | undefined;
@@ -332,6 +330,9 @@ export default function PickupProductInfo(param: param) {
               fullscreen={false}
               onChange={handleCalendar}
               value={date}
+              disabledDate={(date) =>
+                date.valueOf() < Date.now() ? true : false
+              }
             />
           </div>
           <div className="w-[300px] h-[320px] flex flex-row flex-wrap pt-5 gap-1">
