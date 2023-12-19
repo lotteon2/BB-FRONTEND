@@ -1,21 +1,27 @@
 import { useState } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Modal } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useSetRecoilState } from "recoil";
 import { loginState, nameState } from "../recoil/atom/common";
 import { useNavigate } from "react-router";
 import { useMutation } from "react-query";
-import { signin } from "../apis/auth";
-import { signinDto } from "../recoil/common/interfaces";
+import { reRegisterBusinessNumberImage, signin } from "../apis/auth";
+import {
+  reRegisterBusinessNumberImageDto,
+  signinDto,
+} from "../recoil/common/interfaces";
 import { SuccessToast } from "../components/common/toast/SuccessToast";
 import { FailToast } from "../components/common/toast/FailToast";
+import { getImageUrl } from "../apis/image";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const setIsLogin = useSetRecoilState<boolean>(loginState);
   const setName = useSetRecoilState<string>(nameState);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [businessNumberImage, setBusinessNumberImage] = useState<string>("");
   const defaultValues = {
     email: "",
     password: "",
@@ -31,6 +37,25 @@ export default function LoginPage() {
     signinMutation.mutate(signinDto);
   };
 
+  // 이미지 등록
+  const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files !== null) {
+      const formData = new FormData();
+      formData.append("image", e.target.files[0]);
+      imageMutation.mutate(formData);
+    }
+  };
+
+  // 사업자등록번호 재등록
+  const handleReRegister = () => {
+    const reRegisterDto = {
+      email: email,
+      businessNumberImage: businessNumberImage,
+    };
+
+    if (businessNumberImage !== "") reRegisterMutation.mutate(reRegisterDto);
+  };
+
   const signinMutation = useMutation(
     ["signin"],
     (signinDto: signinDto) => signin(signinDto),
@@ -43,9 +68,41 @@ export default function LoginPage() {
         navigate("/");
       },
       onError: (error: any) => {
-        if (error.response.data.code === "401") {
+        if (error.response.status === 401) {
+          FailToast("아이디/비밀번호를 확인해주세요.");
+        } else if (error.response.status === 403) {
           FailToast(error.response.data.message);
+        } else if (error.response.status === 301) {
+          setIsModalOpen(true);
         }
+      },
+    }
+  );
+
+  const imageMutation = useMutation(
+    ["uploadImage"],
+    (image: FormData) => getImageUrl(image),
+    {
+      onSuccess: (data) => {
+        setBusinessNumberImage(data);
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
+
+  const reRegisterMutation = useMutation(
+    ["reRegisterBusinessNumberImage"],
+    (reRegisterDto: reRegisterBusinessNumberImageDto) =>
+      reRegisterBusinessNumberImage(reRegisterDto),
+    {
+      onSuccess: (data) => {
+        SuccessToast(data.message);
+        setIsModalOpen(false);
+      },
+      onError: () => {
+        FailToast(null);
       },
     }
   );
@@ -115,6 +172,49 @@ export default function LoginPage() {
           회원가입
         </span>
       </div>
+      <Modal
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        footer={[]}
+      >
+        <Form
+          name="registerBusinessNumberImage"
+          initialValues={{ remember: true }}
+          autoComplete="off"
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 10 }}
+          style={{ marginLeft: 20, marginTop: 20 }}
+        >
+          <Form.Item
+            name="businessNumberImage"
+            label="사업자 등록증"
+            rules={[
+              {
+                required: true,
+                message: "사업자 등록증을 제출해주세요",
+              },
+            ]}
+          >
+            <div>
+              <Input className="hidden" value={businessNumberImage} />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleUploadImage(e)}
+              />
+            </div>
+          </Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            size="large"
+            className="w-[435px]"
+            onClick={handleReRegister}
+          >
+            재등록
+          </Button>
+        </Form>
+      </Modal>
     </div>
   );
 }

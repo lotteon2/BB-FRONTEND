@@ -10,7 +10,7 @@ import {
   profileImageState,
 } from "../../recoil/atom/common";
 import { loginDto } from "../../recoil/common/interfaces";
-import MainPage from "../../pages/MainPage";
+import Loading from "../common/Loading";
 
 export default function KakaoLoginRedirect() {
   const url = new URL(window.location.href);
@@ -56,7 +56,7 @@ export default function KakaoLoginRedirect() {
 
   return (
     <div className="max-w-[1320px] mx-auto">
-      <MainPage />
+      <Loading />
     </div>
   );
 }

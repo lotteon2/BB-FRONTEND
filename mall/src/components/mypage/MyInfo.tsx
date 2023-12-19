@@ -1,7 +1,6 @@
 import { useQuery } from "react-query";
 import { getMyInfo } from "../../apis/member";
 import MyInfoFallback from "../fallbacks/MyInfoFallback";
-import { infoData } from "../../mocks/mypage";
 import { Button } from "antd";
 
 interface param {
@@ -9,14 +8,14 @@ interface param {
 }
 
 export default function MyInfo(param: param) {
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getMyInfo"],
-  //     queryFn: () => getMyInfo(),
-  //   });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getMyInfo"],
+    queryFn: () => getMyInfo(),
+  });
 
-  const data = infoData;
+  // const data = infoData;
 
-  //   if (!data || isLoading) return <MyInfoFallback />;
+  if (!data || isLoading) return <MyInfoFallback />;
 
   return (
     <div className="w-full mx-auto flex flex-row gap-5 flex-wrap justify-between max-[660px]:justify-center">

@@ -5,6 +5,11 @@ export interface signinDto {
   password: string;
 }
 
+export interface reRegisterBusinessNumberImageDto {
+  email: string;
+  businessNumberImage: string;
+}
+
 export interface signupDto {
   email: string;
   isEmailVerified: boolean;

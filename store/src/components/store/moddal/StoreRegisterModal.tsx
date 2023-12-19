@@ -265,6 +265,12 @@ export default function StoreRegisterModal(param: param) {
               <Form.Item name="detailAddress">
                 <Input
                   placeholder="상세주소"
+                  onChange={(e) =>
+                    setRegisterValues((prev) => ({
+                      ...prev,
+                      detailAddress: e.target.value,
+                    }))
+                  }
                   value={registerValues.detailAddress}
                   style={{ marginLeft: 60, width: 190 }}
                 />

@@ -10,7 +10,7 @@ export const getStoreSalesGraph = async () => {
 // 이전달 정산내역
 export const getLastMonthSettlement = async (page: number, size: number) => {
   const { data } = await authInstance.get(
-    "/settlement?page=" + page + "&size=" + size
+    "/admin/settlement?page=" + page + "&size=" + size
   );
   return data;
 };
@@ -22,7 +22,7 @@ export const getRegisterRequestList = async (
   size: number
 ) => {
   const { data } = await authInstance.get(
-    "/store-managers/applications?status=" +
+    "/users/admin/store-managers/applications?status=" +
       status +
       "&page=" +
       page +

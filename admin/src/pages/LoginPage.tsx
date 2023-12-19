@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, Form, Input } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { loginState } from "../recoil/atom/common";
 import { useNavigate } from "react-router";
 import { useMutation } from "react-query";
@@ -12,19 +12,19 @@ import { FailToast } from "../components/common/toast/FailToast";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const isLogin = useRecoilValue<boolean>(loginState);
+  const [isLogin, setIsLogin] = useRecoilState<boolean>(loginState);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const defaultValues = {
-    id: "",
-    password: "",
+    id: "100",
+    password: "bb-flower-admin",
   };
 
   // 로그인 요청
   const handleSignin = () => {
     const signinDto = {
-      id: email,
-      password: password,
+      id: defaultValues.id,
+      password: defaultValues.password,
     };
 
     signinMutation.mutate(signinDto);
@@ -35,7 +35,8 @@ export default function LoginPage() {
     (signinDto: signinDto) => signin(signinDto),
     {
       onSuccess: (res) => {
-        console.log(res);
+        localStorage.setItem("accessToken", res.headers["authorization"]);
+        setIsLogin(true);
         SuccessToast("로그인되었습니다.");
         navigate("/");
       },

@@ -331,13 +331,14 @@ export default function RegisterPage() {
             },
           ]}
         >
-          <Input className="hidden" value={businessNumberImage} />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleUploadImage(e)}
-          />
-          <input type="text" />
+          <div>
+            <Input className="hidden" value={businessNumberImage} />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleUploadImage(e)}
+            />
+          </div>
         </Form.Item>
         <Button
           type="primary"

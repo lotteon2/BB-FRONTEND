@@ -1,4 +1,8 @@
-import { signinDto, signupDto } from "../recoil/common/interfaces";
+import {
+  reRegisterBusinessNumberImageDto,
+  signinDto,
+  signupDto,
+} from "../recoil/common/interfaces";
 import { authInstance, defaultInstance } from "./utils";
 
 // 로그인
@@ -35,5 +39,13 @@ export const verifyEmailCode = async (email: string, code: string) => {
 // 로그아웃
 export const logout = async () => {
   const { data } = await authInstance.post("/auth/stores/logout");
+  return data;
+};
+
+// 사업자등록번호 재등록
+export const reRegisterBusinessNumberImage = async (
+  reRegisterDto: reRegisterBusinessNumberImageDto
+) => {
+  const { data } = await authInstance.patch("/users/stores", reRegisterDto);
   return data;
 };

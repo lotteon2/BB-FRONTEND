@@ -8,6 +8,6 @@ export const signin = async (signinDto: signinDto) => {
 
 // 로그아웃
 export const logout = async () => {
-  const { data } = await authInstance.post("/system/admin/logout");
+  const { data } = await authInstance.post("/auth/system/admin/logout");
   return data;
 };
