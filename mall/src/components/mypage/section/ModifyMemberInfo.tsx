@@ -107,12 +107,12 @@ export default function ModifyMemberInfo() {
   useEffect(() => {
     if (data) {
       setDefaultValues({
-        nickname: data.nickName,
-        email: data.email,
-        phoneNumber: data.phoneNumber,
+        nickname: data.data.data.nickname,
+        email: data.data.data.email,
+        phoneNumber: data.data.data.phoneNumber,
       });
     }
-  }, []);
+  }, [data]);
 
   if (!data || isLoading) return <ModifyMemberInfoFallback />;
 
@@ -138,7 +138,7 @@ export default function ModifyMemberInfo() {
           form={form}
           name="modifyMemberInfoForm"
           autoCapitalize="off"
-          initialValues={defaultValues}
+          initialValues={{ defaultValues }}
           onFinish={handleRegister}
         >
           <Form.Item

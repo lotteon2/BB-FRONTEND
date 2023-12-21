@@ -33,7 +33,7 @@ export const withdraw = async (type: string) => {
 
 // 회원정보 수정
 export const modifyMemberInfo = async (modifyDto: modifyMemberDto) => {
-  const { data } = await authInstance.patch("/users/social", modifyDto);
+  const { data } = await authInstance.put("/users/social", modifyDto);
   return data;
 };
 
