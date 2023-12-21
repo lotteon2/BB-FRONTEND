@@ -15,19 +15,33 @@ export const getProductListByCategory = async (
   sortOption: string,
   storeId: number | null
 ) => {
-  const { data } = await defaultInstance.get(
-    "/products/category/" +
-      categoryId +
-      "?page=" +
-      page +
-      "&size=" +
-      size +
-      "&sort-option=" +
-      sortOption +
-      "&store-id=" +
-      storeId
-  );
-  return data;
+  if (storeId === null) {
+    const { data } = await defaultInstance.get(
+      "/products/category/" +
+        categoryId +
+        "?page=" +
+        page +
+        "&size=" +
+        size +
+        "&sort-option=" +
+        sortOption
+    );
+    return data;
+  } else {
+    const { data } = await defaultInstance.get(
+      "/products/category/" +
+        categoryId +
+        "?page=" +
+        page +
+        "&size=" +
+        size +
+        "&sort-option=" +
+        sortOption +
+        "&store-id=" +
+        storeId
+    );
+    return data;
+  }
 };
 
 // 태그별 상품목록 조회

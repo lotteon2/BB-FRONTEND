@@ -109,3 +109,11 @@ export const getMyPickupOrderList = async (page: number, size: number) => {
   );
   return data;
 };
+
+// 내 리뷰 조회
+export const getMyReviewList = async (page: number, size: number) => {
+  const { data } = await authInstance.get(
+    "/products/reviews?page=" + page + "&size=" + size
+  );
+  return data;
+};

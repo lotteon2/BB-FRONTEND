@@ -3,6 +3,9 @@ import { Pagination, PaginationProps, Rate } from "antd";
 import { myReviewListData } from "../../../mocks/mypage";
 import { myReviewItemDto } from "../../../recoil/common/interfaces";
 import MyReviewModal from "../modal/MyReviewModal";
+import { useQuery } from "react-query";
+import { getMyReviewList } from "../../../apis/member";
+import ReviewListFallback from "../../fallbacks/ReviewListFallback";
 
 export default function MyReviewList() {
   const [page, setPage] = useState<number>(1);
@@ -18,7 +21,11 @@ export default function MyReviewList() {
     productName: "",
   });
 
-  const data = myReviewListData;
+  //   const data = myReviewListData;
+  const { data, isLoading } = useQuery({
+    queryKey: ["getMyReviewList", page],
+    queryFn: () => getMyReviewList(page - 1, 10),
+  });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
@@ -27,6 +34,13 @@ export default function MyReviewList() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  if (!data || isLoading)
+    return (
+      <div className="p-2">
+        <ReviewListFallback />
+      </div>
+    );
 
   return (
     <div>

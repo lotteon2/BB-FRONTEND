@@ -7,7 +7,7 @@ import { authInstance } from "./utils";
 
 // 가게 정보 등록
 export const registerStore = async (storeInfo: storeInfoDto) => {
-  const { data } = await authInstance.post("/stores", storeInfo);
+  const { data } = await authInstance.post("/stores/", storeInfo);
   return data;
 };
 

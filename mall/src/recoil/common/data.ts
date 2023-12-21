@@ -115,7 +115,7 @@ export const categoryOptions = [
   },
   {
     value: 3,
-    label: "꽃상지",
+    label: "꽃상자",
   },
   {
     value: 4,

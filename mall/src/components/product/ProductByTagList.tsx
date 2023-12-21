@@ -62,6 +62,7 @@ export default function ProductByTagList(param: param) {
     }
   };
 
+  console.log(categoryOption);
   if (!data || isLoading)
     return (
       <div>
@@ -269,8 +270,8 @@ export default function ProductByTagList(param: param) {
           평점높은순
         </span>
       </div>
-      <div className="flex flex-row gap-3 text-center flex-wrap">
-        {data.products.map((item: productListDto) => (
+      {/* <div className="flex flex-row gap-3 text-center flex-wrap">
+        {data.data.products.map((item: productListDto) => (
           <div
             className="flex flex-col text-left mx-auto cursor-pointer"
             key={item.key}
@@ -342,7 +343,7 @@ export default function ProductByTagList(param: param) {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
       <div className="text-center mt-10">
         <Pagination
           defaultPageSize={24}
