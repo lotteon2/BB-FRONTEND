@@ -12,6 +12,7 @@ import MySubscription from "../components/mypage/section/MySubscription";
 import MyWishList from "../components/mypage/section/MyWishList";
 import MyOrderList from "../components/mypage/section/MyOrderList";
 import MyPickupOrderList from "../components/mypage/section/MyPickupOrderList";
+import MyReviewList from "../components/mypage/section/MyReviewList";
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -88,6 +89,7 @@ export default function MyPage() {
               <p className="text-2xl font-bold pb-2 border-b-[1px]">
                 상품 후기
               </p>
+              <MyReviewList />
             </div>
           ) : selected === "회원정보" ? (
             <div>

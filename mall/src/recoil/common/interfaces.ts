@@ -345,3 +345,14 @@ export interface orderInfoForStore {
   couponAmount: number;
   paymentAmount: number;
 }
+
+export interface myReviewItemDto {
+  reviewId: number;
+  createdAt: string;
+  reviewRating: number;
+  reviewContent: string;
+  reviewImages: string[];
+  nickname: string;
+  profileImage: string;
+  productName: string;
+}

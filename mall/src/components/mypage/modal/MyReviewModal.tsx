@@ -2,15 +2,15 @@ import { Button, Modal, Rate } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "../../../css/slick-theme.css";
-import { reviewItemDto } from "../../../recoil/common/interfaces";
+import { myReviewItemDto } from "../../../recoil/common/interfaces";
 
 interface param {
   isModalOpen: boolean;
   handleCancel: () => void;
-  data: reviewItemDto;
+  data: myReviewItemDto;
 }
 
-export default function ReviewModal(param: param) {
+export default function MyReviewModal(param: param) {
   const settings = {
     infinite: false,
     pauseOnHover: true,
@@ -36,16 +36,17 @@ export default function ReviewModal(param: param) {
             <Rate
               allowHalf
               disabled
-              defaultValue={param.data.rating}
+              defaultValue={param.data.reviewRating}
               style={{ color: "#85C031" }}
             />
-            <div className="flex flex-row gap-3 text-[0.8rem]">
+            <div className="text-[0.8rem]">
+              <p className="font-bold">{param.data?.productName}</p>
               <p>{param.data?.nickname}</p>
             </div>
           </div>
         </div>
         <div className="text-[1.2rem] max-h-[200px] overflow-auto">
-          {param.data?.content}
+          {param.data?.reviewContent}
         </div>
         <div className="w-[95%] mx-auto mt-5">
           <Slider {...settings}>

@@ -300,3 +300,43 @@ export const myPickupOrderListData = {
     },
   ],
 };
+
+export const myReviewListData = {
+  data: {
+    reviews: [
+      {
+        reviewId: 4,
+        createdAt: "2023-12-16T02:09:52.583376",
+        reviewRating: 4.5,
+        reviewContent: "content",
+        reviewImages: [
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        ],
+        nickname: "lee nick",
+        profileImage:
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        productName: "상품명1",
+      },
+      {
+        reviewId: 5,
+        createdAt: "2023-12-16T02:09:52.583376",
+        reviewRating: 4.5,
+        reviewContent: "content",
+        reviewImages: [
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        ],
+        nickname: "lee nick",
+        profileImage:
+          "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
+        productName: "상품명2",
+      },
+    ],
+    totalCnt: 6,
+  },
+  message: null,
+  errorCode: null,
+  result: "SUCCESS",
+};
