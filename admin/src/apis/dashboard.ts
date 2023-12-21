@@ -3,7 +3,7 @@ import { storeStatusModifyDto } from "../recoil/common/interfaces";
 
 // 이전달 가게 매출액 top 10
 export const getStoreSalesGraph = async () => {
-  const { data } = await authInstance.get("/sales");
+  const { data } = await authInstance.get("/admin/sales");
   return data;
 };
 
@@ -34,6 +34,9 @@ export const getRegisterRequestList = async (
 
 // 요청 승인/거절
 export const modifyStoreStatus = async (modifyDto: storeStatusModifyDto) => {
-  const { data } = await authInstance.patch("/admin/store-manager", modifyDto);
+  const { data } = await authInstance.patch(
+    "/auth/admin/store-manager",
+    modifyDto
+  );
   return data;
 };

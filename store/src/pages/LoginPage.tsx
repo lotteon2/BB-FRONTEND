@@ -61,6 +61,7 @@ export default function LoginPage() {
     (signinDto: signinDto) => signin(signinDto),
     {
       onSuccess: (res) => {
+        console.log(res.data);
         setName(res.data.name);
         localStorage.setItem("accessToken", res.headers["authorization"]);
         SuccessToast("로그인되었습니다.");
@@ -69,9 +70,9 @@ export default function LoginPage() {
       },
       onError: (error: any) => {
         if (error.response.status === 401) {
-          FailToast("아이디/비밀번호를 확인해주세요.");
-        } else if (error.response.status === 403) {
-          FailToast(error.response.data.message);
+          if (error.response.data.message === "관리자의 승인을 기다려주세요.")
+            FailToast(error.response.data.message);
+          else FailToast("아이디/비밀번호를 확인해주세요.");
         } else if (error.response.status === 301) {
           setIsModalOpen(true);
         }

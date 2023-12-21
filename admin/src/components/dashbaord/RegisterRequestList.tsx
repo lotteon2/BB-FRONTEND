@@ -25,9 +25,10 @@ import QuarterDiv from "../fallbacks/QuarterDiv";
 export default function RegisterRequestList() {
   const [page, setPage] = useState<number>(1);
   const [status, setStatus] = useState<string>("ROLE_STORE_MANAGER_PENDING");
+  const [isChange, setIsChange] = useState<boolean>(false);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getRegisterRequestList", status, page],
+    queryKey: ["getRegisterRequestList", status, page, isChange],
     queryFn: () => getRegisterRequestList(status, page - 1, 5),
   });
 
@@ -128,6 +129,7 @@ export default function RegisterRequestList() {
     (moddifyDto: storeStatusModifyDto) => modifyStoreStatus(moddifyDto),
     {
       onSuccess: () => {
+        setIsChange((cur) => !cur);
         SuccessToast("처리되었습니다.");
       },
       onError: () => {
@@ -140,7 +142,12 @@ export default function RegisterRequestList() {
 
   return (
     <div>
-      <Table dataSource={data.data} columns={columns} pagination={false} />
+      <Table
+        dataSource={data.data}
+        columns={columns}
+        pagination={false}
+        style={{ height: 380 }}
+      />
       <div className="mt-2 text-center">
         <Pagination
           defaultCurrent={page}
