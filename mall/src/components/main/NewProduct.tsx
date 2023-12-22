@@ -53,27 +53,28 @@ export default function NewProduct() {
           <div className="flex flex-row gap-3 text-center flex-wrap">
             {data.data.products.map((item: mainProductListDto) => (
               <div
-                className="flex flex-col gap-1 text-left mx-auto w-[23vw] min-w-[180px] max-w-[320px]  cursor-pointer"
-                key={item.productId}
+                className="flex flex-col gap-1 text-left mx-auto w-[23vw] min-w-[180px] max-w-[320px] cursor-pointer hover:-translate-y-1"
+                key={item.key}
+                onClick={() => navigate("/product/detail/" + item.key)}
               >
                 <div className="h-[23vw] min-h-[180px] max-h-[320px] relative">
                   <img
                     src={item.productThumbnail}
                     alt="상품 이미지"
-                    className="rounded-lg"
+                    className="rounded-lg w-full h-full"
                   />
-                  {productWishList.includes(item.productId) ? (
+                  {productWishList.includes(item.key) ? (
                     !item.isLiked ? (
                       <div
                         className="absolute bottom-0 right-2 text-[#FF6464] text-[30px] hover:-translate-y-[2px] cursor-pointer"
-                        onClick={(e) => handleWishButton(e, item.productId)}
+                        onClick={(e) => handleWishButton(e, item.key)}
                       >
                         <HeartFilled />
                       </div>
                     ) : (
                       <div
                         className="absolute bottom-0 right-2 text-[#02020233] text-[30px] hover:-translate-y-[2px] cursor-pointer"
-                        onClick={(e) => handleWishButton(e, item.productId)}
+                        onClick={(e) => handleWishButton(e, item.key)}
                       >
                         <HeartFilled />
                       </div>
@@ -81,14 +82,14 @@ export default function NewProduct() {
                   ) : item.isLiked ? (
                     <div
                       className="absolute bottom-0 right-2 text-[#FF6464] text-[30px] hover:-translate-y-[2px] cursor-pointer"
-                      onClick={(e) => handleWishButton(e, item.productId)}
+                      onClick={(e) => handleWishButton(e, item.key)}
                     >
                       <HeartFilled />
                     </div>
                   ) : (
                     <div
                       className="absolute bottom-0 right-2 text-[#02020233] text-[30px] hover:-translate-y-[2px] cursor-pointer"
-                      onClick={(e) => handleWishButton(e, item.productId)}
+                      onClick={(e) => handleWishButton(e, item.key)}
                     >
                       <HeartFilled />
                     </div>

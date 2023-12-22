@@ -33,7 +33,7 @@ export default function KakaoMap() {
   useEffect(() => {
     if (data) {
       var markerList: boolean[] = [];
-      data.stores.map(() => markerList.push(false));
+      data.data.stores.map(() => markerList.push(false));
       setMarkerList(markerList);
     }
   }, [data]);
@@ -78,7 +78,7 @@ export default function KakaoMap() {
             setState((prev) => ({ ...prev, center: center }));
           }}
         />
-        {data.stores.map((item: storeListNearByDto, index: number) => (
+        {data.data.stores.map((item: storeListNearByDto, index: number) => (
           <MapMarker
             key={item.storeId}
             position={{ lat: item.position.lat, lng: item.position.lon }}

@@ -11,7 +11,6 @@ import { useNavigate } from "react-router";
 import { useMutation, useQuery } from "react-query";
 import { getProductDetail } from "../../apis/product";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
-import { productDetailData } from "../../mocks/product";
 import { getStoreDeliveryPolicy } from "../../apis/store";
 import {
   orderDto,
@@ -20,7 +19,7 @@ import {
 import { orderState } from "../../recoil/atom/order";
 
 interface param {
-  productId: string | undefined;
+  productId: string;
   setProductDescription: (image: string) => void;
   setProductName: (name: string) => void;
   setStoreId: (id: number) => void;
@@ -39,7 +38,6 @@ export default function ProductInfo(param: param) {
     freeDeliveryMinPrice: 0,
   });
 
-  // const data = productDetailData;
   const { data, isLoading } = useQuery({
     queryKey: ["getProductDetail"],
     queryFn: () => getProductDetail(param.productId),
@@ -146,7 +144,7 @@ export default function ProductInfo(param: param) {
       param.setStoreId(data.data.storeId);
       getPolilcyMutation.mutate(data.data.storeId);
     }
-  }, []);
+  }, [data]);
 
   if (!data || isLoading) return <ProductInfoFallback />;
 
@@ -184,7 +182,7 @@ export default function ProductInfo(param: param) {
         </div>
         <img
           className="w-full h-full"
-          src="https://f-mans.com/data/goods/1/2023/10/681_temp_16972473985275view.jpg"
+          src={data.data.productThumbnail}
           alt=""
         />
       </div>

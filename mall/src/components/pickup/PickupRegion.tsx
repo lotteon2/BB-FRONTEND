@@ -35,7 +35,7 @@ export default function PickupRegion() {
             <Select
               placeholder="구/군 선택"
               style={{ position: "absolute", top: 0, right: 0, width: 120 }}
-              options={data}
+              options={data.data}
               value={gugun === "" ? null : gugun}
               onChange={(e) => setGugun(e)}
             />

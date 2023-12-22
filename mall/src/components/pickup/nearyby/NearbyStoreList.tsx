@@ -39,14 +39,14 @@ export default function NearbyStoreList() {
 
   return (
     <div className="w-full h-full">
-      {data.stores.length === 0 ? (
+      {data.data.stores.length === 0 ? (
         <Empty
           description="주변 꽃집이 없습니다."
           className="mt-40 w-40 mx-auto"
         />
       ) : (
         <div className="flex flex-col gap-1 h-[55vw] max-h-[655px] min-h-[432px] overflow-auto">
-          {data.stores.map((item: storeListNearByDto) => (
+          {data.data.stores.map((item: storeListNearByDto) => (
             <div
               className="px-[2vw] flex flex-row gap-1 cursor-pointer"
               key={item.storeId}

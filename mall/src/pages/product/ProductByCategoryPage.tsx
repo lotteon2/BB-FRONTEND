@@ -13,8 +13,6 @@ export default function ProductByCategoryPage() {
           ? "꽃바구니"
           : param === 3
           ? "꽃상자"
-          : param === 4
-          ? "화분"
           : "화환"}
       </div>
       <ProductList categoryId={param} storeId={null} />

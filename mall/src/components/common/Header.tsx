@@ -106,7 +106,7 @@ const HeaderStyle = styled.div<parameter>`
 
 export default function Header() {
   const resetLoginState = useResetRecoilState(loginState);
-  const resetMallState = useResetRecoilState(mallState);
+  const isMall = useRecoilValue<boolean>(mallState);
   const resetNicknameState = useResetRecoilState(nicknameState);
   const resetProfileImage = useResetRecoilState(profileImageState);
   const [isToggled, setIsToggled] = useState<boolean>(false);
@@ -141,10 +141,10 @@ export default function Header() {
   const logouMutation = useMutation(["logout"], () => logout("kakao"), {
     onSuccess: () => {
       resetLoginState();
-      resetMallState();
       resetNicknameState();
       resetProfileImage();
-      navigate("/");
+      localStorage.removeItem("accessToken");
+      isMall ? navigate("/") : navigate("/pickup");
       SuccessToast("로그아웃 되었습니다.");
     },
     onError: () => {
@@ -224,14 +224,6 @@ export default function Header() {
               <NavLink
                 style={({ isActive }) => (isActive ? activeStyle : {})}
                 to="/product/4"
-              >
-                화분
-              </NavLink>
-            </li>
-            <li className="font-regular">
-              <NavLink
-                style={({ isActive }) => (isActive ? activeStyle : {})}
-                to="/product/5"
               >
                 화환
               </NavLink>

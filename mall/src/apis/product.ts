@@ -119,8 +119,7 @@ export const getProductQuestionList = async (
         page +
         "&size=" +
         size +
-        "&is-replied=" +
-        (!replied ? null : replied)
+        (!replied ? "" : "&is-replied=" + replied)
     );
     return data;
   } else {
@@ -131,8 +130,7 @@ export const getProductQuestionList = async (
         page +
         "&size=" +
         size +
-        "&is-replied=" +
-        (!replied ? null : replied)
+        (!replied ? "" : "&is-replied=" + replied)
     );
     return data;
   }

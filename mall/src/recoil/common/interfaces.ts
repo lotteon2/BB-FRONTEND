@@ -8,7 +8,7 @@ export interface loginDto {
 }
 
 export interface mainProductListDto {
-  productId: string;
+  key: string;
   productThumbnail: string;
   productName: string;
   productSummary: string;

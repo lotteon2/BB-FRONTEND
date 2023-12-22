@@ -206,7 +206,7 @@ export default function ProductQuestion(param: param) {
                   },
                 };
               }}
-              dataSource={data.data}
+              dataSource={data.data.data}
               columns={columns}
               pagination={false}
             />

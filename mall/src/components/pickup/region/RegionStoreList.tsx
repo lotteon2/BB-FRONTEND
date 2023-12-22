@@ -50,14 +50,14 @@ export default function RegionStoreList(param: param) {
         </div>
       ) : (
         <div>
-          {data.stores.length === 0 ? (
+          {data.data.stores.length === 0 ? (
             <Empty
               description="등록된 가게가 존재하지 않습니다."
               className="mt-40"
             />
           ) : (
             <div>
-              {data.stores.map((item: any) => (
+              {data.data.stores.map((item: any) => (
                 <div
                   className="px-[2vw] flex flex-row gap-1 cursor-pointer"
                   key={item.storeId}
