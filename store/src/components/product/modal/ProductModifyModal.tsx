@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from "react";
-import { Button, Form, Input, InputNumber, Modal, Select, Space } from "antd";
+import { Button, Form, Input, InputNumber, Select, Space } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useMutation, useQuery } from "react-query";
 import {
@@ -161,7 +161,6 @@ export default function ProductModifyModal(param: param) {
 
   if (!data || isLoading) return <Loading />;
 
-  console.log(data);
   return (
     <div className="w-full h-full">
       <Form

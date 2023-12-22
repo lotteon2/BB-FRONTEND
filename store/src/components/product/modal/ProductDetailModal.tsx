@@ -1,4 +1,4 @@
-import { Button, Input, Modal, Rate, Select, Space } from "antd";
+import { Input, Rate, Select, Space } from "antd";
 import { Form } from "antd";
 import { categoryOptions, tagOptions } from "../../../recoil/common/options";
 import { flowersDetail } from "../../../recoil/common/interfaces";

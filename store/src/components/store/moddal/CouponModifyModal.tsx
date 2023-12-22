@@ -13,7 +13,7 @@ import {
   couponRegisterDto,
 } from "../../../recoil/common/interfaces";
 import { useMutation } from "react-query";
-import { modifyCoupon, registerCoupon } from "../../../apis/store";
+import { modifyCoupon } from "../../../apis/store";
 import { useRecoilValue } from "recoil";
 import { storeIdState } from "../../../recoil/atom/common";
 import { FailToast } from "../../common/toast/FailToast";
