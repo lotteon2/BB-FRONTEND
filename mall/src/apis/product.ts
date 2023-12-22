@@ -111,8 +111,8 @@ export const getProductQuestionList = async (
   replied: boolean | undefined,
   isMine: boolean
 ) => {
-  if (isMine) {
-    const { data } = await authInstance.get(
+  if (!isMine) {
+    const { data } = await defaultInstance.get(
       "/stores/questions/product/" +
         productId +
         "?page=" +
@@ -123,7 +123,7 @@ export const getProductQuestionList = async (
     );
     return data;
   } else {
-    const { data } = await defaultInstance.get(
+    const { data } = await authInstance.get(
       "/stores/questions/product/" +
         productId +
         "/my?page=" +

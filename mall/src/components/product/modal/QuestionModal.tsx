@@ -1,7 +1,6 @@
 import { Button, Modal, Tag } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { useQuery } from "react-query";
-import Loading from "../../common/Loading";
+
 import { questionItemDto } from "../../../recoil/common/interfaces";
 
 interface param {

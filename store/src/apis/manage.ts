@@ -25,19 +25,26 @@ export const getQuestions = async (
   storeId: number,
   page: number,
   size: number,
-  isReplied: boolean | null
+  isReplied: boolean | undefined
 ) => {
-  const { data } = await authInstance.get(
-    "/stores/" +
-      storeId +
-      "/questions?is-replied=" +
-      isReplied +
-      "&size=" +
-      size +
-      "&page=" +
-      page
-  );
-  return data;
+  if (isReplied !== undefined) {
+    const { data } = await authInstance.get(
+      "/stores/" +
+        storeId +
+        "/questions?is-replied=" +
+        isReplied +
+        "&size=" +
+        size +
+        "&page=" +
+        page
+    );
+    return data;
+  } else {
+    const { data } = await authInstance.get(
+      "/stores/" + storeId + "/questions?size=" + size + "&page=" + page
+    );
+    return data;
+  }
 };
 
 // 문의 상세 조회

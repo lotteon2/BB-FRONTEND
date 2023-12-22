@@ -40,8 +40,8 @@ export default function KakaoLoginRedirect() {
     {
       onSuccess: (res) => {
         setIsLogin(true);
-        setNickname(res.data.nickname);
-        setProfileImage(res.data.profileImage);
+        setNickname(res.data.data.nickname);
+        setProfileImage(res.data.data.profileImage);
         localStorage.setItem("accessToken", res.headers["authorization"]);
         isMall ? navigate("/") : navigate("/pickup");
       },

@@ -66,12 +66,14 @@ export default function QuestionAnswerRegisterModal(param: param) {
         <div className="w-full h-[470px] overflow-auto">
           <p className="py-2"></p>
           <Tag bordered={false}>
-            {data.createdAt.split("T")[0] + " " + data.createdAt.split("T")[1]}{" "}
+            {data.data.createdAt.split("T")[0] +
+              " " +
+              data.data.createdAt.split("T")[1]}{" "}
             작성됨
           </Tag>
-          <p className="text-[1.3rem] font-bold">{data.title}</p>
+          <p className="text-[1.3rem] font-bold">{data.data.title}</p>
           <div className="text-[1rem] h-32 rounded-lg p-2 overflow-auto">
-            {data.content}
+            {data.data.content}
           </div>
           <p className="border-b-[1px] border-grayscale3 mt-5"></p>
           <div className="mt-5">

@@ -56,7 +56,6 @@ export default function ProductQuestion(param: param) {
   };
 
   const handleRegisterQuestion = () => {
-    console.log("!!!!!!!");
     if (isLogin) {
       setIsRegister(true);
     } else if (window.confirm("회원만 사용가능합니다. 로그인하시겠습니까?")) {
@@ -109,7 +108,7 @@ export default function ProductQuestion(param: param) {
   if (!data || isLoading)
     return (
       <div>
-        <p className="text-[1.2rem] font-bold">상품문의</p>
+        <p className="text-[1.2rem]">상품문의</p>
         <p className="text-grayscale5">
           구매하시려는 상품에 대해 궁금한 점이 있으신 경우 문의해주세요.
         </p>
@@ -119,7 +118,7 @@ export default function ProductQuestion(param: param) {
               문의 작성하기
             </Button>
             {isLogin ? (
-              <Button>
+              <Button onClick={() => setFindMine((cur) => !cur)}>
                 {findMine ? "모든 문의내역 보기" : "내 문의내역 보기"}
               </Button>
             ) : (
@@ -163,7 +162,7 @@ export default function ProductQuestion(param: param) {
             문의 작성하기
           </Button>
           {isLogin ? (
-            <Button>
+            <Button onClick={() => setFindMine((cur) => !cur)}>
               {findMine ? "모든 문의내역 보기" : "내 문의내역 보기"}
             </Button>
           ) : (

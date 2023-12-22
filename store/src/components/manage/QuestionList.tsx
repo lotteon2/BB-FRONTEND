@@ -14,12 +14,12 @@ export default function QuestionList() {
   const storeId = useRecoilValue<number>(storeIdState);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
-  const [isReplied, setIsReplied] = useState<boolean | null>(null);
+  const [isReplied, setIsReplied] = useState<boolean>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [questionItem, setQuestionItem] = useState<questionItemDto>();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getQuestions", isChange, page],
+    queryKey: ["getQuestions", isChange, page, isReplied],
     queryFn: () => getQuestions(storeId, page - 1, 15, isReplied),
   });
 

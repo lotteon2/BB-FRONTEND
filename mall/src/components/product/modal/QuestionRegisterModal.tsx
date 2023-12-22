@@ -21,6 +21,7 @@ const { TextArea } = Input;
 
 export default function QuestionRegisterModal(param: param) {
   const nickname = useRecoilValue<string>(nicknameState);
+
   const [defaultValues, setDefaultValues] = useState<questionRegisterDto>({
     storeId: param.storeId,
     productId: param.productId,
