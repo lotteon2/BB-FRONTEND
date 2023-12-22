@@ -14,7 +14,7 @@ export const getReviews = async (
       page +
       "&size=" +
       size +
-      "sort=" +
+      "&sort-option=" +
       sort
   );
   return data;

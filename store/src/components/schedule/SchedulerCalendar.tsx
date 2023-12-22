@@ -88,7 +88,7 @@ export default function SchedulerCalendar() {
   }, [data]);
 
   if (!data || isLoading) return <SchedulerCalendarFallback />;
-  if (true) return <SchedulerCalendarFallback />;
+
   return (
     <div>
       <Calendar

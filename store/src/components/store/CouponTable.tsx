@@ -35,6 +35,7 @@ export default function CouponTable() {
     startDate: "",
     endDate: "",
   });
+  const [couponId, setCouponId] = useState<number>(0);
 
   const { data, isLoading } = useQuery({
     queryKey: ["getCouponList", isChange],
@@ -246,6 +247,7 @@ export default function CouponTable() {
                 startDate: record.startDate,
                 endDate: record.endDate,
               });
+              setCouponId(record.key);
             }}
             disabled={
               new Date(record.endDate) < new Date() ||
@@ -296,7 +298,7 @@ export default function CouponTable() {
         ) : (
           <Table
             columns={columns}
-            dataSource={data.data}
+            dataSource={data.data.data}
             pagination={{ position: ["bottomCenter"], pageSize: 13 }}
           ></Table>
         )}
@@ -304,8 +306,9 @@ export default function CouponTable() {
           <CouponModifyModal
             isModalOpen={isModalOpen}
             handleCancel={handleCancel}
-            handleChange={handleCancel}
+            handleChange={handleChange}
             data={couponInfo}
+            couponId={couponId}
           />
         ) : (
           ""

@@ -3,7 +3,7 @@ import Badge from "@mui/material/Badge";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import { SuccessToast } from "./toast/SuccessToast";
 import { useMutation } from "react-query";
-import { loginState, nameState } from "../../recoil/atom/common";
+import { loginState, nameState, storeIdState } from "../../recoil/atom/common";
 import { FailToast } from "./toast/FailToast";
 import { logout } from "../../apis/auth";
 import { useNavigate } from "react-router";
@@ -12,15 +12,17 @@ export default function ProfileBar() {
   const navigate = useNavigate();
   const resetLoginState = useResetRecoilState(loginState);
   const resetNameState = useResetRecoilState(nameState);
+  const resetStoreIdState = useResetRecoilState(storeIdState);
   const name = useRecoilValue(nameState);
 
   const logoutMutation = useMutation(["logout"], () => logout(), {
     onSuccess: () => {
+      navigate("/login");
       SuccessToast("로그아웃되었습니다.");
       resetLoginState();
       resetNameState();
+      resetStoreIdState();
       localStorage.removeItem("accessToken");
-      navigate("/login");
     },
     onError: () => {
       FailToast(null);

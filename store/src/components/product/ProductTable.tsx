@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Empty, Pagination, Table, Tag } from "antd";
+import { Button, Empty, Modal, Pagination, Table, Tag } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { productItemDto } from "../../recoil/common/interfaces";
 import ProductDetailModal from "./modal/ProductDetailModal";
@@ -20,9 +20,9 @@ interface param {
 export default function ProductTable(param: param) {
   const storeId = useRecoilValue<number>(storeIdState);
   const [page, setPage] = useState<number>(1);
-  const [productId, setProductId] = useState<number>(0);
+  const [productId, setProductId] = useState<string>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [modalState, setModalState] = useState<number>(0);
+  const [isModifyModalOpen, setIsModifyModalOpen] = useState<boolean>(false);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -30,23 +30,19 @@ export default function ProductTable(param: param) {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    setIsModifyModalOpen(false);
   };
 
-  const handleProductInfo = (productId: number, modalState: number) => {
-    setModalState(modalState);
+  const handleProductInfo = (productId: string) => {
     setProductId(productId);
     showModal();
   };
 
-  const handleProductModify = (
-    e: React.MouseEvent,
-    productId: number,
-    modalState: number
-  ) => {
+  const handleProductModify = (e: React.MouseEvent, productId: string) => {
     e.stopPropagation();
-    setModalState(modalState);
     setProductId(productId);
-    showModal();
+    console.log(productId);
+    setIsModifyModalOpen(true);
   };
 
   const { data, isLoading } = useQuery({
@@ -110,8 +106,8 @@ export default function ProductTable(param: param) {
       dataIndex: "productSaleStatus",
       key: "productSaleStatus",
       render: (record) => (
-        <Tag bordered={false} color={record === "SALE" ? "purple" : "red"}>
-          {record === "SALE" ? "판매중" : "판매중단"}
+        <Tag bordered={false} color={record === "판매 중" ? "purple" : "red"}>
+          {record}
         </Tag>
       ),
     },
@@ -120,7 +116,7 @@ export default function ProductTable(param: param) {
       dataIndex: "",
       key: "modifyButton",
       render: (record) => (
-        <Button onClick={(e) => handleProductModify(e, record.productId, 1)}>
+        <Button onClick={(e) => handleProductModify(e, record.key)}>
           수정
         </Button>
       ),
@@ -131,11 +127,8 @@ export default function ProductTable(param: param) {
 
   return (
     <div className="w-full text-center">
-      {data.totalCnt === 0 ? (
-        <Empty
-          description="등록된 상품정보가 없습니다."
-          className="absolute top-80 left-[1000px]"
-        />
+      {data.data.totalCnt === 0 ? (
+        <Empty description="등록된 상품정보가 없습니다." className="pt-80" />
       ) : (
         <div>
           <div className="w-full h-[780px] mt-3">
@@ -143,11 +136,11 @@ export default function ProductTable(param: param) {
               onRow={(record) => {
                 return {
                   onClick: () => {
-                    handleProductInfo(record.key, 0);
+                    handleProductInfo(record.key);
                   },
                 };
               }}
-              dataSource={data.products}
+              dataSource={data.data.products}
               columns={columns}
               pagination={false}
             />
@@ -159,20 +152,27 @@ export default function ProductTable(param: param) {
             onChange={(e) => setPage(e)}
           />
 
-          {modalState === 0 ? (
-            <ProductDetailModal
-              isModalOpen={isModalOpen}
-              handleCancel={handleCancel}
-              productId={productId}
-            />
-          ) : (
+          <Modal
+            title="상품 정보 상세"
+            open={isModalOpen}
+            onCancel={handleCancel}
+            footer={<Button onClick={handleCancel}>닫기</Button>}
+          >
+            <ProductDetailModal productId={productId} />
+          </Modal>
+
+          <Modal
+            title="상품 정보 수정"
+            open={isModifyModalOpen}
+            onCancel={handleCancel}
+            footer={[]}
+          >
             <ProductModifyModal
-              isModalOpen={isModalOpen}
               handleCancel={handleCancel}
               productId={productId}
               handleChange={param.handleChange}
             />
-          )}
+          </Modal>
         </div>
       )}
     </div>

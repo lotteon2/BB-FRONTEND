@@ -23,8 +23,10 @@ export default function SubscriptionRegisterModal(param: param) {
       productName: "",
       productSummary: "",
       productPrice: null,
-      productDescriptionImage: "",
-      productThumbnail: "",
+      productDescriptionImage:
+        "https://f-mans.com//data/products/flower/basket/FB00001/new/detail_title02.jpg",
+      productThumbnail:
+        "https://f-mans.com//data/products/flower/basket/FB00001/new/detail_title01.jpg",
     }
   );
 
@@ -33,8 +35,10 @@ export default function SubscriptionRegisterModal(param: param) {
       productName: "",
       productSummary: "",
       productPrice: null,
-      productDescriptionImage: "",
-      productThumbnail: "",
+      productDescriptionImage:
+        "https://f-mans.com//data/products/flower/basket/FB00001/new/detail_title02.jpg",
+      productThumbnail:
+        "https://f-mans.com//data/products/flower/basket/FB00001/new/detail_title01.jpg",
     });
 
     param.handleCancel();
@@ -120,6 +124,7 @@ export default function SubscriptionRegisterModal(param: param) {
     form.setFieldsValue(registerValues);
   }, [form, registerValues]);
 
+  console.log(registerValues);
   return (
     <Modal
       title="구독상품 등록"
@@ -142,14 +147,14 @@ export default function SubscriptionRegisterModal(param: param) {
             name="productThumbnail"
             rules={[{ required: true, message: "필수 입력값입니다." }]}
           >
-            <Input
-              value={registerValues.productThumbnail}
-              style={{ display: "none" }}
-            />
             <div
               className="w-[200px] h-[200px] cursor-pointer"
               onClick={handleThumbnailImage}
             >
+              <Input
+                value={registerValues.productThumbnail}
+                style={{ display: "none" }}
+              />
               <input
                 type="file"
                 ref={inputRef}

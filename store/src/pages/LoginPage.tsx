@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Form, Input, Modal } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useSetRecoilState } from "recoil";
-import { loginState, nameState } from "../recoil/atom/common";
+import { loginState, nameState, storeIdState } from "../recoil/atom/common";
 import { useNavigate } from "react-router";
 import { useMutation } from "react-query";
 import { reRegisterBusinessNumberImage, signin } from "../apis/auth";
@@ -18,6 +18,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const setIsLogin = useSetRecoilState<boolean>(loginState);
   const setName = useSetRecoilState<string>(nameState);
+  const setStoreId = useSetRecoilState<number | null>(storeIdState);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -61,8 +62,8 @@ export default function LoginPage() {
     (signinDto: signinDto) => signin(signinDto),
     {
       onSuccess: (res) => {
-        console.log(res.data);
-        setName(res.data.name);
+        setName(res.data.data.name);
+        setStoreId(res.data.data.storeId);
         localStorage.setItem("accessToken", res.headers["authorization"]);
         SuccessToast("로그인되었습니다.");
         setIsLogin(true);

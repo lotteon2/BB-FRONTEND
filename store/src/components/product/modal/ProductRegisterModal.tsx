@@ -35,8 +35,10 @@ export default function ProductRegisterModal(param: param) {
   const [defaultValues, setDefaultValues] = useState<productRegisterDto>({
     productName: "",
     productSummary: "",
-    productDescriptionImage: "",
-    productThumbnail: "",
+    productDescriptionImage:
+      "https://f-mans.com//data/products/flower/bouquet/FA00013/2.jpg",
+    productThumbnail:
+      "https://f-mans.com//data/products/flower/bouquet/FA00013/1.jpg",
     productPrice: null,
     categoryId: undefined,
     productTag: [],
@@ -92,8 +94,10 @@ export default function ProductRegisterModal(param: param) {
     const values = {
       productName: "",
       productSummary: "",
-      productDescriptionImage: "",
-      productThumbnail: "",
+      productDescriptionImage:
+        "https://f-mans.com//data/products/flower/basket/FB00180/2.jpg",
+      productThumbnail:
+        "https://f-mans.com//data/products/flower/basket/FB00180/1.jpg",
       productPrice: null,
       categoryId: undefined,
       productTag: [],
@@ -443,13 +447,20 @@ export default function ProductRegisterModal(param: param) {
                     { required: true, message: "상세 정보를 업로드해주세요" },
                   ]}
                 >
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      handleChangeFile(e, false);
-                    }}
-                  />
+                  <div>
+                    <input
+                      type="text"
+                      value={defaultValues.productDescriptionImage}
+                      className="hidden"
+                    />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        handleChangeFile(e, false);
+                      }}
+                    />
+                  </div>
                 </Form.Item>
               </div>
               {defaultValues.productDescriptionImage === "" ? (

@@ -32,7 +32,7 @@ export const modifyStore = async (storeId: number, storeInfo: storeInfoDto) => {
 // 구독상품 조회
 export const getSubscriptionInfo = async (storeId: number) => {
   const { data } = await authInstance.get(
-    "/store/" + storeId + "/subscribe-product"
+    "/products//store/" + storeId + "/subscribe-product"
   );
   return data;
 };
@@ -43,7 +43,7 @@ export const registerSubscriptionInfo = async (
   subscriptionInfo: subscriptionRegisterDto
 ) => {
   const { data } = await authInstance.post(
-    "/store/" + storeId + "/subscribe-product",
+    "/products/store/" + storeId + "/subscribe-product",
     subscriptionInfo
   );
   return data;
@@ -55,7 +55,7 @@ export const modifySubscriptionInfo = async (
   subscriptionInfo: subscriptionRegisterDto
 ) => {
   const { data } = await authInstance.put(
-    "/products" + productId + "/subscribe-product",
+    "/products/" + productId + "/subscribe-product",
     subscriptionInfo
   );
   return data;
@@ -74,6 +74,19 @@ export const registerCoupon = async (
 ) => {
   const { data } = await authInstance.post(
     "/stores/" + storeId + "/coupons",
+    couponInfo
+  );
+  return data;
+};
+
+// 쿠폰 수정
+export const modifyCoupon = async (
+  storeId: number,
+  couponId: number,
+  couponInfo: couponRegisterDto
+) => {
+  const { data } = await authInstance.put(
+    "/stores/" + storeId + "/coupons/" + couponId,
     couponInfo
   );
   return data;

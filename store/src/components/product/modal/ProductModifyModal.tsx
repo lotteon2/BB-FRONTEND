@@ -17,14 +17,17 @@ import {
   tagOptions,
 } from "../../../recoil/common/options";
 import { getProductDetailInfo, modifyProduct } from "../../../apis/product";
+import { useRecoilValue } from "recoil";
+import { storeIdState } from "../../../recoil/atom/common";
+import Loading from "../../common/Loading";
 
 interface param {
   handleCancel: () => void;
-  isModalOpen: boolean;
-  productId: number;
+  productId: string | undefined;
   handleChange: () => void;
 }
 export default function ProductModifyModal(param: param) {
+  const storeId = useRecoilValue<number>(storeIdState);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const descriptionInputRef = useRef<HTMLInputElement | null>(null);
   const [productName, setProductName] = useState<string>("");
@@ -41,11 +44,11 @@ export default function ProductModifyModal(param: param) {
   const [extraFlowers, setExtraFlowers] = useState<flowersDetail[]>([]);
   const [productDescriptionImage, setProductDescriptionImage] =
     useState<string>("");
-  const [defaultValues, setDefaultValues] = useState<any>();
+  const [defaultValues, setDefaultValues] = useState<productModifyInfoDto>();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getProductDetailInfo", param.productId],
-    queryFn: () => getProductDetailInfo(param.productId),
+    queryKey: ["getProductDetailInfo", param],
+    queryFn: () => getProductDetailInfo(param.productId, storeId),
   });
 
   const handleOk = () => {
@@ -142,260 +145,256 @@ export default function ProductModifyModal(param: param) {
   }, [form, defaultValues]);
 
   useEffect(() => {
-    setDefaultValues(data);
-    setProductName(data.productName);
-    setProductThumbnail(data.productThumbnail);
-    setProductSummary(data.productSummary);
-    setProductPrice(data.productPrice);
-    setCategory(data.categoryId);
-    setTag(data.tag);
-    setRepresentativeFlower(data.representativeFlower.flowerId);
-    setRepresentativeFlower(data.representativeFlower.amount);
-    setExtraFlowers(data.flowers);
-    setProductDescriptionImage(data.productDescriptionImage);
-    setProductSaleStatus(data.productSaleStatus);
+    setDefaultValues(data.data);
+    setProductName(data.data.productName);
+    setProductThumbnail(data.data.productThumbnail);
+    setProductSummary(data.data.productSummary);
+    setProductPrice(data.data.productPrice);
+    setCategory(data.data.category);
+    setTag(data.data.tag);
+    setRepresentativeFlower(data.data.representativeFlower.flowerId);
+    setRepresentativeFlower(data.data.representativeFlower.amount);
+    setExtraFlowers(data.data.flowers);
+    setProductDescriptionImage(data.data.productDescriptionImage);
+    setProductSaleStatus(data.data.productSaleStatus);
   }, [data]);
 
-  if (!data || isLoading) return null;
+  if (!data || isLoading) return <Loading />;
 
+  console.log(data);
   return (
-    <Modal
-      title="상품 정보 수정"
-      open={param.isModalOpen}
-      onCancel={handleCancel}
-      footer={[]}
-      maskClosable={false}
-    >
-      <div className="w-full h-full">
-        <Form
-          name="productModifyForm"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600, width: "100%" }}
-          autoComplete="off"
-          form={form}
-          initialValues={defaultValues}
-        >
-          <div>
-            <div className="flex flex-row">
-              <div
-                className="h-[200px] w-[220px] cursor-pointer"
-                onClick={uploadImgBtn}
+    <div className="w-full h-full">
+      <Form
+        name="productModifyForm"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
+        style={{ maxWidth: 600, width: "100%" }}
+        autoComplete="off"
+        form={form}
+        initialValues={defaultValues}
+      >
+        <div>
+          <div className="flex flex-row">
+            <div
+              className="h-[200px] w-[220px] cursor-pointer"
+              onClick={uploadImgBtn}
+            >
+              <input
+                className="w-full h-full"
+                type="file"
+                name="imgFile"
+                accept="image/*"
+                ref={inputRef}
+                id="imgFile"
+                onChange={(e) => handleChangeFile(e, "thumbnail")}
+                style={{ display: "none" }}
+              />
+
+              <img src={data.data.productThumbnail} alt="상품 썸네일" />
+            </div>
+
+            <div className="w-[95%] ml-3">
+              <Form.Item
+                name="productName"
+                label="상품명"
+                rules={[
+                  { required: true, message: "상품 이름을 입력해주세요" },
+                ]}
               >
-                <input
-                  className="w-full h-full"
-                  type="file"
-                  name="imgFile"
-                  accept="image/*"
-                  ref={inputRef}
-                  id="imgFile"
-                  onChange={(e) => handleChangeFile(e, "thumbnail")}
-                  style={{ display: "none" }}
+                <Input
+                  onChange={(e) => setProductName(e.target.value)}
+                  className="w-[200px]"
+                  placeholder="상품명"
                 />
+              </Form.Item>
+              <Form.Item
+                name="productSummary"
+                label="상품 요약정보"
+                rules={[
+                  { required: true, message: "요약 정보를 입력해주세요" },
+                ]}
+              >
+                <TextArea
+                  onChange={(e) => setProductSummary(e.target.value)}
+                  className="w-[200px]"
+                  autoSize={{ minRows: 2, maxRows: 2 }}
+                  placeholder="상품 요약정보"
+                />
+              </Form.Item>
+              <Form.Item
+                name="productPrice"
+                label="상품 가격"
+                rules={[
+                  { required: true, message: "상품 가격을 설정해주세요" },
+                ]}
+              >
+                <InputNumber
+                  onChange={(e) => setProductPrice(Number(e))}
+                  className="w-[200px]"
+                  placeholder="상품가격"
+                />
+              </Form.Item>
+            </div>
+          </div>
+          <div className="w-full h-[300px] overflow-scroll">
+            <div className="ml-[-120px]">
+              <Form.Item
+                name="productSaleStatus"
+                label="판매상태"
+                rules={[{ required: true, message: "" }]}
+              >
+                <Select
+                  onChange={(value: string) => setProductSaleStatus(value)}
+                  style={{ width: 348 }}
+                  placeholder="판매상태"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  options={saleStatusOptions}
+                />
+              </Form.Item>
+              <Form.Item
+                name="categoryId"
+                label="카테고리"
+                rules={[{ required: true, message: "카테고리를 설정해주세요" }]}
+              >
+                <Select
+                  disabled
+                  showSearch
+                  onChange={(value: number) => setCategory(value)}
+                  style={{ width: 348 }}
+                  placeholder="카테고리"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  options={categoryOptions}
+                />
+              </Form.Item>
+              <Form.Item name="tag" label="태그">
+                <Select
+                  mode="multiple"
+                  allowClear
+                  style={{ width: "348px" }}
+                  placeholder="태그 선택"
+                  onChange={(value: number[]) => setTag(value)}
+                  options={tagOptions}
+                />
+              </Form.Item>
 
-                <img src={data.productThumbnail} alt="상품 썸네일" />
+              <div>
+                <Space className="flex flex-col ml-[86px]">
+                  <div id="extraFlowers" className="flex flex-row gap-3">
+                    <span className="text-[#ff4d4f] mt-1 mr-[-5px]">*</span>
+                    <label htmlFor="extraFlowers" title="구성꽃">
+                      대표꽃 :
+                    </label>
+                    <div className="flex flex-col gap-3 ml-[-4px]">
+                      <Select
+                        onChange={(e) => setRepresentativeFlower(e)}
+                        disabled
+                        defaultValue={data.data.representativeFlower.flowerId}
+                        showSearch
+                        style={{ width: 240 }}
+                        placeholder="구성꽃"
+                        options={flowerOptions}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <InputNumber
+                        onChange={(e) => setRepresentativeFlowerCnt(e)}
+                        defaultValue={
+                          data.data.representativeFlower.flowerCount
+                        }
+                        disabled
+                        placeholder="수량"
+                        className="w-[100px]"
+                      />
+                    </div>
+                  </div>
+                </Space>
               </div>
-
-              <div className="w-[95%] ml-3">
-                <Form.Item
-                  name="productName"
-                  label="상품명"
-                  rules={[
-                    { required: true, message: "상품 이름을 입력해주세요" },
-                  ]}
-                >
-                  <Input
-                    onChange={(e) => setProductName(e.target.value)}
-                    className="w-[200px]"
-                    placeholder="상품명"
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="productSummary"
-                  label="상품 요약정보"
-                  rules={[
-                    { required: true, message: "요약 정보를 입력해주세요" },
-                  ]}
-                >
-                  <TextArea
-                    onChange={(e) => setProductSummary(e.target.value)}
-                    className="w-[200px]"
-                    autoSize={{ minRows: 2, maxRows: 2 }}
-                    placeholder="상품 요약정보"
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="productPrice"
-                  label="상품 가격"
-                  rules={[
-                    { required: true, message: "상품 가격을 설정해주세요" },
-                  ]}
-                >
-                  <InputNumber
-                    onChange={(e) => setProductPrice(Number(e))}
-                    className="w-[200px]"
-                    placeholder="상품가격"
-                  />
-                </Form.Item>
+              <div>
+                <Space className="flex flex-col ml-[100px] mt-5">
+                  <div id="extraFlowers" className="flex flex-row gap-3">
+                    <label htmlFor="extraFlowers" title="구성꽃">
+                      구성꽃 :
+                    </label>
+                    <div className="flex flex-col gap-3 ml-[-4px]">
+                      {productDetail.flowers.map(
+                        (item: flowersDetail, index: number) => (
+                          <div key={index}>
+                            <Select
+                              disabled
+                              defaultValue={item.flowerId}
+                              showSearch
+                              style={{ width: 240 }}
+                              placeholder="구성꽃"
+                              options={flowerOptions}
+                            />
+                          </div>
+                        )
+                      )}
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      {data.data.flowers.map(
+                        (item: flowersDetail, index: number) => (
+                          <div className="flex flex-row gap-3" key={index}>
+                            <InputNumber
+                              disabled
+                              defaultValue={item.flowerCount}
+                              placeholder="수량"
+                              className="w-[100px]"
+                            />
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </Space>
               </div>
             </div>
-            <div className="w-full h-[300px] overflow-scroll">
-              <div className="ml-[-120px]">
-                <Form.Item
-                  name="productSaleStatus"
-                  label="판매상태"
-                  rules={[{ required: true, message: "" }]}
-                >
-                  <Select
-                    onChange={(value: string) => setProductSaleStatus(value)}
-                    style={{ width: 348 }}
-                    placeholder="판매상태"
-                    optionFilterProp="children"
-                    filterOption={(input, option) =>
-                      (option?.label ?? "").includes(input)
-                    }
-                    options={saleStatusOptions}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="categoryId"
-                  label="카테고리"
-                  rules={[
-                    { required: true, message: "카테고리를 설정해주세요" },
-                  ]}
-                >
-                  <Select
-                    disabled
-                    showSearch
-                    onChange={(value: number) => setCategory(value)}
-                    style={{ width: 348 }}
-                    placeholder="카테고리"
-                    optionFilterProp="children"
-                    filterOption={(input, option) =>
-                      (option?.label ?? "").includes(input)
-                    }
-                    options={categoryOptions}
-                  />
-                </Form.Item>
-                <Form.Item name="tag" label="태그">
-                  <Select
-                    mode="multiple"
-                    allowClear
-                    style={{ width: "348px" }}
-                    placeholder="태그 선택"
-                    onChange={(value: number[]) => setTag(value)}
-                    options={tagOptions}
-                  />
-                </Form.Item>
-
+            <div className="mt-3">
+              <div className="flex flex-row gap-3 my-2">
+                <p className="text-lg font-bold mt-[1px]">상세정보</p>
                 <div>
-                  <Space className="flex flex-col ml-[86px]">
-                    <div id="extraFlowers" className="flex flex-row gap-3">
-                      <span className="text-[#ff4d4f] mt-1 mr-[-5px]">*</span>
-                      <label htmlFor="extraFlowers" title="구성꽃">
-                        대표꽃 :
-                      </label>
-                      <div className="flex flex-col gap-3 ml-[-4px]">
-                        <Select
-                          onChange={(e) => setRepresentativeFlower(e)}
-                          disabled
-                          defaultValue={data.representativeFlower.flowerId}
-                          showSearch
-                          style={{ width: 240 }}
-                          placeholder="구성꽃"
-                          options={flowerOptions}
-                        />
-                      </div>
-                      <div className="flex flex-col gap-3">
-                        <InputNumber
-                          onChange={(e) => setRepresentativeFlowerCnt(e)}
-                          defaultValue={data.representativeFlower.amount}
-                          disabled
-                          placeholder="수량"
-                          className="w-[100px]"
-                        />
-                      </div>
-                    </div>
-                  </Space>
-                </div>
-                <div>
-                  <Space className="flex flex-col ml-[100px] mt-5">
-                    <div id="extraFlowers" className="flex flex-row gap-3">
-                      <label htmlFor="extraFlowers" title="구성꽃">
-                        구성꽃 :
-                      </label>
-                      <div className="flex flex-col gap-3 ml-[-4px]">
-                        {productDetail.flowers.map(
-                          (item: flowersDetail, index: number) => (
-                            <div key={index}>
-                              <Select
-                                disabled
-                                defaultValue={item.flowerId}
-                                showSearch
-                                style={{ width: 240 }}
-                                placeholder="구성꽃"
-                                options={flowerOptions}
-                              />
-                            </div>
-                          )
-                        )}
-                      </div>
-                      <div className="flex flex-col gap-3">
-                        {data.flowers.map(
-                          (item: flowersDetail, index: number) => (
-                            <div className="flex flex-row gap-3" key={index}>
-                              <InputNumber
-                                disabled
-                                defaultValue={item.flowerCount}
-                                placeholder="수량"
-                                className="w-[100px]"
-                              />
-                            </div>
-                          )
-                        )}
-                      </div>
-                    </div>
-                  </Space>
+                  <input
+                    className="w-full h-full"
+                    type="file"
+                    name="imgFile"
+                    accept="image/*"
+                    ref={descriptionInputRef}
+                    id="imgFile"
+                    onChange={(e) => handleChangeFile(e, "description")}
+                    style={{ display: "none" }}
+                  />
+                  <Button onClick={uploadDescriptionImgBtn}>변경</Button>
                 </div>
               </div>
-              <div className="mt-3">
-                <div className="flex flex-row gap-3 my-2">
-                  <p className="text-lg font-bold mt-[1px]">상세정보</p>
-                  <div>
-                    <input
-                      className="w-full h-full"
-                      type="file"
-                      name="imgFile"
-                      accept="image/*"
-                      ref={descriptionInputRef}
-                      id="imgFile"
-                      onChange={(e) => handleChangeFile(e, "description")}
-                      style={{ display: "none" }}
-                    />
-                    <Button onClick={uploadDescriptionImgBtn}>변경</Button>
-                  </div>
-                </div>
-                <div className="w-full">
-                  <img src={data.productDescriptionImage} alt="상품 상세정보" />
-                </div>
+              <div className="w-full">
+                <img
+                  src={data.data.productDescriptionImage}
+                  alt="상품 상세정보"
+                />
               </div>
             </div>
           </div>
-          <Space className="flex flex-row mt-5 justify-end ">
-            <Button key="back" onClick={handleCancel}>
-              취소
-            </Button>
-            <Button
-              key="submit"
-              htmlType="submit"
-              type="primary"
-              onClick={handleOk}
-            >
-              저장
-            </Button>
-          </Space>
-        </Form>
-      </div>
-    </Modal>
+        </div>
+        <Space className="flex flex-row mt-5 justify-end ">
+          <Button key="back" onClick={handleCancel}>
+            취소
+          </Button>
+          <Button
+            key="submit"
+            htmlType="submit"
+            type="primary"
+            onClick={handleOk}
+          >
+            저장
+          </Button>
+        </Space>
+      </Form>
+    </div>
   );
 }

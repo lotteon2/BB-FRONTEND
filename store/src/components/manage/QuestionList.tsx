@@ -110,7 +110,7 @@ export default function QuestionList() {
                 };
               }}
               style={{ height: 760 }}
-              dataSource={data.data}
+              dataSource={data.data.data}
               columns={columns}
               pagination={false}
             />

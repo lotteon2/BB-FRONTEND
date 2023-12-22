@@ -143,7 +143,7 @@ export default function RegisterRequestList() {
   return (
     <div>
       <Table
-        dataSource={data.data}
+        dataSource={data.data.data}
         columns={columns}
         pagination={false}
         style={{ height: 380 }}

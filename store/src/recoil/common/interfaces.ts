@@ -25,7 +25,6 @@ export interface storeInfoDto {
   phoneNumber: string;
   accountNumber: string;
   bank: string;
-  minOrderPrice: number | null;
   deliveryPrice: number | null;
   freeDeliveryMinPrice: number | null;
   sido: string;
@@ -101,7 +100,7 @@ export interface productRegisterDto {
 }
 
 export interface productItemDto {
-  key: number;
+  key: string;
   productThumbnail: string;
   productName: string;
   representativeFlower: string;

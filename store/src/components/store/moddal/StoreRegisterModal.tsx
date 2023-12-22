@@ -37,7 +37,6 @@ export default function StoreRegisterModal(param: param) {
     phoneNumber: "",
     accountNumber: "",
     bank: "국민은행",
-    minOrderPrice: null,
     deliveryPrice: null,
     freeDeliveryMinPrice: null,
     sido: "",
@@ -57,7 +56,6 @@ export default function StoreRegisterModal(param: param) {
       phoneNumber: "",
       accountNumber: "",
       bank: "",
-      minOrderPrice: null,
       deliveryPrice: null,
       freeDeliveryMinPrice: null,
       sido: "",
@@ -128,7 +126,6 @@ export default function StoreRegisterModal(param: param) {
       registerValues.detailInfo !== "" &&
       registerValues.phoneNumber !== "" &&
       registerValues.accountNumber !== "" &&
-      registerValues.minOrderPrice !== null &&
       registerValues.deliveryPrice !== null &&
       registerValues.freeDeliveryMinPrice !== null
     ) {
@@ -340,25 +337,6 @@ export default function StoreRegisterModal(param: param) {
                   }
                 />
               </div>
-            </Form.Item>
-            <Form.Item
-              name="minOrderPrice"
-              label="최소 주문금액"
-              rules={[
-                {
-                  required: true,
-                  message: "필수 입력값입니다.",
-                },
-              ]}
-            >
-              <InputNumber
-                placeholder="최소 주문금액"
-                value={registerValues.minOrderPrice}
-                onChange={(e) =>
-                  setRegisterValues((prev) => ({ ...prev, minOrderPrice: e }))
-                }
-                style={{ width: "100%" }}
-              />
             </Form.Item>
             <Form.Item
               name="deliveryPrice"
