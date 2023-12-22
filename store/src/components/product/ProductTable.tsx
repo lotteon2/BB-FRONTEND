@@ -147,8 +147,8 @@ export default function ProductTable(param: param) {
           </div>
           <Pagination
             defaultCurrent={page}
-            total={data.totalCnt}
-            defaultPageSize={6}
+            total={data.data.totalCnt}
+            defaultPageSize={5}
             onChange={(e) => setPage(e)}
           />
 

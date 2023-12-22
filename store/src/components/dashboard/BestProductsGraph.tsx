@@ -86,7 +86,7 @@ export default function BestProductsGraph() {
       },
     },
   };
-  const series = data;
+  const series = data.data.products;
 
   return (
     <div className="p-3">

@@ -36,9 +36,8 @@ export default function ProductRegisterModal(param: param) {
     productName: "",
     productSummary: "",
     productDescriptionImage:
-      "https://f-mans.com//data/products/flower/bouquet/FA00013/2.jpg",
-    productThumbnail:
-      "https://f-mans.com//data/products/flower/bouquet/FA00013/1.jpg",
+      "https://f-mans.com//data/products/wreath/WB00111/1.jpg",
+    productThumbnail: "https://f-mans.com//data/products/wreath/WB00111/2.jpg",
     productPrice: null,
     categoryId: undefined,
     productTag: [],
