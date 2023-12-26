@@ -63,7 +63,7 @@ export default function CouponModal(param: param) {
   return (
     <div className="flex flex-col gap-3 max-h-[500px] overflow-auto">
       {data.data.data.length === 0 ? (
-        <Empty description="사용가능한 쿠폰이 없습니다." className="mt-40" />
+        <Empty description="사용가능한 쿠폰이 없습니다." className="my-20" />
       ) : (
         <div>
           {data.data.data.map((item: couponDto) => (

@@ -49,15 +49,22 @@ export const getMyQuestionsList = async (
   size: number,
   isReplied: boolean | undefined
 ) => {
-  const { data } = await authInstance.get(
-    "/stores/questions/myPage?page=" +
-      page +
-      "&size=" +
-      size +
-      "&is-replied=" +
-      isReplied
-  );
-  return data;
+  if (isReplied === undefined) {
+    const { data } = await authInstance.get(
+      "/stores/questions/my-page?page=" + page + "&size=" + size
+    );
+    return data;
+  } else {
+    const { data } = await authInstance.get(
+      "/stores/questions/myPage?page=" +
+        page +
+        "&size=" +
+        size +
+        "&is-replied=" +
+        isReplied
+    );
+    return data;
+  }
 };
 
 // 마이페이지 구독 조회
@@ -113,7 +120,7 @@ export const getMyPickupOrderList = async (page: number, size: number) => {
 // 내 리뷰 조회
 export const getMyReviewList = async (page: number, size: number) => {
   const { data } = await authInstance.get(
-    "/products/reviews?page=" + page + "&size=" + size
+    "/products/reviews?page=" + page + "&size=" + size + "&sort-option=DATE"
   );
   return data;
 };

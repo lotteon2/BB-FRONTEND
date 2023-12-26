@@ -22,6 +22,8 @@ import { useMutation } from "react-query";
 import { logout } from "../../apis/auth";
 import { FailToast } from "./toast/FailToast";
 import { SuccessToast } from "./toast/SuccessToast";
+import { Badge } from "@mui/material";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 interface parameter {
   istoggled: string;
@@ -259,6 +261,11 @@ export default function Header() {
         )}
         {isLogin ? (
           <ul className="header__right">
+            <li>
+              <Badge badgeContent={1} color="success">
+                <NotificationsIcon fontSize="medium" />
+              </Badge>
+            </li>
             <li className="font-light">
               <NavLink
                 to="/cart"

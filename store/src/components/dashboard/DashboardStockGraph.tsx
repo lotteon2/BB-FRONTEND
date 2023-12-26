@@ -65,11 +65,11 @@ export default function DashboardStockGraph() {
       },
     },
   };
-  // const series = data.data;
+  const series = data.data.stockInfoDtos;
 
   return (
     <div className="p-3">
-      {/* <Chart options={options} series={series} type="bar" height={400} /> */}
+      <Chart options={options} series={series} type="bar" height={400} />
     </div>
   );
 }

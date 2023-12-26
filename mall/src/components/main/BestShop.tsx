@@ -49,7 +49,7 @@ export default function BestShop() {
       </p>
       <div className="mt-5">
         <div className="flex flex-row gap-3 text-center flex-wrap">
-          {data.simpleStores.map((item: mainStoreListDto) => (
+          {data.data.simpleStores.map((item: mainStoreListDto) => (
             <div
               className="flex flex-col gap-1 text-left mx-auto w-[23vw] min-w-[180px] max-w-[320px] cursor-pointer"
               key={item.storeId}
@@ -108,9 +108,6 @@ export default function BestShop() {
                 </span>
               </div>
               <p className="line-clamp-1 text-grayscale5">{item.detailInfo}</p>
-              {/* <p className="text-primary4 font-bold text-[1.2rem]">
-                {item.productPrice.toLocaleString()}원
-              </p> */}
             </div>
           ))}
         </div>

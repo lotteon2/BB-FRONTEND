@@ -45,8 +45,16 @@ export default function KakaoLoginRedirect() {
         localStorage.setItem("accessToken", res.headers["authorization"]);
         isMall ? navigate("/") : navigate("/pickup");
       },
-      onError: () => {
-        FailToast(null);
+      onError: (error: any) => {
+        if (
+          error.response.data.message ===
+          "24시간 이내에는 재 회원가입을 할 수 없습니다."
+        ) {
+          FailToast("회원 탈퇴 후 24시간 이내에는 재가입할 수 없습니다.");
+          navigate("/login");
+        } else {
+          FailToast(null);
+        }
       },
     }
   );

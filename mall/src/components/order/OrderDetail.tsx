@@ -86,9 +86,9 @@ export default function OrderDetail() {
     onSuccess: (data) => {
       setOrder((prev) => ({
         ...prev,
-        ordererName: data.nickname,
-        ordererEmail: data.email,
-        ordererPhoneNumber: data.phoneNumber,
+        ordererName: data.data.data.nickname,
+        ordererEmail: data.data.data.email,
+        ordererPhoneNumber: data.data.data.phoneNumber,
       }));
     },
     onError: () => {

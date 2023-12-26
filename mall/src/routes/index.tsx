@@ -18,6 +18,8 @@ import CartPage from "../pages/CartPage";
 import MyPage from "../pages/MyPage";
 import OrderDetailPage from "../pages/order/OrderDetailPage";
 import GiftCardPage from "../pages/GiftCartPage";
+import PickupNearby from "../components/pickup/PickupNearby";
+import PickupRegion from "../components/pickup/PickupRegion";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +32,8 @@ const router = createBrowserRouter([
       { path: "store/detail/:storeId", element: <StoreDetailPage /> },
       { path: "subscription", element: <SubscriptionPage /> },
       { path: "pickup", element: <PickupPage /> },
+      { path: "pickup/nearby", element: <PickupNearby /> },
+      { path: "pickup/region", element: <PickupRegion /> },
       {
         path: "pickup/product/detail/:productId",
         element: <PickupProductDetailPage />,

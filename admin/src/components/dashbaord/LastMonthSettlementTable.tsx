@@ -2,17 +2,17 @@ import { useState } from "react";
 import { Pagination, PaginationProps, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { settlementItem } from "../../recoil/common/interfaces";
-import { settlementForDashbaordData } from "../../mocks/dashboard";
+import { useQuery } from "react-query";
+import { getLastMonthSettlement } from "../../apis/dashboard";
+import HalfDiv from "../fallbacks/HalfDiv";
 
 export default function LastMonthSettlementTable() {
   const [page, setPage] = useState<number>(1);
 
-  const data = settlementForDashbaordData;
-
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getLastMonthSettlement", page],
-  //     queryFn: () => getLastMonthSettlement(page - 1, 6),
-  //   });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getLastMonthSettlement", page],
+    queryFn: () => getLastMonthSettlement(page - 1, 6),
+  });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
@@ -54,12 +54,11 @@ export default function LastMonthSettlementTable() {
     },
   ];
 
-  //   if (!data || isLoading) return <HalfDiv />;
-
+  if (!data || isLoading) return <HalfDiv />;
   return (
     <div>
       <Table
-        dataSource={data.settlement}
+        dataSource={data.data.settlement}
         columns={columns}
         pagination={false}
         style={{ height: 385 }}
@@ -67,7 +66,7 @@ export default function LastMonthSettlementTable() {
       <div className="mt-2 text-center">
         <Pagination
           defaultCurrent={page}
-          total={data.totalCnt}
+          total={data.data.totalCnt}
           defaultPageSize={6}
           onChange={handlePage}
         />

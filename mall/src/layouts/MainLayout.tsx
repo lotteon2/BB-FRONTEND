@@ -8,7 +8,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
-import { loginState, sideMenuState } from "../recoil/atom/common";
+import { loginState, mallState, sideMenuState } from "../recoil/atom/common";
 import { ConfigProvider } from "antd";
 import { useMutation } from "react-query";
 import { modifyStoreWishList, modifyWishList } from "../apis/member";
@@ -18,6 +18,7 @@ import { FailToast } from "../components/common/toast/FailToast";
 export default function MainLayout() {
   const navigate = useNavigate();
   const isLogin = useRecoilValue<boolean>(loginState);
+  const isMall = useRecoilValue<boolean>(mallState);
   const productWishList = useRecoilValue<string[]>(productWishState);
   const resetProductWishList = useResetRecoilState(productWishState);
   const storeWishList = useRecoilValue<number[]>(storeWishState);
@@ -73,8 +74,13 @@ export default function MainLayout() {
     return () => {
       window.removeEventListener("beforeunload", handleRefresh);
     };
+
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    isMall ? navigate("/") : navigate("/pickup");
+  }, [isMall, navigate]);
 
   return (
     <div className="font-regular">

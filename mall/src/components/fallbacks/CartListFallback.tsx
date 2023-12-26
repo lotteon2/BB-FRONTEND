@@ -3,10 +3,6 @@ import { Checkbox, Button, Skeleton } from "antd";
 export default function CartListFallback() {
   return (
     <div>
-      <div className="mx-auto w-28 text-center text-3xl font-bold border-b-4 border-primary7">
-        장바구니
-      </div>
-
       <div className="flex flex-row gap-5 flex-wrap justify-center mt-5">
         <div className="w-[45vw] max-w-[900px] min-w-[370px]">
           <div className="flex flex-row gap-2">

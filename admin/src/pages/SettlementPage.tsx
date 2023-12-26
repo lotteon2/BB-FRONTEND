@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { PaginationProps, Select } from "antd";
 import { options } from "../recoil/common/interfaces";
-import { settlementData } from "../mocks/settlement";
 import SettlementTable from "../components/settlement/SettlementTable";
+import { useQuery } from "react-query";
+import { getSettlementList } from "../apis/settlement";
+import WholeDiv from "../components/fallbacks/WholeDiv";
 
 export default function SettlementPage() {
   const [yearOptions, setYearOptions] = useState<options[]>([]);
@@ -13,12 +15,10 @@ export default function SettlementPage() {
   const [storeId, setStoreId] = useState<number>();
   const [page, setPage] = useState<number>(1);
 
-  const data = settlementData;
-
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getSettlementList", year, month, storeId, page],
-  //     queryFn: () => getSettlementList(year, month, storeId, page - 1, 13),
-  //   });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getSettlementList", year, month, storeId, page],
+    queryFn: () => getSettlementList(year, month, storeId, page - 1, 13),
+  });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
@@ -52,19 +52,19 @@ export default function SettlementPage() {
     // eslint-disable-next-line
   }, []);
 
-  //   if (!data || isLoading)
-  //   return (
-  //     <div className="w-[1620px] h-[897px] bg-grayscale3 p-2">
-  //       <div className="w-full h-full bg-grayscale1 rounded-lg">
-  //         <div className="flex flex-row gap-3 p-3 justify-end">
-  //           <Select placeholder="년도 선택" style={{ width: 150 }} />
-  //           <Select placeholder="월 선택" style={{ width: 150 }} />
-  //           <Select placeholder="가게 선택" style={{ width: 150 }} />
-  //         </div>
-  //         <WholeDiv />
-  //       </div>
-  //     </div>
-  //   );
+  if (!data || isLoading)
+    return (
+      <div className="w-[1620px] h-[897px] bg-grayscale3 p-2">
+        <div className="w-full h-full bg-grayscale1 rounded-lg">
+          <div className="flex flex-row gap-3 p-3 justify-end">
+            <Select placeholder="년도 선택" style={{ width: 150 }} />
+            <Select placeholder="월 선택" style={{ width: 150 }} />
+            <Select placeholder="가게 선택" style={{ width: 150 }} />
+          </div>
+          <WholeDiv />
+        </div>
+      </div>
+    );
 
   return (
     <div className="w-[1620px] h-[897px] bg-grayscale3 p-2">
@@ -93,10 +93,10 @@ export default function SettlementPage() {
           />
         </div>
         <SettlementTable
-          data={data.settlement}
+          data={data.data.settlement}
           page={page}
           handlePage={handlePage}
-          totalCnt={data.totalCnt}
+          totalCnt={data.data.totalCnt}
         />
       </div>
     </div>

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Empty, Pagination, PaginationProps, Table } from "antd";
-import { storeListData } from "../../mocks/store";
 import { ColumnsType } from "antd/es/table";
 import { storeItemDto } from "../../recoil/common/interfaces";
+import { useQuery } from "react-query";
+import { getStoreList } from "../../apis/store";
+import WholeDiv from "../fallbacks/WholeDiv";
 
 interface param {
   sido: number | undefined;
@@ -12,13 +14,11 @@ interface param {
 export default function StoreList(param: param) {
   const [page, setPage] = useState<number>(1);
 
-  const data = storeListData;
-
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getStoreList", page, param],
-  //     queryFn: () =>
-  //       getStoreList(page - 1, 13, param.sido, param.gugun, param.sort),
-  //   });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getStoreList", page, param],
+    queryFn: () =>
+      getStoreList(page - 1, 13, param.sido, param.gugun, param.sort),
+  });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
@@ -87,7 +87,7 @@ export default function StoreList(param: param) {
     },
   ];
 
-  //   if (!data || isLoading) return <WholeDiv />;
+  if (!data || isLoading) return <WholeDiv />;
 
   return (
     <div className="w-full h-[825px]">

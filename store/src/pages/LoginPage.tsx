@@ -106,8 +106,8 @@ export default function LoginPage() {
     (reRegisterDto: reRegisterBusinessNumberImageDto) =>
       reRegisterBusinessNumberImage(reRegisterDto),
     {
-      onSuccess: (data) => {
-        SuccessToast(data.message);
+      onSuccess: () => {
+        SuccessToast("제출되었습니다.");
         setIsModalOpen(false);
       },
       onError: () => {

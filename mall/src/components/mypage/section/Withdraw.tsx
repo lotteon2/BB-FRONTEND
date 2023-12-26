@@ -4,7 +4,7 @@ import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { FailToast } from "../../common/toast/FailToast";
 import { useMutation } from "react-query";
 import { withdraw } from "../../../apis/member";
-import { useResetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import {
   locationstate,
   loginState,
@@ -21,9 +21,12 @@ import {
   pickupOrderState,
   subscriptionOrderState,
 } from "../../../recoil/atom/order";
+import { useNavigate } from "react-router-dom";
 
 export default function Withdraw() {
+  const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const isMall = useRecoilValue<boolean>(mallState);
   const resetIsLoginState = useResetRecoilState(loginState);
   const resetMallState = useResetRecoilState(mallState);
   const resetSideMenuState = useResetRecoilState(sideMenuState);
@@ -69,6 +72,8 @@ export default function Withdraw() {
       resetSubscribeOrder();
       reseetOrderInfo();
       resetCartOrder();
+      localStorage.removeItem("accessToken");
+      isMall ? navigate("/") : navigate("/pickup");
     },
     onError: () => {
       FailToast(null);

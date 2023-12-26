@@ -1,6 +1,5 @@
 import { useQuery } from "react-query";
 import { getMyCouponList } from "../../../apis/member";
-import { couponListData } from "../../../mocks/mypage";
 import { couponItemDto } from "../../../recoil/common/interfaces";
 import CouponBg from "../../../assets/images/coupon.png";
 import { Empty } from "antd";
@@ -14,15 +13,13 @@ export default function MyCouponList() {
 
   if (!data || isLoading) return <MypageDivFallback />;
 
-  // const data = couponListData;
-
   return (
     <div>
-      {data.data.length === 0 ? (
-        <Empty />
+      {data.data.data.length === 0 ? (
+        <Empty description="발급받은 쿠폰이 없습니다." className="my-10" />
       ) : (
         <div className="flex flex-row gap-2 flex-wrap mt-3 justify-center">
-          {data.data.map((item: couponItemDto) => (
+          {data.data.data.map((item: couponItemDto) => (
             <div
               className="w-[370px] h-[180px] bg-primary7 text-grayscale1 p-4 rounded-lg relative"
               key={item.couponId}

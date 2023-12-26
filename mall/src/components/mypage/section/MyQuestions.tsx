@@ -1,23 +1,19 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { myQuestionsData } from "../../../mocks/mypage";
 import { getMyQuestionsList } from "../../../apis/member";
 import { Empty, Pagination, PaginationProps, Select, Table, Tag } from "antd";
 import { myQuestionItemDto } from "../../../recoil/common/interfaces";
 import { ColumnsType } from "antd/es/table";
-import SquareFallback from "../../fallbacks/SquareFallback";
 import MypageTableFallback from "../../fallbacks/MypageTableFallback";
 
 export default function MyQuestions() {
   const [page, setPage] = useState<number>(1);
   const [isReplied, setIsReplied] = useState<boolean>();
 
-  const data = myQuestionsData;
-
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ["getMyQuestionsList"],
-  //   queryFn: () => getMyQuestionsList(page, 10, isReplied),
-  // });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getMyQuestionsList"],
+    queryFn: () => getMyQuestionsList(page - 1, 10, isReplied),
+  });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
@@ -61,7 +57,7 @@ export default function MyQuestions() {
     },
   ];
 
-  // if (!data || isLoading) return <MypageTableFallback />;
+  if (!data || isLoading) return <MypageTableFallback />;
 
   return (
     <div className="w-full h-full">
@@ -85,12 +81,12 @@ export default function MyQuestions() {
         />
       </div>
       <div>
-        {data.totalCnt === 0 ? (
+        {data.data.totalCnt === 0 ? (
           <Empty description="등록된 문의 내역이 없습니다." />
         ) : (
           <div className="mt-3">
             <Table
-              dataSource={data.data}
+              dataSource={data.data.data}
               columns={columns}
               pagination={false}
               expandable={{

@@ -21,6 +21,7 @@ const axiosAuthApi = (baseURL: string | undefined) => {
       const access_token = localStorage.getItem("accessToken");
       if (access_token) {
         config.headers.Authorization = access_token;
+        config.headers["Content-Type"] = "application/json";
       }
       return config;
     },

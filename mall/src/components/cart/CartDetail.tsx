@@ -9,7 +9,6 @@ import {
   modifyCartCount,
 } from "../../apis/cart";
 import CartListFallback from "../../components/fallbacks/CartListFallback";
-import { cartListData } from "../../mocks/cart";
 import {
   cartItemDto,
   cartOrderDto,
@@ -38,11 +37,10 @@ export default function CartDetail() {
   const [quantities, setQuantities] = useState<number[]>([]);
   const [isChange, setIsChange] = useState<boolean>(false);
 
-  const data = cartListData;
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ["getCartList", isChange],
-  //   queryFn: () => getCartList(),
-  // });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getCartList", isChange],
+    queryFn: () => getCartList(),
+  });
 
   const handleSelectStores = (
     e: CheckboxChangeEvent,
@@ -52,13 +50,13 @@ export default function CartDetail() {
     freeMinDelivery: number,
     delivery: number
   ) => {
+    let tmpPrice = totalPrice;
+    let tmpDelivery = deliveryCost;
+
     if (e.target.checked) {
       setSelectedStores((prev) => [...prev, storeId]);
 
-      var tmpPrice = totalPrice;
-      var tmpDelivery = deliveryCost;
-
-      var price = 0;
+      let price = 0;
       product.forEach((item: productInfoDto) => {
         setSelectedProducts((prev) => [...prev, item.productId]);
         price += item.price * item.quantity;
@@ -74,9 +72,6 @@ export default function CartDetail() {
     } else {
       const filtered = selectedStores.filter((element) => element !== storeId);
       setSelectedStores(filtered);
-
-      var tmpPrice = totalPrice;
-      var tmpDelivery = deliveryCost;
 
       const tmp = [...selectedProducts];
       for (let index = 0; index < tmp.length; index++) {
@@ -104,12 +99,14 @@ export default function CartDetail() {
     freeMinDelivery: number,
     delivery: number
   ) => {
+    let tmpPrice = totalPrice;
+    let tmpDelivery = deliveryCost;
+    let selected = 0;
+
     if (e.target.checked) {
       setSelectedProducts((prev) => [...prev, product.productId]);
       setSelectedStores((prev) => [...prev, storeId]);
 
-      var tmpPrice = totalPrice;
-      var tmpDelivery = deliveryCost;
       tmpPrice[index] = tmpPrice[index] + product.price * product.quantity;
 
       if (tmpPrice[index] >= freeMinDelivery) {
@@ -125,7 +122,6 @@ export default function CartDetail() {
       );
       setSelectedProducts(filtered);
 
-      var selected = 0;
       for (let i = 0; i < filtered.length; i++) {
         productInfo.forEach((item: productInfoDto) => {
           if (filtered[i] === item.productId) {
@@ -134,8 +130,6 @@ export default function CartDetail() {
         });
       }
 
-      var tmpPrice = totalPrice;
-      var tmpDelivery = deliveryCost;
       tmpPrice[index] = tmpPrice[index] - product.price * product.quantity;
 
       if (tmpPrice[index] >= freeMinDelivery || selected === 0) {
@@ -156,12 +150,12 @@ export default function CartDetail() {
   };
 
   const handleSelectAll = (e: CheckboxChangeEvent) => {
+    let prices: number[] = [];
+    let deliveries: number[] = [];
+
     if (e.target.checked) {
       setSelectedStores(totalStoreList);
       setSelectedProducts(totalProductList);
-
-      var prices: number[] = [];
-      var deliveries: number[] = [];
 
       data.data.forEach((item: cartItemDto) => {
         var price = 0;
@@ -179,9 +173,6 @@ export default function CartDetail() {
     } else {
       setSelectedStores([]);
       setSelectedProducts([]);
-
-      var prices: number[] = [];
-      var deliveries: number[] = [];
 
       data.data.forEach(() => {
         prices.push(0);
@@ -245,7 +236,7 @@ export default function CartDetail() {
   };
 
   const handleDeleteOne = (productId: string) => {
-    var deleteList: string[] = [];
+    let deleteList: string[] = [];
     deleteList.push(productId);
 
     deleteMutation.mutate(deleteList);
@@ -253,12 +244,12 @@ export default function CartDetail() {
 
   const handleCartOrder = () => {
     if (data) {
-      var orderInfoByStore: orderInfoByStore[] = [];
+      let orderInfoByStore: orderInfoByStore[] = [];
 
       data.data.forEach((item: cartItemDto) => {
-        var productCreate: productCreate[] = [];
-        var storeTotal = 0;
-        var delivery = 0;
+        let productCreate: productCreate[] = [];
+        let storeTotal = 0;
+        let delivery = 0;
 
         item.productInfo.forEach((product: productInfoDto) => {
           if (selectedProducts.includes(product.productId)) {
@@ -370,9 +361,10 @@ export default function CartDetail() {
       setDeliveryCost(deliveries);
       setQuantities(quantities);
     }
-  }, []);
+  }, [data]);
 
-  // if (!data || isLoading) return <CartListFallback />;
+  if (!data || isLoading) return <CartListFallback />;
+
   return (
     <div>
       <div className="flex flex-row gap-5 flex-wrap justify-center mt-5">
@@ -391,7 +383,7 @@ export default function CartDetail() {
             </Button>
           </div>
           <div className="flex flex-col gap-2">
-            {data.data.map((item: cartItemDto, index: number) => (
+            {data.data.data.map((item: cartItemDto, index: number) => (
               <div
                 key={item.storeId}
                 className="border-[1px] border-grayscale3 relative rounded-lg"

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pagination, PaginationProps, Rate } from "antd";
+import { Empty, Pagination, PaginationProps, Rate } from "antd";
 import { myReviewListData } from "../../../mocks/mypage";
 import { myReviewItemDto } from "../../../recoil/common/interfaces";
 import MyReviewModal from "../modal/MyReviewModal";
@@ -21,7 +21,6 @@ export default function MyReviewList() {
     productName: "",
   });
 
-  //   const data = myReviewListData;
   const { data, isLoading } = useQuery({
     queryKey: ["getMyReviewList", page],
     queryFn: () => getMyReviewList(page - 1, 10),
@@ -44,56 +43,62 @@ export default function MyReviewList() {
 
   return (
     <div>
-      <div className="w-full p-2 flex flex-col gap-5 justify-center">
-        {data.data.reviews.map((item: myReviewItemDto) => (
-          <div>
-            <div
-              className="flex flex-row gap-2 flex-wrap justify-between cursor-pointer py-2 hover:translate-y-[-4px]"
-              key={item.reviewId}
-              onClick={() => {
-                setReview(item);
-                setIsModalOpen(true);
-              }}
-            >
-              <div className="flex flex-row gap-5">
-                <img
-                  src={item.profileImage}
-                  alt=""
-                  className="w-[4vw] h-[4vw] min-w-[50px] min-h-[50px] rounded-full"
-                />
-                <div className="flex flex-col w-[50vw] min-w-[300px] max-w-[700px] relative z-0">
-                  <Rate
-                    defaultValue={item.reviewRating}
-                    allowHalf
-                    disabled
-                    style={{ color: "#85C031" }}
-                  />
-                  <p className="font-bold pt-1">{item.productName}</p>
-                  <p className="font-light">{item.nickname}</p>
-                  <p className="line-clamp-1 pt-1">{item.reviewContent}</p>
+      {data.data.totalCnt === 0 ? (
+        <Empty description="등록된 상품 후기가 없습니다." className="my-10" />
+      ) : (
+        <div>
+          <div className="w-full p-2 flex flex-col gap-5 justify-center">
+            {data.data.reviews.map((item: myReviewItemDto) => (
+              <div>
+                <div
+                  className="flex flex-row gap-2 flex-wrap justify-between cursor-pointer py-2 hover:translate-y-[-4px]"
+                  key={item.reviewId}
+                  onClick={() => {
+                    setReview(item);
+                    setIsModalOpen(true);
+                  }}
+                >
+                  <div className="flex flex-row gap-5">
+                    <img
+                      src={item.profileImage}
+                      alt=""
+                      className="w-[4vw] h-[4vw] min-w-[50px] min-h-[50px] rounded-full"
+                    />
+                    <div className="flex flex-col w-[50vw] min-w-[300px] max-w-[700px] relative z-0">
+                      <Rate
+                        defaultValue={item.reviewRating}
+                        allowHalf
+                        disabled
+                        style={{ color: "#85C031" }}
+                      />
+                      <p className="font-bold pt-1">{item.productName}</p>
+                      <p className="font-light">{item.nickname}</p>
+                      <p className="line-clamp-1 pt-1">{item.reviewContent}</p>
+                    </div>
+                  </div>
+                  {item.reviewImages.length === 0 ? (
+                    <div className="w-[4vw] h-[4vw] min-w-[100px] min-h-[100px]"></div>
+                  ) : (
+                    <img
+                      src={item.reviewImages[0]}
+                      alt="리뷰 이미지"
+                      className="w-[4vw] h-[4vw] min-w-[100px] min-h-[100px]"
+                    />
+                  )}
                 </div>
+                <p className="border-b-[1px]"></p>
               </div>
-              {item.reviewImages.length === 0 ? (
-                <div className="w-[4vw] h-[4vw] min-w-[100px] min-h-[100px]"></div>
-              ) : (
-                <img
-                  src={item.reviewImages[0]}
-                  alt="리뷰 이미지"
-                  className="w-[4vw] h-[4vw] min-w-[100px] min-h-[100px]"
-                />
-              )}
-            </div>
-            <p className="border-b-[1px]"></p>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="text-center mt-5">
-        <Pagination
-          defaultCurrent={page}
-          total={data.data.totalCnt}
-          onChange={handlePage}
-        />
-      </div>
+          <div className="text-center mt-5">
+            <Pagination
+              defaultCurrent={page}
+              total={data.data.totalCnt}
+              onChange={handlePage}
+            />
+          </div>
+        </div>
+      )}
       {isModalOpen ? (
         <MyReviewModal
           isModalOpen={isModalOpen}

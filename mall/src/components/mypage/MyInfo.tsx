@@ -15,7 +15,6 @@ export default function MyInfo(param: param) {
 
   if (!data || isLoading) return <MyInfoFallback />;
 
-  console.log(data.data.data.profileImage);
   return (
     <div className="w-full mx-auto flex flex-row gap-5 flex-wrap justify-between max-[660px]:justify-center">
       <div className="flex flex-row gap-3">
