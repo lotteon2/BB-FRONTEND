@@ -128,7 +128,7 @@ export default function ModifyMemberInfo() {
           // onChange={handleImage}
         />
         <img
-          src={data.profileImage}
+          src={data.data.data.profileImage}
           alt="프로필 이미지"
           className="w-40 h-40 rounded-full"
         />
