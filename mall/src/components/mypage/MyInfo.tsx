@@ -46,11 +46,6 @@ export default function MyInfo(param: param) {
           <div>위시리스트</div>
           <div className="font-bold">{data.data.likesCnt}개</div>
         </div>
-        <div className="border-r-[1px] border-grayscale7"></div>
-        <div className="text-center pt-2">
-          <div>최근 본 상품</div>
-          <div className="font-bold">{data.likesCnt}개</div>
-        </div>
       </div>
     </div>
   );

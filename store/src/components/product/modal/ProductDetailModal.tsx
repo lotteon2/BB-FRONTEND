@@ -61,7 +61,7 @@ export default function ProductDetailModal(param: param) {
             <Select
               disabled
               style={{ width: 350 }}
-              defaultValue={data.data.categoryId}
+              defaultValue={data.data.category.categoryId}
               options={categoryOptions}
             />
           </Form.Item>

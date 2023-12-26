@@ -9,7 +9,6 @@ import {
 import { getImageUrl } from "../../../apis/image";
 import { FailToast } from "../../common/toast/FailToast";
 import { SuccessToast } from "../../common/toast/SuccessToast";
-import { productDetail } from "../../../mocks/product";
 import {
   categoryOptions,
   flowerOptions,
@@ -59,7 +58,7 @@ export default function ProductModifyModal(param: param) {
       productThumbnail: productThumbnail,
       productPrice: productPrice,
       productSaleStatus: productSaleStatus,
-      categoryId: category,
+      category: category,
       productTag: tag,
       representativeFlower: {
         flowerId: representativeFlower,
@@ -68,7 +67,6 @@ export default function ProductModifyModal(param: param) {
       flowers: extraFlowers,
     };
 
-    console.log(productInfo);
     modifyMutation.mutate(productInfo);
   };
   const uploadImgBtn = useCallback(() => {
@@ -148,18 +146,36 @@ export default function ProductModifyModal(param: param) {
 
   useEffect(() => {
     if (data) {
+      const tmpTag: number[] = [];
+      data.data.tag.forEach((e: { key: number; tagName: string }) => {
+        tmpTag.push(e.key);
+      });
+
       setDefaultValues(data.data);
       setProductName(data.data.productName);
       setProductThumbnail(data.data.productThumbnail);
       setProductSummary(data.data.productSummary);
       setProductPrice(data.data.productPrice);
-      setCategory(data.data.category);
-      setTag(data.data.tag);
+      setCategory(data.data.category.categoryId);
+      setTag(tmpTag);
       setRepresentativeFlower(data.data.representativeFlower.flowerId);
       setRepresentativeFlowerCnt(data.data.representativeFlower.flowerCount);
       setExtraFlowers(data.data.flowers);
       setProductDescriptionImage(data.data.productDescriptionImage);
       setProductSaleStatus(data.data.productSaleStatus);
+
+      setDefaultValues({
+        productName: data.data.productName,
+        productSummary: data.data.productSummary,
+        productDescriptionImage: data.data.productDescriptionImage,
+        productThumbnail: data.data.productThumbnail,
+        productPrice: data.data.productPrice,
+        productSaleStatus: data.data.productSaleStatus,
+        category: data.data.category.categoryId,
+        productTag: tmpTag,
+        representativeFlower: data.data.representativeFlower,
+        flowers: data.data.flowers,
+      });
     }
   }, [data]);
 
@@ -275,7 +291,7 @@ export default function ProductModifyModal(param: param) {
                   options={categoryOptions}
                 />
               </Form.Item>
-              <Form.Item name="tag" label="태그">
+              <Form.Item name="productTag" label="태그">
                 <Select
                   mode="multiple"
                   allowClear
@@ -285,7 +301,6 @@ export default function ProductModifyModal(param: param) {
                   options={tagOptions}
                 />
               </Form.Item>
-
               <div>
                 <Space className="flex flex-col ml-[86px]">
                   <div id="extraFlowers" className="flex flex-row gap-3">

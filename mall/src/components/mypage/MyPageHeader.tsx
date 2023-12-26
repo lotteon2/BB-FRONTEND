@@ -42,16 +42,6 @@ export default function MyPageHeader(param: param) {
           >
             위시리스트
           </p>
-          <p
-            className={
-              param.selected === "최근상품"
-                ? "font-regular cursor-pointer"
-                : "cursor-pointer"
-            }
-            onClick={() => param.setSelected("최근상품")}
-          >
-            최근 본 상품
-          </p>
         </div>
         <div>
           <p className="text-2xl font-regular border-b-[1px] border-grayscale3">

@@ -124,7 +124,7 @@ export interface productModifyInfoDto {
   productThumbnail: string;
   productPrice: number | null;
   productSaleStatus: string;
-  categoryId: number;
+  category: number;
   productTag: number[];
   representativeFlower: flowers;
   flowers: flowers[];

@@ -39,26 +39,30 @@ export default function StoreInfo(param: param) {
   return (
     <div className="w-full h-full flex flex-row gap-5 flex-wrap justify-center">
       <div className="w-[20vw] min-w-[250px] max-w-[300px]">
-        <img src={data.storeThumbnailImage} alt="" className="rounded-lg" />
+        <img
+          src={data.data.storeThumbnailImage}
+          alt=""
+          className="rounded-lg"
+        />
       </div>
       <div className="flex flex-col gap-2 w-[70vw] max-w-[1000px]">
         <div>
           <div className="flex flex-row gap-3">
-            <p className="text-4xl font-bold">{data.storeName}</p>
+            <p className="text-4xl font-bold">{data.data.storeName}</p>
             <div className="flex flex-row gap-1 text-primary4">
               <StarFilled />
-              <span className="mt-2">{data.averageRating}</span>
+              <span className="mt-2">{data.data.averageRating}</span>
             </div>
           </div>
           <p className="text-grayscale5 text-lg">
-            {data.address} {data.detailAddress}
+            {data.data.address} {data.data.detailAddress}
           </p>
-          <p>{data.phoneNumber}</p>
-          <p className="my-3 h-18 overflow-auto">{data.detailInfo}</p>
+          <p>{data.data.phoneNumber}</p>
+          <p className="my-3 h-18 overflow-auto">{data.data.detailInfo}</p>
         </div>
 
         {storeWishList.includes(param.storeId) ? (
-          !data.isLiked ? (
+          !data.data.isLiked ? (
             <div
               className="text-[#FF6464] text-[40px] flex justify-end hover:-translate-y-[2px] cursor-pointer"
               onClick={(e) => handleWishButton(param.storeId)}
@@ -73,7 +77,7 @@ export default function StoreInfo(param: param) {
               <HeartFilled />
             </div>
           )
-        ) : data.isLiked ? (
+        ) : data.data.isLiked ? (
           <div
             className="text-[#FF6464] text-[40px] flex justify-end text-[40px] hover:-translate-y-[2px] cursor-pointer"
             onClick={(e) => handleWishButton(param.storeId)}
@@ -98,10 +102,14 @@ export default function StoreInfo(param: param) {
             }}
             type="primary"
             onClick={() =>
-              navigate(
-                "/product/subscription/detail/" + data.subscriptionProductId
-              )
+              data.data.subscriptionProductId === ""
+                ? ""
+                : navigate(
+                    "/product/subscription/detail/" +
+                      data.data.subscriptionProductId
+                  )
             }
+            disabled={data.data.subscriptionProductId === "" ? true : false}
           >
             정기구독 신청
           </Button>

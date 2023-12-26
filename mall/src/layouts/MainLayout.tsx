@@ -108,15 +108,6 @@ export default function MainLayout() {
               <FavoriteIcon />
             </button>
             <button
-              onClick={() => {
-                navigate("/mypage");
-                setSideMenuState(2);
-              }}
-              title="최근 본 상품"
-            >
-              <HistoryIcon />
-            </button>
-            <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               title="맨위로"
             >
