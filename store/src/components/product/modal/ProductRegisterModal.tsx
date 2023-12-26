@@ -447,7 +447,7 @@ export default function ProductRegisterModal(param: param) {
                   ]}
                 >
                   <div>
-                    <input
+                    <Input
                       type="text"
                       value={defaultValues.productDescriptionImage}
                       className="hidden"

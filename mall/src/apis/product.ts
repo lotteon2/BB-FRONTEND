@@ -52,19 +52,33 @@ export const getProductListByTag = async (
   size: number,
   sortOption: string
 ) => {
-  const { data } = await defaultInstance.get(
-    "/products/tag/" +
-      tagId +
-      "?category=" +
-      categoryId +
-      "?page=" +
-      page +
-      "&size=" +
-      size +
-      "&sort-option=" +
-      sortOption
-  );
-  return data;
+  if (!categoryId) {
+    const { data } = await defaultInstance.get(
+      "/products/tag/" +
+        tagId +
+        "?page=" +
+        page +
+        "&size=" +
+        size +
+        "&sort-option=" +
+        sortOption
+    );
+    return data;
+  } else {
+    const { data } = await defaultInstance.get(
+      "/products/tag/" +
+        tagId +
+        "?category=" +
+        categoryId +
+        "&page=" +
+        page +
+        "&size=" +
+        size +
+        "&sort-option=" +
+        sortOption
+    );
+    return data;
+  }
 };
 
 // 상품 상세 조회
@@ -119,7 +133,7 @@ export const getProductQuestionList = async (
         page +
         "&size=" +
         size +
-        (!replied ? "" : "&is-replied=" + replied)
+        (replied === undefined ? "" : "&is-replied=" + replied)
     );
     return data;
   } else {
@@ -130,7 +144,7 @@ export const getProductQuestionList = async (
         page +
         "&size=" +
         size +
-        (!replied ? "" : "&is-replied=" + replied)
+        (replied === undefined ? "" : "&is-replied=" + replied)
     );
     return data;
   }

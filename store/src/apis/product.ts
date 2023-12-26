@@ -22,7 +22,7 @@ export const modifyProduct = async (
   productId: string | undefined,
   productInfo: productModifyInfoDto
 ) => {
-  const { data } = await authInstance.post(
+  const { data } = await authInstance.put(
     "/products/" + productId,
     productInfo
   );

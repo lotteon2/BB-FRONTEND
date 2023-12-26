@@ -9,6 +9,7 @@ interface param {
   data: questionItemDto | undefined;
 }
 export default function QuestionModal(param: param) {
+  console.log(param.data);
   return (
     <div>
       <Modal
@@ -28,12 +29,15 @@ export default function QuestionModal(param: param) {
           <div className="mt-5">
             <div className="flex flex-row gap-2 mb-2">
               <span>답변 내용</span>
-              <Tag bordered={false}>{param.data?.repliedAt} 작성됨</Tag>
+              <Tag bordered={false}>
+                {param.data?.isReplied ? "작성됨" : ""}
+              </Tag>
             </div>
             <TextArea
               disabled
               value={param.data?.reply}
               autoSize={{ minRows: 6, maxRows: 6 }}
+              placeholder="답변 대기중입니다."
             />
           </div>
         </div>

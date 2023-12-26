@@ -198,26 +198,26 @@ export const deliveryStatusOptions = [
 
 export const deliverStatusFirst = [
   {
-    value: "ORDER_RECEIVED",
+    value: "PENDING",
     label: "주문접수",
   },
   {
-    value: "DELIVERY_STARTED",
+    value: "PROCESSING",
     label: "배송시작",
   },
   {
-    value: "DELIVERY_COMPLETED",
+    value: "COMPLETED",
     label: "배송완료",
   },
 ];
 
 export const deliverStatusSecond = [
   {
-    value: "DELIVERY_STARTED",
+    value: "PROCESSING",
     label: "배송시작",
   },
   {
-    value: "DELIVERY_COMPLETED",
+    value: "COMPLETED",
     label: "배송완료",
   },
 ];

@@ -67,6 +67,8 @@ export default function ProductModifyModal(param: param) {
       },
       flowers: extraFlowers,
     };
+
+    console.log(productInfo);
     modifyMutation.mutate(productInfo);
   };
   const uploadImgBtn = useCallback(() => {
@@ -145,18 +147,20 @@ export default function ProductModifyModal(param: param) {
   }, [form, defaultValues]);
 
   useEffect(() => {
-    setDefaultValues(data.data);
-    setProductName(data.data.productName);
-    setProductThumbnail(data.data.productThumbnail);
-    setProductSummary(data.data.productSummary);
-    setProductPrice(data.data.productPrice);
-    setCategory(data.data.category);
-    setTag(data.data.tag);
-    setRepresentativeFlower(data.data.representativeFlower.flowerId);
-    setRepresentativeFlower(data.data.representativeFlower.amount);
-    setExtraFlowers(data.data.flowers);
-    setProductDescriptionImage(data.data.productDescriptionImage);
-    setProductSaleStatus(data.data.productSaleStatus);
+    if (data) {
+      setDefaultValues(data.data);
+      setProductName(data.data.productName);
+      setProductThumbnail(data.data.productThumbnail);
+      setProductSummary(data.data.productSummary);
+      setProductPrice(data.data.productPrice);
+      setCategory(data.data.category);
+      setTag(data.data.tag);
+      setRepresentativeFlower(data.data.representativeFlower.flowerId);
+      setRepresentativeFlowerCnt(data.data.representativeFlower.flowerCount);
+      setExtraFlowers(data.data.flowers);
+      setProductDescriptionImage(data.data.productDescriptionImage);
+      setProductSaleStatus(data.data.productSaleStatus);
+    }
   }, [data]);
 
   if (!data || isLoading) return <Loading />;
@@ -254,7 +258,7 @@ export default function ProductModifyModal(param: param) {
                 />
               </Form.Item>
               <Form.Item
-                name="categoryId"
+                name="category"
                 label="카테고리"
                 rules={[{ required: true, message: "카테고리를 설정해주세요" }]}
               >
@@ -286,7 +290,7 @@ export default function ProductModifyModal(param: param) {
                 <Space className="flex flex-col ml-[86px]">
                   <div id="extraFlowers" className="flex flex-row gap-3">
                     <span className="text-[#ff4d4f] mt-1 mr-[-5px]">*</span>
-                    <label htmlFor="extraFlowers" title="구성꽃">
+                    <label htmlFor="extraFlowers" title="대표꽃">
                       대표꽃 :
                     </label>
                     <div className="flex flex-col gap-3 ml-[-4px]">
@@ -296,7 +300,7 @@ export default function ProductModifyModal(param: param) {
                         defaultValue={data.data.representativeFlower.flowerId}
                         showSearch
                         style={{ width: 240 }}
-                        placeholder="구성꽃"
+                        placeholder="대표꽃"
                         options={flowerOptions}
                       />
                     </div>
@@ -315,43 +319,47 @@ export default function ProductModifyModal(param: param) {
                 </Space>
               </div>
               <div>
-                <Space className="flex flex-col ml-[100px] mt-5">
-                  <div id="extraFlowers" className="flex flex-row gap-3">
-                    <label htmlFor="extraFlowers" title="구성꽃">
-                      구성꽃 :
-                    </label>
-                    <div className="flex flex-col gap-3 ml-[-4px]">
-                      {productDetail.flowers.map(
-                        (item: flowersDetail, index: number) => (
-                          <div key={index}>
-                            <Select
-                              disabled
-                              defaultValue={item.flowerId}
-                              showSearch
-                              style={{ width: 240 }}
-                              placeholder="구성꽃"
-                              options={flowerOptions}
-                            />
-                          </div>
-                        )
-                      )}
+                {data.data.flowers.length === 0 ? (
+                  ""
+                ) : (
+                  <Space className="flex flex-col ml-[100px] mt-5">
+                    <div id="extraFlowers" className="flex flex-row gap-3">
+                      <label htmlFor="extraFlowers" title="구성꽃">
+                        구성꽃 :
+                      </label>
+                      <div className="flex flex-col gap-3 ml-[-4px]">
+                        {data.data.flowers.map(
+                          (item: flowersDetail, index: number) => (
+                            <div key={index}>
+                              <Select
+                                disabled
+                                defaultValue={item.flowerId}
+                                showSearch
+                                style={{ width: 240 }}
+                                placeholder="구성꽃"
+                                options={flowerOptions}
+                              />
+                            </div>
+                          )
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-3">
+                        {data.data.flowers.map(
+                          (item: flowersDetail, index: number) => (
+                            <div className="flex flex-row gap-3" key={index}>
+                              <InputNumber
+                                disabled
+                                defaultValue={item.flowerCount}
+                                placeholder="수량"
+                                className="w-[100px]"
+                              />
+                            </div>
+                          )
+                        )}
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-3">
-                      {data.data.flowers.map(
-                        (item: flowersDetail, index: number) => (
-                          <div className="flex flex-row gap-3" key={index}>
-                            <InputNumber
-                              disabled
-                              defaultValue={item.flowerCount}
-                              placeholder="수량"
-                              className="w-[100px]"
-                            />
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
-                </Space>
+                  </Space>
+                )}
               </div>
             </div>
             <div className="mt-3">

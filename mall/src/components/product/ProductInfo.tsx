@@ -131,7 +131,7 @@ export default function ProductInfo(param: param) {
     (storeId: number) => getStoreDeliveryPolicy(storeId),
     {
       onSuccess: (data) => {
-        setDeliveryPolicy(data);
+        setDeliveryPolicy(data.data);
       },
       onError: () => {},
     }

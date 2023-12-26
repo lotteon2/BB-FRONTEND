@@ -151,7 +151,7 @@ export default function StoreRegisterModal(param: param) {
     () => registerStore(registerValues),
     {
       onSuccess: (data) => {
-        setStoreId(data);
+        setStoreId(data.data);
         SuccessToast("가게 정보가 등록되었습니다.");
         param.handleCancel();
       },

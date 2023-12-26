@@ -76,7 +76,7 @@ export default function StockGraph() {
     },
   };
 
-  if (!data || isLoading || data.stockInfoDtos.length === 0)
+  if (!data || isLoading)
     return (
       <div className="relative">
         <span className="text-xl font-bold">재고 관리</span>
@@ -102,7 +102,7 @@ export default function StockGraph() {
       <div className="mt-5">
         <Chart
           options={options}
-          series={data.stockInfoDtos}
+          series={data.data.stockInfoDtos}
           type="bar"
           height={800}
         />

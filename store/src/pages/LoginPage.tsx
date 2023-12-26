@@ -22,7 +22,8 @@ export default function LoginPage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [businessNumberImage, setBusinessNumberImage] = useState<string>("");
+  const [businessNumberImage, setBusinessNumberImage] =
+    useState<string>("test.jpg");
   const defaultValues = {
     email: "",
     password: "",
@@ -71,11 +72,17 @@ export default function LoginPage() {
       },
       onError: (error: any) => {
         if (error.response.status === 401) {
-          if (error.response.data.message === "관리자의 승인을 기다려주세요.")
+          if (error.response.data.message === "관리자의 승인을 기다려주세요.") {
             FailToast(error.response.data.message);
-          else FailToast("아이디/비밀번호를 확인해주세요.");
-        } else if (error.response.status === 301) {
-          setIsModalOpen(true);
+          } else if (
+            error.response.data.message ===
+            "잘못된 사업자 등록증입니다. 다시 요청하세요"
+          ) {
+            FailToast("사업자 등록증을 다시 제출해주세요.");
+            setIsModalOpen(true);
+          } else FailToast("아이디/비밀번호를 확인해주세요.");
+        } else {
+          FailToast(null);
         }
       },
     }
