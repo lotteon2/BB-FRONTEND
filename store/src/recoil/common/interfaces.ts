@@ -184,7 +184,7 @@ export interface reservationInfoDto {
 }
 
 export interface stockDto {
-  id: number;
+  flowerId: number;
   name: string;
   data: number[];
 }

@@ -180,8 +180,12 @@ export default function RegisterPage() {
         SuccessToast("인증되었습니다.");
         setIsConfirm(true);
       },
-      onError: () => {
-        FailToast(null);
+      onError: (error: any) => {
+        if (error.response.status === 400) {
+          FailToast("인증코드가 일치하지 않습니다.");
+        } else {
+          FailToast(null);
+        }
       },
     }
   );
@@ -360,7 +364,12 @@ export default function RegisterPage() {
             중복확인
           </Button>
           {isValid ? (
-            <Button onClick={handleSendEmailCode}>인증코드 발송</Button>
+            <Button
+              onClick={handleSendEmailCode}
+              disabled={isConfirm ? true : false}
+            >
+              인증코드 발송
+            </Button>
           ) : (
             ""
           )}

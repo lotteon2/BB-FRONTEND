@@ -112,7 +112,7 @@ export default function StockGraph() {
           isModalOpen={isModalOpen}
           handleCancel={handleCancel}
           handleChange={handleChange}
-          data={data.stockInfoDtos}
+          data={data.data.stockInfoDtos}
         />
       ) : (
         ""

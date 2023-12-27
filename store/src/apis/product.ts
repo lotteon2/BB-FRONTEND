@@ -160,9 +160,12 @@ export const modifyFlowerStocks = async (
   storeId: number,
   stocks: stockModifyDto[]
 ) => {
+  const stockDto = {
+    stockModifyDtos: stocks,
+  };
   const { data } = await authInstance.put(
     "/stores/" + storeId + "/flowers/stocks",
-    stocks
+    stockDto
   );
   return data;
 };
