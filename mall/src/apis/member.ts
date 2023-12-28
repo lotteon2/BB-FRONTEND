@@ -9,13 +9,13 @@ export const registerPhoneNumber = async (phoneNumber: string) => {
 
 // 상품 찜
 export const modifyWishList = async (list: string[]) => {
-  const { data } = await authInstance.post("/wishlist/likes/product", list);
+  const { data } = await authInstance.put("/wishlist/likes/products", list);
   return data;
 };
 
 // 가게 찜
 export const modifyStoreWishList = async (list: number[]) => {
-  const { data } = await authInstance.post("/wishlist/likes/store", list);
+  const { data } = await authInstance.put("/wishlist/likes/stores", list);
   return data;
 };
 

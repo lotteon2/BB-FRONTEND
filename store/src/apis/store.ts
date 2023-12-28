@@ -32,7 +32,7 @@ export const modifyStore = async (storeId: number, storeInfo: storeInfoDto) => {
 // 구독상품 조회
 export const getSubscriptionInfo = async (storeId: number) => {
   const { data } = await authInstance.get(
-    "/products//store/" + storeId + "/subscribe-product"
+    "/products/store/" + storeId + "/subscribe-product"
   );
   return data;
 };

@@ -238,3 +238,9 @@ export interface settlementDto {
   bankName: string;
   accountNumber: string;
 }
+
+export interface notiDto {
+  notificationId: number;
+  notificationContent: string;
+  notificationLink: string;
+}

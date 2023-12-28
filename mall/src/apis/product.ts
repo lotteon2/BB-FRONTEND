@@ -1,10 +1,17 @@
 import { questionRegisterDto } from "../recoil/common/interfaces";
 import { authInstance, defaultInstance } from "./utils";
 
+const isLogin = localStorage.getItem("isLogin");
+
 // 메인페이지 상품 조회
 export const getMainProductList = async (type: string) => {
-  const { data } = await defaultInstance.get("/products/main/" + type);
-  return data;
+  if (isLogin === "T") {
+    const { data } = await authInstance.get("/products/main/" + type);
+    return data;
+  } else {
+    const { data } = await defaultInstance.get("/products/main/" + type);
+    return data;
+  }
 };
 
 // 카테고리별 상품 목록 조회
@@ -15,32 +22,62 @@ export const getProductListByCategory = async (
   sortOption: string,
   storeId: number | null
 ) => {
-  if (storeId === null) {
-    const { data } = await defaultInstance.get(
-      "/products/category/" +
-        categoryId +
-        "?page=" +
-        page +
-        "&size=" +
-        size +
-        "&sort-option=" +
-        sortOption
-    );
-    return data;
+  if (isLogin === "T") {
+    if (storeId === null) {
+      const { data } = await authInstance.get(
+        "/products/category/" +
+          categoryId +
+          "?page=" +
+          page +
+          "&size=" +
+          size +
+          "&sort-option=" +
+          sortOption
+      );
+      return data;
+    } else {
+      const { data } = await authInstance.get(
+        "/products/category/" +
+          categoryId +
+          "?page=" +
+          page +
+          "&size=" +
+          size +
+          "&sort-option=" +
+          sortOption +
+          "&store-id=" +
+          storeId
+      );
+      return data;
+    }
   } else {
-    const { data } = await defaultInstance.get(
-      "/products/category/" +
-        categoryId +
-        "?page=" +
-        page +
-        "&size=" +
-        size +
-        "&sort-option=" +
-        sortOption +
-        "&store-id=" +
-        storeId
-    );
-    return data;
+    if (storeId === null) {
+      const { data } = await defaultInstance.get(
+        "/products/category/" +
+          categoryId +
+          "?page=" +
+          page +
+          "&size=" +
+          size +
+          "&sort-option=" +
+          sortOption
+      );
+      return data;
+    } else {
+      const { data } = await defaultInstance.get(
+        "/products/category/" +
+          categoryId +
+          "?page=" +
+          page +
+          "&size=" +
+          size +
+          "&sort-option=" +
+          sortOption +
+          "&store-id=" +
+          storeId
+      );
+      return data;
+    }
   }
 };
 
@@ -52,49 +89,91 @@ export const getProductListByTag = async (
   size: number,
   sortOption: string
 ) => {
-  if (!categoryId) {
-    const { data } = await defaultInstance.get(
-      "/products/tag/" +
-        tagId +
-        "?page=" +
-        page +
-        "&size=" +
-        size +
-        "&sort-option=" +
-        sortOption
-    );
-    return data;
+  if (isLogin === "T") {
+    if (!categoryId) {
+      const { data } = await authInstance.get(
+        "/products/tag/" +
+          tagId +
+          "?page=" +
+          page +
+          "&size=" +
+          size +
+          "&sort-option=" +
+          sortOption
+      );
+      return data;
+    } else {
+      const { data } = await authInstance.get(
+        "/products/tag/" +
+          tagId +
+          "?category=" +
+          categoryId +
+          "&page=" +
+          page +
+          "&size=" +
+          size +
+          "&sort-option=" +
+          sortOption
+      );
+      return data;
+    }
   } else {
-    const { data } = await defaultInstance.get(
-      "/products/tag/" +
-        tagId +
-        "?category=" +
-        categoryId +
-        "&page=" +
-        page +
-        "&size=" +
-        size +
-        "&sort-option=" +
-        sortOption
-    );
-    return data;
+    if (!categoryId) {
+      const { data } = await defaultInstance.get(
+        "/products/tag/" +
+          tagId +
+          "?page=" +
+          page +
+          "&size=" +
+          size +
+          "&sort-option=" +
+          sortOption
+      );
+      return data;
+    } else {
+      const { data } = await defaultInstance.get(
+        "/products/tag/" +
+          tagId +
+          "?category=" +
+          categoryId +
+          "&page=" +
+          page +
+          "&size=" +
+          size +
+          "&sort-option=" +
+          sortOption
+      );
+      return data;
+    }
   }
 };
 
 // 상품 상세 조회
 export const getProductDetail = async (productId: string | undefined) => {
-  const { data } = await defaultInstance.get("/products/" + productId);
-  return data;
+  if (isLogin === "T") {
+    const { data } = await authInstance.get("/products/" + productId);
+    return data;
+  } else {
+    const { data } = await defaultInstance.get("/products/" + productId);
+    return data;
+  }
 };
 
 // 구독상품 상세 조회
 export const getSubscriptionProductDetail = async (
   productId: string | undefined
 ) => {
-  const { data } = await defaultInstance.get(
-    "/products/subscription/" + productId
-  );
-  return data;
+  if (isLogin === "T") {
+    const { data } = await authInstance.get(
+      "/products/subscription/" + productId
+    );
+    return data;
+  } else {
+    const { data } = await defaultInstance.get(
+      "/products/subscription/" + productId
+    );
+    return data;
+  }
 };
 
 // 상품 후기

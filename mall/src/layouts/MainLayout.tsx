@@ -26,7 +26,19 @@ export default function MainLayout() {
   const setSideMenuState = useSetRecoilState<number>(sideMenuState);
   const location = useLocation();
 
-  const handleRefresh = () => {
+  const handleLocation = () => {
+    if (productWishList.length !== 0) {
+      productWishMutation.mutate();
+    }
+    if (storeWishList.length !== 0) {
+      storeWishMutation.mutate();
+    }
+  };
+
+  const handleRefresh = (e: BeforeUnloadEvent) => {
+    e.returnValue = "";
+    console.log("!!!!");
+
     if (productWishList.length !== 0) {
       productWishMutation.mutate();
     }
@@ -62,18 +74,16 @@ export default function MainLayout() {
   );
 
   useEffect(() => {
-    handleRefresh();
+    handleLocation();
     // eslint-disable-next-line
   }, [location]);
 
   useEffect(() => {
-    (() => {
-      window.addEventListener("beforeunload", handleRefresh);
-    })();
+    window.addEventListener("beforeunload", handleRefresh);
 
-    return () => {
-      window.removeEventListener("beforeunload", handleRefresh);
-    };
+    // return () => {
+    //   window.removeEventListener("beforeunload", handleRefresh);
+    // };
 
     // eslint-disable-next-line
   }, []);

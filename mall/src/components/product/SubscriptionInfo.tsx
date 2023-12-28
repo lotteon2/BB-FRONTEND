@@ -40,11 +40,10 @@ export default function SubscriptionInfo(param: param) {
     freeDeliveryMinPrice: 0,
   });
 
-  const data = subscriptionDetailData;
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ["getSubscriptionDetail"],
-  //   queryFn: () => getSubscriptionProductDetail(param.productId),
-  // });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getSubscriptionDetail"],
+    queryFn: () => getSubscriptionProductDetail(param.productId),
+  });
 
   const handleWishButton = (productId: string) => {
     if (isLogin) {

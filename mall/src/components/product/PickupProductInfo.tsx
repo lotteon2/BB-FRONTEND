@@ -45,11 +45,10 @@ export default function PickupProductInfo(param: param) {
   const [date, setDate] = useState<Dayjs>(dayjs());
   const setPickupOrder = useSetRecoilState<pickupOrderDto>(pickupOrderState);
 
-  const data = productDetailData;
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ["getProductDetail"],
-  //   queryFn: () => getProductDetail(param.productId),
-  // });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getProductDetail"],
+    queryFn: () => getProductDetail(param.productId),
+  });
 
   const handleWishButton = (productId: string) => {
     if (isLogin) {
@@ -151,7 +150,7 @@ export default function PickupProductInfo(param: param) {
     (storeId: number) => getStoreDeliveryPolicy(storeId),
     {
       onSuccess: (data) => {
-        setDeliveryPolicy(data);
+        setDeliveryPolicy(data.data);
       },
       onError: () => {},
     }
@@ -164,9 +163,9 @@ export default function PickupProductInfo(param: param) {
       param.setStoreId(data.data.storeId);
       getPolilcyMutation.mutate(data.data.storeId);
     }
-  }, []);
+  }, [data]);
 
-  // if (!data || isLoading) return <ProductInfoFallback />;
+  if (!data || isLoading) return <ProductInfoFallback />;
 
   return (
     <div className="w-full flex flex-row gap-10 flex-wrap justify-center">
@@ -277,7 +276,7 @@ export default function PickupProductInfo(param: param) {
             </div>
           </div>
           <p className="text-[2.3rem] font-bold text-primary4 mt-2">
-            {data.data.productPrice.toLocaleString()}원
+            {/* {data.data.productPrice.toLocaleString()}원 */}
           </p>
         </div>
         <div className="text-[0.9rem] border-b-[1px] pb-2 flex flex-row gap-2">

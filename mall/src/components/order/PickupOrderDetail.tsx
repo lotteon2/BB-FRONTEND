@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { pickupOrderState } from "../../recoil/atom/order";
 import { pickupOrderDto } from "../../recoil/common/interfaces";
 import { useRecoilState } from "recoil";
@@ -56,15 +56,16 @@ export default function PickupOrderDetail() {
     onSuccess: (data) => {
       setPickupOrder((prev) => ({
         ...prev,
-        ordererName: data.nickname,
-        ordererEmail: data.email,
-        ordererPhoneNumber: data.phoneNumber,
+        ordererName: data.data.data.nickname,
+        ordererEmail: data.data.data.email,
+        ordererPhoneNumber: data.data.data.phoneNumber,
       }));
     },
     onError: () => {
       FailToast(null);
     },
   });
+
   const rightEmail = useCallback((_: any, value: string) => {
     if (!value) {
       return Promise.reject(new Error("이메일을 입력해주세요."));
@@ -102,6 +103,12 @@ export default function PickupOrderDetail() {
     }
   }, []);
 
+  const [form] = Form.useForm();
+  useEffect(() => {
+    form.setFieldsValue(pickupOrder);
+  }, [form, pickupOrder]);
+
+  console.log(pickupOrder);
   return (
     <div>
       <div className="flex flex-row gap-5 flex-wrap justify-center mt-5">
@@ -209,6 +216,7 @@ export default function PickupOrderDetail() {
               autoComplete="off"
               initialValues={pickupOrder}
               onFinish={handlePickupReservation}
+              form={form}
             >
               <div className="flex flex-col gap-5 mt-10">
                 <Form.Item

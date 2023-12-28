@@ -7,6 +7,8 @@ import { useRecoilValue } from "recoil";
 import { Button, Empty } from "antd";
 import StoreRegisterModal from "../components/store/moddal/StoreRegisterModal";
 import { useNavigate } from "react-router-dom";
+import { notiShowState } from "../recoil/atom/noti";
+import Notification from "../components/common/Notification";
 
 export default function MainLayout() {
   const navigate = useNavigate();
@@ -29,8 +31,11 @@ export default function MainLayout() {
       <div className="w-[300px] bg-grayscale7 relative">
         <Header />
       </div>
-      <div className="w-[1620px]">
+      <div className="w-[1620px] relative">
         <ProfileBar />
+        <div className="absolute top-13 right-5 z-20">
+          <Notification />
+        </div>
         {storeId === null ? (
           <div className="pt-80">
             <Empty description="등록된 가게정보가 없습니다.">

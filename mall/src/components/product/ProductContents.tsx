@@ -42,7 +42,7 @@ export default function ProductContents(param: param) {
     return () => {
       window.removeEventListener("scroll", yScrollEvent);
     };
-  }, [detailRef.current, reviewRef.current, questionRef.current]);
+  }, [detailRef.current, reviewRef.current, questionRef.current, param]);
 
   return (
     <div className="w-full h-full mt-10">

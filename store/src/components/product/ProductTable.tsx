@@ -9,6 +9,7 @@ import { getProductList } from "../../apis/product";
 import { useRecoilValue } from "recoil";
 import { storeIdState } from "../../recoil/atom/common";
 import ListFallback from "../fallbacks/ListFallback";
+import { categoryOptions } from "../../recoil/common/options";
 
 interface param {
   category: number | undefined;
@@ -78,6 +79,7 @@ export default function ProductTable(param: param) {
       title: "카테고리",
       dataIndex: "category",
       key: "category",
+      render: (record) => <p>{categoryOptions[record - 1].label}</p>,
     },
     {
       title: "대표꽃",
