@@ -2,8 +2,7 @@ import { authInstance } from "./utils";
 
 // 구군 리스트
 export const getGugunList = async (sidoCode: number | undefined) => {
-  if (!sidoCode) return [];
-  else {
+  if (sidoCode) {
     const { data } = await authInstance.get("/address/gugun?sido=" + sidoCode);
     return data;
   }

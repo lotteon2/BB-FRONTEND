@@ -3,7 +3,7 @@ import { storeStatusModifyDto } from "../recoil/common/interfaces";
 
 // 이전달 가게 매출액 top 10
 export const getStoreSalesGraph = async () => {
-  const { data } = await authInstance.get("/admin/sales");
+  const { data } = await authInstance.get("/orders/admin/sales");
   return data;
 };
 

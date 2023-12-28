@@ -31,13 +31,13 @@ export default function Notification() {
   );
 
   useEffect(() => {
-    getAllNotiMutation.mutate();
+    if (storeId !== null) getAllNotiMutation.mutate();
   }, [notiEvent]);
 
   useEffect(() => {
     const accesToken = localStorage.getItem("accessToken");
 
-    if (accesToken && storeId !== 0) {
+    if (accesToken && storeId !== null) {
       let eventSource = new EventSourcePolyfill(subscribeUrl, {
         headers: {
           "Content-Type": "text/event-stream",
