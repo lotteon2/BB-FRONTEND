@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { loginState, sideMenuState } from "../recoil/atom/common";
 import { useNavigate } from "react-router";
 import MyInfo from "../components/mypage/MyInfo";
@@ -13,12 +13,46 @@ import MyWishList from "../components/mypage/section/MyWishList";
 import MyOrderList from "../components/mypage/section/MyOrderList";
 import MyPickupOrderList from "../components/mypage/section/MyPickupOrderList";
 import MyReviewList from "../components/mypage/section/MyReviewList";
+import { useMutation } from "react-query";
+import { productWishState, storeWishState } from "../recoil/atom/member";
+import { modifyStoreWishList, modifyWishList } from "../apis/member";
+import { FailToast } from "../components/common/toast/FailToast";
 
 export default function MyPage() {
   const navigate = useNavigate();
   const isLogin = useRecoilValue<boolean>(loginState);
   const [selected, setSelected] = useState<string>("주문/배송");
   const sidebar = useRecoilValue<number>(sideMenuState);
+  const [productWishList, setProductWishList] =
+    useRecoilState<string[]>(productWishState);
+  const [storeWishList, setStoreWishList] =
+    useRecoilState<number[]>(storeWishState);
+
+  const productWishMutation = useMutation(
+    ["modifyWishList"],
+    () => modifyWishList(productWishList),
+    {
+      onSuccess: () => {
+        setProductWishList([]);
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
+
+  const storeWishMutation = useMutation(
+    ["modifyStoreWishList"],
+    () => modifyStoreWishList(storeWishList),
+    {
+      onSuccess: () => {
+        setStoreWishList([]);
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
 
   useEffect(() => {
     sidebar === 1
@@ -32,6 +66,9 @@ export default function MyPage() {
     if (!isLogin) {
       alert("로그인이 필요합니다.");
       navigate("/login");
+    } else {
+      productWishMutation.mutate();
+      storeWishMutation.mutate();
     }
   }, []);
 

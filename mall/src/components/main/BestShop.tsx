@@ -16,7 +16,7 @@ export default function BestShop() {
     useRecoilState<number[]>(storeWishState);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getStoreList"],
+    queryKey: ["getStoreList", isLogin],
     queryFn: () => getStoreList(0, 4),
   });
 

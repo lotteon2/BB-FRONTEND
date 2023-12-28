@@ -41,18 +41,10 @@ export default function StoreDetailPage() {
             꽃상자
           </button>
           <button
-            className={`w-20 h-6 rounded-lg font-light ${
+            className={`w-20 h-6  rounded-lg font-light ${
               categoryId === 4 ? "bg-primary7 text-grayscale1" : "bg-grayscale3"
             }`}
             onClick={() => setCategoryId(4)}
-          >
-            화분
-          </button>
-          <button
-            className={`w-20 h-6  rounded-lg font-light ${
-              categoryId === 5 ? "bg-primary7 text-grayscale1" : "bg-grayscale3"
-            }`}
-            onClick={() => setCategoryId(5)}
           >
             화환
           </button>

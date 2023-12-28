@@ -24,21 +24,8 @@ export default function MainLayout() {
   const storeWishList = useRecoilValue<number[]>(storeWishState);
   const resetStoreWishList = useResetRecoilState(storeWishState);
   const setSideMenuState = useSetRecoilState<number>(sideMenuState);
-  const location = useLocation();
 
-  const handleLocation = () => {
-    if (productWishList.length !== 0) {
-      productWishMutation.mutate();
-    }
-    if (storeWishList.length !== 0) {
-      storeWishMutation.mutate();
-    }
-  };
-
-  const handleRefresh = (e: BeforeUnloadEvent) => {
-    e.returnValue = "";
-    console.log("!!!!");
-
+  const handleWishList = () => {
     if (productWishList.length !== 0) {
       productWishMutation.mutate();
     }
@@ -52,6 +39,8 @@ export default function MainLayout() {
     () => modifyWishList(productWishList),
     {
       onSuccess: () => {
+        navigate("/mypage");
+        setSideMenuState(1);
         resetProductWishList();
       },
       onError: () => {
@@ -65,6 +54,8 @@ export default function MainLayout() {
     () => modifyStoreWishList(storeWishList),
     {
       onSuccess: () => {
+        navigate("/mypage");
+        setSideMenuState(1);
         resetStoreWishList();
       },
       onError: () => {
@@ -72,21 +63,6 @@ export default function MainLayout() {
       },
     }
   );
-
-  useEffect(() => {
-    handleLocation();
-    // eslint-disable-next-line
-  }, [location]);
-
-  useEffect(() => {
-    window.addEventListener("beforeunload", handleRefresh);
-
-    // return () => {
-    //   window.removeEventListener("beforeunload", handleRefresh);
-    // };
-
-    // eslint-disable-next-line
-  }, []);
 
   useEffect(() => {
     isMall ? navigate("/") : navigate("/pickup");
@@ -108,13 +84,7 @@ export default function MainLayout() {
             <button onClick={() => navigate("/cart")} title="장바구니">
               <ShoppingBagIcon />
             </button>
-            <button
-              onClick={() => {
-                navigate("/mypage");
-                setSideMenuState(1);
-              }}
-              title="찜한 상품"
-            >
+            <button onClick={handleWishList} title="찜한 상품">
               <FavoriteIcon />
             </button>
             <button

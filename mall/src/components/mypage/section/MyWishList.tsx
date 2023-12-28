@@ -4,6 +4,7 @@ import WishProductList from "./wish/WishProductList";
 
 export default function MyWishList() {
   const [isStore, setIsStore] = useState<boolean>(false);
+
   return (
     <div className="mt-3">
       <div className="flex flex-row gap-5 justify-end">

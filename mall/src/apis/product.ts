@@ -159,23 +159,6 @@ export const getProductDetail = async (productId: string | undefined) => {
   }
 };
 
-// 구독상품 상세 조회
-export const getSubscriptionProductDetail = async (
-  productId: string | undefined
-) => {
-  if (isLogin === "T") {
-    const { data } = await authInstance.get(
-      "/products/subscription/" + productId
-    );
-    return data;
-  } else {
-    const { data } = await defaultInstance.get(
-      "/products/subscription/" + productId
-    );
-    return data;
-  }
-};
-
 // 상품 후기
 export const getProductReviewList = async (
   productId: string | undefined,

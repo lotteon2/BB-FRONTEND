@@ -1,5 +1,7 @@
 import { authInstance, defaultInstance } from "./utils";
 
+const isLogin = localStorage.getItem("isLogin");
+
 // 가게 리스트
 export const getStoreList = async (page: number, size: number) => {
   const { data } = await defaultInstance.get(
@@ -14,10 +16,17 @@ export const getFlowerShopsNearBy = async (
   lon: number,
   level: number
 ) => {
-  const { data } = await defaultInstance.get(
-    "/stores/map/location?lat=" + lat + "&lon=" + lon + "&level=" + level
-  );
-  return data;
+  if (isLogin === "T") {
+    const { data } = await authInstance.get(
+      "/stores/map/location?lat=" + lat + "&lon=" + lon + "&level=" + level
+    );
+    return data;
+  } else {
+    const { data } = await defaultInstance.get(
+      "/stores/map/location?lat=" + lat + "&lon=" + lon + "&level=" + level
+    );
+    return data;
+  }
 };
 
 // 구/군 조회
@@ -34,17 +43,30 @@ export const getFlowerShopsRegion = async (
   sido: string | null,
   gugun: string
 ) => {
-  if (sido === null && gugun === "") return "ready";
-  const { data } = await defaultInstance.get(
-    "/stores/map/region?sido=" + sido + "&gugun=" + gugun
-  );
-  return data;
+  if (isLogin === "T") {
+    if (sido === null && gugun === "") return "ready";
+    const { data } = await authInstance.get(
+      "/stores/map/region?sido=" + sido + "&gugun=" + gugun
+    );
+    return data;
+  } else {
+    if (sido === null && gugun === "") return "ready";
+    const { data } = await defaultInstance.get(
+      "/stores/map/region?sido=" + sido + "&gugun=" + gugun
+    );
+    return data;
+  }
 };
 
 // 가게정보 조회
 export const getStoreDetailInfo = async (storeId: number) => {
-  const { data } = await defaultInstance.get("/stores/" + storeId + "/user");
-  return data;
+  if (isLogin === "T") {
+    const { data } = await authInstance.get("/stores/" + storeId + "/user");
+    return data;
+  } else {
+    const { data } = await defaultInstance.get("/stores/" + storeId + "/user");
+    return data;
+  }
 };
 
 // 상세페이지 쿠폰 조회

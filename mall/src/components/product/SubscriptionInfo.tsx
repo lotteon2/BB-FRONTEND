@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "react-query";
-import { getSubscriptionProductDetail } from "../../apis/product";
+import { getProductDetail } from "../../apis/product";
 import { useState, useEffect } from "react";
 import { Button, Modal, Rate } from "antd";
 import ShareIcon from "@mui/icons-material/Share";
@@ -10,7 +10,6 @@ import { loginState } from "../../recoil/atom/common";
 import { productWishState } from "../../recoil/atom/member";
 import { useNavigate } from "react-router";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
-import { subscriptionDetailData } from "../../mocks/product";
 import {
   storeDeliveryPolicyDto,
   subscriptionOrderDto,
@@ -41,8 +40,8 @@ export default function SubscriptionInfo(param: param) {
   });
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getSubscriptionDetail"],
-    queryFn: () => getSubscriptionProductDetail(param.productId),
+    queryKey: ["getProductDetail"],
+    queryFn: () => getProductDetail(param.productId),
   });
 
   const handleWishButton = (productId: string) => {
@@ -126,17 +125,18 @@ export default function SubscriptionInfo(param: param) {
 
   useEffect(() => {
     if (data) {
-      param.setProductDescription(data.productDetailImage);
-      param.setProductName(data.productName);
-      param.setStoreId(data.storeId);
-      getPolilcyMutation.mutate(data.storeId);
+      // param.setProductDescription(data.data.productDetailImage);
+      // param.setProductName(data.data.productName);
+      // param.setStoreId(data.data.storeId);
+      // getPolilcyMutation.mutate(data.data.storeId);
     }
-  }, []);
-  // if (!data || isLoading) return <ProductInfoFallback />;
+  }, [data]);
+
+  if (!data || isLoading) return <ProductInfoFallback />;
 
   return (
     <div className="w-full flex flex-row gap-10 flex-wrap justify-center">
-      <div className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px]">
+      {/* <div className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px]">
         <p
           className="cursor-pointer text-grayscale5 font-light text-[0.8rem]"
           onClick={() => navigate("/store/detail/" + data.storeId)}
@@ -263,7 +263,7 @@ export default function SubscriptionInfo(param: param) {
         ) : (
           ""
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

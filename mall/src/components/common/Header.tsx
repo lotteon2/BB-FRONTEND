@@ -24,6 +24,8 @@ import { FailToast } from "./toast/FailToast";
 import { SuccessToast } from "./toast/SuccessToast";
 import { Badge } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { modifyStoreWishList, modifyWishList } from "../../apis/member";
+import { productWishState, storeWishState } from "../../recoil/atom/member";
 
 interface parameter {
   istoggled: string;
@@ -117,6 +119,10 @@ export default function Header() {
   const isLogin = useRecoilValue(loginState);
   const setSideMenuState = useSetRecoilState<number>(sideMenuState);
   const navigate = useNavigate();
+  const [productWishList, setProductWishList] =
+    useRecoilState<string[]>(productWishState);
+  const [storeWishList, setStoreWishList] =
+    useRecoilState<number[]>(storeWishState);
 
   const activeStyle = {
     borderBottom: "3px solid #41744D",
@@ -137,7 +143,8 @@ export default function Header() {
   };
 
   const handleLogout = () => {
-    logouMutation.mutate();
+    productWishMutation.mutate();
+    storeWishMutation.mutate();
   };
 
   const logouMutation = useMutation(["logout"], () => logout("kakao"), {
@@ -153,6 +160,36 @@ export default function Header() {
       FailToast(null);
     },
   });
+
+  const productWishMutation = useMutation(
+    ["modifyWishList"],
+    () => modifyWishList(productWishList),
+    {
+      onSuccess: () => {
+        setProductWishList([]);
+        const accessToken = localStorage.getItem("accessToken");
+        if (accessToken) logouMutation.mutate();
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
+
+  const storeWishMutation = useMutation(
+    ["modifyStoreWishList"],
+    () => modifyStoreWishList(storeWishList),
+    {
+      onSuccess: () => {
+        setStoreWishList([]);
+        const accessToken = localStorage.getItem("accessToken");
+        if (accessToken) logouMutation.mutate();
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
 
   return (
     <div className="mt-5">
