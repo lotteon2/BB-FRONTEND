@@ -13,10 +13,15 @@ import { getProductDetail } from "../../apis/product";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
 import { getStoreDeliveryPolicy } from "../../apis/store";
 import {
+  modifyCartCountDto,
   orderDto,
   storeDeliveryPolicyDto,
 } from "../../recoil/common/interfaces";
 import { orderState } from "../../recoil/atom/order";
+import { addToCart } from "../../apis/cart";
+import { FailToast } from "../common/toast/FailToast";
+import { SuccessToast } from "../common/toast/SuccessToast";
+import Swal from "sweetalert2";
 
 interface param {
   productId: string;
@@ -126,6 +131,15 @@ export default function ProductInfo(param: param) {
     navigate("/order/general");
   };
 
+  const handleAddToCart = () => {
+    const cartDto = {
+      productId: data.data.productId,
+      selectedQuantity: count,
+    };
+
+    cartMutation.mutate(cartDto);
+  };
+
   const getPolilcyMutation = useMutation(
     ["getStorePolicy"],
     (storeId: number) => getStoreDeliveryPolicy(storeId),
@@ -134,6 +148,19 @@ export default function ProductInfo(param: param) {
         setDeliveryPolicy(data.data);
       },
       onError: () => {},
+    }
+  );
+
+  const cartMutation = useMutation(
+    ["addToCart"],
+    (cartDto: modifyCartCountDto) => addToCart(cartDto),
+    {
+      onSuccess: () => {
+        SuccessToast("장바구니에 상품이 담겼습니다.");
+      },
+      onError: () => {
+        FailToast(null);
+      },
     }
   );
 
@@ -307,6 +334,7 @@ export default function ProductInfo(param: param) {
         <div className="flex flex-row gap-2 mt-3">
           <Button
             style={{ width: "50%", height: "3rem", backgroundColor: "#fff" }}
+            onClick={handleAddToCart}
           >
             장바구니
           </Button>

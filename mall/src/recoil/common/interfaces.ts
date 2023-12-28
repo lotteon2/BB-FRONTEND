@@ -236,7 +236,7 @@ export interface cartItemDto {
   storeName: string;
   deliveryCost: number;
   freeDeliveryMinCost: number;
-  productInfo: productInfoDto[];
+  productInfoList: productInfoDto[];
 }
 
 export interface modifyCartCountDto {

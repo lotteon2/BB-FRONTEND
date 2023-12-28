@@ -7,8 +7,15 @@ export const getCartList = async () => {
   return data;
 };
 
+// 장바구니 삭제
+export const addToCart = async (cartDto: modifyCartCountDto) => {
+  const { data } = await authInstance.post("/wishlist/carts", cartDto);
+  return data;
+};
+
 // 카트 수량 변경
 export const modifyCartCount = async (cartDto: modifyCartCountDto) => {
+  console.log(cartDto);
   const { data } = await authInstance.patch(
     "/wishlist/carts/products",
     cartDto

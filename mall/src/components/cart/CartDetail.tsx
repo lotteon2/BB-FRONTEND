@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Checkbox, Button, Input, Progress } from "antd";
+import { Checkbox, Button, Input, Progress, Empty } from "antd";
 import ButtonGroup from "antd/es/button/button-group";
 import { MinusOutlined, PlusOutlined, CloseOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "react-query";
@@ -157,9 +157,9 @@ export default function CartDetail() {
       setSelectedStores(totalStoreList);
       setSelectedProducts(totalProductList);
 
-      data.data.forEach((item: cartItemDto) => {
+      data.data.cartProductItemInfoList.forEach((item: cartItemDto) => {
         var price = 0;
-        item.productInfo.forEach((product: productInfoDto) => {
+        item.productInfoList.forEach((product: productInfoDto) => {
           price += product.price * product.quantity;
         });
         prices.push(price);
@@ -174,7 +174,7 @@ export default function CartDetail() {
       setSelectedStores([]);
       setSelectedProducts([]);
 
-      data.data.forEach(() => {
+      data.data.cartProductItemInfoList.forEach(() => {
         prices.push(0);
         deliveries.push(0);
       });
@@ -186,7 +186,7 @@ export default function CartDetail() {
   const handleMinusCount = (productId: string, quantity: number) => {
     const cartDto = {
       productId: productId,
-      selectedQuantity: quantity,
+      selectedQuantity: quantity === 1 ? 1 : quantity - 1,
     };
 
     modifyMutation.mutate(cartDto);
@@ -195,7 +195,7 @@ export default function CartDetail() {
   const handleAddCount = (productId: string, quantity: number) => {
     const cartDto = {
       productId: productId,
-      selectedQuantity: quantity,
+      selectedQuantity: quantity + 1,
     };
 
     modifyMutation.mutate(cartDto);
@@ -246,12 +246,12 @@ export default function CartDetail() {
     if (data) {
       let orderInfoByStore: orderInfoByStore[] = [];
 
-      data.data.forEach((item: cartItemDto) => {
+      data.data.cartProductItemInfoList.forEach((item: cartItemDto) => {
         let productCreate: productCreate[] = [];
         let storeTotal = 0;
         let delivery = 0;
 
-        item.productInfo.forEach((product: productInfoDto) => {
+        item.productInfoList.forEach((product: productInfoDto) => {
           if (selectedProducts.includes(product.productId)) {
             const productInfo = {
               productId: product.productId,
@@ -336,23 +336,19 @@ export default function CartDetail() {
       var prices: number[] = [];
       var deliveries: number[] = [];
       var quantities: number[] = [];
-
-      data.data.forEach((item: cartItemDto) => {
+      data.data.cartProductItemInfoList.forEach((item: cartItemDto) => {
         stores.push(item.storeId);
-
         var price = 0;
-        item.productInfo.forEach((product: productInfoDto) => {
+        item.productInfoList.forEach((product: productInfoDto) => {
           products.push(product.productId);
           quantities.push(product.quantity);
           price += product.price * product.quantity;
         });
         prices.push(price);
-
         price >= item.freeDeliveryMinCost
           ? deliveries.push(0)
           : deliveries.push(item.deliveryCost);
       });
-
       setTotalStoreList(stores);
       setTotalProductList(products);
       setSelectedProducts(products);
@@ -367,219 +363,234 @@ export default function CartDetail() {
 
   return (
     <div>
-      <div className="flex flex-row gap-5 flex-wrap justify-center mt-5">
-        <div className="w-[45vw] max-w-[900px] min-w-[370px]">
-          <div className="flex flex-row gap-2 pb-2">
-            <div>
-              <Checkbox
-                checked={totalProductList.length === selectedProducts.length}
-                onChange={handleSelectAll}
-              >
-                전체 선택
-              </Checkbox>
+      {data.data.cartProductItemInfoList.length === 0 ? (
+        <Empty
+          description="장바구니에 담긴 상품이 없습니다."
+          className="my-20"
+        />
+      ) : (
+        <div className="flex flex-row gap-5 flex-wrap justify-center mt-5">
+          <div className="w-[45vw] max-w-[900px] min-w-[370px]">
+            <div className="flex flex-row gap-2 pb-2">
+              <div>
+                <Checkbox
+                  checked={totalProductList.length === selectedProducts.length}
+                  onChange={handleSelectAll}
+                >
+                  전체 선택
+                </Checkbox>
+              </div>
+              <Button size="small" onClick={handleDeleteSelected}>
+                선택 상품 삭제
+              </Button>
             </div>
-            <Button size="small" onClick={handleDeleteSelected}>
-              선택 상품 삭제
-            </Button>
-          </div>
-          <div className="flex flex-col gap-2">
-            {data.data.data.map((item: cartItemDto, index: number) => (
-              <div
-                key={item.storeId}
-                className="border-[1px] border-grayscale3 relative rounded-lg"
-              >
-                <div className="px-2 py-1 border-b-[1px]">
-                  <Checkbox
-                    checked={selectedStores.includes(item.storeId)}
-                    onChange={(e) =>
-                      handleSelectStores(
-                        e,
-                        index,
-                        item.storeId,
-                        item.productInfo,
-                        item.freeDeliveryMinCost,
-                        item.deliveryCost
-                      )
-                    }
+            <div className="flex flex-col gap-2">
+              {data.data.cartProductItemInfoList.map(
+                (item: cartItemDto, index: number) => (
+                  <div
+                    key={item.storeId}
+                    className="border-[1px] border-grayscale3 relative rounded-lg"
                   >
-                    <div className="font-bold text-[1.2rem]">
-                      {item.storeName}({item.productInfo.length})
-                    </div>
-                  </Checkbox>
-                  <Progress
-                    percent={
-                      totalPrice[index] >= item.freeDeliveryMinCost
-                        ? 100
-                        : (totalPrice[index] / item.freeDeliveryMinCost) * 100
-                    }
-                    showInfo={false}
-                    strokeColor="#41744D"
-                  />
-                  <div className="text-[0.9rem]">
-                    {totalPrice[index] >= item.freeDeliveryMinCost ? (
-                      <p className="mt-[-10px] pb-2">
-                        지금 결제하면{" "}
-                        <span className="text-primary5 font-bold">
-                          무료 배송
-                        </span>
-                      </p>
-                    ) : totalPrice[index] === 0 ? (
-                      <p className="mt-[-10px] pb-2">상품을 선택해주세요.</p>
-                    ) : (
-                      <p className="mt-[-10px] pb-2">
-                        <span className="font-bold">
-                          {(
-                            item.freeDeliveryMinCost - totalPrice[index]
-                          ).toLocaleString()}
-                        </span>
-                        원만 더 담으면{" "}
-                        <span className="text-primary5 font-bold">
-                          무료 배송
-                        </span>
-                      </p>
-                    )}
-                  </div>
-                </div>
-                {item.productInfo.map(
-                  (product: productInfoDto, productIndex: number) => (
-                    <div
-                      className={`p-2 ${
-                        productIndex === item.productInfo.length - 1
-                          ? ""
-                          : "border-b-[1px]"
-                      }`}
-                      key={product.productId}
-                    >
-                      <div className="flex justify-between">
-                        <Checkbox
-                          checked={selectedProducts.includes(product.productId)}
-                          onChange={(e) =>
-                            handleSelectProducts(
-                              e,
-                              index,
-                              product,
-                              item.storeId,
-                              item.productInfo,
-                              item.freeDeliveryMinCost,
-                              item.deliveryCost
-                            )
-                          }
-                        >
-                          <p className="text-[1.2rem] font-bold pt-1">
-                            {product.productName}
+                    <div className="px-2 py-1 border-b-[1px]">
+                      <Checkbox
+                        checked={selectedStores.includes(item.storeId)}
+                        onChange={(e) =>
+                          handleSelectStores(
+                            e,
+                            index,
+                            item.storeId,
+                            item.productInfoList,
+                            item.freeDeliveryMinCost,
+                            item.deliveryCost
+                          )
+                        }
+                      >
+                        <div className="font-bold text-[1.2rem]">
+                          {item.storeName}({item.productInfoList.length})
+                        </div>
+                      </Checkbox>
+                      <Progress
+                        percent={
+                          totalPrice[index] >= item.freeDeliveryMinCost
+                            ? 100
+                            : (totalPrice[index] / item.freeDeliveryMinCost) *
+                              100
+                        }
+                        showInfo={false}
+                        strokeColor="#41744D"
+                      />
+                      <div className="text-[0.9rem]">
+                        {totalPrice[index] >= item.freeDeliveryMinCost ? (
+                          <p className="mt-[-10px] pb-2">
+                            지금 결제하면{" "}
+                            <span className="text-primary5 font-bold">
+                              무료 배송
+                            </span>
                           </p>
-                        </Checkbox>
-                        <button
-                          onClick={() => handleDeleteOne(product.productId)}
-                        >
-                          <CloseOutlined />
-                        </button>
+                        ) : totalPrice[index] === 0 ? (
+                          <p className="mt-[-10px] pb-2">
+                            상품을 선택해주세요.
+                          </p>
+                        ) : (
+                          <p className="mt-[-10px] pb-2">
+                            <span className="font-bold">
+                              {(
+                                item.freeDeliveryMinCost - totalPrice[index]
+                              ).toLocaleString()}
+                            </span>
+                            원만 더 담으면{" "}
+                            <span className="text-primary5 font-bold">
+                              무료 배송
+                            </span>
+                          </p>
+                        )}
                       </div>
-                      <div className="h-full flex flex-row justify-between flex-wrap align-center">
-                        <div className="flex flex-row gap-2">
-                          <div className="w-[150px] h-[150px]">
-                            <img
-                              className="w-full h-full rounded-lg"
-                              src={product.productThumbnailImage}
-                              alt="상품 이미지"
-                            />
+                    </div>
+                    {item.productInfoList.map(
+                      (product: productInfoDto, productIndex: number) => (
+                        <div
+                          className={`p-2 ${
+                            productIndex === item.productInfoList.length - 1
+                              ? ""
+                              : "border-b-[1px]"
+                          }`}
+                          key={product.productId}
+                        >
+                          <div className="flex justify-between">
+                            <Checkbox
+                              checked={selectedProducts.includes(
+                                product.productId
+                              )}
+                              onChange={(e) =>
+                                handleSelectProducts(
+                                  e,
+                                  index,
+                                  product,
+                                  item.storeId,
+                                  item.productInfoList,
+                                  item.freeDeliveryMinCost,
+                                  item.deliveryCost
+                                )
+                              }
+                            >
+                              <p className="text-[1.2rem] font-bold pt-1">
+                                {product.productName}
+                              </p>
+                            </Checkbox>
+                            <button
+                              onClick={() => handleDeleteOne(product.productId)}
+                            >
+                              <CloseOutlined />
+                            </button>
                           </div>
-                          <div className="flex flex-col gap-3 w-[20%] max-w-[160px] min-w-[160px]">
-                            <div className="flex flex-row gap-3 my-auto">
-                              <ButtonGroup>
-                                <Button
-                                  icon={<MinusOutlined />}
-                                  onClick={() =>
-                                    handleMinusCount(
-                                      product.productId,
-                                      product.quantity
-                                    )
-                                  }
+                          <div className="h-full flex flex-row justify-between flex-wrap align-center">
+                            <div className="flex flex-row gap-2">
+                              <div className="w-[150px] h-[150px]">
+                                <img
+                                  className="w-full h-full rounded-lg"
+                                  src={product.productThumbnailImage}
+                                  alt="상품 이미지"
                                 />
-                                <Input
-                                  style={{
-                                    borderRadius: 0,
-                                    width: 70,
-                                    textAlign: "center",
-                                    marginLeft: -1,
-                                  }}
-                                  value={product.quantity}
-                                  onChange={(e) =>
-                                    handlecount(e, product.productId)
-                                  }
-                                />
-                                <Button
-                                  icon={<PlusOutlined />}
-                                  onClick={() =>
-                                    handleAddCount(
-                                      product.productId,
-                                      product.quantity
-                                    )
-                                  }
-                                />
-                              </ButtonGroup>
+                              </div>
+                              <div className="flex flex-col gap-3 w-[20%] max-w-[160px] min-w-[160px]">
+                                <div className="flex flex-row gap-3 my-auto">
+                                  <ButtonGroup>
+                                    <Button
+                                      icon={<MinusOutlined />}
+                                      onClick={() =>
+                                        handleMinusCount(
+                                          product.productId,
+                                          product.quantity
+                                        )
+                                      }
+                                    />
+                                    <Input
+                                      style={{
+                                        borderRadius: 0,
+                                        width: 70,
+                                        textAlign: "center",
+                                        marginLeft: -1,
+                                      }}
+                                      value={product.quantity}
+                                      onChange={(e) =>
+                                        handlecount(e, product.productId)
+                                      }
+                                    />
+                                    <Button
+                                      icon={<PlusOutlined />}
+                                      onClick={() =>
+                                        handleAddCount(
+                                          product.productId,
+                                          product.quantity
+                                        )
+                                      }
+                                    />
+                                  </ButtonGroup>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="font-bold text-[1.5rem] my-auto max-[1200px]:w-full max-[1200px]:text-right">
+                              {(
+                                product.price *
+                                quantities[productIndex + index * 2]
+                              ).toLocaleString()}
+                              원
                             </div>
                           </div>
                         </div>
-                        <div className="font-bold text-[1.5rem] my-auto max-[1200px]:w-full max-[1200px]:text-right">
-                          {(
-                            product.price * quantities[productIndex + index * 2]
-                          ).toLocaleString()}
-                          원
-                        </div>
-                      </div>
-                    </div>
-                  )
-                )}
+                      )
+                    )}
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+          <div className="w-[20vw] max-w-[400px] min-w-[370px]">
+            <p className="border-b-[1px] border-grayscale7 text-[1.5rem]">
+              결제 금액
+            </p>
+            <div className="flex flex-row gap-20 w-full text-[1.2rem] justify-between">
+              <div className="flex flex-col gap-2">
+                <p>총 주문금액</p>
+                <p>배송비</p>
+                <p className="font-bold text-[1.5rem]">총 결제금액</p>
               </div>
-            ))}
+              <div className="flex flex-col gap-2 text-right">
+                <p>
+                  {totalPrice.length !== 0
+                    ? totalPrice.reduce((a, b) => a + b).toLocaleString()
+                    : 0}
+                  원
+                </p>
+                <p>
+                  {deliveryCost.length !== 0
+                    ? deliveryCost.reduce((a, b) => a + b).toLocaleString()
+                    : 0}
+                  원
+                </p>
+                <p className="font-bold text-primary4 text-[1.5rem]">
+                  {totalPrice.length !== 0 && deliveryCost.length !== 0
+                    ? (
+                        totalPrice.reduce((a, b) => a + b) +
+                        deliveryCost.reduce((a, b) => a + b)
+                      ).toLocaleString()
+                    : 0}
+                  원
+                </p>
+              </div>
+            </div>
+            <p className="border-b-[1px] my-2"></p>
+            <Button
+              type="primary"
+              size="large"
+              style={{ width: "100%" }}
+              onClick={handleCartOrder}
+            >
+              주문하기
+            </Button>
           </div>
         </div>
-        <div className="w-[20vw] max-w-[400px] min-w-[370px]">
-          <p className="border-b-[1px] border-grayscale7 text-[1.5rem]">
-            결제 금액
-          </p>
-          <div className="flex flex-row gap-20 w-full text-[1.2rem] justify-between">
-            <div className="flex flex-col gap-2">
-              <p>총 주문금액</p>
-              <p>배송비</p>
-              <p className="font-bold text-[1.5rem]">총 결제금액</p>
-            </div>
-            <div className="flex flex-col gap-2 text-right">
-              <p>
-                {totalPrice.length !== 0
-                  ? totalPrice.reduce((a, b) => a + b).toLocaleString()
-                  : 0}
-                원
-              </p>
-              <p>
-                {deliveryCost.length !== 0
-                  ? deliveryCost.reduce((a, b) => a + b).toLocaleString()
-                  : 0}
-                원
-              </p>
-              <p className="font-bold text-primary4 text-[1.5rem]">
-                {totalPrice.length !== 0 && deliveryCost.length !== 0
-                  ? (
-                      totalPrice.reduce((a, b) => a + b) +
-                      deliveryCost.reduce((a, b) => a + b)
-                    ).toLocaleString()
-                  : 0}
-                원
-              </p>
-            </div>
-          </div>
-          <p className="border-b-[1px] my-2"></p>
-          <Button
-            type="primary"
-            size="large"
-            style={{ width: "100%" }}
-            onClick={handleCartOrder}
-          >
-            주문하기
-          </Button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
