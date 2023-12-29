@@ -3,15 +3,27 @@ import { Pagination, PaginationProps, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { settlementItem } from "../../recoil/common/interfaces";
 import { useQuery } from "react-query";
-import { getLastMonthSettlement } from "../../apis/dashboard";
 import HalfDiv from "../fallbacks/HalfDiv";
+import { getSettlementList } from "../../apis/settlement";
 
 export default function LastMonthSettlementTable() {
   const [page, setPage] = useState<number>(1);
 
+  const year = new Date().getFullYear();
+  const month = new Date().getMonth();
+
   const { data, isLoading } = useQuery({
-    queryKey: ["getLastMonthSettlement", page],
-    queryFn: () => getLastMonthSettlement(page - 1, 6),
+    queryKey: ["getSettlementList", page],
+    queryFn: () =>
+      getSettlementList(
+        year,
+        month,
+        undefined,
+        page - 1,
+        6,
+        undefined,
+        undefined
+      ),
   });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
@@ -58,7 +70,7 @@ export default function LastMonthSettlementTable() {
   return (
     <div>
       <Table
-        dataSource={data.data.settlement}
+        dataSource={data.data.settlementDtoList}
         columns={columns}
         pagination={false}
         style={{ height: 385 }}

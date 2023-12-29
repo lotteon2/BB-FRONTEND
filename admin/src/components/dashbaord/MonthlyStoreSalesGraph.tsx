@@ -83,7 +83,7 @@ export default function MonthlyStoreSalesGraph() {
 
   if (!data || isLoading) return <QuarterDiv />;
 
-  const series = data.data;
+  const series = data.data.bestSettlementDtoList;
 
   return (
     <div className="p-3">

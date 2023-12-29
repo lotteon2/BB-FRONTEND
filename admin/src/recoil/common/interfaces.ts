@@ -4,6 +4,7 @@ export interface signinDto {
 }
 
 export interface settlementItem {
+  key: number;
   storeName: string;
   settlementDate: string;
   totalAmountPerMonth: number;

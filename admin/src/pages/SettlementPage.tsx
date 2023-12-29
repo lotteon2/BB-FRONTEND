@@ -27,16 +27,25 @@ export default function SettlementPage() {
       getSettlementList(year, month, storeId, page - 1, 13, sido, gugun),
   });
 
+  const handleSido = (e: number | undefined) => {
+    setSido(e);
+    if (e) {
+      getGugunMutation.mutate(e);
+    } else {
+      setGugun(e);
+    }
+  };
+
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
   };
 
   const getGugunMutation = useMutation(
     ["getGugunList"],
-    () => getGugunList(sido),
+    (sido: number) => getGugunList(sido),
     {
       onSuccess: (data) => {
-        console.log(data);
+        setGugunList(data.data);
       },
       onError: () => {
         FailToast(null);
@@ -49,7 +58,7 @@ export default function SettlementPage() {
       var yearOptions: options[] = [];
       var monthOptions: options[] = [];
 
-      data.year.forEach((element: number) => {
+      data.data.year.forEach((element: number) => {
         const year = {
           value: element,
           label: element + "년",
@@ -57,7 +66,7 @@ export default function SettlementPage() {
         yearOptions.push(year);
       });
 
-      data.month.forEach((element: number) => {
+      data.data.month.forEach((element: number) => {
         const month = {
           value: element,
           label: element + "월",
@@ -67,10 +76,10 @@ export default function SettlementPage() {
 
       setYearOptions(yearOptions);
       setMonthOptions(monthOptions);
-      setStoreOptions(data.store);
+      setStoreOptions(data.data.store);
     }
     // eslint-disable-next-line
-  }, []);
+  }, [data]);
 
   if (!data || isLoading)
     return (
@@ -97,14 +106,18 @@ export default function SettlementPage() {
             options={sidoOptions}
             value={sido}
             style={{ width: 100 }}
-            onChange={(e) => setSido(e)}
+            onChange={(e) => {
+              handleSido(e);
+            }}
+            allowClear
           />
           <Select
             placeholder="구군 선택"
             options={gugunList}
             value={gugun}
             style={{ width: 100 }}
-            onChange={(e) => setYear(e)}
+            onChange={(e) => setGugun(e)}
+            allowClear
           />
           <Select
             placeholder="년도 선택"
@@ -112,6 +125,7 @@ export default function SettlementPage() {
             value={year}
             style={{ width: 100 }}
             onChange={(e) => setYear(e)}
+            allowClear
           />
           <Select
             placeholder="월 선택"
@@ -119,6 +133,7 @@ export default function SettlementPage() {
             value={month}
             style={{ width: 100 }}
             onChange={(e) => setMonth(e)}
+            allowClear
           />
           <Select
             placeholder="가게 선택"
@@ -126,10 +141,11 @@ export default function SettlementPage() {
             value={storeId}
             style={{ width: 150 }}
             onChange={(e) => setStoreId(e)}
+            allowClear
           />
         </div>
         <SettlementTable
-          data={data.data.settlement}
+          data={data.data.settlementDtoList}
           page={page}
           handlePage={handlePage}
           totalCnt={data.data.totalCnt}

@@ -1,4 +1,4 @@
-import { Button, Form, Input, Tag } from "antd";
+import { Button, Form, Input, Modal, Tag } from "antd";
 import { orderDeliveryDetailData } from "../../../mocks/order";
 import {
   orderInfoForStore,
@@ -8,6 +8,7 @@ import { useQuery } from "react-query";
 import { getDeliveryDetail } from "../../../apis/order";
 import Loading from "../../common/Loading";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 interface param {
   id: string;
@@ -17,13 +18,15 @@ const { TextArea } = Input;
 
 export default function OrderInfo(param: param) {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
   //   const { data, isLoading } = useQuery({
   //     queryKey: ["getDeliveryDetail"],
   //     queryFn: () => getDeliveryDetail(param.id),
   //   });
 
   const handleGiftcard = (status: string, id: string) => {
-    if (status === "ABLE") navigate("/giftcard/pickup/" + id);
+    if (status === "ABLE") navigate("/giftcard/delivery/" + id);
   };
 
   const data = orderDeliveryDetailData;
@@ -90,6 +93,11 @@ export default function OrderInfo(param: param) {
                         <Button
                           disabled={
                             product.reviewStatus === "ABLE" ? false : true
+                          }
+                          onClick={() =>
+                            product.reviewStatus === "ABLE"
+                              ? setIsModalOpen(true)
+                              : ""
                           }
                         >
                           {product.reviewStatus === "DONE"
@@ -231,6 +239,13 @@ export default function OrderInfo(param: param) {
           </div>
         </div>
       </div>
+      <Modal
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        footer={[]}
+      >
+        <div></div>
+      </Modal>
     </div>
   );
 }

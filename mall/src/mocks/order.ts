@@ -121,7 +121,7 @@ export const orderDeliveryDetailData = {
           price: 50000,
           quantity: 1,
           totalAmount: 50000, // price*quantity 계산하기
-          reviewStatus: "DISABLED",
+          reviewStatus: "ABLE",
           cardStatus: "ABLE",
         },
         {
