@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Empty, Pagination, PaginationProps, Rate } from "antd";
+import { Empty, Pagination, PaginationProps, Rate, Tag } from "antd";
 import { useNavigate } from "react-router";
 import { HeartFilled } from "@ant-design/icons";
 import { productListDto } from "../../recoil/common/interfaces";
@@ -189,6 +189,15 @@ export default function ProductList(param: param) {
               }
             >
               <div className="relative">
+                <div className="absolute z-20 p-2">
+                  {item.productSaleStatus === "DISCONTINUED" ? (
+                    <Tag bordered={false} color="red">
+                      판매중지
+                    </Tag>
+                  ) : (
+                    ""
+                  )}
+                </div>
                 <img
                   src={item.productThumbnail}
                   alt="상품 썸네일"

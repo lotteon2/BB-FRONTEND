@@ -222,19 +222,21 @@ export default function SubscriptionModifyModal(param: param) {
               label="상세설명"
               rules={[{ required: true, message: "필수 입력값입니다." }]}
             >
-              <Input
-                value={modifyValues.productDescriptionImage}
-                style={{ display: "none" }}
-              />
-              <input
-                ref={descriptionInputRef}
-                type="file"
-                accept="image/*"
-                className="w-full h-full"
-                style={{ display: "none" }}
-                onChange={(e) => handleImage(e, "description")}
-              />
-              <Button onClick={handleDescriptionImage}>수정</Button>
+              <div>
+                <Input
+                  value={modifyValues.productDescriptionImage}
+                  style={{ display: "none" }}
+                />
+                <input
+                  ref={descriptionInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="w-full h-full"
+                  style={{ display: "none" }}
+                  onChange={(e) => handleImage(e, "description")}
+                />
+                <Button onClick={handleDescriptionImage}>수정</Button>
+              </div>
             </Form.Item>
           </div>
         </div>

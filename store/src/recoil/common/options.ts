@@ -173,7 +173,7 @@ export const saleStatusOptions = [
   },
   {
     value: "DISCONTINUED",
-    label: "판매 중단",
+    label: "판매 중지",
   },
   {
     value: "DELETED",

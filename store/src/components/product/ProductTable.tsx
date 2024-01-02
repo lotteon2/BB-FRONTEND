@@ -42,7 +42,6 @@ export default function ProductTable(param: param) {
   const handleProductModify = (e: React.MouseEvent, productId: string) => {
     e.stopPropagation();
     setProductId(productId);
-    console.log(productId);
     setIsModifyModalOpen(true);
   };
 
@@ -108,8 +107,11 @@ export default function ProductTable(param: param) {
       dataIndex: "productSaleStatus",
       key: "productSaleStatus",
       render: (record) => (
-        <Tag bordered={false} color={record === "판매 중" ? "purple" : "red"}>
-          {record}
+        <Tag
+          bordered={false}
+          color={record === "DISCONTINUED" ? "red" : "purple"}
+        >
+          {record === "DISCONTINUED" ? "판매 중지" : "판매중"}
         </Tag>
       ),
     },
@@ -160,7 +162,10 @@ export default function ProductTable(param: param) {
             onCancel={handleCancel}
             footer={<Button onClick={handleCancel}>닫기</Button>}
           >
-            <ProductDetailModal productId={productId} />
+            <ProductDetailModal
+              productId={productId}
+              isChange={param.isChange}
+            />
           </Modal>
 
           <Modal

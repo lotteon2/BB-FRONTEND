@@ -1,4 +1,7 @@
-import { questionRegisterDto } from "../recoil/common/interfaces";
+import {
+  questionRegisterDto,
+  saleResumeDto,
+} from "../recoil/common/interfaces";
 import { authInstance, defaultInstance } from "./utils";
 
 const isLogin = localStorage.getItem("isLogin");
@@ -215,5 +218,17 @@ export const getProductQuestionList = async (
 // 상품 문의 등록
 export const registerQuestion = async (registerDto: questionRegisterDto) => {
   const { data } = await authInstance.post("/stores/questions", registerDto);
+  return data;
+};
+
+// 판매 재개 알림 요청
+export const requestSaleResume = async (
+  productId: string,
+  resumeDto: saleResumeDto
+) => {
+  const { data } = await authInstance.post(
+    "/products/" + productId + "/sale-resume",
+    resumeDto
+  );
   return data;
 };

@@ -1,4 +1,4 @@
-import { Input, Rate, Select, Space } from "antd";
+import { Input, Rate, Select, Space, Tag } from "antd";
 import { Form } from "antd";
 import { categoryOptions, tagOptions } from "../../../recoil/common/options";
 import { flowersDetail } from "../../../recoil/common/interfaces";
@@ -10,6 +10,7 @@ import { storeIdState } from "../../../recoil/atom/common";
 
 interface param {
   productId: string | undefined;
+  isChange: boolean;
 }
 
 export default function ProductDetailModal(param: param) {
@@ -49,6 +50,16 @@ export default function ProductDetailModal(param: param) {
             </span>
           </div>
         </div>
+        <Tag
+          bordered={false}
+          color={
+            data.data.productSaleStatus === "DISCONTINUED" ? "red" : "purple"
+          }
+        >
+          {data.data.productSaleStatus === "DISCONTINUED"
+            ? "판매 중지"
+            : "판매중"}
+        </Tag>
         <div className="mt-5">
           <Form.Item
             label="카테고리"

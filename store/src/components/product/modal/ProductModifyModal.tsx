@@ -267,9 +267,6 @@ export default function ProductModifyModal(param: param) {
                   style={{ width: 348 }}
                   placeholder="판매상태"
                   optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label ?? "").includes(input)
-                  }
                   options={saleStatusOptions}
                 />
               </Form.Item>

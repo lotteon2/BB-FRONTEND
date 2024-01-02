@@ -1,26 +1,30 @@
 import { useState, useEffect } from "react";
-import { Button, Input, Modal, Rate, Calendar } from "antd";
+import { Button, Input, Modal, Rate, Calendar, Tag } from "antd";
 import ShareIcon from "@mui/icons-material/Share";
 import { HeartFilled, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import ButtonGroup from "antd/es/button/button-group";
 import CouponModal from "./modal/CouponModal";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { loginState } from "../../recoil/atom/common";
+import { loginState, nicknameState } from "../../recoil/atom/common";
 import { productWishState } from "../../recoil/atom/member";
 import { useNavigate } from "react-router";
 import { useMutation, useQuery } from "react-query";
-import { getProductDetail } from "../../apis/product";
+import { getProductDetail, requestSaleResume } from "../../apis/product";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
 import { Dayjs } from "dayjs";
 import { getStoreDeliveryPolicy } from "../../apis/store";
 import {
   pickupOrderDto,
+  saleResumeDto,
   storeDeliveryPolicyDto,
 } from "../../recoil/common/interfaces";
 import { pickupTime } from "../../recoil/common/data";
 import { pickupOrderState } from "../../recoil/atom/order";
 import dayjs from "dayjs";
 import { productDetailData } from "../../mocks/product";
+import { getMyPhoneNumber } from "../../apis/member";
+import { FailToast } from "../common/toast/FailToast";
+import { SuccessToast } from "../common/toast/SuccessToast";
 
 interface param {
   productId: string | undefined;
@@ -31,6 +35,7 @@ interface param {
 
 export default function PickupProductInfo(param: param) {
   const navigate = useNavigate();
+  const nickname = useRecoilValue<string>(nicknameState);
   const [count, setCount] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const isLogin = useRecoilValue<boolean>(loginState);
@@ -145,6 +150,52 @@ export default function PickupProductInfo(param: param) {
     }
   };
 
+  const handleSaleResume = () => {
+    if (isLogin) {
+      getPhoneNumberMutation.mutate();
+    } else if (window.confirm("회원만 사용가능합니다. 로그인하시겠습니까?")) {
+      navigate("/login");
+    }
+  };
+
+  const getPhoneNumberMutation = useMutation(
+    ["getMyPhoneNumber"],
+    () => getMyPhoneNumber(),
+    {
+      onSuccess: (data) => {
+        const resumeDto = {
+          phoneNumber: data.phoneNumber,
+          userName: nickname,
+        };
+
+        saleResumeMutation.mutate(resumeDto);
+      },
+      onError: () => {
+        const resumeDto = {
+          phoneNumber: "01011111111",
+          userName: nickname,
+        };
+
+        saleResumeMutation.mutate(resumeDto);
+        FailToast(null);
+      },
+    }
+  );
+
+  const saleResumeMutation = useMutation(
+    ["saleResume"],
+    (resumeDto: saleResumeDto) =>
+      requestSaleResume(data.data.productId, resumeDto),
+    {
+      onSuccess: () => {
+        SuccessToast("재판매 알림이 신청되었습니다.");
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
+
   const getPolilcyMutation = useMutation(
     ["getStorePolicy"],
     (storeId: number) => getStoreDeliveryPolicy(storeId),
@@ -169,7 +220,16 @@ export default function PickupProductInfo(param: param) {
 
   return (
     <div className="w-full flex flex-row gap-10 flex-wrap justify-center">
-      <div className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px]">
+      <div className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px] relative">
+        <div className="absolute z-20 top-7 left-2">
+          {data.data.productSaleStatus === "DISCONTINUED" ? (
+            <Tag bordered={false} color="red">
+              판매중지
+            </Tag>
+          ) : (
+            ""
+          )}
+        </div>
         <div className="flex flex-row gap-3 text-grayscale5 font-light text-[0.8rem]">
           <p
             className="cursor-pointer"
@@ -200,7 +260,11 @@ export default function PickupProductInfo(param: param) {
           </div>
         </div>
         <img
-          className="w-full h-full"
+          className={
+            data.data.productSaleStatus === "DISCONTINUED"
+              ? "w-full h-full contrast-50"
+              : "w-full h-full"
+          }
           src="https://f-mans.com/data/goods/1/2023/10/681_temp_16972473985275view.jpg"
           alt=""
         />
@@ -323,40 +387,57 @@ export default function PickupProductInfo(param: param) {
             {(data.data.productPrice * count).toLocaleString()}원
           </b>
         </p>
-        <div className="flex flex-row gap-3 p-2 my-3 justify-center flex-wrap border-[1px]">
-          <div className="w-[320px] h-[320px]">
-            <Calendar
-              fullscreen={false}
-              onChange={handleCalendar}
-              value={date}
-              disabledDate={(date) =>
-                date.valueOf() < Date.now() ? true : false
-              }
-            />
+        {data.data.productSaleStatus === "DISCONTINUED" ? (
+          <div className="flex flex-row gap-2 mt-3">
+            <Button
+              type="primary"
+              style={{ width: "100%", height: "3rem" }}
+              onClick={handleSaleResume}
+            >
+              재판매 알림 요청
+            </Button>
           </div>
-          <div className="w-[300px] h-[320px] flex flex-row flex-wrap pt-5 gap-1">
-            {pickupTime.map((item: string, index: number) => (
-              <div
-                key={index}
-                className={`w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg cursor-pointer hover:border-primary4 hover:text-primary4 ${
-                  selectedTime === item ? "border-primary4 text-primary4" : ""
-                }`}
-                onClick={() => setSelectedTime(item)}
-              >
-                {item}
+        ) : (
+          <div>
+            <div className="flex flex-row gap-3 p-2 my-3 justify-center flex-wrap border-[1px]">
+              <div className="w-[320px] h-[320px]">
+                <Calendar
+                  fullscreen={false}
+                  onChange={handleCalendar}
+                  value={date}
+                  disabledDate={(date) =>
+                    date.valueOf() < Date.now() ? true : false
+                  }
+                />
               </div>
-            ))}
+              <div className="w-[300px] h-[320px] flex flex-row flex-wrap pt-5 gap-1">
+                {pickupTime.map((item: string, index: number) => (
+                  <div
+                    key={index}
+                    className={`w-[70px] h-[40px] text-center py-2 border-[1px] rounded-lg cursor-pointer hover:border-primary4 hover:text-primary4 ${
+                      selectedTime === item
+                        ? "border-primary4 text-primary4"
+                        : ""
+                    }`}
+                    onClick={() => setSelectedTime(item)}
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-row gap-2 mt-3">
+              <Button
+                type="primary"
+                style={{ width: "100%", height: "3rem" }}
+                onClick={handleReservation}
+              >
+                예약하기
+              </Button>
+            </div>
           </div>
-        </div>
-        <div className="flex flex-row gap-2 mt-3">
-          <Button
-            type="primary"
-            style={{ width: "100%", height: "3rem" }}
-            onClick={handleReservation}
-          >
-            예약하기
-          </Button>
-        </div>
+        )}
+
         {isModalOpen ? (
           <Modal
             title="쿠폰 다운로드"

@@ -43,7 +43,7 @@ export default function WeeklySaleGraph() {
       colors: ["#42009E"],
     },
     xaxis: {
-      categories: data.categories,
+      categories: data.data.categories,
     },
     yaxis: {
       title: {
@@ -59,7 +59,7 @@ export default function WeeklySaleGraph() {
   const series = [
     {
       name: "매출액",
-      data: data.data,
+      data: data.data.data,
     },
   ];
 

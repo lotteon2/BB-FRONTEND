@@ -15,6 +15,7 @@ export interface mainProductListDto {
   productPrice: number;
   productAverageRating: number;
   isLiked: boolean;
+  productSaleStatus: string;
 }
 
 export interface mainStoreListDto {
@@ -64,6 +65,7 @@ export interface productListDto {
   reviewCount: number;
   isLiked: boolean;
   averageRating: number;
+  productSaleStatus: string;
 }
 
 export interface couponDto {
@@ -355,4 +357,9 @@ export interface myReviewItemDto {
   nickname: string;
   profileImage: string;
   productName: string;
+}
+
+export interface saleResumeDto {
+  phoneNumber: string;
+  userName: string;
 }

@@ -5,7 +5,7 @@ import { authInstance } from "./utils";
  */
 export const getWeeklySaleGraph = async (storeId: number) => {
   const { data } = await authInstance.get(
-    "/orders/store/" + storeId + "/weekly/sale"
+    "/orders/store/" + storeId + "/weekly/sales"
   );
   return data;
 };

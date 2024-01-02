@@ -124,3 +124,9 @@ export const getMyReviewList = async (page: number, size: number) => {
   );
   return data;
 };
+
+// 핸드폰번호 조회
+export const getMyPhoneNumber = async () => {
+  const { data } = await authInstance.get("/users/social/phone-number");
+  return data;
+};

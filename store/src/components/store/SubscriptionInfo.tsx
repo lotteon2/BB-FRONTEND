@@ -63,7 +63,7 @@ export default function SubscriptionInfo() {
               <p className="text-primary1 font-bold text-[1.4rem]">
                 {data.data.productPrice.toLocaleString()}원
               </p>
-              <p>
+              <div>
                 <Rate
                   allowHalf
                   defaultValue={data.data.averageRating}
@@ -72,7 +72,7 @@ export default function SubscriptionInfo() {
                 <span className="text-[1rem] text-grayscale5 ml-2">
                   ({data.data.averageRating})
                 </span>
-              </p>
+              </div>
             </div>
           </div>
           <div className="mt-2 h-40 overflow-auto">

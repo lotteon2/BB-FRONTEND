@@ -124,7 +124,6 @@ export default function SubscriptionRegisterModal(param: param) {
     form.setFieldsValue(registerValues);
   }, [form, registerValues]);
 
-  console.log(registerValues);
   return (
     <Modal
       title="구독상품 등록"
@@ -184,7 +183,7 @@ export default function SubscriptionRegisterModal(param: param) {
               rules={[{ required: true, message: "필수 입력값입니다." }]}
             >
               <Input
-                placeholder="가게 이름"
+                placeholder="상품명"
                 value={registerValues.productName}
                 onChange={(e) =>
                   setRegisterValues((prev) => ({
@@ -230,16 +229,18 @@ export default function SubscriptionRegisterModal(param: param) {
               label="상세설명"
               rules={[{ required: true, message: "필수 입력값입니다." }]}
             >
-              <Input
-                value={registerValues.productDescriptionImage}
-                style={{ display: "none" }}
-              />
-              <input
-                type="file"
-                accept="image/*"
-                className="w-full h-full"
-                onChange={(e) => handleImage(e, "description")}
-              />
+              <div>
+                <Input
+                  value={registerValues.productDescriptionImage}
+                  style={{ display: "none" }}
+                />
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="w-full h-full"
+                  onChange={(e) => handleImage(e, "description")}
+                />
+              </div>
             </Form.Item>
           </div>
         </div>

@@ -104,21 +104,57 @@ export const deleteCoupon = async (storeId: number, couponId: number) => {
 export const getSettlementList = async (
   year: number | undefined,
   month: number | undefined,
-  storeId: number | undefined,
+  storeId: number,
   page: number,
   size: number
 ) => {
-  const { data } = await authInstance.get(
-    "/admin/settlement?year=" +
-      year +
-      "&month=" +
-      month +
-      "&storeId=" +
-      storeId +
-      "&page=" +
-      page +
-      "&size=" +
-      size
-  );
-  return data;
+  if (year && month) {
+    const { data } = await authInstance.get(
+      "/orders/store/settlement?year=" +
+        year +
+        "&month=" +
+        month +
+        "&storeId=" +
+        storeId +
+        "&page=" +
+        page +
+        "&size=" +
+        size
+    );
+    return data;
+  } else if (year && !month) {
+    const { data } = await authInstance.get(
+      "/orders/store/settlement?year=" +
+        year +
+        "&storeId=" +
+        storeId +
+        "&page=" +
+        page +
+        "&size=" +
+        size
+    );
+    return data;
+  } else if (!year && month) {
+    const { data } = await authInstance.get(
+      "/orders/store/settlement?month=" +
+        month +
+        "&storeId=" +
+        storeId +
+        "&page=" +
+        page +
+        "&size=" +
+        size
+    );
+    return data;
+  } else {
+    const { data } = await authInstance.get(
+      "/orders/store/settlement?storeId=" +
+        storeId +
+        "&page=" +
+        page +
+        "&size=" +
+        size
+    );
+    return data;
+  }
 };

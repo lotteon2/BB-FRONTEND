@@ -28,7 +28,7 @@ export const nameState = atom({
  */
 export const storeIdState = atom({
   key: "storeIdState",
-  default: 0,
+  default: null,
   effects_UNSTABLE: [persistAtom],
 });
 

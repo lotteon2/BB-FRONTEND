@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pagination, PaginationProps, Select, Rate, Empty } from "antd";
+import { Pagination, PaginationProps, Select, Rate, Empty, Tag } from "antd";
 import { useNavigate } from "react-router";
 import Tag01 from "../../assets/images/tag/001.png";
 import Tag02 from "../../assets/images/tag/002.png";
@@ -280,6 +280,15 @@ export default function ProductByTagList(param: param) {
                 onClick={() => navigate("/product/detail/" + item.key)}
               >
                 <div className="relative">
+                  <div className="absolute z-20 p-2">
+                    {item.productSaleStatus === "DISCONTINUED" ? (
+                      <Tag bordered={false} color="red">
+                        판매중지
+                      </Tag>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                   <img
                     src={item.productThumbnail}
                     alt="상품 썸네일"

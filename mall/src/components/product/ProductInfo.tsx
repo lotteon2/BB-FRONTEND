@@ -1,20 +1,26 @@
 import { useState, useEffect } from "react";
-import { Button, Input, Modal, Rate } from "antd";
+import { Button, Input, Modal, Rate, Tag } from "antd";
 import ShareIcon from "@mui/icons-material/Share";
-import { HeartFilled, MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  BellFilled,
+  HeartFilled,
+  MinusOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import ButtonGroup from "antd/es/button/button-group";
 import CouponModal from "./modal/CouponModal";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { loginState } from "../../recoil/atom/common";
+import { loginState, nicknameState } from "../../recoil/atom/common";
 import { productWishState } from "../../recoil/atom/member";
 import { useNavigate } from "react-router";
 import { useMutation, useQuery } from "react-query";
-import { getProductDetail } from "../../apis/product";
+import { getProductDetail, requestSaleResume } from "../../apis/product";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
 import { getStoreDeliveryPolicy } from "../../apis/store";
 import {
   modifyCartCountDto,
   orderDto,
+  saleResumeDto,
   storeDeliveryPolicyDto,
 } from "../../recoil/common/interfaces";
 import { orderState } from "../../recoil/atom/order";
@@ -22,6 +28,7 @@ import { addToCart } from "../../apis/cart";
 import { FailToast } from "../common/toast/FailToast";
 import { SuccessToast } from "../common/toast/SuccessToast";
 import Swal from "sweetalert2";
+import { getMyPhoneNumber } from "../../apis/member";
 
 interface param {
   productId: string;
@@ -32,6 +39,7 @@ interface param {
 
 export default function ProductInfo(param: param) {
   const navigate = useNavigate();
+  const nickname = useRecoilValue<string>(nicknameState);
   const setOrder = useSetRecoilState<orderDto>(orderState);
   const [count, setCount] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -140,6 +148,52 @@ export default function ProductInfo(param: param) {
     cartMutation.mutate(cartDto);
   };
 
+  const handleSaleResume = () => {
+    if (isLogin) {
+      getPhoneNumberMutation.mutate();
+    } else if (window.confirm("회원만 사용가능합니다. 로그인하시겠습니까?")) {
+      navigate("/login");
+    }
+  };
+
+  const getPhoneNumberMutation = useMutation(
+    ["getMyPhoneNumber"],
+    () => getMyPhoneNumber(),
+    {
+      onSuccess: (data) => {
+        const resumeDto = {
+          phoneNumber: data.phoneNumber,
+          userName: nickname,
+        };
+
+        saleResumeMutation.mutate(resumeDto);
+      },
+      onError: () => {
+        const resumeDto = {
+          phoneNumber: "01011111111",
+          userName: nickname,
+        };
+
+        saleResumeMutation.mutate(resumeDto);
+        FailToast(null);
+      },
+    }
+  );
+
+  const saleResumeMutation = useMutation(
+    ["saleResume"],
+    (resumeDto: saleResumeDto) =>
+      requestSaleResume(data.data.productId, resumeDto),
+    {
+      onSuccess: () => {
+        SuccessToast("재판매 알림이 신청되었습니다.");
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
+
   const getPolilcyMutation = useMutation(
     ["getStorePolicy"],
     (storeId: number) => getStoreDeliveryPolicy(storeId),
@@ -177,7 +231,16 @@ export default function ProductInfo(param: param) {
 
   return (
     <div className="w-full flex flex-row gap-10 flex-wrap justify-center">
-      <div className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px]">
+      <div className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px] relative">
+        <div className="absolute z-20 top-7 left-2">
+          {data.data.productSaleStatus === "DISCONTINUED" ? (
+            <Tag bordered={false} color="red">
+              판매중지
+            </Tag>
+          ) : (
+            ""
+          )}
+        </div>
         <div className="flex flex-row gap-3 text-grayscale5 font-light text-[0.8rem]">
           <p
             className="cursor-pointer"
@@ -208,15 +271,21 @@ export default function ProductInfo(param: param) {
           </div>
         </div>
         <img
-          className="w-full h-full"
+          className={
+            data.data.productSaleStatus === "DISCONTINUED"
+              ? "w-full h-full contrast-50"
+              : "w-full h-full"
+          }
           src={data.data.productThumbnail}
-          alt=""
+          alt="상품 썸네일"
         />
       </div>
       <div className="w-1/2 max-w-[800px] min-w-[370px]">
-        <p className="text-[2.3rem] font-bold">{data.data.productName}</p>
+        <div className="flex flex-row gap-2">
+          <p className="text-[2.3rem] font-bold">{data.data.productName}</p>
+        </div>
         <p className="text-[1rem] text-grayscale5 font-thin">
-          {data.data.productSummary}
+          {data.data.productDescription}
         </p>
         <div className="flex flex-row gap-5 justify-end text-grayscale5 font-light mt-2">
           <div className="flex flex-row gap-2 cursor-pointer">
@@ -331,21 +400,40 @@ export default function ProductInfo(param: param) {
             {(data.data.productPrice * count).toLocaleString()}원
           </b>
         </p>
-        <div className="flex flex-row gap-2 mt-3">
-          <Button
-            style={{ width: "50%", height: "3rem", backgroundColor: "#fff" }}
-            onClick={handleAddToCart}
-          >
-            장바구니
-          </Button>
-          <Button
-            type="primary"
-            style={{ width: "50%", height: "3rem" }}
-            onClick={handleOrder}
-          >
-            구매하기
-          </Button>
-        </div>
+        {data.data.productSaleStatus === "DISCONTINUED" ? (
+          <div className="flex flex-row gap-2 mt-3">
+            <Button
+              type="primary"
+              style={{ width: "100%", height: "3rem" }}
+              onClick={handleSaleResume}
+            >
+              재판매 알림 요청
+            </Button>
+          </div>
+        ) : (
+          <div className="flex flex-row gap-2 mt-3">
+            <Button
+              style={{ width: "50%", height: "3rem", backgroundColor: "#fff" }}
+              onClick={handleAddToCart}
+              disabled={
+                data.data.productSaleStatus === "DISCONTINUED" ? true : false
+              }
+            >
+              장바구니
+            </Button>
+            <Button
+              type="primary"
+              style={{ width: "50%", height: "3rem" }}
+              onClick={handleOrder}
+              disabled={
+                data.data.productSaleStatus === "DISCONTINUED" ? true : false
+              }
+            >
+              구매하기
+            </Button>
+          </div>
+        )}
+
         {isModalOpen ? (
           <Modal
             title="쿠폰 다운로드"

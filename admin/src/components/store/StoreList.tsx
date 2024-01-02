@@ -8,19 +8,19 @@ import WholeDiv from "../fallbacks/WholeDiv";
 import { storeListData } from "../../mocks/store";
 
 interface param {
-  sido: number | undefined;
+  sido: number;
   gugun: number | undefined;
   sort: string;
 }
 export default function StoreList(param: param) {
   const [page, setPage] = useState<number>(1);
 
-  const data = storeListData;
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ["getStoreList", page, param],
-  //   queryFn: () =>
-  //     getStoreList(page - 1, 13, param.sido, param.gugun, param.sort),
-  // });
+  // const data = storeListData;
+  const { data, isLoading } = useQuery({
+    queryKey: ["getStoreList", page, param],
+    queryFn: () =>
+      getStoreList(page - 1, 13, param.sido, param.gugun, param.sort),
+  });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
@@ -89,7 +89,7 @@ export default function StoreList(param: param) {
     },
   ];
 
-  // if (!data || isLoading) return <WholeDiv />;
+  if (!data || isLoading) return <WholeDiv />;
 
   return (
     <div className="w-full h-[825px]">
@@ -98,7 +98,7 @@ export default function StoreList(param: param) {
       ) : (
         <div>
           <Table
-            dataSource={data.data}
+            dataSource={data.data.data}
             columns={columns}
             pagination={false}
             style={{ height: 775 }}

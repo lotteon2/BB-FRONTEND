@@ -4,10 +4,17 @@ const isLogin = localStorage.getItem("isLogin");
 
 // 가게 리스트
 export const getStoreList = async (page: number, size: number) => {
-  const { data } = await defaultInstance.get(
-    "/stores/list?page=" + page + "&size=" + size
-  );
-  return data;
+  if (isLogin === "T") {
+    const { data } = await authInstance.get(
+      "/stores/list?page=" + page + "&size=" + size
+    );
+    return data;
+  } else {
+    const { data } = await defaultInstance.get(
+      "/stores/list?page=" + page + "&size=" + size
+    );
+    return data;
+  }
 };
 
 // 근처 꽃집 리스트

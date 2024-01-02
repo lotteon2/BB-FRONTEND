@@ -27,7 +27,7 @@ export default function ProfileBar() {
     <div className="w-full h-[32px] mt-4">
       <div className="flex flex-row gap-2 mr-5 justify-end">
         <span>안녕하세요, 관리자님</span>
-        <Badge badgeContent={1} color="warning">
+        <Badge badgeContent={0} color="warning">
           <NotificationsIcon fontSize="medium" />
         </Badge>
         <button className="ml-10" onClick={() => logoutMutation.mutate()}>
