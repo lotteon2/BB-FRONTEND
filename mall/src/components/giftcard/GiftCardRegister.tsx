@@ -12,6 +12,10 @@ import { getRecommandLetter, registerGiftCard } from "../../apis/giftcard";
 import { FailToast } from "../common/toast/FailToast";
 import GiftCardContent from "./GiftCardContent";
 import { SuccessToast } from "../common/toast/SuccessToast";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { useRecoilValue } from "recoil";
+import { mallState } from "../../recoil/atom/common";
 
 interface param {
   cardTemplate: cardTemplateListDto;
@@ -20,10 +24,12 @@ interface param {
   orderType: string;
 }
 export default function GiftCardRegister(param: param) {
+  const navigate = useNavigate();
   const [value, setValue] = useState<string>("");
   const [type, setType] = useState<string>("");
   const [recommandDto, setRecommandDto] = useState<recommandDto>();
   const [clickBtn, setClickBtn] = useState<boolean>(false);
+  const isMall = useRecoilValue<boolean>(mallState);
 
   const data = {
     data: {
@@ -73,10 +79,32 @@ export default function GiftCardRegister(param: param) {
     (registerDto: cardRegisterDto) =>
       registerGiftCard(param.orderType.toUpperCase(), registerDto),
     {
-      onSuccess: () => {
-        SuccessToast("작성이 완료되었습니다.");
+      onSuccess: (data) => {
+        Swal.fire({
+          title: `<p style='text-align: center'>작성이 완료되었습니다.</p>`,
+          text: "작성된 기프트 카드 페이지로 이동하시겠습니까? 카드 페이지에서 조회 및 공유가 가능합니다. 작성된 기프트 카드는 마이페이지에서 확인하실 수 있습니다.",
+          iconHtml:
+            '<a><img src="https://i.ibb.co/Y3dNf6N/success.png" alt="danger"></a>',
+          showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+          confirmButtonColor: "#85C031", // confrim 버튼 색깔 지정
+          cancelButtonColor: "#808080", // cancel 버튼 색깔 지정
+          confirmButtonText: "확인", // confirm 버튼 텍스트 지정
+          cancelButtonText: "닫기", // cancel 버튼 텍스트 지정
+          reverseButtons: true, // 버튼 순서 거꾸로
+          background: "#FFFFFF",
+          color: "#212B36",
+        }).then((result) => {
+          // 만약 Promise리턴을 받으면,
+          if (result.isConfirmed) {
+            navigate("/giftcard/detail/" + data.cardId + "/" + data.password);
+          } else {
+            // 모달창에서 cancel 버튼을 눌렀다면
+            isMall ? navigate("/") : navigate("/pickup");
+          }
+        });
       },
       onError: () => {
+        navigate("/giftcard/detail/" + 1 + "/1234");
         FailToast(null);
       },
     }

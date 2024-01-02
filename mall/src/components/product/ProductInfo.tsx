@@ -27,7 +27,6 @@ import { orderState } from "../../recoil/atom/order";
 import { addToCart } from "../../apis/cart";
 import { FailToast } from "../common/toast/FailToast";
 import { SuccessToast } from "../common/toast/SuccessToast";
-import Swal from "sweetalert2";
 import { getMyPhoneNumber } from "../../apis/member";
 
 interface param {
@@ -36,6 +35,10 @@ interface param {
   setProductName: (name: string) => void;
   setStoreId: (id: number) => void;
 }
+
+declare const window: typeof globalThis & {
+  Kakao: any;
+};
 
 export default function ProductInfo(param: param) {
   const navigate = useNavigate();
@@ -218,12 +221,39 @@ export default function ProductInfo(param: param) {
     }
   );
 
+  const shareKakao = () => {
+    window.Kakao.Link.sendDefault({
+      objectType: "feed",
+      content: {
+        title: data.data.productName,
+        imageUrl: data.data.productThumbnail,
+        link: {
+          webUrl: `https://localhost:3000/product/detail/${data.data.productId}`,
+          mobileWebUrl: `https://localhost:3000/product/detail/${data.data.productId}`,
+        },
+      },
+      buttons: [
+        {
+          title: "확인하러 가기",
+          link: {
+            webUrl: `https://localhost:3000/product/detail/${data.data.productId}`,
+            mobileWebUrl: `https://localhost:3000/product/detail/${data.data.productId}`,
+          },
+        },
+      ],
+    });
+  };
+
   useEffect(() => {
     if (data) {
       param.setProductDescription(data.data.productDetailImage);
       param.setProductName(data.data.productName);
       param.setStoreId(data.data.storeId);
       getPolilcyMutation.mutate(data.data.storeId);
+
+      if (!window.Kakao.isInitialized()) {
+        window.Kakao.init(process.env.REACT_APP_KAKAO_JS_API_KEY);
+      }
     }
   }, [data]);
 
@@ -288,7 +318,10 @@ export default function ProductInfo(param: param) {
           {data.data.productDescription}
         </p>
         <div className="flex flex-row gap-5 justify-end text-grayscale5 font-light mt-2">
-          <div className="flex flex-row gap-2 cursor-pointer">
+          <div
+            className="flex flex-row gap-2 cursor-pointer"
+            onClick={shareKakao}
+          >
             <ShareIcon /> <span>공유</span>
           </div>
           <div className="flex flex-row gap-2 cursor-pointer">

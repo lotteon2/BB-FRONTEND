@@ -35,9 +35,14 @@ export const getMyGiftCardList = async (page: number, size: number) => {
   return data;
 };
 
-export const getGiftCardDetail = async (cardId: number, password: string) => {
-  const { data } = await defaultInstance.get(
-    "/giftcard/card/" + cardId + "/" + password
-  );
-  return data;
+export const getGiftCardDetail = async (
+  cardId: string | undefined,
+  password: string | undefined
+) => {
+  if (cardId && password) {
+    const { data } = await defaultInstance.get(
+      "/giftcard/card/" + cardId + "/" + password
+    );
+    return data;
+  }
 };

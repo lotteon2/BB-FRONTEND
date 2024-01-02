@@ -17,6 +17,7 @@ import { useMutation } from "react-query";
 import { productWishState, storeWishState } from "../recoil/atom/member";
 import { modifyStoreWishList, modifyWishList } from "../apis/member";
 import { FailToast } from "../components/common/toast/FailToast";
+import MyGiftCardList from "../components/mypage/section/MyGiftCardList";
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -127,6 +128,13 @@ export default function MyPage() {
                 상품 후기
               </p>
               <MyReviewList />
+            </div>
+          ) : selected === "기프트카드" ? (
+            <div>
+              <p className="text-2xl font-bold pb-2 border-b-[1px]">
+                기프트 카드
+              </p>
+              <MyGiftCardList />
             </div>
           ) : selected === "회원정보" ? (
             <div>

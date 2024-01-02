@@ -24,6 +24,10 @@ interface param {
   setStoreId: (id: number) => void;
 }
 
+declare const window: typeof globalThis & {
+  Kakao: any;
+};
+
 const today = new Date();
 export default function SubscriptionInfo(param: param) {
   const navigate = useNavigate();
@@ -123,12 +127,39 @@ export default function SubscriptionInfo(param: param) {
     }
   );
 
+  const shareKakao = () => {
+    window.Kakao.Link.sendDefault({
+      objectType: "feed",
+      content: {
+        title: data.data.productName,
+        imageUrl: data.data.productThumbnail,
+        link: {
+          webUrl: `https://localhost:3000/subscription/product/detail/${data.data.storeId}`,
+          mobileWebUrl: `https://localhost:3000/subscription/product/detail/${data.data.storeId}`,
+        },
+      },
+      buttons: [
+        {
+          title: "확인하러 가기",
+          link: {
+            webUrl: `https://localhost:3000/subscription/product/detail/${data.data.storeId}`,
+            mobileWebUrl: `https://localhost:3000/subscription/product/detail/${data.data.storeId}`,
+          },
+        },
+      ],
+    });
+  };
+
   useEffect(() => {
     if (data) {
-      // param.setProductDescription(data.data.productDetailImage);
-      // param.setProductName(data.data.productName);
-      // param.setStoreId(data.data.storeId);
-      // getPolilcyMutation.mutate(data.data.storeId);
+      param.setProductDescription(data.data.productDetailImage);
+      param.setProductName(data.data.productName);
+      param.setStoreId(data.data.storeId);
+      getPolilcyMutation.mutate(data.data.storeId);
+
+      if (!window.Kakao.isInitialized()) {
+        window.Kakao.init(process.env.REACT_APP_KAKAO_JS_API_KEY);
+      }
     }
   }, [data]);
 
@@ -136,12 +167,12 @@ export default function SubscriptionInfo(param: param) {
 
   return (
     <div className="w-full flex flex-row gap-10 flex-wrap justify-center">
-      {/* <div className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px]">
+      <div className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px]">
         <p
           className="cursor-pointer text-grayscale5 font-light text-[0.8rem]"
-          onClick={() => navigate("/store/detail/" + data.storeId)}
+          onClick={() => navigate("/store/detail/" + data.data.storeId)}
         >
-          {data.storeName}
+          {data.data.storeName}
         </p>
         <img
           src="https://f-mans.com/data/goods/1/2023/10/681_temp_16972473985275view.jpg"
@@ -149,36 +180,43 @@ export default function SubscriptionInfo(param: param) {
         />
       </div>
       <div className="w-1/2 max-w-[800px] min-w-[370px]">
-        <p className="text-[2.3rem] font-bold">{data.productName}</p>
+        <p className="text-[2.3rem] font-bold">{data.data.productName}</p>
         <p className="text-[1rem] text-grayscale5 font-thin">
-          {data.productSummary}
+          {data.data.productSummary}
         </p>
         <div className="flex flex-row gap-5 justify-end text-grayscale5 font-light mt-2">
-          <div className="flex flex-row gap-2 cursor-pointer">
+          <div
+            className="flex flex-row gap-2 cursor-pointer"
+            onClick={shareKakao}
+          >
             <ShareIcon /> <span>공유</span>
           </div>
           <div className="flex flex-row gap-2 cursor-pointer">
-            {productWishList.includes(data.productId) ? (
-              !data.isLiked ? (
+            {productWishList.includes(data.data.productId) ? (
+              !data.data.isLiked ? (
                 <div className="mt-[-4px] text-[#FF6464] text-[25px] hover:-translate-y-[2px]">
                   <HeartFilled
-                    onClick={() => handleWishButton(data.productId)}
+                    onClick={() => handleWishButton(data.data.productId)}
                   />
                 </div>
               ) : (
                 <div className="mt-[-4px] text-grayscale5 text-[25px] hover:-translate-y-[2px]">
                   <HeartFilled
-                    onClick={() => handleWishButton(data.productId)}
+                    onClick={() => handleWishButton(data.data.productId)}
                   />
                 </div>
               )
             ) : data.isLiked ? (
               <div className="mt-[-4px] text-[#FF6464] text-[25px] hover:-translate-y-[2px]">
-                <HeartFilled onClick={() => handleWishButton(data.productId)} />
+                <HeartFilled
+                  onClick={() => handleWishButton(data.data.productId)}
+                />
               </div>
             ) : (
               <div className="mt-[-4px] text-grayscale5 text-[25px] hover:-translate-y-[2px]">
-                <HeartFilled onClick={() => handleWishButton(data.productId)} />
+                <HeartFilled
+                  onClick={() => handleWishButton(data.data.productId)}
+                />
               </div>
             )}
             <span>찜</span>
@@ -192,17 +230,17 @@ export default function SubscriptionInfo(param: param) {
               <div className="pt-[2px]">쿠폰 혜택</div>
             </div>
             <div className="flex flex-col gap-5 text-[1rem]">
-              <div>{data.salesCount.toLocaleString()}개</div>
+              <div>{data.data.salesCount.toLocaleString()}개</div>
               <div className="flex flex-row gap-2">
-                <span>{data.reviewCount.toLocaleString()}개</span>
+                <span>{data.data.reviewCount.toLocaleString()}개</span>
                 <Rate
                   allowHalf
                   disabled
-                  defaultValue={data.averageRating}
+                  defaultValue={data.data.averageRating}
                   style={{ marginTop: 3, color: "#85C031" }}
                 />
                 <span className="text-[1rem] text-grayscale4 mt-[2px]">
-                  ({data.averageRating})
+                  ({data.data.averageRating})
                 </span>
               </div>
               {isLogin ? (
@@ -215,7 +253,7 @@ export default function SubscriptionInfo(param: param) {
             </div>
           </div>
           <p className="text-[2.3rem] font-bold text-primary4 mt-2">
-            {data.productPrice.toLocaleString()}원
+            {data.data.productPrice.toLocaleString()}원
           </p>
         </div>
         <div className="text-[0.9rem] border-b-[1px] pb-2 flex flex-row gap-2">
@@ -240,7 +278,7 @@ export default function SubscriptionInfo(param: param) {
         <p className="text-[1.2rem] font-regular flex flex-row gap-2 justify-end">
           <span className="mt-3">총 상품금액</span>
           <b className="text-primary4 text-[2rem] font-bold">
-            {data.productPrice.toLocaleString()}원
+            {data.data.productPrice.toLocaleString()}원
           </b>
         </p>
 
@@ -258,12 +296,12 @@ export default function SubscriptionInfo(param: param) {
             onCancel={handleCancel}
             footer={[]}
           >
-            <CouponModal storeId={data.storeId} />
+            <CouponModal storeId={data.data.storeId} />
           </Modal>
         ) : (
           ""
         )}
-      </div> */}
+      </div>
     </div>
   );
 }

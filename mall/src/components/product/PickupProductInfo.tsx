@@ -33,6 +33,10 @@ interface param {
   setStoreId: (id: number) => void;
 }
 
+declare const window: typeof globalThis & {
+  Kakao: any;
+};
+
 export default function PickupProductInfo(param: param) {
   const navigate = useNavigate();
   const nickname = useRecoilValue<string>(nicknameState);
@@ -207,12 +211,39 @@ export default function PickupProductInfo(param: param) {
     }
   );
 
+  const shareKakao = () => {
+    window.Kakao.Link.sendDefault({
+      objectType: "feed",
+      content: {
+        title: data.data.productName,
+        imageUrl: data.data.productThumbnail,
+        link: {
+          webUrl: `https://localhost:3000/pickup/product/detail/${data.data.productId}`,
+          mobileWebUrl: `https://localhost:3000/pickup/product/detail/${data.data.productId}`,
+        },
+      },
+      buttons: [
+        {
+          title: "확인하러 가기",
+          link: {
+            webUrl: `https://localhost:3000/pickup/product/detail/${data.data.productId}`,
+            mobileWebUrl: `https://localhost:3000/pickup/product/detail/${data.data.productId}`,
+          },
+        },
+      ],
+    });
+  };
+
   useEffect(() => {
     if (data) {
       param.setProductDescription(data.data.productDetailImage);
       param.setProductName(data.data.productName);
       param.setStoreId(data.data.storeId);
       getPolilcyMutation.mutate(data.data.storeId);
+
+      if (!window.Kakao.isInitialized()) {
+        window.Kakao.init(process.env.REACT_APP_KAKAO_JS_API_KEY);
+      }
     }
   }, [data]);
 
@@ -265,7 +296,7 @@ export default function PickupProductInfo(param: param) {
               ? "w-full h-full contrast-50"
               : "w-full h-full"
           }
-          src="https://f-mans.com/data/goods/1/2023/10/681_temp_16972473985275view.jpg"
+          src={data.data.productThumbnail}
           alt=""
         />
       </div>
@@ -275,7 +306,10 @@ export default function PickupProductInfo(param: param) {
           {data.data.productSummary}
         </p>
         <div className="flex flex-row gap-5 justify-end text-grayscale5 font-light mt-2">
-          <div className="flex flex-row gap-2 cursor-pointer">
+          <div
+            className="flex flex-row gap-2 cursor-pointer"
+            onClick={shareKakao}
+          >
             <ShareIcon /> <span>공유</span>
           </div>
           <div className="flex flex-row gap-2 cursor-pointer">

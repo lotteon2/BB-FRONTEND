@@ -392,3 +392,11 @@ export interface cardRegisterDto {
   cardTemplateId: number;
   content: string;
 }
+
+export interface myCardListItemDto {
+  cardId: number;
+  imageUrl: string;
+  password: string;
+  content: string;
+  createdAt: string;
+}

@@ -84,6 +84,16 @@ export default function MyPageHeader(param: param) {
           >
             상품 후기
           </p>
+          <p
+            className={
+              param.selected === "기프트카드"
+                ? "font-regular cursor-pointer"
+                : "cursor-pointer"
+            }
+            onClick={() => param.setSelected("기프트카드")}
+          >
+            기프트 카드
+          </p>
         </div>
         <div>
           <p className="text-2xl font-regular border-b-[1px] border-grayscale3">

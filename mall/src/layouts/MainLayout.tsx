@@ -66,7 +66,7 @@ export default function MainLayout() {
 
   useEffect(() => {
     isMall ? navigate("/") : navigate("/pickup");
-  }, [isMall, navigate]);
+  }, [isMall]);
 
   return (
     <div className="font-regular">

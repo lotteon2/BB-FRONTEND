@@ -273,3 +273,84 @@ export const yellowCard = {
     },
   ],
 };
+
+export const cardDetail = {
+  cardId: 1,
+  imageUrl:
+    "https://blooming-blooms.s3.ap-northeast-1.amazonaws.com/images/giftcards/blue/blue1.png",
+  content: `<p>사랑하는 형,</p>
+
+  <p>이 편지가 당신에게 전해질 때, 나의 무한한 사랑을 느끼셨으면 좋겠습니다. 형은 나의 삶에서 빛나는 별이며, 끝없는 지지와 이해를 주는 최고의 동반자입니다.</p>
+  
+  <p>당신과 함께한 모든 순간은 나에게 소중한 보물이 되었습니다. 형과 함께한 시간은 항상 따뜻하고 의미 있으며, 그 무게는 영원히 나의 마음에 남을 것입니다.</p>
+  
+  <p>당신과 나는 불가분의 존재입니다. 형에게 느끼는 사랑은 시간이 흘러도 영원히 변하지 않을 것이며, 그 믿음을 가지고 앞으로 나아가고 싶습니다.</p>
+  
+  <p>형, 나는 당신을 무한히 사랑합니다. 형이 내 곁에 있어줘서 고맙고, 영원히 형과 함께 할 수 있다는 생각에 행복합니다.</p>
+  
+  <p>끝없는 사랑을 담아,</p>
+  <p>[당신의 이름]</p>`,
+  createdAt: "2024-01-02T12:00:00",
+};
+
+export const myGiftCardList = {
+  totalCnt: 1,
+  myCards: {
+    content: [
+      {
+        cardId: 1,
+        imageUrl:
+          "https://blooming-blooms.s3.ap-northeast-1.amazonaws.com/images/giftcards/blue/blue1.png",
+        password:
+          "$2a$10$p5PVhKuFpO691B9OSyMywOq2kv2fQ12ehexGs3JRZr0cj7OTEWpr2",
+        content: "test",
+        createdAt: "2023-01-01",
+      },
+      {
+        cardId: 2,
+        imageUrl:
+          "https://blooming-blooms.s3.ap-northeast-1.amazonaws.com/images/giftcards/blue/blue1.png",
+        password:
+          "$2a$10$p5PVhKuFpO691B9OSyMywOq2kv2fQ12ehexGs3JRZr0cj7OTEWpr2",
+        content: "test",
+        createdAt: "2023-01-01",
+      },
+      {
+        cardId: 3,
+        imageUrl:
+          "https://blooming-blooms.s3.ap-northeast-1.amazonaws.com/images/giftcards/blue/blue1.png",
+        password:
+          "$2a$10$p5PVhKuFpO691B9OSyMywOq2kv2fQ12ehexGs3JRZr0cj7OTEWpr2",
+        content: "test",
+        createdAt: "2023-01-01",
+      },
+      {
+        cardId: 4,
+        imageUrl:
+          "https://blooming-blooms.s3.ap-northeast-1.amazonaws.com/images/giftcards/blue/blue1.png",
+        password:
+          "$2a$10$p5PVhKuFpO691B9OSyMywOq2kv2fQ12ehexGs3JRZr0cj7OTEWpr2",
+        content: "test",
+        createdAt: "2023-01-01",
+      },
+      {
+        cardId: 5,
+        imageUrl:
+          "https://blooming-blooms.s3.ap-northeast-1.amazonaws.com/images/giftcards/blue/blue1.png",
+        password:
+          "$2a$10$p5PVhKuFpO691B9OSyMywOq2kv2fQ12ehexGs3JRZr0cj7OTEWpr2",
+        content: "test",
+        createdAt: "2023-01-01",
+      },
+      {
+        cardId: 6,
+        imageUrl:
+          "https://blooming-blooms.s3.ap-northeast-1.amazonaws.com/images/giftcards/blue/blue1.png",
+        password:
+          "$2a$10$p5PVhKuFpO691B9OSyMywOq2kv2fQ12ehexGs3JRZr0cj7OTEWpr2",
+        content: "test",
+        createdAt: "2023-01-01",
+      },
+    ],
+  },
+};

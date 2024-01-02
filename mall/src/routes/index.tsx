@@ -17,9 +17,10 @@ import OrderPage from "../pages/order/OrderPage";
 import CartPage from "../pages/CartPage";
 import MyPage from "../pages/MyPage";
 import OrderDetailPage from "../pages/order/OrderDetailPage";
-import GiftCardPage from "../pages/GiftCartPage";
+import GiftCardPage from "../pages/GiftCardPage";
 import PickupNearby from "../components/pickup/PickupNearby";
 import PickupRegion from "../components/pickup/PickupRegion";
+import GiftCardDetailPage from "../pages/GiftCardDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
         element: <OrderDetailPage />,
       },
       {
-        path: "product/subscription/detail/:storeId",
+        path: "subscription/product/detail/:storeId",
         element: <SubscriptionDetailPage />,
       },
       { path: "product/:categoryId", element: <ProductByCategoryPage /> },
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
       { path: "product/detail/:productId", element: <ProductDetailPage /> },
       { path: "cart", element: <CartPage /> },
       { path: "giftcard/:type/:id/:productId", element: <GiftCardPage /> },
+      {
+        path: "giftcard/detail/:cardId/:password",
+        element: <GiftCardDetailPage />,
+      },
     ],
   },
   {
