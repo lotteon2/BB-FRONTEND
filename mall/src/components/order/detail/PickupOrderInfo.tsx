@@ -5,6 +5,7 @@ import Loading from "../../common/Loading";
 import { pickupOrderDetailData } from "../../../mocks/order";
 import { Button, Form, Input, Modal, Tag } from "antd";
 import { useNavigate } from "react-router-dom";
+import ReviewRegisterModal from "../modal/ReviewRegisterModal";
 
 interface param {
   id: string;
@@ -14,23 +15,27 @@ export default function PickupOrderInfo(param: param) {
   const navigate = useNavigate();
   const [productId, setProductId] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isChange, setIsChange] = useState<boolean>(false);
 
   const data = pickupOrderDetailData;
 
   // const {data, isLoading} = useQuery({
-  //   queryKey: [""],
+  //   queryKey: ["getPickupDetail", isChange],
   //   queryFn: () => getPickupDetail(param.id),
   // })
 
-  const handleGiftcard = (status: string) => {
-    if (status === "ABLE") navigate("/giftcard/pickup/" + param.id);
+  const handleChange = () => {
+    setIsChange((cur) => !cur);
+    setIsModalOpen(false);
   };
 
-  const handleReview = (status: string, productId: string) => {
-    if (status === "ABLE") {
-      setProductId(productId);
-      setIsModalOpen(true);
-    }
+  const handleReviewModalOpen = (productId: string) => {
+    setProductId(productId);
+    setIsModalOpen(true);
+  };
+
+  const handleGiftcard = (status: string) => {
+    if (status === "ABLE") navigate("/giftcard/pickup/" + param.id);
   };
 
   // if (!data || isLoading) return <Loading />
@@ -95,7 +100,9 @@ export default function PickupOrderInfo(param: param) {
                     <Button
                       disabled={data.reviewStatus === "ABLE" ? false : true}
                       onClick={() =>
-                        handleReview(data.reviewStatus, data.productId)
+                        data.reviewStatus === "ABLE"
+                          ? handleReviewModalOpen(data.productId)
+                          : ""
                       }
                     >
                       {data.reviewStatus === "DONE" ? "작성 완료" : "리뷰 작성"}
@@ -192,7 +199,15 @@ export default function PickupOrderInfo(param: param) {
         onCancel={() => setIsModalOpen(false)}
         title="리뷰 작성"
         footer={[]}
-      ></Modal>
+      >
+        <ReviewRegisterModal
+          productId={productId}
+          productOrderId={param.id}
+          reviewType={"PICKUP"}
+          handleChange={handleChange}
+          setIsModalOpen={setIsModalOpen}
+        />
+      </Modal>
     </div>
   );
 }

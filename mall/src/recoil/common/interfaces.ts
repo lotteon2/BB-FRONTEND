@@ -323,6 +323,7 @@ export interface pickupOrderItemDto {
 }
 
 export interface productRead {
+  orderProductId: number;
   productId: string;
   thumbnailImage: string;
   name: string;
@@ -338,6 +339,7 @@ export interface productRead {
 }
 
 export interface orderInfoForStore {
+  orderDeliveryId: string;
   storeId: number;
   storeName: string;
   products: productRead[];
@@ -362,4 +364,31 @@ export interface myReviewItemDto {
 export interface saleResumeDto {
   phoneNumber: string;
   userName: string;
+}
+
+export interface reviewRegisterDto {
+  id: string;
+  reviewType: string;
+  reviewImage: string[];
+  reviewContent: string;
+  rating: number;
+  nickname: string;
+  profileImage: string;
+}
+
+export interface cardTemplateListDto {
+  cardTemplateId: number;
+  color: string;
+  imageUrl: string;
+}
+
+export interface recommandDto {
+  target: string;
+  flower: string;
+}
+
+export interface cardRegisterDto {
+  orderProductId: number;
+  cardTemplateId: number;
+  content: string;
 }

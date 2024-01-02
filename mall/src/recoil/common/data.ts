@@ -149,3 +149,30 @@ export const pickupTime = [
   "20:00",
   "20:30",
 ];
+
+export const colorOptions = [
+  {
+    value: "mix",
+    label: "혼합",
+  },
+  {
+    value: "pink",
+    label: "분홍",
+  },
+  {
+    value: "purple",
+    label: "보라",
+  },
+  {
+    value: "yellow",
+    label: "노랑",
+  },
+  {
+    value: "blue",
+    label: "파랑",
+  },
+  {
+    value: "white",
+    label: "하양",
+  },
+];

@@ -1,8 +1,10 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Modal } from "antd";
 import { subscriptionOrderDetailData } from "../../../mocks/order";
 import { useQuery } from "react-query";
 import { getSubscriptionDetail } from "../../../apis/order";
 import Loading from "../../common/Loading";
+import { useState } from "react";
+import ReviewRegisterModal from "../modal/ReviewRegisterModal";
 
 interface param {
   id: string;
@@ -12,11 +14,24 @@ const { TextArea } = Input;
 
 export default function SubscriptionOrderInfo(param: param) {
   const data = subscriptionOrderDetailData;
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [productId, setProductId] = useState<string>("");
+  const [isChange, setIsChange] = useState<boolean>(false);
 
   // const {data, isLoading} = useQuery({
-  //   queryKey: ["getSubscriptionDetail"],
+  //   queryKey: ["getSubscriptionDetail", isChange],
   //   queryFn: () => getSubscriptionDetail(param.id),
   // })
+
+  const handleChange = () => {
+    setIsChange((cur) => !cur);
+    setIsModalOpen(false);
+  };
+
+  const handleReviewModalOpen = (productId: string) => {
+    setProductId(productId);
+    setIsModalOpen(true);
+  };
 
   // if (!data || isLoading) return <Loading />
 
@@ -70,6 +85,11 @@ export default function SubscriptionOrderInfo(param: param) {
                   <div className="flex flex-row gap-2 my-auto max-[1200px]:w-full max-[1200px]:justify-end">
                     <Button
                       disabled={data.reviewStatus === "ABLE" ? false : true}
+                      onClick={() =>
+                        data.reviewStatus === "ABLE"
+                          ? handleReviewModalOpen(data.productId)
+                          : ""
+                      }
                     >
                       {data.reviewStatus === "DONE" ? "작성 완료" : "리뷰 작성"}
                     </Button>
@@ -200,6 +220,20 @@ export default function SubscriptionOrderInfo(param: param) {
           </div>
         </div>
       </div>
+      <Modal
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        footer={[]}
+        title="리뷰 작성"
+      >
+        <ReviewRegisterModal
+          productId={productId}
+          productOrderId={param.id}
+          reviewType={"SUBSCRIBE"}
+          handleChange={handleChange}
+          setIsModalOpen={setIsModalOpen}
+        />
+      </Modal>
     </div>
   );
 }

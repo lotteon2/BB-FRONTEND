@@ -9,9 +9,11 @@ import { getDeliveryDetail } from "../../../apis/order";
 import Loading from "../../common/Loading";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import ReviewRegisterModal from "../modal/ReviewRegisterModal";
 
 interface param {
   id: string;
+  type: string;
 }
 
 const { TextArea } = Input;
@@ -19,16 +21,30 @@ const { TextArea } = Input;
 export default function OrderInfo(param: param) {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [productId, setProductId] = useState<string>("");
+  const [productOrderId, setProductOrderId] = useState<number>(0);
+  const [isChange, setIsChange] = useState<boolean>(false);
 
   //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getDeliveryDetail"],
+  //     queryKey: ["getDeliveryDetail", isChange],
   //     queryFn: () => getDeliveryDetail(param.id),
   //   });
 
-  const handleGiftcard = (status: string, id: string) => {
-    if (status === "ABLE") navigate("/giftcard/delivery/" + id);
+  const handleChange = () => {
+    setIsChange((cur) => !cur);
+    setIsModalOpen(false);
   };
 
+  const handleGiftcard = (status: string, id: number, productId: string) => {
+    if (status === "ABLE")
+      navigate("/giftcard/delivery/" + id + "/" + productId);
+  };
+
+  const handleReviewModalOpen = (productId: string, orderProductId: number) => {
+    setProductId(productId);
+    setProductOrderId(orderProductId);
+    setIsModalOpen(true);
+  };
   const data = orderDeliveryDetailData;
   //   if (!data || isLoading) return <Loading />;
   return (
@@ -96,7 +112,10 @@ export default function OrderInfo(param: param) {
                           }
                           onClick={() =>
                             product.reviewStatus === "ABLE"
-                              ? setIsModalOpen(true)
+                              ? handleReviewModalOpen(
+                                  product.productId,
+                                  product.orderProductId
+                                )
                               : ""
                           }
                         >
@@ -112,7 +131,8 @@ export default function OrderInfo(param: param) {
                           onClick={() =>
                             handleGiftcard(
                               product.cardStatus,
-                              data.orderGroupId
+                              product.orderProductId,
+                              product.productId
                             )
                           }
                         >
@@ -243,8 +263,15 @@ export default function OrderInfo(param: param) {
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer={[]}
+        title="리뷰 작성"
       >
-        <div></div>
+        <ReviewRegisterModal
+          productId={productId}
+          productOrderId={productOrderId.toString()}
+          reviewType={"DELIVERY"}
+          handleChange={handleChange}
+          setIsModalOpen={setIsModalOpen}
+        />
       </Modal>
     </div>
   );

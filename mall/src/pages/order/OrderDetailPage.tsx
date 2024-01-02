@@ -16,7 +16,7 @@ export default function OrderDetailPage() {
         주문내역 상세
       </div>
       {type === "delivery" ? (
-        <OrderInfo id={id} />
+        <OrderInfo id={id} type="DELIVERY" />
       ) : type === "pickup" ? (
         <PickupOrderInfo id={id} />
       ) : (

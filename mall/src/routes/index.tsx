@@ -51,7 +51,7 @@ const router = createBrowserRouter([
       { path: "product/tag/:tagId", element: <ProductByTagPage /> },
       { path: "product/detail/:productId", element: <ProductDetailPage /> },
       { path: "cart", element: <CartPage /> },
-      { path: "giftcard/:type/:id", element: <GiftCardPage /> },
+      { path: "giftcard/:type/:id/:productId", element: <GiftCardPage /> },
     ],
   },
   {

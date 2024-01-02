@@ -110,10 +110,12 @@ export const orderDeliveryDetailData = {
   orderGroupId: "ASDFASDF", // uuid 앞 8글자
   orderDeliveries: [
     {
+      orderDeliveryId: "12345",
       storeId: 1,
       storeName: "가게이름1",
       products: [
         {
+          orderProductId: 1,
           productId: "1",
           thumbnailImage:
             "https://f-mans.com/data/goods/1/2023/10/70_temp_16972440461206list1.jpg",
@@ -125,6 +127,7 @@ export const orderDeliveryDetailData = {
           cardStatus: "ABLE",
         },
         {
+          orderProductId: 2,
           productId: "2",
           thumbnailImage:
             "https://f-mans.com/data/goods/1/2023/10/70_temp_16972440461206list1.jpg",
@@ -197,7 +200,7 @@ export const subscriptionOrderDetailData = {
   totalDiscountPrice: 1000,
   deliveryPrice: 0,
   actualPrice: 49000,
-  reviewStatus: "DISABLED", // DISABLED | ABLE | DONE
+  reviewStatus: "ABLE", // DISABLED | ABLE | DONE
   ordererName: "김정윤",
   ordererPhoneNumber: "01012345678",
   ordererEmail: "indl1670@naver.com",

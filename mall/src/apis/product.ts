@@ -1,5 +1,6 @@
 import {
   questionRegisterDto,
+  reviewRegisterDto,
   saleResumeDto,
 } from "../recoil/common/interfaces";
 import { authInstance, defaultInstance } from "./utils";
@@ -229,6 +230,18 @@ export const requestSaleResume = async (
   const { data } = await authInstance.post(
     "/products/" + productId + "/sale-resume",
     resumeDto
+  );
+  return data;
+};
+
+// 상품 리뷰 등록
+export const registerReview = async (
+  productId: string,
+  registerDto: reviewRegisterDto
+) => {
+  const { data } = await authInstance.post(
+    "/products/" + productId + "/reviews",
+    registerDto
   );
   return data;
 };
