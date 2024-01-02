@@ -1,6 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Form, Input, Button } from "antd";
-import { infoData } from "../../../mocks/mypage";
 import { modifyMemberDto } from "../../../recoil/common/interfaces";
 import { useMutation, useQuery } from "react-query";
 import { getMyInfo, modifyMemberInfo } from "../../../apis/member";

@@ -175,23 +175,27 @@ export default function CartOrderDetail() {
     if (value.length < 11) {
       return Promise.reject(new Error("정확한 핸드폰번호를 입력해주세요."));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const rightRoadName = useCallback((_: any, value: string) => {
     if (!value) {
       return Promise.reject(new Error("필수 입력값입니다."));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const clickPayButton = useCallback(() => {
     ButtonRef.current?.click();
     handleOrder();
     return Promise.resolve();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue(order);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, order]);
 
   useEffect(() => {
@@ -212,6 +216,7 @@ export default function CartOrderDetail() {
     setTotalAmount(totalAmount);
     setTotalDeliveryCost(totalDelivery);
     setTotalActualAmount(totalActualAmount);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

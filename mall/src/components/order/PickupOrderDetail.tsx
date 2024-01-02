@@ -50,6 +50,7 @@ export default function PickupOrderDetail() {
   const clickPayButton = useCallback(() => {
     ButtonRef.current?.click();
     handlePickupReservation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getMyInfoMutation = useMutation(["getMyInfo"], () => getMyInfo(), {
@@ -101,11 +102,13 @@ export default function PickupOrderDetail() {
     if (value.length < 11) {
       return Promise.reject(new Error("정확한 핸드폰번호를 입력해주세요."));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue(pickupOrder);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, pickupOrder]);
 
   console.log(pickupOrder);

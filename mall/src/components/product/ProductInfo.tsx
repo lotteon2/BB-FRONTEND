@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, Input, Modal, Rate, Tag } from "antd";
 import ShareIcon from "@mui/icons-material/Share";
-import {
-  BellFilled,
-  HeartFilled,
-  MinusOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
+import { HeartFilled, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import ButtonGroup from "antd/es/button/button-group";
 import CouponModal from "./modal/CouponModal";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -226,6 +221,7 @@ export default function ProductInfo(param: param) {
       objectType: "feed",
       content: {
         title: data.data.productName,
+        describe: "소중한 마음, 향기에 담아 전해보세요",
         imageUrl: data.data.productThumbnail,
         link: {
           webUrl: `https://localhost:3000/product/detail/${data.data.productId}`,
@@ -255,6 +251,7 @@ export default function ProductInfo(param: param) {
         window.Kakao.init(process.env.REACT_APP_KAKAO_JS_API_KEY);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (!data || isLoading) return <ProductInfoFallback />;

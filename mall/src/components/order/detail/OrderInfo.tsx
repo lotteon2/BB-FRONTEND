@@ -4,9 +4,6 @@ import {
   orderInfoForStore,
   productRead,
 } from "../../../recoil/common/interfaces";
-import { useQuery } from "react-query";
-import { getDeliveryDetail } from "../../../apis/order";
-import Loading from "../../common/Loading";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ReviewRegisterModal from "../modal/ReviewRegisterModal";
@@ -46,6 +43,8 @@ export default function OrderInfo(param: param) {
     setIsModalOpen(true);
   };
   const data = orderDeliveryDetailData;
+
+  console.log(isChange);
   //   if (!data || isLoading) return <Loading />;
   return (
     <div>

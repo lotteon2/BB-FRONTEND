@@ -1,10 +1,9 @@
 import { useEffect } from "react";
-import { Outlet, useLocation } from "react-router";
+import { Outlet } from "react-router";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import HistoryIcon from "@mui/icons-material/History";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
@@ -66,6 +65,7 @@ export default function MainLayout() {
 
   useEffect(() => {
     isMall ? navigate("/") : navigate("/pickup");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMall]);
 
   return (

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { getMyWishList, getMyWishStoreList } from "../../../../apis/member";
-import { storeWishListData } from "../../../../mocks/mypage";
+import { getMyWishStoreList } from "../../../../apis/member";
 import { myWishStoreItemDto } from "../../../../recoil/common/interfaces";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";

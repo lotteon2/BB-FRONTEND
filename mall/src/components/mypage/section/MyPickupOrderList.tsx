@@ -1,7 +1,5 @@
 import { Pagination, PaginationProps, Tag } from "antd";
 import { useState } from "react";
-import { useQuery } from "react-query";
-import { getMyPickupOrderList } from "../../../apis/member";
 import Table, { ColumnsType } from "antd/es/table";
 import { pickupOrderItemDto } from "../../../recoil/common/interfaces";
 import { myPickupOrderListData } from "../../../mocks/mypage";

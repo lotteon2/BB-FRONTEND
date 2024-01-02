@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import SquareFallback from "../../fallbacks/SquareFallback";
 interface param {
   productDescription: string;

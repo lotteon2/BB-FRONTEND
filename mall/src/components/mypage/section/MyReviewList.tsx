@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Empty, Pagination, PaginationProps, Rate } from "antd";
-import { myReviewListData } from "../../../mocks/mypage";
 import { myReviewItemDto } from "../../../recoil/common/interfaces";
 import MyReviewModal from "../modal/MyReviewModal";
 import { useQuery } from "react-query";

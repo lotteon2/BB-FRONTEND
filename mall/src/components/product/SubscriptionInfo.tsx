@@ -132,6 +132,7 @@ export default function SubscriptionInfo(param: param) {
       objectType: "feed",
       content: {
         title: data.data.productName,
+        describe: "소중한 마음, 향기에 담아 전해보세요",
         imageUrl: data.data.productThumbnail,
         link: {
           webUrl: `https://localhost:3000/subscription/product/detail/${data.data.storeId}`,
@@ -161,6 +162,7 @@ export default function SubscriptionInfo(param: param) {
         window.Kakao.init(process.env.REACT_APP_KAKAO_JS_API_KEY);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (!data || isLoading) return <ProductInfoFallback />;

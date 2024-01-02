@@ -1,9 +1,6 @@
-import { useQuery } from "react-query";
 import { myGiftCardList } from "../../../mocks/giftcard";
 import { myCardListItemDto } from "../../../recoil/common/interfaces";
-import { getMyGiftCardList } from "../../../apis/giftcard";
 import { useState } from "react";
-import Loading from "../../common/Loading";
 import { useNavigate } from "react-router-dom";
 import { Pagination, PaginationProps } from "antd";
 

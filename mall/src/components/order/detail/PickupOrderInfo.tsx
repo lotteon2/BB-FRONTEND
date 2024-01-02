@@ -1,7 +1,4 @@
 import { useState } from "react";
-import { useQuery } from "react-query";
-import { getPickupDetail } from "../../../apis/order";
-import Loading from "../../common/Loading";
 import { pickupOrderDetailData } from "../../../mocks/order";
 import { Button, Form, Input, Modal, Tag } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -38,6 +35,7 @@ export default function PickupOrderInfo(param: param) {
     if (status === "ABLE") navigate("/giftcard/pickup/" + param.id);
   };
 
+  console.log(isChange);
   // if (!data || isLoading) return <Loading />
   return (
     <div>

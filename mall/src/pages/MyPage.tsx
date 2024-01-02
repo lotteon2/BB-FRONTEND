@@ -61,6 +61,7 @@ export default function MyPage() {
       : sidebar === 2
       ? setSelected("최근상품")
       : setSelected("주문/배송");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sidebar]);
 
   useEffect(() => {
@@ -71,6 +72,7 @@ export default function MyPage() {
       productWishMutation.mutate();
       storeWishMutation.mutate();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

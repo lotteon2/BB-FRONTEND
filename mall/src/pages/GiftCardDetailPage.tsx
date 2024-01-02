@@ -1,7 +1,4 @@
-import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import { getGiftCardDetail } from "../apis/giftcard";
-import Loading from "../components/common/Loading";
 import { cardDetail } from "../mocks/giftcard";
 import ShareIcon from "@mui/icons-material/Share";
 import { useEffect } from "react";

@@ -1,8 +1,5 @@
 import { Button, Form, Input, Modal } from "antd";
 import { subscriptionOrderDetailData } from "../../../mocks/order";
-import { useQuery } from "react-query";
-import { getSubscriptionDetail } from "../../../apis/order";
-import Loading from "../../common/Loading";
 import { useState } from "react";
 import ReviewRegisterModal from "../modal/ReviewRegisterModal";
 
@@ -33,6 +30,7 @@ export default function SubscriptionOrderInfo(param: param) {
     setIsModalOpen(true);
   };
 
+  console.log(isChange);
   // if (!data || isLoading) return <Loading />
 
   return (

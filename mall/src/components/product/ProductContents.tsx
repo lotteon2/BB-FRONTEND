@@ -42,6 +42,7 @@ export default function ProductContents(param: param) {
     return () => {
       window.removeEventListener("scroll", yScrollEvent);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [detailRef.current, reviewRef.current, questionRef.current, param]);
 
   return (

@@ -1,16 +1,12 @@
 import { useState } from "react";
-import { useMutation, useQuery } from "react-query";
-import {
-  cancelSubscription,
-  getMySubscriptionList,
-} from "../../../apis/member";
+import { useMutation } from "react-query";
+import { cancelSubscription } from "../../../apis/member";
 import { mySubscriptionsData } from "../../../mocks/mypage";
 import { mySubscriptionItemDto } from "../../../recoil/common/interfaces";
 import { Button, Empty } from "antd";
 import { SuccessToast } from "../../common/toast/SuccessToast";
 import { FailToast } from "../../common/toast/FailToast";
 import Swal from "sweetalert2";
-import MypageDivFallback from "../../fallbacks/MypageDivFallback";
 import { useNavigate } from "react-router-dom";
 
 export default function MySubscription() {
@@ -61,6 +57,7 @@ export default function MySubscription() {
     }
   );
 
+  console.log(isChange);
   // if (!data || isLoading) return <MypageDivFallback />;
 
   const data = mySubscriptionsData;

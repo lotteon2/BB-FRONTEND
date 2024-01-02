@@ -143,12 +143,14 @@ export default function SubscriptionOrderDetail() {
   const clickPayButton = useCallback(() => {
     ButtonRef.current?.click();
     handleOrder();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [form] = Form.useForm();
   useEffect(() => {
     console.log("CHANGE");
     form.setFieldsValue(order);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, order]);
 
   return (

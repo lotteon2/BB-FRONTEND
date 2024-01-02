@@ -1,7 +1,4 @@
 import { useState } from "react";
-import { useQuery } from "react-query";
-import { getRecentDeliveryAddress } from "../../../apis/delivery";
-import Loading from "../../common/Loading";
 import { deliveryAddressData } from "../../../mocks/order";
 import {
   deliveryAddressDto,

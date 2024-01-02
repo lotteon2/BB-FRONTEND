@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import ReactQuill from "react-quill";
 import { recommandDto } from "../../recoil/common/interfaces";
 import { useQuery } from "react-query";
@@ -32,6 +32,7 @@ export default function GiftCardContent(param: param) {
     if (!data) {
       param.setValue(data);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (!data || isLoading) return <Loading />;

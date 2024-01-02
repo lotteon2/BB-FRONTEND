@@ -10,7 +10,7 @@ export default function PickupPage() {
     <div>
       <Banner />
       <PickupNearby />
-      {/* <BestShop /> */}
+      <BestShop />
       <img src={Ad02} alt="" className="py-5" />
       <PickupRegion />
       <img src={Ad01} alt="" className="pb-5 pt-20" />

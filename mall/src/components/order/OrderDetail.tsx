@@ -130,6 +130,7 @@ export default function OrderDetail() {
     if (value.length < 11) {
       return Promise.reject(new Error("정확한 핸드폰번호를 입력해주세요."));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const rightRoadName = useCallback((_: any, value: string) => {
@@ -141,12 +142,14 @@ export default function OrderDetail() {
   const clickPayButton = useCallback(() => {
     ButtonRef.current?.click();
     handleOrder();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue(order);
   }, [form, order]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   return (
     <div>

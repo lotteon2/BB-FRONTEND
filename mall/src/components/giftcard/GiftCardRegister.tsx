@@ -1,4 +1,4 @@
-import { Button, Input, Modal } from "antd";
+import { Button } from "antd";
 import {
   cardRegisterDto,
   cardTemplateListDto,
@@ -8,10 +8,9 @@ import { useMemo, useState } from "react";
 import ReactQuill from "react-quill";
 import "../../css/quill.snow.css";
 import { useMutation } from "react-query";
-import { getRecommandLetter, registerGiftCard } from "../../apis/giftcard";
+import { registerGiftCard } from "../../apis/giftcard";
 import { FailToast } from "../common/toast/FailToast";
 import GiftCardContent from "./GiftCardContent";
-import { SuccessToast } from "../common/toast/SuccessToast";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useRecoilValue } from "recoil";

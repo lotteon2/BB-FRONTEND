@@ -21,7 +21,6 @@ import {
 import { pickupTime } from "../../recoil/common/data";
 import { pickupOrderState } from "../../recoil/atom/order";
 import dayjs from "dayjs";
-import { productDetailData } from "../../mocks/product";
 import { getMyPhoneNumber } from "../../apis/member";
 import { FailToast } from "../common/toast/FailToast";
 import { SuccessToast } from "../common/toast/SuccessToast";
@@ -216,6 +215,7 @@ export default function PickupProductInfo(param: param) {
       objectType: "feed",
       content: {
         title: data.data.productName,
+        describe: "소중한 마음, 향기에 담아 전해보세요",
         imageUrl: data.data.productThumbnail,
         link: {
           webUrl: `https://localhost:3000/pickup/product/detail/${data.data.productId}`,
@@ -245,6 +245,7 @@ export default function PickupProductInfo(param: param) {
         window.Kakao.init(process.env.REACT_APP_KAKAO_JS_API_KEY);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (!data || isLoading) return <ProductInfoFallback />;

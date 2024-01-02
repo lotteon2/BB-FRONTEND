@@ -123,6 +123,7 @@ export default function CartDetail() {
       setSelectedProducts(filtered);
 
       for (let i = 0; i < filtered.length; i++) {
+        // eslint-disable-next-line
         productInfo.forEach((item: productInfoDto) => {
           if (filtered[i] === item.productId) {
             selected++;
