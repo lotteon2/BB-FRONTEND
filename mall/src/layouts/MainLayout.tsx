@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Outlet } from "react-router";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
@@ -7,7 +6,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
-import { loginState, mallState, sideMenuState } from "../recoil/atom/common";
+import { loginState, sideMenuState } from "../recoil/atom/common";
 import { ConfigProvider } from "antd";
 import { useMutation } from "react-query";
 import { modifyStoreWishList, modifyWishList } from "../apis/member";
@@ -17,7 +16,7 @@ import { FailToast } from "../components/common/toast/FailToast";
 export default function MainLayout() {
   const navigate = useNavigate();
   const isLogin = useRecoilValue<boolean>(loginState);
-  const isMall = useRecoilValue<boolean>(mallState);
+  // const isMall = useRecoilValue<boolean>(mallState);
   const productWishList = useRecoilValue<string[]>(productWishState);
   const resetProductWishList = useResetRecoilState(productWishState);
   const storeWishList = useRecoilValue<number[]>(storeWishState);
@@ -63,10 +62,10 @@ export default function MainLayout() {
     }
   );
 
-  useEffect(() => {
-    isMall ? navigate("/") : navigate("/pickup");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMall]);
+  // useEffect(() => {
+  //   isMall ? navigate("/") : navigate("/pickup");
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <div className="font-regular">

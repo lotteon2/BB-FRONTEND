@@ -23,6 +23,7 @@ import { addToCart } from "../../apis/cart";
 import { FailToast } from "../common/toast/FailToast";
 import { SuccessToast } from "../common/toast/SuccessToast";
 import { getMyPhoneNumber } from "../../apis/member";
+import ProductImage from "./ProductImage";
 
 interface param {
   productId: string;
@@ -252,7 +253,7 @@ export default function ProductInfo(param: param) {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  }, []);
 
   if (!data || isLoading) return <ProductInfoFallback />;
 
@@ -297,15 +298,15 @@ export default function ProductInfo(param: param) {
             ))}
           </div>
         </div>
-        <img
+        <div
           className={
             data.data.productSaleStatus === "DISCONTINUED"
-              ? "w-full h-full contrast-50"
-              : "w-full h-full"
+              ? "w-full h-full contrast-50 relative"
+              : "w-full h-full relative"
           }
-          src={data.data.productThumbnail}
-          alt="상품 썸네일"
-        />
+        >
+          <ProductImage src={data.data.productThumbnail} alt="상품 썸네일" />
+        </div>
       </div>
       <div className="w-1/2 max-w-[800px] min-w-[370px]">
         <div className="flex flex-row gap-2">

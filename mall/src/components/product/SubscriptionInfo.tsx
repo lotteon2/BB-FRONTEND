@@ -16,6 +16,7 @@ import {
 } from "../../recoil/common/interfaces";
 import { getStoreDeliveryPolicy } from "../../apis/store";
 import { subscriptionOrderState } from "../../recoil/atom/order";
+import ProductImage from "./ProductImage";
 
 interface param {
   productId: string | undefined;
@@ -176,10 +177,15 @@ export default function SubscriptionInfo(param: param) {
         >
           {data.data.storeName}
         </p>
-        <img
-          src="https://f-mans.com/data/goods/1/2023/10/681_temp_16972473985275view.jpg"
-          alt=""
-        />
+        <div
+          className={
+            data.data.productSaleStatus === "DISCONTINUED"
+              ? "w-full h-full contrast-50 relative"
+              : "w-full h-full relative"
+          }
+        >
+          <ProductImage src={data.data.productThumbnail} alt="상품 썸네일" />
+        </div>
       </div>
       <div className="w-1/2 max-w-[800px] min-w-[370px]">
         <p className="text-[2.3rem] font-bold">{data.data.productName}</p>

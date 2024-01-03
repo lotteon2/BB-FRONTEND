@@ -24,6 +24,7 @@ import dayjs from "dayjs";
 import { getMyPhoneNumber } from "../../apis/member";
 import { FailToast } from "../common/toast/FailToast";
 import { SuccessToast } from "../common/toast/SuccessToast";
+import ProductImage from "./ProductImage";
 
 interface param {
   productId: string | undefined;
@@ -291,15 +292,15 @@ export default function PickupProductInfo(param: param) {
             ))}
           </div>
         </div>
-        <img
+        <div
           className={
             data.data.productSaleStatus === "DISCONTINUED"
-              ? "w-full h-full contrast-50"
-              : "w-full h-full"
+              ? "w-full h-full contrast-50 relative"
+              : "w-full h-full relative"
           }
-          src={data.data.productThumbnail}
-          alt=""
-        />
+        >
+          <ProductImage src={data.data.productThumbnail} alt="상품 썸네일" />
+        </div>
       </div>
       <div className="w-1/2 max-w-[800px] min-w-[370px]">
         <p className="text-[2.3rem] font-bold">{data.data.productName}</p>

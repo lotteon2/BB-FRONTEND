@@ -308,7 +308,7 @@ export const productDetailData = {
   data: {
     productId: "1",
     productName: "산토리니",
-    productSummary:
+    productDescription:
       "해외로 떠나고 싶은 마음을 담아 준비한 산토리니의 매력을 담은 꽃다발입니다.",
     productThumbnail:
       "https://f-mans.com/data/goods/1/2023/10/691_temp_16972478524606list1.jpg",
