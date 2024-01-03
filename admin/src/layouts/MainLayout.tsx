@@ -13,6 +13,7 @@ export default function MainLayout() {
     if (!isLogin) {
       navigate("/login");
     }
+    // eslint-disable-next-line
   }, []);
 
   return (

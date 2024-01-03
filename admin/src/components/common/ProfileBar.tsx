@@ -16,6 +16,7 @@ export default function ProfileBar() {
     onSuccess: () => {
       SuccessToast("로그아웃되었습니다.");
       resetLoginState();
+      localStorage.removeItem("accessToken");
       navigate("/login");
     },
     onError: () => {

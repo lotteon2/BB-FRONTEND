@@ -42,5 +42,26 @@ const axiosAuthApi = (baseURL: string | undefined) => {
   return instance;
 };
 
+const axiosImageApi = (baseURL: string | undefined) => {
+  const instance = axios.create({
+    baseURL,
+  });
+
+  instance.interceptors.request.use(
+    (config) => {
+      const access_token = localStorage.getItem("accessToken");
+      if (access_token) {
+        config.headers.Authorization = access_token;
+        config.headers["Content-Type"] = "image/*";
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+  return instance;
+};
+
 export const defaultInstance = axiosApi(BASE_URL);
 export const authInstance = axiosAuthApi(BASE_URL);

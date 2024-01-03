@@ -62,10 +62,8 @@ export default function StoreModifyModal(param: param) {
   };
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formData = new FormData();
     if (e.target.files !== null) {
-      formData.append("image", e.target.files[0]);
-      thumbnailMutation.mutate(formData);
+      thumbnailMutation.mutate(e.target.files[0].name);
     }
   };
 
@@ -126,7 +124,7 @@ export default function StoreModifyModal(param: param) {
 
   const thumbnailMutation = useMutation(
     ["imageUpload"],
-    (image: FormData) => getImageUrl(image),
+    (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
         setModifyValues((prev) => ({ ...prev, storeThumbnailImage: data }));

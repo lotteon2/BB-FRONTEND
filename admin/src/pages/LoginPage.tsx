@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, Form, Input } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { loginState } from "../recoil/atom/common";
 import { useNavigate } from "react-router";
 import { useMutation } from "react-query";

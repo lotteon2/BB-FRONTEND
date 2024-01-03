@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import { cardDetail } from "../mocks/giftcard";
 import ShareIcon from "@mui/icons-material/Share";
 import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 declare const window: typeof globalThis & {
   Kakao: any;
@@ -48,17 +50,18 @@ export default function GiftCardDetailPage() {
     if (!window.Kakao.isInitialized()) {
       window.Kakao.init(process.env.REACT_APP_KAKAO_JS_API_KEY);
     }
+    AOS.init();
   }, []);
 
   return (
     <div className="w-full h-full">
-      <div
-        className="flex justify-end cursor-pointer text-grayscale5 font-light"
-        onClick={shareKakao}
-      >
-        <ShareIcon /> <span>공유</span>
-      </div>
       <div className="w-[30vw] h-full min-w-[370px] m-auto relative mt-2">
+        <div
+          className="flex justify-end cursor-pointer text-grayscale5 font-light pb-5"
+          onClick={shareKakao}
+        >
+          <ShareIcon /> <span>공유</span>
+        </div>
         <img
           src={data.imageUrl}
           alt="카드 템플릿"
@@ -66,6 +69,8 @@ export default function GiftCardDetailPage() {
         />
         <div className="absolute w-full h-full z-20 top-0">
           <div
+            data-aos="fade-up"
+            data-aos-duration="2000"
             className="w-[23vw] h-[25vw] min-w-[300px] min-h-[400px] bg-grayscale1 z-20 m-auto mt-[6vw] rounded-lg drop-shadow-lg p-2 overflow-auto"
             dangerouslySetInnerHTML={{ __html: data.content }}
           ></div>

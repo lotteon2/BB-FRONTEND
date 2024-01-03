@@ -33,13 +33,12 @@ const axiosAuthApi = (baseURL: string | undefined) => {
     },
 
     async (error) => {
-      console.log(error.response);
       if (error.response.status === 401) {
         if (error.response.data.message === "Expired") {
           const originalRequest = error.response.config;
           const accessToken = localStorage.getItem("accessToken");
           // token refresh 요청
-          const data = await axios
+          await axios
             .post(`${process.env.REACT_APP_API_URL}/auth/refresh-token`, {
               role: error.response.data.role,
               id: error.response.data.id,

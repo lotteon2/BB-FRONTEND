@@ -60,9 +60,7 @@ export default function RegisterPage() {
   // 이미지 등록
   const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files !== null) {
-      const formData = new FormData();
-      formData.append("image", e.target.files[0]);
-      imageMutation.mutate(formData);
+      imageMutation.mutate(e.target.files[0].name);
     }
   };
 
@@ -192,7 +190,7 @@ export default function RegisterPage() {
 
   const imageMutation = useMutation(
     ["uploadImage"],
-    (image: FormData) => getImageUrl(image),
+    (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
         setBusinessNumberImage(data);

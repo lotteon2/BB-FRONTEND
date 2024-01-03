@@ -50,11 +50,10 @@ export default function SubscriptionRegisterModal(param: param) {
   ) => {
     const formData = new FormData();
     if (e.target.files !== null) {
-      formData.append("image", e.target.files[0]);
       if (type === "thumbnail") {
-        thumbnailMutation.mutate(formData);
+        thumbnailMutation.mutate(e.target.files[0].name);
       } else {
-        descriptionMutation.mutate(formData);
+        descriptionMutation.mutate(e.target.files[0].name);
       }
     }
   };
@@ -73,7 +72,7 @@ export default function SubscriptionRegisterModal(param: param) {
 
   const thumbnailMutation = useMutation(
     ["imageUpload"],
-    (image: FormData) => getImageUrl(image),
+    (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
         setRegisterValues((prev) => ({ ...prev, productThumbnail: data }));
@@ -86,7 +85,7 @@ export default function SubscriptionRegisterModal(param: param) {
 
   const descriptionMutation = useMutation(
     ["descriptionImageUpload"],
-    (image: FormData) => getImageUrl(image),
+    (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
         setRegisterValues((prev) => ({

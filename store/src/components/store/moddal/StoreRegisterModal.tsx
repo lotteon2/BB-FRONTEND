@@ -3,7 +3,7 @@ import { Button, Form, Input, InputNumber, Modal, Select } from "antd";
 import { storeInfoDto } from "../../../recoil/common/interfaces";
 import { PictureFilled } from "@ant-design/icons";
 import { useMutation } from "react-query";
-import { getImageUrl } from "../../../apis/image";
+import { getImageUrl, uploadImage } from "../../../apis/image";
 import { FailToast } from "../../common/toast/FailToast";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import { bankOptions } from "../../../recoil/common/options";
@@ -28,6 +28,7 @@ const { TextArea } = Input;
 export default function StoreRegisterModal(param: param) {
   const setStoreId = useSetRecoilState<number>(storeIdState);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [file, setFile] = useState<File>();
   const [isAddressModalOpen, setIsAddressModalOpen] = useState<boolean>(false);
   const [registerValues, setRegisterValues] = useState<storeInfoDto>({
     storeName: "",
@@ -71,10 +72,9 @@ export default function StoreRegisterModal(param: param) {
   };
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formData = new FormData();
     if (e.target.files !== null) {
-      formData.append("image", e.target.files[0]);
-      thumbnailMutation.mutate(formData);
+      setFile(e.target.files[0]);
+      thumbnailMutation.mutate(e.target.files[0].name);
     }
   };
 
@@ -135,14 +135,25 @@ export default function StoreRegisterModal(param: param) {
 
   const thumbnailMutation = useMutation(
     ["imageUpload"],
-    (image: FormData) => getImageUrl(image),
+    (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
-        setRegisterValues((prev) => ({ ...prev, storeThumbnailImage: data }));
+        console.log(data);
+        // uploadMutation.mutate(data);
+        // setRegisterValues((prev) => ({ ...prev, storeThumbnailImage: data }));
       },
       onError: () => {
         FailToast(null);
       },
+    }
+  );
+
+  const uploadMutation = useMutation(
+    ["upload"],
+    (url: string) => uploadImage(url, file),
+    {
+      onSuccess: () => {},
+      onError: () => {},
     }
   );
 

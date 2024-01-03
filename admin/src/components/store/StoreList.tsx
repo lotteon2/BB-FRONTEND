@@ -5,7 +5,6 @@ import { storeItemDto } from "../../recoil/common/interfaces";
 import { useQuery } from "react-query";
 import { getStoreList } from "../../apis/store";
 import WholeDiv from "../fallbacks/WholeDiv";
-import { storeListData } from "../../mocks/store";
 
 interface param {
   sido: number;

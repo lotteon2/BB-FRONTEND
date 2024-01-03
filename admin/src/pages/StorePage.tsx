@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Select } from "antd";
 import StoreList from "../components/store/StoreList";
 import { sidoOptions, sortOptions } from "../recoil/common/options";
@@ -9,7 +9,6 @@ import WholeDiv from "../components/fallbacks/WholeDiv";
 export default function StorePage() {
   const [sido, setSido] = useState<number>(11);
   const [gugun, setGugun] = useState<number>();
-  const [gugunList, setGugunList] = useState([]);
   const [sort, setSort] = useState<string>("DATE");
 
   const { data, isLoading } = useQuery({
