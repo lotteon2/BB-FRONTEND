@@ -43,13 +43,13 @@ jobs:
       - name: Upload to S3
         working-directory: ./mall
         env:
-          BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+          BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME_ADMIN }}
         run: |
           aws s3 sync \
             ./build s3://$BUCKET_NAME
 
       - name: CloudFront Invalidation
-        working-directory: ./mall
+        working-directory: ./admin
         env:
           CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUDFRONT_ID }}
         run: |
