@@ -26,11 +26,11 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: install npm dependencies
-        working-directory: ./mall
+        working-directory: ./admin
         run: npm install
 
       - name: react build
-        working-directory: ./mall
+        working-directory: ./admin
         run: npm run build
 
       - name: Configure AWS credentials
@@ -41,7 +41,7 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Upload to S3
-        working-directory: ./mall
+        working-directory: ./admin
         env:
           BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME_ADMIN }}
         run: |
