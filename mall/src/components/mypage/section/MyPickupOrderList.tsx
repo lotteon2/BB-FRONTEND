@@ -2,19 +2,19 @@ import { Pagination, PaginationProps, Tag } from "antd";
 import { useState } from "react";
 import Table, { ColumnsType } from "antd/es/table";
 import { pickupOrderItemDto } from "../../../recoil/common/interfaces";
-import { myPickupOrderListData } from "../../../mocks/mypage";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
+import { getMyPickupOrderList } from "../../../apis/member";
+import Loading from "../../common/Loading";
 
 export default function MyPickupOrderList() {
   const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
 
-  const data = myPickupOrderListData;
-
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ["getMyPickupOrderList", page],
-  //   queryFn: () => getMyPickupOrderList(page - 1, 10),
-  // });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getMyPickupOrderList", page],
+    queryFn: () => getMyPickupOrderList(page - 1, 10),
+  });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
@@ -98,12 +98,12 @@ export default function MyPickupOrderList() {
     },
   ];
 
-  //   if (!data || isLoading) return null;
+  if (!data || isLoading) return <Loading />;
 
   return (
     <div className="w-full mt-3">
       <Table
-        dataSource={data.data}
+        dataSource={data.data.data}
         columns={columns}
         pagination={false}
         style={{ minWidth: 1100 }}
@@ -118,7 +118,7 @@ export default function MyPickupOrderList() {
       <div className="w-full text-center mt-5">
         <Pagination
           defaultCurrent={page}
-          total={data.totalCnt}
+          total={data.data.totalCnt}
           defaultPageSize={10}
           onChange={handlePage}
         />

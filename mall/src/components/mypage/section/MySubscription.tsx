@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { useMutation } from "react-query";
-import { cancelSubscription } from "../../../apis/member";
+import { useMutation, useQuery } from "react-query";
+import {
+  cancelSubscription,
+  getMySubscriptionList,
+} from "../../../apis/member";
 import { mySubscriptionsData } from "../../../mocks/mypage";
 import { mySubscriptionItemDto } from "../../../recoil/common/interfaces";
 import { Button, Empty } from "antd";
@@ -8,15 +11,16 @@ import { SuccessToast } from "../../common/toast/SuccessToast";
 import { FailToast } from "../../common/toast/FailToast";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import MypageDivFallback from "../../fallbacks/MypageDivFallback";
 
 export default function MySubscription() {
   const navigate = useNavigate();
   const [isChange, setIsChange] = useState<boolean>(false);
 
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ["getMySubscriptionList", isChange],
-  //   queryFn: () => getMySubscriptionList(),
-  // });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getMySubscriptionList", isChange],
+    queryFn: () => getMySubscriptionList(),
+  });
 
   const handleCancel = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
@@ -57,18 +61,15 @@ export default function MySubscription() {
     }
   );
 
-  console.log(isChange);
-  // if (!data || isLoading) return <MypageDivFallback />;
-
-  const data = mySubscriptionsData;
+  if (!data || isLoading) return <MypageDivFallback />;
 
   return (
     <div>
-      {data.data.length === 0 ? (
-        <Empty description="구독중인 상품이 없습니다." />
+      {data.data.data.length === 0 ? (
+        <Empty description="구독중인 상품이 없습니다." className="my-10" />
       ) : (
         <div className="flex flex-row gap-5 flex-wrap justify-center mt-3">
-          {data.data.map((item: mySubscriptionItemDto) => (
+          {data.data.data.map((item: mySubscriptionItemDto) => (
             <div
               className="w-[370px] shadow-lg rounded-lg p-2 gap-3 cursor-pointer hover:shadow-none hover:border-2 hover:border-primary3"
               key={item.subscriptionId}

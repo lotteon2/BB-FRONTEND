@@ -34,7 +34,7 @@ export default function MainLayout() {
       <div className="w-[1620px] relative">
         <ProfileBar />
         <div className="absolute top-13 right-5 z-20">
-          <Notification />
+          {/* <Notification /> */}
         </div>
         {storeId === null ? (
           <div className="pt-80">

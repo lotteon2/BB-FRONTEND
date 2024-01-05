@@ -2,27 +2,18 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import SubscriptionInfo from "../../components/product/SubscriptionInfo";
 import ProductContents from "../../components/product/ProductContents";
+import NotFound from "../../components/common/NotFound";
 
 export default function SubscriptionDetailPage() {
   const param = useParams().productId;
-  const [productDescription, setProductDescription] = useState<string>("");
   const [productName, setProductName] = useState<string>("");
-  const [storeId, setStoreId] = useState<number>(0);
+
+  if (!param) return <NotFound />;
 
   return (
     <div>
-      <SubscriptionInfo
-        productId={param}
-        setProductDescription={setProductDescription}
-        setProductName={setProductName}
-        setStoreId={setStoreId}
-      />
-      <ProductContents
-        productId={param}
-        productDescription={productDescription}
-        productName={productName}
-        storeId={storeId}
-      />
+      <SubscriptionInfo productId={param} setProductName={setProductName} />
+      <ProductContents productId={param} productName={productName} />
     </div>
   );
 }

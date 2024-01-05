@@ -21,6 +21,7 @@ export default function OrderDetail() {
   const [isRecentDeliveryOpen, setIsRecentDeliveryOpen] =
     useState<boolean>(false);
 
+  console.log(order);
   const email_pattern =
     /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+.[a-zA-Z]+$/i;
   const blank_pattern = "/^s+|s+$/g";
@@ -169,14 +170,14 @@ export default function OrderDetail() {
               </div>
               <div className="p-2">
                 <p className="text-[1.2rem] font-bold">
-                  {order.products.productName}
+                  {order.products[0].productName}
                 </p>
                 <div className="h-full flex flex-row justify-between flex-wrap align-center">
                   <div className="flex flex-row gap-2">
                     <div className="w-[150px] h-[150px]">
                       <img
                         className="w-full h-full"
-                        src={order.products.productThumbnailImage}
+                        src={order.products[0].productThumbnailImage}
                         alt="상품 이미지"
                       />
                     </div>
@@ -186,7 +187,7 @@ export default function OrderDetail() {
                           수량
                         </span>
                         <span className="mt-1">
-                          {order.products.quantity.toLocaleString()}개
+                          {order.products[0].quantity.toLocaleString()}개
                         </span>
                       </div>
                     </div>

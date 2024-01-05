@@ -20,9 +20,7 @@ import ProductImage from "./ProductImage";
 
 interface param {
   productId: string | undefined;
-  setProductDescription: (image: string) => void;
   setProductName: (name: string) => void;
-  setStoreId: (id: number) => void;
 }
 
 declare const window: typeof globalThis & {
@@ -122,7 +120,7 @@ export default function SubscriptionInfo(param: param) {
     (storeId: number) => getStoreDeliveryPolicy(storeId),
     {
       onSuccess: (data) => {
-        setDeliveryPolicy(data);
+        setDeliveryPolicy(data.data);
       },
       onError: () => {},
     }
@@ -154,9 +152,7 @@ export default function SubscriptionInfo(param: param) {
 
   useEffect(() => {
     if (data) {
-      param.setProductDescription(data.data.productDetailImage);
       param.setProductName(data.data.productName);
-      param.setStoreId(data.data.storeId);
       getPolilcyMutation.mutate(data.data.storeId);
 
       if (!window.Kakao.isInitialized()) {
@@ -188,7 +184,7 @@ export default function SubscriptionInfo(param: param) {
         </div>
       </div>
       <div className="w-1/2 max-w-[800px] min-w-[370px]">
-        <p className="text-[2.3rem] font-bold">{data.data.productName}</p>
+        <p className="text-[2.3rem] font-bold mt-3">{data.data.productName}</p>
         <p className="text-[1rem] text-grayscale5 font-thin">
           {data.data.productSummary}
         </p>

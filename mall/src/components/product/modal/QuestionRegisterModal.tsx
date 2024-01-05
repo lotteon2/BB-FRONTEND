@@ -76,6 +76,7 @@ export default function QuestionRegisterModal(param: param) {
         </Checkbox>
       </div>
       <Form
+        form={form}
         name="questionRegisterForm"
         style={{ maxWidth: 600, width: "100%" }}
         autoComplete="off"

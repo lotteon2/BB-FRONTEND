@@ -69,7 +69,7 @@ export const getMyQuestionsList = async (
 
 // 마이페이지 구독 조회
 export const getMySubscriptionList = async () => {
-  const { data } = await authInstance.get("/stores/store-subscriptions");
+  const { data } = await authInstance.get("/orderquery/store-subscriptions");
   return data;
 };
 
@@ -104,7 +104,7 @@ export const getMyOrderList = async (
   sort: string
 ) => {
   const { data } = await authInstance.get(
-    "/orders/delivery?page=" + page + "&sort=" + sort + "&size=" + size
+    "/orders/delivery?page=" + page + "&status=" + sort + "&size=" + size
   );
   return data;
 };
@@ -112,7 +112,7 @@ export const getMyOrderList = async (
 // 픽업 주문 목록 조히
 export const getMyPickupOrderList = async (page: number, size: number) => {
   const { data } = await authInstance.get(
-    "/stores/reservations?page=" + page + "&size=" + size
+    "/orderquery/reservations?page=" + page + "&size=" + size
   );
   return data;
 };

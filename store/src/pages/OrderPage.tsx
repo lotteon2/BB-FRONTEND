@@ -4,7 +4,7 @@ import { deliveryStatusOptions } from "../recoil/common/options";
 import OrderTable from "../components/order/OrderTable";
 import { QuestionCircleFilled } from "@ant-design/icons";
 export default function OrderPage() {
-  const [orderState, setOrderState] = useState<string | undefined>();
+  const [orderState, setOrderState] = useState<string>("PENDING");
   const handleOrderState = (value: string) => {
     setOrderState(value);
   };

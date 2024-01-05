@@ -2,27 +2,18 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import ProductContents from "../../components/product/ProductContents";
 import PickupProductInfo from "../../components/product/PickupProductInfo";
+import NotFound from "../../components/common/NotFound";
 
 export default function PickupProductDetailPage() {
   const param = useParams().productId;
-  const [productDescription, setProductDescription] = useState<string>("");
   const [productName, setProductName] = useState<string>("");
-  const [storeId, setStoreId] = useState<number>(0);
+
+  if (!param) return <NotFound />;
 
   return (
     <div className="w-full h-full">
-      <PickupProductInfo
-        productId={param}
-        setProductDescription={setProductDescription}
-        setProductName={setProductName}
-        setStoreId={setStoreId}
-      />
-      <ProductContents
-        productId={param}
-        productDescription={productDescription}
-        productName={productName}
-        storeId={storeId}
-      />
+      <PickupProductInfo productId={param} setProductName={setProductName} />
+      <ProductContents productId={param} productName={productName} />
     </div>
   );
 }

@@ -2,20 +2,20 @@ import { Pagination, PaginationProps, Select, Tag } from "antd";
 import { useState } from "react";
 import Table, { ColumnsType } from "antd/es/table";
 import { orderDeliveryGroupInfo } from "../../../recoil/common/interfaces";
-import { myOrderListData } from "../../../mocks/mypage";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
+import { getMyOrderList } from "../../../apis/member";
+import Loading from "../../common/Loading";
 
 export default function MyOrderList() {
   const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
   const [sort, setSort] = useState<string>("PENDING");
 
-  const data = myOrderListData;
-
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getMyOrderList", page, sort],
-  //     queryFn: () => getMyOrderList(page - 1, 10, sort),
-  //   });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getMyOrderList", page, sort],
+    queryFn: () => getMyOrderList(page - 1, 10, sort),
+  });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
@@ -107,7 +107,7 @@ export default function MyOrderList() {
     },
   ];
 
-  //   if (!data || isLoading) return null;
+  if (!data || isLoading) return <Loading />;
 
   return (
     <div className="w-full mt-3">
@@ -134,7 +134,7 @@ export default function MyOrderList() {
         />
       </div>
       <Table
-        dataSource={data.orders}
+        dataSource={data.data.orders}
         columns={columns}
         pagination={false}
         style={{ minWidth: 1100 }}
@@ -149,7 +149,7 @@ export default function MyOrderList() {
       <div className="w-full text-center mt-5">
         <Pagination
           defaultCurrent={page}
-          total={data.totalCnt}
+          total={data.data.totalCnt}
           defaultPageSize={10}
           onChange={handlePage}
         />

@@ -39,7 +39,11 @@ export default function StoreInfo() {
       </Button>
       <div className="flex flex-row gap-3 mt-2">
         <div className="w-[200px] h-[200px]">
-          <img src={data.data.storeThumbnailImage} alt="가게 썸네일 이미지" />
+          <img
+            src={data.data.storeThumbnailImage}
+            alt="가게 썸네일 이미지"
+            className="w-full h-full"
+          />
         </div>
         <div className="flex flex-col gap-3 text-[1rem]">
           <p className="text-[1.8rem] font-bold">{data.data.storeName}</p>

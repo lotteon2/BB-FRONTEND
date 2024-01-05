@@ -31,7 +31,7 @@ export default function CartOrderDetail() {
   const [totalDeliveryCost, setTotalDeliveryCost] = useState<number>(0);
   const [totalActualAmount, setTotalActualAmount] = useState<number>(0);
   const [totalCouponAmount, setTotalCouponAmount] = useState<number>(0);
-
+  console.log(orderInfo);
   const email_pattern =
     /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+.[a-zA-Z]+$/i;
   const blank_pattern = "/^s+|s+$/g";

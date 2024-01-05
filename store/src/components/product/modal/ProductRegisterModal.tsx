@@ -5,7 +5,7 @@ import TextArea from "antd/es/input/TextArea";
 import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
 import { storeIdState } from "../../../recoil/atom/common";
-import { getImageUrl } from "../../../apis/image";
+import { getImageUrl, uploadS3Server } from "../../../apis/image";
 import { FailToast } from "../../common/toast/FailToast";
 import { SuccessToast } from "../../common/toast/SuccessToast";
 import { registerProduct } from "../../../apis/product";
@@ -26,6 +26,9 @@ export default function ProductRegisterModal(param: param) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [extraFlowers, setExtraFlowers] = useState<number[]>([]);
   const [extraFlowersCnt, setExtraFlowersCnt] = useState<number[]>([]);
+  const [url, setUrl] = useState<string>("");
+  const [file, setFile] = useState<File>();
+  const [type, setType] = useState<string>();
   const [representativeFlower, setRepresentativeFlower] = useState<
     number | undefined
   >();
@@ -36,8 +39,9 @@ export default function ProductRegisterModal(param: param) {
     productName: "",
     productSummary: "",
     productDescriptionImage:
-      "https://f-mans.com//data/products/wreath/WB00111/1.jpg",
-    productThumbnail: "https://f-mans.com//data/products/wreath/WB00111/2.jpg",
+      "https://f-mans.com/data/products/flower/basket/FB00100/3.jpg",
+    productThumbnail:
+      "https://f-mans.com/data/goods/1/2023/10/76_temp_16972586811289view.jpg",
     productPrice: null,
     categoryId: undefined,
     productTag: [],
@@ -76,16 +80,19 @@ export default function ProductRegisterModal(param: param) {
   };
 
   // 이미지 처리
-  const handleChangeFile = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    state: boolean
+  const handleImage = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: string
   ) => {
-    if (event.target.files !== null) {
-      const formData = new FormData();
-      formData.append("image", event.target.files[0]);
-      state
-        ? imageMutation.mutate(formData)
-        : descriptionImageMutation.mutate(formData);
+    if (e.target.files !== null) {
+      setFile(e.target.files[0]);
+      if (type === "thumbnail") {
+        setType("thumbnail");
+        thumbnailMutation.mutate(e.target.files[0].name);
+      } else {
+        setType("description");
+        descriptionMutation.mutate(e.target.files[0].name);
+      }
     }
   };
 
@@ -93,10 +100,8 @@ export default function ProductRegisterModal(param: param) {
     const values = {
       productName: "",
       productSummary: "",
-      productDescriptionImage:
-        "https://f-mans.com//data/products/flower/basket/FB00180/2.jpg",
-      productThumbnail:
-        "https://f-mans.com//data/products/flower/basket/FB00180/1.jpg",
+      productDescriptionImage: "",
+      productThumbnail: "",
       productPrice: null,
       categoryId: undefined,
       productTag: [],
@@ -137,33 +142,28 @@ export default function ProductRegisterModal(param: param) {
     flowersCnt.splice(name, 1);
   };
 
-  // 이미지 등록 API 처리
-  const imageMutation = useMutation(
+  const thumbnailMutation = useMutation(
     ["imageUpload"],
-    (image: any) => getImageUrl(image),
+    (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
-        setDefaultValues((prev) => ({ ...prev, productThumbnail: data }));
+        setUrl(data.data.presignedUrl);
       },
       onError: () => {
-        FailToast("이미지 업로드 실패");
+        FailToast(null);
       },
     }
   );
 
-  // 이미지 등록 API 처리
-  const descriptionImageMutation = useMutation(
+  const descriptionMutation = useMutation(
     ["descriptionImageUpload"],
-    (image: any) => getImageUrl(image),
+    (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
-        setDefaultValues((prev) => ({
-          ...prev,
-          productDescriptionImage: data,
-        }));
+        setUrl(data.data.presignedUrl);
       },
       onError: () => {
-        FailToast("이미지 업로드 실패");
+        FailToast(null);
       },
     }
   );
@@ -183,6 +183,29 @@ export default function ProductRegisterModal(param: param) {
     }
   );
 
+  const uploadMutation = useMutation(
+    ["uploadS3"],
+    (url: string) => uploadS3Server(url, file, file?.type),
+    {
+      onSuccess: () => {
+        if (type === "thumbnail") {
+          setDefaultValues((prev) => ({
+            ...prev,
+            productThumbnail: url.split("?")[0],
+          }));
+        } else {
+          setDefaultValues((prev) => ({
+            ...prev,
+            productDescriptionImage: url.split("?")[0],
+          }));
+        }
+      },
+      onError: () => {
+        FailToast("");
+      },
+    }
+  );
+
   const uploadImgBtn = useCallback(() => {
     inputRef.current?.click();
   }, []);
@@ -191,6 +214,12 @@ export default function ProductRegisterModal(param: param) {
   useEffect(() => {
     form.setFieldsValue(defaultValues);
   }, [form, defaultValues]);
+
+  useEffect(() => {
+    if (url !== "") {
+      uploadMutation.mutate(url);
+    }
+  }, [url]);
 
   return (
     <Modal
@@ -224,7 +253,7 @@ export default function ProductRegisterModal(param: param) {
                   ref={inputRef}
                   id="imgFile"
                   onChange={(e) => {
-                    handleChangeFile(e, true);
+                    handleImage(e, "thumbnail");
                   }}
                   style={{ display: "none" }}
                 />
@@ -456,7 +485,7 @@ export default function ProductRegisterModal(param: param) {
                       type="file"
                       accept="image/*"
                       onChange={(e) => {
-                        handleChangeFile(e, false);
+                        handleImage(e, "description");
                       }}
                     />
                   </div>

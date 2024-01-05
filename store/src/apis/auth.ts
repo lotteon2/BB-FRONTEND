@@ -12,7 +12,6 @@ export const signin = async (signinDto: signinDto) => {
 
 // 회원가입
 export const signup = async (signupDto: signupDto) => {
-  console.log(signupDto);
   const { data } = await defaultInstance.post("/auth/stores/signup", signupDto);
   return data;
 };

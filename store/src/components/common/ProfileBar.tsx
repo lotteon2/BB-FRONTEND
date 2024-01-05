@@ -53,7 +53,7 @@ export default function ProfileBar() {
   );
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
-    if (accessToken && storeId !== null) notiCountMutate.mutate();
+    // if (accessToken && storeId !== null) notiCountMutate.mutate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin, notiEvent, isNotiShow, storeId]);
 
@@ -64,9 +64,9 @@ export default function ProfileBar() {
         <button
         // onClick={() => setIsNotiShow((cur) => !cur)}
         >
-          <Badge badgeContent={0} color="warning">
+          {/* <Badge badgeContent={0} color="warning">
             <NotificationsIcon fontSize="medium" />
-          </Badge>
+          </Badge> */}
         </button>
         <button className="ml-10" onClick={() => logoutMutation.mutate()}>
           로그아웃

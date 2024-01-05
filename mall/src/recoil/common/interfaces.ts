@@ -141,7 +141,7 @@ export interface pickupOrderDto {
 export interface orderDto {
   storeId: number;
   storeName: string;
-  products: productCreate; // 1개 상품만 담김
+  products: productCreate[]; // 1개 상품만 담김
   totalAmount: number; // 총 상품금액
   deliveryCost: number; // 총 배송비
   couponId: number;

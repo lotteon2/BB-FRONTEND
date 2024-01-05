@@ -17,7 +17,7 @@ export default function BestProduct() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["getMainProductList", isLogin],
-    queryFn: () => getMainProductList("rating"),
+    queryFn: () => getMainProductList("rating", isLogin),
   });
 
   const handleWishButton = (e: React.MouseEvent, productId: string) => {

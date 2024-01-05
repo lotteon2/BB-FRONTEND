@@ -16,7 +16,6 @@ import { FailToast } from "../components/common/toast/FailToast";
 export default function MainLayout() {
   const navigate = useNavigate();
   const isLogin = useRecoilValue<boolean>(loginState);
-  // const isMall = useRecoilValue<boolean>(mallState);
   const productWishList = useRecoilValue<string[]>(productWishState);
   const resetProductWishList = useResetRecoilState(productWishState);
   const storeWishList = useRecoilValue<number[]>(storeWishState);
@@ -26,9 +25,15 @@ export default function MainLayout() {
   const handleWishList = () => {
     if (productWishList.length !== 0) {
       productWishMutation.mutate();
+    } else {
+      navigate("/mypage");
+      setSideMenuState(1);
     }
     if (storeWishList.length !== 0) {
       storeWishMutation.mutate();
+    } else {
+      navigate("/mypage");
+      setSideMenuState(1);
     }
   };
 
@@ -61,11 +66,6 @@ export default function MainLayout() {
       },
     }
   );
-
-  // useEffect(() => {
-  //   isMall ? navigate("/") : navigate("/pickup");
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   return (
     <div className="font-regular">

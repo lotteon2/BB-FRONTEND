@@ -3,7 +3,7 @@ import { PictureFilled } from "@ant-design/icons";
 import { Button, Form, Input, InputNumber, Modal } from "antd";
 import { subscriptionRegisterDto } from "../../../recoil/common/interfaces";
 import { useMutation } from "react-query";
-import { getImageUrl } from "../../../apis/image";
+import { getImageUrl, uploadS3Server } from "../../../apis/image";
 import { FailToast } from "../../common/toast/FailToast";
 import { registerSubscriptionInfo } from "../../../apis/store";
 import { useRecoilValue } from "recoil";
@@ -18,15 +18,16 @@ interface param {
 export default function SubscriptionRegisterModal(param: param) {
   const storeId = useRecoilValue<number>(storeIdState);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [url, setUrl] = useState<string>("");
+  const [file, setFile] = useState<File>();
+  const [type, setType] = useState<string>();
   const [registerValues, setRegisterValues] = useState<subscriptionRegisterDto>(
     {
       productName: "",
       productSummary: "",
       productPrice: null,
-      productDescriptionImage:
-        "https://f-mans.com//data/products/flower/basket/FB00001/new/detail_title02.jpg",
-      productThumbnail:
-        "https://f-mans.com//data/products/flower/basket/FB00001/new/detail_title01.jpg",
+      productDescriptionImage: "",
+      productThumbnail: "",
     }
   );
 
@@ -35,10 +36,8 @@ export default function SubscriptionRegisterModal(param: param) {
       productName: "",
       productSummary: "",
       productPrice: null,
-      productDescriptionImage:
-        "https://f-mans.com//data/products/flower/basket/FB00001/new/detail_title02.jpg",
-      productThumbnail:
-        "https://f-mans.com//data/products/flower/basket/FB00001/new/detail_title01.jpg",
+      productDescriptionImage: "",
+      productThumbnail: "",
     });
 
     param.handleCancel();
@@ -48,11 +47,13 @@ export default function SubscriptionRegisterModal(param: param) {
     e: React.ChangeEvent<HTMLInputElement>,
     type: string
   ) => {
-    const formData = new FormData();
     if (e.target.files !== null) {
+      setFile(e.target.files[0]);
       if (type === "thumbnail") {
+        setType("thumbnail");
         thumbnailMutation.mutate(e.target.files[0].name);
       } else {
+        setType("description");
         descriptionMutation.mutate(e.target.files[0].name);
       }
     }
@@ -75,7 +76,7 @@ export default function SubscriptionRegisterModal(param: param) {
     (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
-        setRegisterValues((prev) => ({ ...prev, productThumbnail: data }));
+        setUrl(data.data.presignedUrl);
       },
       onError: () => {
         FailToast(null);
@@ -88,10 +89,7 @@ export default function SubscriptionRegisterModal(param: param) {
     (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
-        setRegisterValues((prev) => ({
-          ...prev,
-          productDescriptionImage: data,
-        }));
+        setUrl(data.data.presignedUrl);
       },
       onError: () => {
         FailToast(null);
@@ -114,6 +112,29 @@ export default function SubscriptionRegisterModal(param: param) {
     }
   );
 
+  const uploadMutation = useMutation(
+    ["uploadS3"],
+    (url: string) => uploadS3Server(url, file, file?.type),
+    {
+      onSuccess: () => {
+        if (type === "thumbnail") {
+          setRegisterValues((prev) => ({
+            ...prev,
+            productThumbnail: url.split("?")[0],
+          }));
+        } else {
+          setRegisterValues((prev) => ({
+            ...prev,
+            productDescriptionImage: url.split("?")[0],
+          }));
+        }
+      },
+      onError: () => {
+        FailToast("");
+      },
+    }
+  );
+
   const handleThumbnailImage = useCallback(() => {
     inputRef.current?.click();
   }, []);
@@ -122,6 +143,12 @@ export default function SubscriptionRegisterModal(param: param) {
   useEffect(() => {
     form.setFieldsValue(registerValues);
   }, [form, registerValues]);
+
+  useEffect(() => {
+    if (url !== "") {
+      uploadMutation.mutate(url);
+    }
+  }, [url]);
 
   return (
     <Modal

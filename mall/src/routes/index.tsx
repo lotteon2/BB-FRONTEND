@@ -45,7 +45,7 @@ const router = createBrowserRouter([
         element: <OrderDetailPage />,
       },
       {
-        path: "subscription/product/detail/:storeId",
+        path: "subscription/product/detail/:productId",
         element: <SubscriptionDetailPage />,
       },
       { path: "product/:categoryId", element: <ProductByCategoryPage /> },

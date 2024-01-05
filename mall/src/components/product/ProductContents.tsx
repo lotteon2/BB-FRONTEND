@@ -3,18 +3,23 @@ import ProductDescription from "./detail/ProductDescription";
 import ProductReview from "./detail/ProductReview";
 import ProductQuestion from "./detail/ProductQuestion";
 import { Link } from "react-scroll/modules";
+import { useQuery } from "react-query";
+import { getProductDetail } from "../../apis/product";
 
 interface param {
-  productId: string | undefined;
-  productDescription: string;
+  productId: string;
   productName: string;
-  storeId: number;
 }
 export default function ProductContents(param: param) {
   const [contenntIndex, setContentIndex] = useState<number>(0);
   const detailRef = useRef<HTMLDivElement | null>(null);
   const reviewRef = useRef<HTMLDivElement | null>(null);
   const questionRef = useRef<HTMLDivElement | null>(null);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["getProductDetailForQuestion", param.productId],
+    queryFn: () => getProductDetail(param.productId),
+  });
 
   const yScrollEvent = () => {
     const detailPosition = detailRef.current?.getBoundingClientRect().y;
@@ -44,6 +49,8 @@ export default function ProductContents(param: param) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [detailRef.current, reviewRef.current, questionRef.current, param]);
+
+  if (!data || isLoading) return null;
 
   return (
     <div className="w-full h-full mt-10">
@@ -84,7 +91,7 @@ export default function ProductContents(param: param) {
         id="detail"
         ref={detailRef}
       >
-        <ProductDescription productDescription={param.productDescription} />
+        <ProductDescription productId={param.productId} />
       </div>
       <div className="border-b-[1px]"></div>
       <div
@@ -103,7 +110,7 @@ export default function ProductContents(param: param) {
         <ProductQuestion
           productId={param.productId}
           productName={param.productName}
-          storeId={param.storeId}
+          storeId={data.data.storeId}
         />
       </div>
     </div>

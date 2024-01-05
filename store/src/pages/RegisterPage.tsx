@@ -13,7 +13,8 @@ import {
 import { SuccessToast } from "../components/common/toast/SuccessToast";
 import { FailToast } from "../components/common/toast/FailToast";
 import { signupDto } from "../recoil/common/interfaces";
-import { getImageUrl } from "../apis/image";
+import { getImageUrl, uploadS3Server } from "../apis/image";
+import axios from "axios";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -25,16 +26,15 @@ export default function RegisterPage() {
   const [isConfirm, setIsConfirm] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
-  const [businessNumberImage, setBusinessNumberImage] = useState<string>(
-    "https://f-mans.com/data/goods/1/2022/11/140_temp_16675233646624view.jpg"
-  );
+  const [image, setImage] = useState<File>();
+  const [url, setUrl] = useState<string>("");
+  const [businessNumberImage, setBusinessNumberImage] = useState<string>("");
   const defaultValues = {
     email: "",
     emailCode: "",
     password: "",
     name: "",
-    businessNumberImage:
-      "https://f-mans.com/data/goods/1/2022/11/140_temp_16675233646624view.jpg",
+    businessNumberImage: "",
   };
   const email_pattern =
     /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+.[a-zA-Z]+$/i;
@@ -60,6 +60,7 @@ export default function RegisterPage() {
   // 이미지 등록
   const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files !== null) {
+      setImage(e.target.files[0]);
       imageMutation.mutate(e.target.files[0].name);
     }
   };
@@ -193,10 +194,23 @@ export default function RegisterPage() {
     (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
-        setBusinessNumberImage(data);
+        setUrl(data.data.presignedUrl);
       },
       onError: () => {
         FailToast(null);
+      },
+    }
+  );
+
+  const uploadMutation = useMutation(
+    ["uploadS3"],
+    (url: string) => uploadS3Server(url, image, image?.type),
+    {
+      onSuccess: () => {
+        setBusinessNumberImage(url.split("?")[0]);
+      },
+      onError: () => {
+        FailToast("");
       },
     }
   );
@@ -219,6 +233,12 @@ export default function RegisterPage() {
     if (isLogin) navigate("/");
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (url !== "") {
+      uploadMutation.mutate(url);
+    }
+  }, [url]);
 
   return (
     <div className="relative top-32 left-[550px] w-[800px] h-[600px] bg-grayscale1 shadow-lg z-10 rounded-lg">

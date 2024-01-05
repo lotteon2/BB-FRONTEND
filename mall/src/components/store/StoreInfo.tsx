@@ -105,7 +105,7 @@ export default function StoreInfo(param: param) {
               data.data.subscriptionProductId === ""
                 ? ""
                 : navigate(
-                    "/product/subscription/detail/" +
+                    "/subscription/product/detail/" +
                       data.data.subscriptionProductId
                   )
             }

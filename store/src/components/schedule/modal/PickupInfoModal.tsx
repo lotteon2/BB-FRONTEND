@@ -30,7 +30,7 @@ export default function SubscriptionInfoModal(param: param) {
         footer={<Button onClick={param.handleCancel}>닫기</Button>}
       >
         <div className="w-full max-h-[500px] overflow-auto">
-          {data.map((item: reservationInfoDto) => (
+          {data.data.data.map((item: reservationInfoDto) => (
             <div
               key={item.pickupReservationId}
               className="w-full flex flex-row gap-3 mt-2"

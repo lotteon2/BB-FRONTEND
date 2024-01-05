@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Form, Input, Modal } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useSetRecoilState } from "recoil";
@@ -12,7 +12,7 @@ import {
 } from "../recoil/common/interfaces";
 import { SuccessToast } from "../components/common/toast/SuccessToast";
 import { FailToast } from "../components/common/toast/FailToast";
-import { getImageUrl } from "../apis/image";
+import { getImageUrl, uploadS3Server } from "../apis/image";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -22,8 +22,9 @@ export default function LoginPage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [businessNumberImage, setBusinessNumberImage] =
-    useState<string>("test.jpg");
+  const [url, setUrl] = useState<string>("");
+  const [file, setFile] = useState<File>();
+  const [businessNumberImage, setBusinessNumberImage] = useState<string>("");
   const defaultValues = {
     email: "",
     password: "",
@@ -42,6 +43,7 @@ export default function LoginPage() {
   // 이미지 등록
   const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files !== null) {
+      setFile(e.target.files[0]);
       imageMutation.mutate(e.target.files[0].name);
     }
   };
@@ -91,7 +93,7 @@ export default function LoginPage() {
     (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
-        setBusinessNumberImage(data);
+        setUrl(data.data.presignedUrl);
       },
       onError: () => {
         FailToast(null);
@@ -113,6 +115,25 @@ export default function LoginPage() {
       },
     }
   );
+
+  const uploadMutation = useMutation(
+    ["uploadS3"],
+    (url: string) => uploadS3Server(url, file, file?.type),
+    {
+      onSuccess: () => {
+        setBusinessNumberImage(url.split("?")[0]);
+      },
+      onError: () => {
+        FailToast("");
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (url !== "") {
+      uploadMutation.mutate(url);
+    }
+  }, [url]);
 
   return (
     <div className="relative top-72 left-[550px] w-[800px] h-[350px] bg-grayscale1 shadow-lg z-10 rounded-lg">

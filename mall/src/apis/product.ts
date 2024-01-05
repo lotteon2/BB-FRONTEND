@@ -8,8 +8,8 @@ import { authInstance, defaultInstance } from "./utils";
 const isLogin = localStorage.getItem("isLogin");
 
 // 메인페이지 상품 조회
-export const getMainProductList = async (type: string) => {
-  if (isLogin === "T") {
+export const getMainProductList = async (type: string, isLogin: boolean) => {
+  if (isLogin) {
     const { data } = await authInstance.get("/products/main/" + type);
     return data;
   } else {

@@ -3,7 +3,7 @@ import { Button, Form, Input, InputNumber, Modal, Select } from "antd";
 import { storeInfoDto } from "../../../recoil/common/interfaces";
 import { PictureFilled } from "@ant-design/icons";
 import { useMutation } from "react-query";
-import { getImageUrl, uploadImage } from "../../../apis/image";
+import { getImageUrl, uploadS3Server } from "../../../apis/image";
 import { FailToast } from "../../common/toast/FailToast";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import { bankOptions } from "../../../recoil/common/options";
@@ -30,11 +30,11 @@ export default function StoreRegisterModal(param: param) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File>();
   const [isAddressModalOpen, setIsAddressModalOpen] = useState<boolean>(false);
+  const [url, setUrl] = useState<string>("");
   const [registerValues, setRegisterValues] = useState<storeInfoDto>({
     storeName: "",
     detailInfo: "",
-    storeThumbnailImage:
-      "https://f-mans.com/data/goods/1/2023/10/681_temp_16972473985275list1.jpg",
+    storeThumbnailImage: "",
     phoneNumber: "",
     accountNumber: "",
     bank: "국민은행",
@@ -134,13 +134,11 @@ export default function StoreRegisterModal(param: param) {
   };
 
   const thumbnailMutation = useMutation(
-    ["imageUpload"],
+    ["uploadImage"],
     (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
-        console.log(data);
-        // uploadMutation.mutate(data);
-        // setRegisterValues((prev) => ({ ...prev, storeThumbnailImage: data }));
+        setUrl(data.data.presignedUrl);
       },
       onError: () => {
         FailToast(null);
@@ -149,11 +147,18 @@ export default function StoreRegisterModal(param: param) {
   );
 
   const uploadMutation = useMutation(
-    ["upload"],
-    (url: string) => uploadImage(url, file),
+    ["uploadS3"],
+    (url: string) => uploadS3Server(url, file, file?.type),
     {
-      onSuccess: () => {},
-      onError: () => {},
+      onSuccess: () => {
+        setRegisterValues((prev) => ({
+          ...prev,
+          storeThumbnailImage: url.split("?")[0],
+        }));
+      },
+      onError: () => {
+        FailToast("");
+      },
     }
   );
 
@@ -180,6 +185,12 @@ export default function StoreRegisterModal(param: param) {
   useEffect(() => {
     form.setFieldsValue(registerValues);
   }, [form, registerValues]);
+
+  useEffect(() => {
+    if (url !== "") {
+      uploadMutation.mutate(url);
+    }
+  }, [url]);
 
   return (
     <div>

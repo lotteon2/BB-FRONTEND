@@ -3,29 +3,18 @@ import { useParams } from "react-router";
 import ProductInfo from "../../components/product/ProductInfo";
 import ProductContents from "../../components/product/ProductContents";
 import Loading from "../../components/common/Loading";
+import NotFound from "../../components/common/NotFound";
 
 export default function ProductDetailPage() {
   const param = useParams().productId;
-  const [productDescription, setProductDescription] = useState<string>("");
   const [productName, setProductName] = useState<string>("");
-  const [storeId, setStoreId] = useState<number>(0);
 
-  if (!param) return <Loading />;
+  if (!param) return <NotFound />;
 
   return (
     <div className="w-full h-full">
-      <ProductInfo
-        productId={param}
-        setProductDescription={setProductDescription}
-        setProductName={setProductName}
-        setStoreId={setStoreId}
-      />
-      <ProductContents
-        productId={param}
-        productDescription={productDescription}
-        productName={productName}
-        storeId={storeId}
-      />
+      <ProductInfo productId={param} setProductName={setProductName} />
+      <ProductContents productId={param} productName={productName} />
     </div>
   );
 }
