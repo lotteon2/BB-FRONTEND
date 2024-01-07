@@ -26,11 +26,11 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: install npm dependencies
-        working-directory: ./admin
+        working-directory: ./mall
         run: npm install
 
       - name: react build
-        working-directory: ./admin
+        working-directory: ./mall
         run: npm run build
 
       - name: Configure AWS credentials
@@ -41,29 +41,9 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Upload to S3
-        working-directory: ./admin
+        working-directory: ./mall
         env:
-          BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME_ADMIN }}
+          BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME_MALL }}
         run: |
           aws s3 sync \
             ./build s3://$BUCKET_NAME
-
-      - name: CloudFront Invalidation
-        working-directory: ./admin
-        env:
-          CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUDFRONT_ID }}
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id $CLOUD_FRONT_ID --paths /*
-
-  # build_admin:
-  #   name: Build and Deploy Admin
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # Similar steps as above with adjustments for the admin project
-
-  # build_store:
-  #   name: Build and Deploy Store
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # Similar steps as above with adjustments for the store project
