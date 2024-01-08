@@ -22,7 +22,7 @@ export const registerGiftCard = async (
   registerDto: cardRegisterDto
 ) => {
   const { data } = await authInstance.post(
-    "/giftcard?type=" + type,
+    "/giftcard/register?type=" + type,
     registerDto
   );
   return data;
@@ -30,7 +30,7 @@ export const registerGiftCard = async (
 
 export const getMyGiftCardList = async (page: number, size: number) => {
   const { data } = await authInstance.get(
-    "/giftcard?page=" + page + "&size=" + size
+    "/giftcard/my?page=" + page + "&size=" + size
   );
   return data;
 };

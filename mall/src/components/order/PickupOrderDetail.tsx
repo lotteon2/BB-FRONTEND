@@ -9,8 +9,11 @@ import { useMutation } from "react-query";
 import { getMyInfo } from "../../apis/member";
 import { FailToast } from "../common/toast/FailToast";
 import MyCouponModal from "./modal/MyCouponModal";
+import { useNavigate } from "react-router-dom";
+import { paymentPickupSingleProduct } from "../../apis/order";
 
 export default function PickupOrderDetail() {
+  const navigate = useNavigate();
   const ButtonRef = useRef<HTMLButtonElement | null>(null);
   const [pickupOrder, setPickupOrder] =
     useRecoilState<pickupOrderDto>(pickupOrderState);
@@ -39,7 +42,7 @@ export default function PickupOrderDetail() {
       pickupOrder.ordererPhoneNumber !== "" &&
       pickupOrder.ordererEmail !== ""
     ) {
-      console.log(pickupOrder);
+      pickupOrderMutation.mutate();
     }
   };
 
@@ -53,6 +56,22 @@ export default function PickupOrderDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const pickupOrderMutation = useMutation(
+    ["pickupOrder"],
+    () => paymentPickupSingleProduct(pickupOrder),
+    {
+      onSuccess: (data) => {
+        window.open(
+          data.data.next_redirect_pc_url,
+          "BB 카카오페이 QR 결제",
+          "top=0, left=0, width=500, height=600, menubar=no, toolbar=no, resizable=no, status=no, scrollbars=no"
+        );
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
   const getMyInfoMutation = useMutation(["getMyInfo"], () => getMyInfo(), {
     onSuccess: (data) => {
       setPickupOrder((prev) => ({
@@ -102,8 +121,23 @@ export default function PickupOrderDetail() {
     if (value.length < 11) {
       return Promise.reject(new Error("정확한 핸드폰번호를 입력해주세요."));
     }
+    return Promise.resolve();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleMessage = (ev: any) => {
+    if (ev.origin !== "http://localhost:3000") return;
+
+    const message = ev.data.state;
+
+    if (message === "approve") {
+      navigate("/success");
+    } else if (message === "fail") {
+      navigate("/fail");
+    }
+
+    // console.log(params);
+  };
 
   const [form] = Form.useForm();
   useEffect(() => {
@@ -111,7 +145,16 @@ export default function PickupOrderDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, pickupOrder]);
 
-  console.log(pickupOrder);
+  useEffect(() => {
+    (() => {
+      window.addEventListener("message", handleMessage);
+    })();
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <div>
       <div className="flex flex-row gap-5 flex-wrap justify-center mt-5">

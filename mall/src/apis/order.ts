@@ -1,4 +1,8 @@
-import { orderDto } from "../recoil/common/interfaces";
+import {
+  orderDto,
+  pickupOrderDto,
+  subscriptionOrderDto,
+} from "../recoil/common/interfaces";
 import { authInstance } from "./utils";
 
 // 배송 주문 상세 조회
@@ -28,5 +32,19 @@ export const getSubscriptionDetail = async (subscriptionId: string) => {
 // 단건결제
 export const paymentDeliverySingleProduct = async (orderDto: orderDto) => {
   const { data } = await authInstance.post("/orders/delivery", orderDto);
+  return data;
+};
+
+// 픽업 결제
+export const paymentPickupSingleProduct = async (orderDto: pickupOrderDto) => {
+  const { data } = await authInstance.post("/orders/pickup", orderDto);
+  return data;
+};
+
+// 정기구독 결제
+export const paymentSubscribeProduct = async (
+  orderDto: subscriptionOrderDto
+) => {
+  const { data } = await authInstance.post("/orders/subscription", orderDto);
   return data;
 };

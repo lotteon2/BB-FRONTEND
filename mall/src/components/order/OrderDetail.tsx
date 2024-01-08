@@ -1,9 +1,4 @@
-import {
-  useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState,
-} from "recoil";
+import { useRecoilState } from "recoil";
 import { orderDto } from "../../recoil/common/interfaces";
 import { orderState } from "../../recoil/atom/order";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -79,10 +74,16 @@ export default function OrderDetail() {
     () => paymentDeliverySingleProduct(order),
     {
       onSuccess: (data) => {
+        const width = 370; // 팝업의 가로 길이: 500
+        const height = 500; // 팝업의 세로 길이 : 500
+        // 팝업을 부모 브라우저의 정 중앙에 위치시킨다.
+        const left = window.screenX + (window.outerWidth - width) / 2;
+        const top = window.screenY + (window.outerHeight - height) / 2;
+
         window.open(
-          "http://localhost:3000/payment/approve",
+          data.data.next_redirect_pc_url,
           "BB 카카오페이 QR 결제",
-          "top=0, left=0, width=500, height=600, menubar=no, toolbar=no, resizable=no, status=no, scrollbars=no"
+          `width=${width},height=${height},left=${left},top=${top}`
         );
       },
       onError: () => {
@@ -194,15 +195,13 @@ export default function OrderDetail() {
   const handleMessage = (ev: any) => {
     if (ev.origin !== "http://localhost:3000") return;
 
-    const { message } = ev.data;
+    const message = ev.data.state;
 
     if (message === "approve") {
       navigate("/success");
-    } else {
+    } else if (message === "fail") {
       navigate("/fail");
     }
-
-    // console.log(params);
   };
 
   useEffect(() => {
@@ -212,6 +211,7 @@ export default function OrderDetail() {
     return () => {
       window.removeEventListener("message", handleMessage);
     };
+    // eslint-disable-next-line
   }, []);
 
   return (

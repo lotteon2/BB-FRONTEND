@@ -10,10 +10,13 @@ import MyCouponModal from "./modal/MyCouponModal";
 import PayIcon from "../../assets/images/pay.png";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import RecentDeliveryPlaceModal from "./modal/RecentDeliveryPlaceModal";
+import { useNavigate } from "react-router-dom";
+import { paymentSubscribeProduct } from "../../apis/order";
 
 const { TextArea } = Input;
 
 export default function SubscriptionOrderDetail() {
+  const navigate = useNavigate();
   const ButtonRef = useRef<HTMLButtonElement | null>(null);
   const [order, setOrder] = useRecoilState<subscriptionOrderDto>(
     subscriptionOrderState
@@ -50,7 +53,36 @@ export default function SubscriptionOrderDetail() {
       order.recipientName !== "" &&
       order.recipientPhone !== ""
     ) {
-      console.log(order);
+      paymentMutation.mutate();
+    }
+  };
+
+  const paymentMutation = useMutation(
+    ["paymentSubscribeProduct"],
+    () => paymentSubscribeProduct(order),
+    {
+      onSuccess: (data) => {
+        window.open(
+          data.data.next_redirect_pc_url,
+          "BB 카카오페이 QR 결제",
+          "top=0, left=0, width=500, height=600, menubar=no, toolbar=no, resizable=no, status=no, scrollbars=no"
+        );
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
+
+  const handleMessage = (ev: any) => {
+    if (ev.origin !== "http://localhost:3000") return;
+
+    const message = ev.data.state;
+
+    if (message === "approve") {
+      navigate("/success");
+    } else if (message === "fail") {
+      navigate("/fail");
     }
   };
 
@@ -88,9 +120,9 @@ export default function SubscriptionOrderDetail() {
     onSuccess: (data) => {
       setOrder((prev) => ({
         ...prev,
-        ordererName: data.nickname,
-        ordererEmail: data.email,
-        ordererPhoneNumber: data.phoneNumber,
+        ordererName: data.data.data.nickname,
+        ordererEmail: data.data.data.email,
+        ordererPhoneNumber: data.data.data.phoneNumber,
       }));
     },
     onError: () => {
@@ -132,12 +164,16 @@ export default function SubscriptionOrderDetail() {
     if (value.length < 11) {
       return Promise.reject(new Error("정확한 핸드폰번호를 입력해주세요."));
     }
+    return Promise.resolve();
+    // eslint-disable-next-line
   }, []);
 
   const rightRoadName = useCallback((_: any, value: string) => {
     if (!value) {
       return Promise.reject(new Error("필수 입력값입니다."));
     }
+    return Promise.resolve();
+    // eslint-disable-next-line
   }, []);
 
   const clickPayButton = useCallback(() => {
@@ -148,11 +184,21 @@ export default function SubscriptionOrderDetail() {
 
   const [form] = Form.useForm();
   useEffect(() => {
-    console.log("CHANGE");
     form.setFieldsValue(order);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, order]);
 
+  useEffect(() => {
+    (() => {
+      window.addEventListener("message", handleMessage);
+    })();
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+    // eslint-disable-next-line
+  }, []);
+
+  console.log(order);
   return (
     <div>
       <div className="flex flex-row gap-5 flex-wrap justify-center mt-5">
@@ -187,17 +233,13 @@ export default function SubscriptionOrderDetail() {
                         <span className="border-[1px] px-2 py-1 rounded-lg">
                           결제일
                         </span>
-                        <span className="mt-1">
-                          매월 {order.paymentDay.getDate()}일
-                        </span>
+                        <span className="mt-1">매월 {order.paymentDay}일</span>
                       </div>
                       <div className="flex flex-row gap-3">
                         <span className="border-[1px] px-2 py-1 rounded-lg">
                           배송일
                         </span>
-                        <span className="mt-1">
-                          매월 {order.deliveryDay.getDate()}일
-                        </span>
+                        <span className="mt-1">매월 {order.deliveryDay}일</span>
                       </div>
                     </div>
                   </div>

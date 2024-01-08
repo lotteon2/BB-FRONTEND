@@ -57,6 +57,7 @@ export default function Notification() {
         });
 
         eventSource.addEventListener("CONNECT", () => {
+          console.log("!!!!!!!!");
           setNotiEvent((cur) => !cur);
         });
 
@@ -68,6 +69,7 @@ export default function Notification() {
 
       eventSource.onopen = () => {
         eventSource.addEventListener("CONNECT", () => {
+          console.log("!!!!!!!!");
           setNotiEvent((cur) => !cur);
         });
 

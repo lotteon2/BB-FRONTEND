@@ -209,7 +209,7 @@ export default function LoginPage() {
       >
         <Form
           name="registerBusinessNumberImage"
-          initialValues={{ remember: true }}
+          initialValues={{ remember: false }}
           autoComplete="off"
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 10 }}

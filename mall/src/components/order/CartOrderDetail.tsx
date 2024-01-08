@@ -130,9 +130,9 @@ export default function CartOrderDetail() {
     onSuccess: (data) => {
       setOrder((prev) => ({
         ...prev,
-        ordererName: data.nickname,
-        ordererEmail: data.email,
-        ordererPhoneNumber: data.phoneNumber,
+        ordererName: data.data.data.nickname,
+        ordererEmail: data.data.data.email,
+        ordererPhoneNumber: data.data.data.phoneNumber,
       }));
     },
     onError: () => {
@@ -319,7 +319,7 @@ export default function CartOrderDetail() {
           >
             {/* 주문자 정보 */}
             <div className="mt-10">
-              <div className="border-b-[1px] border-grayscale7 relative">
+              <div className="border-b-[1px] border-grayscale7  relative">
                 <p className="text-[1.5rem]">주문자</p>
                 <div className="absolute bottom-1 right-0">
                   <Button onClick={handleMyInfo}>내 정보 불러오기</Button>
@@ -608,7 +608,7 @@ export default function CartOrderDetail() {
       >
         <RecentDeliveryPlaceModal
           handleCancel={handleCancel}
-          type="general"
+          type="cart"
           addressId={order.deliveryAddressId}
         />
       </Modal>

@@ -1,15 +1,10 @@
 import { useState } from "react";
-import {
-  blueCard,
-  mixCard,
-  pinkCard,
-  purlpleCard,
-  whiteCard,
-  yellowCard,
-} from "../../../mocks/giftcard";
 import { Button, Select } from "antd";
 import { colorOptions } from "../../../recoil/common/data";
 import { cardTemplateListDto } from "../../../recoil/common/interfaces";
+import { useQuery } from "react-query";
+import { getCardTamplateList } from "../../../apis/giftcard";
+import Loading from "../../common/Loading";
 
 interface param {
   cardTemplate: cardTemplateListDto;
@@ -22,30 +17,17 @@ export default function CardTemplateModal(param: param) {
     param.cardTemplate
   );
 
-  const data =
-    color === "mix"
-      ? mixCard
-      : color === "pink"
-      ? pinkCard
-      : color === "purple"
-      ? purlpleCard
-      : color === "yellow"
-      ? yellowCard
-      : color === "blue"
-      ? blueCard
-      : whiteCard;
-
-  //   const {data, isLoading} = useQuery({
-  //     queryKey: ["getCardTamplateList"],
-  //     queryFn: () => getCardTamplateList(color)
-  //   });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getCardTamplateList", color],
+    queryFn: () => getCardTamplateList(color),
+  });
 
   const handleSelectTemplate = () => {
     param.setCardTemplate(template);
     param.setIsModalOpen(false);
   };
 
-  //   if (isLoading) return <Loading />;
+  if (isLoading) return <Loading />;
 
   return (
     <div>
@@ -56,7 +38,7 @@ export default function CardTemplateModal(param: param) {
         onChange={(value: string) => setcolor(value)}
       />
       <div className="flex flex-row gap-4 flex-wrap justify-center mt-5 max-h-[400px] overflow-auto">
-        {data.data.map((item: cardTemplateListDto) => (
+        {data.map((item: cardTemplateListDto) => (
           <img
             src={item.imageUrl}
             key={item.cardTemplateId}

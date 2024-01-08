@@ -24,6 +24,7 @@ import GiftCardDetailPage from "../pages/GiftCardDetailPage";
 import SuccessPage from "../pages/SuccessPage";
 import DefaultLayout from "../layouts/DefaultLayout";
 import PaymentApprovePage from "../pages/PaymentApprovePage";
+import FailPage from "../pages/FailPage";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,7 @@ const router = createBrowserRouter([
         element: <GiftCardDetailPage />,
       },
       { path: "success", element: <SuccessPage /> },
+      { path: "fail", element: <FailPage /> },
     ],
   },
   {

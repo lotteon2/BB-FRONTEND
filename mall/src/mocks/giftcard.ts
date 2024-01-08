@@ -276,8 +276,7 @@ export const yellowCard = {
 
 export const cardDetail = {
   cardId: 1,
-  imageUrl:
-    "https://blooming-blooms.s3.ap-northeast-1.amazonaws.com/images/giftcards/blue/blue1.png",
+  imageUrl: "https://blooming.blooms.mall.stockey.kr/giftcards/mix/mix2.png",
   content: `<p>사랑하는 형,</p>
 
   <p>이 편지가 당신에게 전해질 때, 나의 무한한 사랑을 느끼셨으면 좋겠습니다. 형은 나의 삶에서 빛나는 별이며, 끝없는 지지와 이해를 주는 최고의 동반자입니다.</p>

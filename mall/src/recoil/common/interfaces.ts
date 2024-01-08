@@ -167,8 +167,8 @@ export interface orderInfoByStore {
 export interface subscriptionOrderDto {
   storeId: number;
   storeName: string;
-  paymentDay: Date;
-  deliveryDay: Date; // == paymentDay+3
+  paymentDay: number;
+  deliveryDay: number; // == paymentDay+3
   products: productCreate;
   totalAmount: number; // 총 상품금액
   deliveryCost: number; // 총 배송비

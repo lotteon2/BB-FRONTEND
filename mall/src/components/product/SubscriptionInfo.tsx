@@ -74,34 +74,34 @@ export default function SubscriptionInfo(param: param) {
 
   const handleSubscriptionOrder = () => {
     const productCreate = {
-      productId: data.productId,
-      productName: data.productName,
+      productId: data.data.productId,
+      productName: data.data.productName,
       quantity: 1,
-      price: data.productPrice,
-      productThumbnailImage: data.productDetailImage,
+      price: data.data.productPrice,
+      productThumbnailImage: data.data.productDetailImage,
     };
 
     const subscriptionOrder = {
-      storeId: data.storeId,
-      storeName: data.storeName,
-      paymentDay: today,
+      storeId: data.data.storeId,
+      storeName: data.data.storeName,
+      paymentDay: today.getDate(),
       deliveryDay: new Date(
         today.getFullYear(),
         today.getMonth(),
-        today.getDate() + 3
-      ),
+        today.getDate()
+      ).getDate(),
       products: productCreate,
-      totalAmount: data.productPrice,
+      totalAmount: data.data.productPrice,
       deliveryCost:
-        data.productPrice >= deliveryPolicy.freeDeliveryMinPrice
+        data.data.productPrice >= deliveryPolicy.freeDeliveryMinPrice
           ? 0
           : deliveryPolicy.deliveryPrice,
       couponId: null,
       couponAmount: 0,
       actualAmount:
-        data.productPrice >= deliveryPolicy.freeDeliveryMinPrice
-          ? data.productPrice
-          : data.productPrice + deliveryPolicy.deliveryPrice,
+        data.data.productPrice >= deliveryPolicy.freeDeliveryMinPrice
+          ? data.data.productPrice
+          : data.data.productPrice + deliveryPolicy.deliveryPrice,
       ordererName: "",
       ordererPhoneNumber: "",
       ordererEmail: "",
