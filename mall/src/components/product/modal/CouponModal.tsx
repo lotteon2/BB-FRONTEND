@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Empty } from "antd";
 import { useMutation, useQuery } from "react-query";
 import {
@@ -11,13 +11,18 @@ import { DownloadOutlined } from "@ant-design/icons";
 import { SuccessToast } from "../../common/toast/SuccessToast";
 import { FailToast } from "../../common/toast/FailToast";
 import Loading from "../../common/Loading";
-import { couponDto } from "../../../recoil/common/interfaces";
+import { couponDto, simpleUserInfo } from "../../../recoil/common/interfaces";
+import { useRecoilValue } from "recoil";
+import { nicknameState } from "../../../recoil/atom/common";
 
 interface param {
   storeId: number | undefined;
+  phoneNumber: string;
 }
 export default function CouponModal(param: param) {
+  const nickname = useRecoilValue<string>(nicknameState);
   const [isChange, setIsChange] = useState<boolean>(false);
+  const [userSimpleInfo, setUserSimpleInfo] = useState<simpleUserInfo>();
 
   const { data, isLoading } = useQuery({
     queryKey: ["getCouponListFromProductDetail", isChange],
@@ -33,7 +38,7 @@ export default function CouponModal(param: param) {
 
   const singleMutation = useMutation(
     ["downloadSingle"],
-    (couponId: number) => downloadSingleCoupon(couponId),
+    (couponId: number) => downloadSingleCoupon(couponId, userSimpleInfo),
     {
       onSuccess: () => {
         SuccessToast("발급되었습니다.");
@@ -47,7 +52,7 @@ export default function CouponModal(param: param) {
 
   const allMutation = useMutation(
     ["downloadAll"],
-    () => downloadAllCoupons(param.storeId),
+    () => downloadAllCoupons(param.storeId, userSimpleInfo),
     {
       onSuccess: () => {
         SuccessToast("발급되었습니다.");
@@ -58,6 +63,17 @@ export default function CouponModal(param: param) {
       },
     }
   );
+
+  useEffect(() => {
+    const userInfo = {
+      nickname: nickname,
+      phoneNumber: param.phoneNumber,
+    };
+
+    setUserSimpleInfo(userInfo);
+    // eslint-disable-next-line
+  }, []);
+
   if (!data || isLoading) return <Loading />;
 
   return (

@@ -31,8 +31,8 @@ const ScannerStyle = styled.span<position>`
 `;
 
 const ZoomStyle = styled.div<zoom>`
-  z-index: 50;
   position: absolute;
+  z-index: 100;
   top: 0px;
   left: ${(prop: zoom) => prop.left}px;
   width: ${(prop: zoom) => prop.size}px;

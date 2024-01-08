@@ -158,3 +158,15 @@ export const getSettlementList = async (
     return data;
   }
 };
+
+// 쿠폰 발급현황 조회
+export const getCouponDownloadList = async (
+  couponId: number,
+  page: number,
+  size: number
+) => {
+  const { data } = await authInstance.get(
+    "/stores/coupons/" + couponId + "/members?page=" + page + "&size=" + size
+  );
+  return data;
+};

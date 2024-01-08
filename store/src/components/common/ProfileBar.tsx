@@ -1,6 +1,11 @@
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Badge from "@mui/material/Badge";
-import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from "recoil";
 import { SuccessToast } from "./toast/SuccessToast";
 import { useMutation } from "react-query";
 import { loginState, nameState, storeIdState } from "../../recoil/atom/common";
@@ -14,6 +19,7 @@ import {
 } from "../../recoil/atom/noti";
 import { getUnreadNotificationsCount } from "../../apis/noti";
 import { useEffect } from "react";
+import Notification from "./Notification";
 
 export default function ProfileBar() {
   const navigate = useNavigate();
@@ -23,9 +29,9 @@ export default function ProfileBar() {
   const name = useRecoilValue(nameState);
   const storeId = useRecoilValue<number>(storeIdState);
   const isLogin = useRecoilValue<boolean>(loginState);
-  const [isNotiShow, setIsNotiShow] = useRecoilState<boolean>(notiShowState);
-  const [notiCount, setNotiCount] = useRecoilState<number>(notiCountState);
   const notiEvent = useRecoilValue<boolean>(notiEventState);
+  const setNotiShow = useSetRecoilState<boolean>(notiShowState);
+  const [notiCount, setNotiCount] = useRecoilState<number>(notiCountState);
 
   const logoutMutation = useMutation(["logout"], () => logout(), {
     onSuccess: () => {
@@ -51,23 +57,25 @@ export default function ProfileBar() {
       onError: () => {},
     }
   );
+
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
-    // if (accessToken && storeId !== null) notiCountMutate.mutate();
+    if (accessToken && storeId !== null) notiCountMutate.mutate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLogin, notiEvent, isNotiShow, storeId]);
+  }, [isLogin, notiEvent, storeId]);
 
   return (
     <div className="w-full h-[32px] mt-4">
       <div className="flex flex-row gap-2 mr-5 justify-end">
         <span>안녕하세요, {name}님</span>
-        <button
-        // onClick={() => setIsNotiShow((cur) => !cur)}
-        >
-          {/* <Badge badgeContent={0} color="warning">
+        <button onClick={() => setNotiShow((cur) => !cur)}>
+          <Badge badgeContent={notiCount} color="warning">
             <NotificationsIcon fontSize="medium" />
-          </Badge> */}
+          </Badge>
         </button>
+        <div className="absolute top-[48px] right-5 z-20">
+          <Notification />
+        </div>
         <button className="ml-10" onClick={() => logoutMutation.mutate()}>
           로그아웃
         </button>

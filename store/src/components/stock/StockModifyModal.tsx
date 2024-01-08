@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Input, InputNumber, Modal } from "antd";
+import { Button, InputNumber, Modal } from "antd";
 import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
 import { storeIdState } from "../../recoil/atom/common";
@@ -46,6 +46,7 @@ export default function StockModifyModal(param: param) {
     });
 
     setflowerStocks(stocks);
+    // eslint-disable-next-line
   }, []);
 
   const modifyMutation = useMutation(

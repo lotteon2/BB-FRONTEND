@@ -31,7 +31,7 @@ export default function SubscriptionOrderDetail() {
     getMyInfoMutation.mutate();
   };
 
-  const handleCoupons = (couponId: number, couponAmount: number) => {
+  const handleCoupons = (couponId: number | null, couponAmount: number) => {
     setOrder((prev) => ({
       ...prev,
       couponId: couponId,
@@ -546,6 +546,7 @@ export default function SubscriptionOrderDetail() {
         <RecentDeliveryPlaceModal
           handleCancel={handleCancel}
           type="subscription"
+          addressId={order.deliveryAddressId}
         />
       </Modal>
     </div>

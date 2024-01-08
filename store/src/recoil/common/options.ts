@@ -175,10 +175,6 @@ export const saleStatusOptions = [
     value: "DISCONTINUED",
     label: "판매 중지",
   },
-  {
-    value: "DELETED",
-    label: "상품 삭제",
-  },
 ];
 
 export const deliveryStatusOptions = [

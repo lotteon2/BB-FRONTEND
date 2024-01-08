@@ -21,6 +21,9 @@ import GiftCardPage from "../pages/GiftCardPage";
 import PickupNearby from "../components/pickup/PickupNearby";
 import PickupRegion from "../components/pickup/PickupRegion";
 import GiftCardDetailPage from "../pages/GiftCardDetailPage";
+import SuccessPage from "../pages/SuccessPage";
+import DefaultLayout from "../layouts/DefaultLayout";
+import PaymentApprovePage from "../pages/PaymentApprovePage";
 
 const router = createBrowserRouter([
   {
@@ -57,6 +60,7 @@ const router = createBrowserRouter([
         path: "giftcard/detail/:cardId/:password",
         element: <GiftCardDetailPage />,
       },
+      { path: "success", element: <SuccessPage /> },
     ],
   },
   {
@@ -67,6 +71,12 @@ const router = createBrowserRouter([
       { index: true, path: "", element: <LoginPage /> },
       { path: "oauth", element: <KakaoLoginRedirect /> },
     ],
+  },
+  {
+    path: "/payment/:message",
+    element: <DefaultLayout />,
+    errorElement: <NotFound />,
+    children: [{ index: true, path: "", element: <PaymentApprovePage /> }],
   },
 ]);
 

@@ -244,3 +244,10 @@ export interface notiDto {
   notificationContent: string;
   notificationLink: string;
 }
+
+export interface couponDownloadDto {
+  nickname: string;
+  phoneNumber: string;
+  createdAt: string;
+  isUsed: boolean;
+}

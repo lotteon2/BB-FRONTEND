@@ -1,7 +1,6 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 import {
-  cartOrderDto,
   orderDto,
   orderInfoByStore,
   pickupOrderDto,
@@ -28,14 +27,14 @@ export const subscriptionOrderState = atom<subscriptionOrderDto>({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const orderInfoState = atom<orderInfoByStore[]>({
-  key: "orderInfoByStore",
+export const cartOrderState = atom<orderDto>({
+  key: "cartOrderState",
   default: undefined,
   effects_UNSTABLE: [persistAtom],
 });
 
-export const cartOrderState = atom<cartOrderDto>({
-  key: "cartOrderState",
-  default: undefined,
+export const orderInfoState = atom<orderInfoByStore[]>({
+  key: "orderInfoState",
+  default: [],
   effects_UNSTABLE: [persistAtom],
 });

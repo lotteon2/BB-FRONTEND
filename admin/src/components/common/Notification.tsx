@@ -7,17 +7,15 @@ import { FailToast } from "./toast/FailToast";
 import { Empty } from "antd";
 import { notiDto } from "../../recoil/common/interfaces";
 import { EventSourcePolyfill } from "event-source-polyfill";
-import { storeIdState } from "../../recoil/atom/common";
 import { useNavigate } from "react-router-dom";
 
 export default function Notification() {
   const navigate = useNavigate();
-  const storeId = useRecoilValue<number>(storeIdState);
   const isNotiShow = useRecoilValue<boolean>(notiShowState);
   const setNotiEvent = useSetRecoilState<boolean>(notiEventState);
   const [notiList, setNotiList] = useState<notiDto[]>([]);
 
-  const subscribeUrl = `${process.env.REACT_APP_API_URL}/notification/subscribe/manager/${storeId}`;
+  const subscribeUrl = `${process.env.REACT_APP_API_URL}/notification/subscribe/admin`;
 
   const getAllNotiMutation = useMutation(
     ["getAllNotifications"],
@@ -35,14 +33,13 @@ export default function Notification() {
   useEffect(() => {
     const accesToken = localStorage.getItem("accessToken");
 
-    if (accesToken && storeId !== null) {
+    if (accesToken) {
       let eventSource = new EventSourcePolyfill(subscribeUrl, {
         headers: {
           "Content-Type": "text/event-stream",
           "Access-Control-Allow-Origin": "",
           Authorization: `${localStorage.getItem("accessToken")}`,
           "Cache-Control": "no-cache",
-          // storeId: storeId.toString(),
         },
         withCredentials: true,
       });
@@ -63,31 +60,8 @@ export default function Notification() {
           setNotiEvent((cur) => !cur);
         });
 
-        eventSource.addEventListener("QUESTION", () => {
-          setNotiEvent((cur) => !cur);
-        });
-
-        eventSource.addEventListener("SHOPPINGMALL", () => {
-          setNotiEvent((cur) => !cur);
-        });
-
-        eventSource.addEventListener("PICKUP", () => {
-          setNotiEvent((cur) => !cur);
-        });
-
-        eventSource.addEventListener("SUBSCRIBE", () => {
-          setNotiEvent((cur) => !cur);
-        });
-
-        eventSource.addEventListener("SETTLEMENT", () => {
-          setNotiEvent((cur) => !cur);
-        });
-
-        eventSource.addEventListener("OUT_OF_STOCK", () => {
-          setNotiEvent((cur) => !cur);
-        });
-
-        eventSource.addEventListener("ORDERCANCEL", () => {
+        eventSource.addEventListener("NEWCOMER", () => {
+          console.log("NEWCOMMER");
           setNotiEvent((cur) => !cur);
         });
       };
@@ -97,31 +71,8 @@ export default function Notification() {
           setNotiEvent((cur) => !cur);
         });
 
-        eventSource.addEventListener("QUESTION", (event: any) => {
-          setNotiEvent((cur) => !cur);
-        });
-
-        eventSource.addEventListener("SHOPPINGMALL", () => {
-          setNotiEvent((cur) => !cur);
-        });
-
-        eventSource.addEventListener("PICKUP", () => {
-          setNotiEvent((cur) => !cur);
-        });
-
-        eventSource.addEventListener("SUBSCRIBE", () => {
-          setNotiEvent((cur) => !cur);
-        });
-
-        eventSource.addEventListener("SETTLEMENT", () => {
-          setNotiEvent((cur) => !cur);
-        });
-
-        eventSource.addEventListener("OUT_OF_STOCK", () => {
-          setNotiEvent((cur) => !cur);
-        });
-
-        eventSource.addEventListener("ORDERCANCEL", () => {
+        eventSource.addEventListener("NEWCOMER", () => {
+          console.log("NEWCOMMER");
           setNotiEvent((cur) => !cur);
         });
       };
@@ -130,7 +81,8 @@ export default function Notification() {
 
       return () => eventSource.close();
     }
-  }, [storeId]);
+    // eslint-disable-next-line
+  }, [isNotiShow]);
 
   return (
     <div>

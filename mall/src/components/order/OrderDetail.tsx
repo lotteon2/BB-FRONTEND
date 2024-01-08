@@ -1,4 +1,9 @@
-import { useRecoilState } from "recoil";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from "recoil";
 import { orderDto } from "../../recoil/common/interfaces";
 import { orderState } from "../../recoil/atom/order";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -10,10 +15,13 @@ import MyCouponModal from "./modal/MyCouponModal";
 import PayIcon from "../../assets/images/pay.png";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import RecentDeliveryPlaceModal from "./modal/RecentDeliveryPlaceModal";
+import { paymentDeliverySingleProduct } from "../../apis/order";
+import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 
 export default function OrderDetail() {
+  const navigate = useNavigate();
   const ButtonRef = useRef<HTMLButtonElement | null>(null);
   const [order, setOrder] = useRecoilState<orderDto>(orderState);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -21,7 +29,6 @@ export default function OrderDetail() {
   const [isRecentDeliveryOpen, setIsRecentDeliveryOpen] =
     useState<boolean>(false);
 
-  console.log(order);
   const email_pattern =
     /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+.[a-zA-Z]+$/i;
   const blank_pattern = "/^s+|s+$/g";
@@ -30,12 +37,26 @@ export default function OrderDetail() {
     getMyInfoMutation.mutate();
   };
 
-  const handleCoupons = (couponId: number, couponAmount: number) => {
+  const handleCoupons = (couponId: number | null, couponAmount: number) => {
+    const tmp = [
+      {
+        storeId: order.orderInfoByStores[0].storeId,
+        storeName: order.orderInfoByStores[0].storeName,
+        products: order.orderInfoByStores[0].products,
+        totalAmount: order.orderInfoByStores[0].totalAmount,
+        deliveryCost: order.orderInfoByStores[0].deliveryCost,
+        couponId: couponId,
+        couponAmount: couponAmount,
+        actualAmount: order.orderInfoByStores[0].actualAmount - couponAmount,
+      },
+    ];
+
     setOrder((prev) => ({
       ...prev,
-      couponId: couponId,
-      couponAmount: couponAmount,
+      orderInfoByStores: tmp,
+      sumOfActualAmount: order.sumOfActualAmount - couponAmount,
     }));
+
     handleCancel();
   };
 
@@ -49,10 +70,26 @@ export default function OrderDetail() {
       order.recipientName !== "" &&
       order.recipientPhone !== ""
     ) {
-      console.log(order);
+      paymentMutation.mutate();
     }
   };
 
+  const paymentMutation = useMutation(
+    ["paymentDeliverySingle"],
+    () => paymentDeliverySingleProduct(order),
+    {
+      onSuccess: (data) => {
+        window.open(
+          "http://localhost:3000/payment/approve",
+          "BB 카카오페이 QR 결제",
+          "top=0, left=0, width=500, height=600, menubar=no, toolbar=no, resizable=no, status=no, scrollbars=no"
+        );
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
   const handleCancel = () => {
     setIsModalOpen(false);
     setIsRecentDeliveryOpen(false);
@@ -131,6 +168,7 @@ export default function OrderDetail() {
     if (value.length < 11) {
       return Promise.reject(new Error("정확한 핸드폰번호를 입력해주세요."));
     }
+    return Promise.resolve();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -138,6 +176,7 @@ export default function OrderDetail() {
     if (!value) {
       return Promise.reject(new Error("필수 입력값입니다."));
     }
+    return Promise.resolve();
   }, []);
 
   const clickPayButton = useCallback(() => {
@@ -152,6 +191,29 @@ export default function OrderDetail() {
   }, [form, order]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
 
+  const handleMessage = (ev: any) => {
+    if (ev.origin !== "http://localhost:3000") return;
+
+    const { message } = ev.data;
+
+    if (message === "approve") {
+      navigate("/success");
+    } else {
+      navigate("/fail");
+    }
+
+    // console.log(params);
+  };
+
+  useEffect(() => {
+    (() => {
+      window.addEventListener("message", handleMessage);
+    })();
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
+
   return (
     <div>
       <div className="flex flex-row gap-5 flex-wrap justify-center mt-5">
@@ -161,23 +223,28 @@ export default function OrderDetail() {
               주문상품 정보
             </p>
             <div className="border-[1px] border-grayscale3 mt-3 relative">
-              <div className="bg-grayscale2 px-2 py-1">{order.storeName}</div>
+              <div className="bg-grayscale2 px-2 py-1">
+                {order.orderInfoByStores[0].storeName}
+              </div>
               <div className="absolute top-1 right-2">
                 배송:{" "}
-                {order.deliveryCost === 0
+                {order.orderInfoByStores[0].deliveryCost === 0
                   ? "무료배송"
-                  : order.deliveryCost.toLocaleString()}
+                  : order.orderInfoByStores[0].deliveryCost.toLocaleString()}
               </div>
               <div className="p-2">
                 <p className="text-[1.2rem] font-bold">
-                  {order.products[0].productName}
+                  {order.orderInfoByStores[0].products[0].productName}
                 </p>
                 <div className="h-full flex flex-row justify-between flex-wrap align-center">
                   <div className="flex flex-row gap-2">
                     <div className="w-[150px] h-[150px]">
                       <img
                         className="w-full h-full"
-                        src={order.products[0].productThumbnailImage}
+                        src={
+                          order.orderInfoByStores[0].products[0]
+                            .productThumbnailImage
+                        }
                         alt="상품 이미지"
                       />
                     </div>
@@ -187,13 +254,14 @@ export default function OrderDetail() {
                           수량
                         </span>
                         <span className="mt-1">
-                          {order.products[0].quantity.toLocaleString()}개
+                          {order.orderInfoByStores[0].products[0].quantity.toLocaleString()}
+                          개
                         </span>
                       </div>
                     </div>
                   </div>
                   <div className="font-bold text-[1.5rem] my-auto max-[1200px]:w-full max-[1200px]:text-right">
-                    {order.actualAmount.toLocaleString()}원
+                    {order.orderInfoByStores[0].actualAmount.toLocaleString()}원
                   </div>
                 </div>
               </div>
@@ -212,16 +280,23 @@ export default function OrderDetail() {
                     <p className="font-bold">총 결제금액</p>
                   </div>
                   <div className="flex flex-col gap-2 text-right">
-                    <p>{order.actualAmount.toLocaleString()}원</p>
-                    <p className="text-[#FF5555]">
-                      {order.couponAmount.toLocaleString()}원
+                    <p>
+                      {order.orderInfoByStores[0].actualAmount.toLocaleString()}
+                      원
                     </p>
-                    <p>{order.deliveryCost.toLocaleString()}원</p>
+                    <p className="text-[#FF5555]">
+                      {order.orderInfoByStores[0].couponAmount.toLocaleString()}
+                      원
+                    </p>
+                    <p>
+                      {order.orderInfoByStores[0].deliveryCost.toLocaleString()}
+                      원
+                    </p>
                     <p className="font-bold text-primary4">
                       {(
-                        order.actualAmount +
-                        order.deliveryCost -
-                        order.couponAmount
+                        order.orderInfoByStores[0].actualAmount +
+                        order.orderInfoByStores[0].deliveryCost -
+                        order.orderInfoByStores[0].couponAmount
                       ).toLocaleString()}
                       원
                     </p>
@@ -490,16 +565,20 @@ export default function OrderDetail() {
               <p className="font-bold text-[1.5rem]">총 결제금액</p>
             </div>
             <div className="flex flex-col gap-2 text-right">
-              <p>{order.actualAmount.toLocaleString()}원</p>
-              <p className="text-[#FF5555]">
-                {order.couponAmount.toLocaleString()}원
+              <p>
+                {order.orderInfoByStores[0].actualAmount.toLocaleString()}원
               </p>
-              <p>{order.deliveryCost.toLocaleString()}원</p>
+              <p className="text-[#FF5555]">
+                {order.orderInfoByStores[0].couponAmount.toLocaleString()}원
+              </p>
+              <p>
+                {order.orderInfoByStores[0].deliveryCost.toLocaleString()}원
+              </p>
               <p className="font-bold text-primary4 text-[1.5rem]">
                 {(
-                  order.actualAmount +
-                  order.deliveryCost -
-                  order.couponAmount
+                  order.orderInfoByStores[0].actualAmount +
+                  order.orderInfoByStores[0].deliveryCost -
+                  order.orderInfoByStores[0].couponAmount
                 ).toLocaleString()}
                 원
               </p>
@@ -522,10 +601,10 @@ export default function OrderDetail() {
         <MyCouponModal
           handleCancel={handleCancel}
           handleCoupons={handleCoupons}
-          storeId={order.storeId}
-          actualAmount={order.actualAmount}
-          couponId={order.couponId}
-          couponAmount={order.couponAmount}
+          storeId={order.orderInfoByStores[0].storeId}
+          actualAmount={order.orderInfoByStores[0].actualAmount}
+          couponId={order.orderInfoByStores[0].couponId}
+          couponAmount={order.orderInfoByStores[0].couponAmount}
         />
       </Modal>
       <Modal
@@ -534,7 +613,11 @@ export default function OrderDetail() {
         footer={[]}
         title="최근 배송지"
       >
-        <RecentDeliveryPlaceModal handleCancel={handleCancel} type="general" />
+        <RecentDeliveryPlaceModal
+          handleCancel={handleCancel}
+          type="general"
+          addressId={order.deliveryAddressId}
+        />
       </Modal>
     </div>
   );

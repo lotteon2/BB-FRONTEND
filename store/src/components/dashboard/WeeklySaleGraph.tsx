@@ -1,6 +1,5 @@
 import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
-import { weeklySaleData } from "../../mocks/dashboard";
 import { useRecoilValue } from "recoil";
 import { storeIdState } from "../../recoil/atom/common";
 import { useQuery } from "react-query";
@@ -9,7 +8,6 @@ import QuarterDiv from "../fallbacks/QuarterDiv";
 
 export default function WeeklySaleGraph() {
   const storeId = useRecoilValue<number>(storeIdState);
-  // const data = weeklySaleData;
 
   const { data, isLoading } = useQuery({
     queryKey: ["getWeeklySaleGraph"],

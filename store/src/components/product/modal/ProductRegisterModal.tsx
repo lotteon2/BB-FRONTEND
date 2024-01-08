@@ -38,10 +38,8 @@ export default function ProductRegisterModal(param: param) {
   const [defaultValues, setDefaultValues] = useState<productRegisterDto>({
     productName: "",
     productSummary: "",
-    productDescriptionImage:
-      "https://f-mans.com/data/products/flower/basket/FB00100/3.jpg",
-    productThumbnail:
-      "https://f-mans.com/data/goods/1/2023/10/76_temp_16972586811289view.jpg",
+    productDescriptionImage: "",
+    productThumbnail: "",
     productPrice: null,
     categoryId: undefined,
     productTag: [],
@@ -219,6 +217,7 @@ export default function ProductRegisterModal(param: param) {
     if (url !== "") {
       uploadMutation.mutate(url);
     }
+    // eslint-disable-next-line
   }, [url]);
 
   return (

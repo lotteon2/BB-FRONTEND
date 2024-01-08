@@ -127,10 +127,10 @@ export interface pickupOrderDto {
   storeName: string;
   pickupDate: string;
   pickupTime: string;
-  products: productCreate;
+  product: productCreate;
   totalAmount: number; // 총 상품금액
   deliveryCost: number; // 총 배송비
-  couponId: number;
+  couponId: number | null;
   couponAmount: number; // 총 할인금액
   actualAmount: number; //  실 결제금액
   ordererName: string;
@@ -139,14 +139,9 @@ export interface pickupOrderDto {
 }
 
 export interface orderDto {
-  storeId: number;
-  storeName: string;
-  products: productCreate[]; // 1개 상품만 담김
-  totalAmount: number; // 총 상품금액
-  deliveryCost: number; // 총 배송비
-  couponId: number;
-  couponAmount: number; // 총 할인금액
-  actualAmount: number; //  실 결제금액
+  orderInfoByStores: orderInfoByStore[]; // 가게별 주문정보를 list형태로 담는다.
+  sumOfActualAmount: number; // 총 실 결제금액
+  deliveryAddressId: null | number; // 배송지id
   ordererName: string;
   ordererPhoneNumber: string;
   ordererEmail: string;
@@ -156,7 +151,17 @@ export interface orderDto {
   deliveryAddressDetail: string;
   recipientPhone: string;
   deliveryRequest: string;
-  deliveryAddressId: number;
+}
+
+export interface orderInfoByStore {
+  storeId: number;
+  storeName: string;
+  products: productCreate[];
+  totalAmount: number; // 총 상품금액
+  deliveryCost: number; // 총 배송비
+  couponId: number | null;
+  couponAmount: number; // 총 할인금액
+  actualAmount: number; //  실 결제금액
 }
 
 export interface subscriptionOrderDto {
@@ -167,7 +172,7 @@ export interface subscriptionOrderDto {
   products: productCreate;
   totalAmount: number; // 총 상품금액
   deliveryCost: number; // 총 배송비
-  couponId: number;
+  couponId: number | null;
   couponAmount: number; // 총 할인금액
   actualAmount: number; //  실 결제금액
   ordererName: string;
@@ -179,31 +184,7 @@ export interface subscriptionOrderDto {
   deliveryAddressDetail: string;
   recipientPhone: string;
   deliveryRequest: string;
-  deliveryAddressId: number;
-}
-
-export interface orderInfoByStore {
-  storeId: number;
-  storeName: string;
-  products: productCreate[];
-  totalAmount: number; // 총 상품금액
-  deliveryCost: number; // 총 배송비
-  couponId: number;
-  couponAmount: number; // 총 할인금액
-  actualAmount: number; //  실 결제금액
-}
-
-export interface cartOrderDto {
-  sumOfActualAmount: number; // 총 실 결제금액
-  ordererName: string;
-  ordererPhoneNumber: string;
-  ordererEmail: string;
-  recipientName: string;
-  deliveryZipcode: string;
-  deliveryRoadName: string;
-  deliveryAddressDetail: string;
-  recipientPhone: string;
-  deliveryRequest: string;
+  deliveryAddressId: number | null;
 }
 
 export interface couponForPayDto {
@@ -217,7 +198,7 @@ export interface couponForPayDto {
 }
 
 export interface deliveryAddressDto {
-  deliveryAddressId: number;
+  deliveryAddressId: number | null;
   recipientName: string;
   zipcode: string;
   roadName: string;
@@ -399,4 +380,15 @@ export interface myCardListItemDto {
   password: string;
   content: string;
   createdAt: string;
+}
+
+export interface simpleUserInfo {
+  nickname: string;
+  phoneNumber: string;
+}
+
+export interface notiDto {
+  notificationId: number;
+  notificationContent: string;
+  notificationLink: string;
 }

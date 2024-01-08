@@ -6,7 +6,7 @@ import {
   flowersDetail,
   productModifyInfoDto,
 } from "../../../recoil/common/interfaces";
-import { getImageUrl } from "../../../apis/image";
+import { getImageUrl, uploadS3Server } from "../../../apis/image";
 import { FailToast } from "../../common/toast/FailToast";
 import { SuccessToast } from "../../common/toast/SuccessToast";
 import {
@@ -44,6 +44,9 @@ export default function ProductModifyModal(param: param) {
   const [productDescriptionImage, setProductDescriptionImage] =
     useState<string>("");
   const [defaultValues, setDefaultValues] = useState<productModifyInfoDto>();
+  const [url, setUrl] = useState<string>("");
+  const [file, setFile] = useState<File>();
+  const [type, setType] = useState<string>();
 
   const { data, isLoading } = useQuery({
     queryKey: ["getProductDetailInfo", param],
@@ -79,14 +82,18 @@ export default function ProductModifyModal(param: param) {
 
   // 이미지 처리
   const handleChangeFile = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>,
     type: string
   ) => {
-    if (event.target.files !== null) {
-      const formData = new FormData();
-      formData.append("image", event.target.files[0]);
-      if (type === "thumbnail") imageMutation.mutate(formData);
-      else descriptionImageMutation.mutate(formData);
+    if (e.target.files !== null) {
+      setFile(e.target.files[0]);
+      if (type === "thumbnail") {
+        setType("thumbnail");
+        imageMutation.mutate(e.target.files[0].name);
+      } else {
+        setType("description");
+        descriptionImageMutation.mutate(e.target.files[0].name);
+      }
     }
   };
 
@@ -98,10 +105,10 @@ export default function ProductModifyModal(param: param) {
   // 이미지 등록 API 처리
   const imageMutation = useMutation(
     ["imageUpload"],
-    (image: any) => getImageUrl(image),
+    (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
-        setProductThumbnail(data);
+        setUrl(data.data.presignedUrl);
       },
       onError: () => {
         FailToast("이미지 업로드 실패");
@@ -112,13 +119,30 @@ export default function ProductModifyModal(param: param) {
   // 이미지 등록 API 처리
   const descriptionImageMutation = useMutation(
     ["descriptionImageUpload"],
-    (image: any) => getImageUrl(image),
+    (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
-        setProductDescriptionImage(data);
+        setUrl(data.data.presignedUrl);
       },
       onError: () => {
         FailToast("이미지 업로드 실패");
+      },
+    }
+  );
+
+  const uploadMutation = useMutation(
+    ["uploadS3"],
+    (url: string) => uploadS3Server(url, file, file?.type),
+    {
+      onSuccess: () => {
+        if (type === "thumbnail") {
+          setProductThumbnail(url.split("?")[0]);
+        } else {
+          setProductDescriptionImage(url.split("?")[0]);
+        }
+      },
+      onError: () => {
+        FailToast("");
       },
     }
   );
@@ -177,7 +201,15 @@ export default function ProductModifyModal(param: param) {
         flowers: data.data.flowers,
       });
     }
+    // eslint-disable-next-line
   }, [data]);
+
+  useEffect(() => {
+    if (url !== "") {
+      uploadMutation.mutate(url);
+    }
+    // eslint-disable-next-line
+  }, [url]);
 
   if (!data || isLoading) return <Loading />;
 
@@ -392,10 +424,7 @@ export default function ProductModifyModal(param: param) {
                 </div>
               </div>
               <div className="w-full">
-                <img
-                  src={data.data.productDescriptionImage}
-                  alt="상품 상세정보"
-                />
+                <img src={productDescriptionImage} alt="상품 상세정보" />
               </div>
             </div>
           </div>

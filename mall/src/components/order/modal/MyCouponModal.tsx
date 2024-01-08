@@ -8,14 +8,14 @@ import { Button, Empty } from "antd";
 
 interface param {
   handleCancel: () => void;
-  handleCoupons: (couponId: number, couponAmount: number) => void;
+  handleCoupons: (couponId: number | null, couponAmount: number) => void;
   storeId: number;
   actualAmount: number;
-  couponId: number;
+  couponId: number | null;
   couponAmount: number;
 }
 export default function MyCouponModal(param: param) {
-  const [couponId, setCouponId] = useState<number>(param.couponId);
+  const [couponId, setCouponId] = useState<number | null>(param.couponId);
   const [couponAmount, setCouponAmount] = useState<number>(param.couponAmount);
 
   const { data, isLoading } = useQuery({

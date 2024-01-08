@@ -1,3 +1,4 @@
+import { orderDto } from "../recoil/common/interfaces";
 import { authInstance } from "./utils";
 
 // 배송 주문 상세 조회
@@ -21,5 +22,11 @@ export const getSubscriptionDetail = async (subscriptionId: string) => {
   const { data } = await authInstance.get(
     "/stores/store-subscriptions/" + subscriptionId
   );
+  return data;
+};
+
+// 단건결제
+export const paymentDeliverySingleProduct = async (orderDto: orderDto) => {
+  const { data } = await authInstance.post("/orders/delivery", orderDto);
   return data;
 };

@@ -24,7 +24,7 @@ export default function PickupOrderDetail() {
     getMyInfoMutation.mutate();
   };
 
-  const handleCoupons = (couponId: number, couponAmount: number) => {
+  const handleCoupons = (couponId: number | null, couponAmount: number) => {
     setPickupOrder((prev) => ({
       ...prev,
       couponId: couponId,
@@ -132,14 +132,14 @@ export default function PickupOrderDetail() {
               </div>
               <div className="p-2">
                 <p className="text-[1.2rem] font-bold">
-                  {pickupOrder.products.productName}
+                  {pickupOrder.product.productName}
                 </p>
                 <div className="h-full flex flex-row justify-between flex-wrap align-center">
                   <div className="flex flex-row gap-2">
                     <div className="w-[150px] h-[150px]">
                       <img
                         className="w-full h-full"
-                        src={pickupOrder.products.productThumbnailImage}
+                        src={pickupOrder.product.productThumbnailImage}
                         alt="상품 이미지"
                       />
                     </div>
@@ -149,7 +149,7 @@ export default function PickupOrderDetail() {
                           수량
                         </span>
                         <span className="mt-1">
-                          {pickupOrder.products.quantity.toLocaleString()}개
+                          {pickupOrder.product.quantity.toLocaleString()}개
                         </span>
                       </div>
                       <div className="flex flex-row gap-3">

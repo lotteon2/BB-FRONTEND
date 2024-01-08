@@ -13,6 +13,7 @@ export default function LoginLayout() {
     if (isLogin) {
       navigate("/");
     }
+    // eslint-disable-next-line
   }, []);
   return (
     <div className="relative w-[1920px] h-screen">

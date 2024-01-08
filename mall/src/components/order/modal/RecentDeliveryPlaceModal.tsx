@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { deliveryAddressData } from "../../../mocks/order";
 import {
   deliveryAddressDto,
   orderDto,
@@ -8,10 +7,14 @@ import {
 import { Empty, Button } from "antd";
 import { useSetRecoilState } from "recoil";
 import { orderState, subscriptionOrderState } from "../../../recoil/atom/order";
+import { useQuery } from "react-query";
+import { getRecentDeliveryAddress } from "../../../apis/delivery";
+import Loading from "../../common/Loading";
 
 interface param {
   handleCancel: () => void;
   type: string;
+  addressId: number | null;
 }
 export default function RecentDeliveryPlaceModal(param: param) {
   const setSubscriptionOrder = useSetRecoilState<subscriptionOrderDto>(
@@ -20,18 +23,18 @@ export default function RecentDeliveryPlaceModal(param: param) {
   const setOrder = useSetRecoilState<orderDto>(orderState);
 
   const [selected, setSelected] = useState<deliveryAddressDto>({
-    deliveryAddressId: 0,
+    deliveryAddressId: param.addressId,
     recipientName: "",
     zipcode: "",
     roadName: "",
     addressDetail: "",
     phoneNumber: "",
   });
-  const data = deliveryAddressData;
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getRecentDeliveryAddress"],
-  //     queryFn: () => getRecentDeliveryAddress(),
-  //   });
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["getRecentDeliveryAddress"],
+    queryFn: () => getRecentDeliveryAddress(),
+  });
 
   const handleSelect = () => {
     if (param.type === "subscription") {
@@ -58,17 +61,17 @@ export default function RecentDeliveryPlaceModal(param: param) {
 
     param.handleCancel();
   };
-  console.log(selected);
-  //   if (!data || isLoading) return <Loading />;
+
+  if (!data || isLoading) return <Loading />;
 
   return (
     <div>
       <div className="max-h-[500px] overflow-auto px-2">
-        {data.addressList.length === 0 ? (
-          <Empty description="최근 주문 내역이 없습니다." />
+        {data.data.length === 0 ? (
+          <Empty description="최근 배송지 내역이 없습니다." />
         ) : (
           <div className="flex flex-col gap-3">
-            {data.addressList.map((item: deliveryAddressDto) => (
+            {data.data.map((item: deliveryAddressDto) => (
               <div
                 key={item.deliveryAddressId}
                 className={`p-2 border-[1px] cursor-pointer hover:border-2 hover:border-primary7 ${

@@ -51,6 +51,7 @@ export default function PickupProductInfo(param: param) {
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [date, setDate] = useState<Dayjs>(dayjs());
   const setPickupOrder = useSetRecoilState<pickupOrderDto>(pickupOrderState);
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   const { data, isLoading } = useQuery({
     queryKey: ["getProductDetail"],
@@ -130,13 +131,13 @@ export default function PickupProductInfo(param: param) {
         storeName: data.data.storeName,
         pickupDate: pickupDate,
         pickupTime: selectedTime,
-        products: productCreate,
+        product: productCreate,
         totalAmount: data.data.productPrice * count,
         deliveryCost:
           data.data.productPrice * count >= deliveryPolicy.freeDeliveryMinPrice
             ? 0
             : deliveryPolicy.deliveryPrice,
-        couponId: 0,
+        couponId: null,
         couponAmount: 0,
         actualAmount:
           data.data.productPrice * count >= deliveryPolicy.freeDeliveryMinPrice
@@ -154,7 +155,12 @@ export default function PickupProductInfo(param: param) {
 
   const handleSaleResume = () => {
     if (isLogin) {
-      getPhoneNumberMutation.mutate();
+      const resumeDto = {
+        phoneNumber: phoneNumber,
+        userName: nickname,
+      };
+
+      saleResumeMutation.mutate(resumeDto);
     } else if (window.confirm("회원만 사용가능합니다. 로그인하시겠습니까?")) {
       navigate("/login");
     }
@@ -165,20 +171,9 @@ export default function PickupProductInfo(param: param) {
     () => getMyPhoneNumber(),
     {
       onSuccess: (data) => {
-        const resumeDto = {
-          phoneNumber: data.phoneNumber,
-          userName: nickname,
-        };
-
-        saleResumeMutation.mutate(resumeDto);
+        setPhoneNumber(data.data);
       },
       onError: () => {
-        const resumeDto = {
-          phoneNumber: "01011111111",
-          userName: nickname,
-        };
-
-        saleResumeMutation.mutate(resumeDto);
         FailToast(null);
       },
     }
@@ -214,7 +209,7 @@ export default function PickupProductInfo(param: param) {
       objectType: "feed",
       content: {
         title: data.data.productName,
-        describe: "소중한 마음, 향기에 담아 전해보세요",
+        description: "소중한 마음, 향기에 담아 전해보세요",
         imageUrl: data.data.productThumbnail,
         link: {
           webUrl: `https://localhost:3000/pickup/product/detail/${data.data.productId}`,
@@ -237,6 +232,7 @@ export default function PickupProductInfo(param: param) {
     if (data) {
       param.setProductName(data.data.productName);
       getPolilcyMutation.mutate(data.data.storeId);
+      getPhoneNumberMutation.mutate();
 
       if (!window.Kakao.isInitialized()) {
         window.Kakao.init(process.env.REACT_APP_KAKAO_JS_API_KEY);
@@ -477,7 +473,10 @@ export default function PickupProductInfo(param: param) {
             onCancel={handleCancel}
             footer={[]}
           >
-            <CouponModal storeId={data.data.storeId} />
+            <CouponModal
+              storeId={data.data.storeId}
+              phoneNumber={phoneNumber}
+            />
           </Modal>
         ) : (
           ""

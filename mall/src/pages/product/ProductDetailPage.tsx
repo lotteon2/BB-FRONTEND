@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import ProductInfo from "../../components/product/ProductInfo";
 import ProductContents from "../../components/product/ProductContents";
-import Loading from "../../components/common/Loading";
 import NotFound from "../../components/common/NotFound";
 
 export default function ProductDetailPage() {

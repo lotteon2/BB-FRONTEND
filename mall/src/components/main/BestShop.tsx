@@ -59,7 +59,7 @@ export default function BestShop() {
                   <img
                     src={item.storeThumbnailImage}
                     alt="상품 이미지"
-                    className="rounded-lg"
+                    className="rounded-lg w-full h-full"
                   />
                   {storeWishList.includes(item.storeId) ? (
                     !item.isLiked ? (

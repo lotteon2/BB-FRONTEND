@@ -11,8 +11,8 @@ import {
 import CartListFallback from "../../components/fallbacks/CartListFallback";
 import {
   cartItemDto,
-  cartOrderDto,
   modifyCartCountDto,
+  orderDto,
   orderInfoByStore,
   productCreate,
   productInfoDto,
@@ -26,7 +26,7 @@ import { useNavigate } from "react-router";
 
 export default function CartDetail() {
   const navigate = useNavigate();
-  const setCartOrder = useSetRecoilState<cartOrderDto>(cartOrderState);
+  const setCartOrder = useSetRecoilState<orderDto>(cartOrderState);
   const setOrderInfo = useSetRecoilState<orderInfoByStore[]>(orderInfoState);
   const [totalStoreList, setTotalStoreList] = useState<number[]>([]);
   const [totalProductList, setTotalProductList] = useState<string[]>([]);
@@ -282,10 +282,12 @@ export default function CartDetail() {
         orderInfoByStore.push(storeInfo);
       });
 
-      const cartOrderDto = {
+      const cartOrderDto: orderDto = {
+        orderInfoByStores: orderInfoByStore,
         sumOfActualAmount:
           totalPrice.reduce((a, b) => a + b) +
           deliveryCost.reduce((a, b) => a + b),
+        deliveryAddressId: null,
         ordererName: "",
         ordererPhoneNumber: "",
         ordererEmail: "",

@@ -42,3 +42,9 @@ export interface options {
   value: number;
   label: string;
 }
+
+export interface notiDto {
+  notificationId: number;
+  notificationContent: string;
+  notificationLink: string;
+}

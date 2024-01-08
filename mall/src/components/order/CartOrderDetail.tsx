@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import {
-  cartOrderDto,
+  orderDto,
   orderInfoByStore,
   productCreate,
 } from "../../recoil/common/interfaces";
@@ -19,8 +19,8 @@ const { TextArea } = Input;
 
 export default function CartOrderDetail() {
   const ButtonRef = useRef<HTMLButtonElement | null>(null);
-  const [order, setOrder] = useRecoilState<cartOrderDto>(cartOrderState);
-  const [orderInfo, setOrderInfo] =
+  const [order, setOrder] = useRecoilState<orderDto>(cartOrderState);
+  const [orderInfoByStore, setOrderInfoByStore] =
     useRecoilState<orderInfoByStore[]>(orderInfoState);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState<boolean>(false);
@@ -31,7 +31,7 @@ export default function CartOrderDetail() {
   const [totalDeliveryCost, setTotalDeliveryCost] = useState<number>(0);
   const [totalActualAmount, setTotalActualAmount] = useState<number>(0);
   const [totalCouponAmount, setTotalCouponAmount] = useState<number>(0);
-  console.log(orderInfo);
+
   const email_pattern =
     /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+.[a-zA-Z]+$/i;
   const blank_pattern = "/^s+|s+$/g";
@@ -40,22 +40,22 @@ export default function CartOrderDetail() {
     getMyInfoMutation.mutate();
   };
 
-  const handleCoupons = (couponId: number, couponAmount: number) => {
+  const handleCoupons = (couponId: number | null, couponAmount: number) => {
     const tmp = {
-      storeId: orderInfo[index].storeId,
-      storeName: orderInfo[index].storeName,
-      products: orderInfo[index].products,
-      totalAmount: orderInfo[index].totalAmount,
-      deliveryCost: orderInfo[index].deliveryCost,
+      storeId: order.orderInfoByStores[index].storeId,
+      storeName: order.orderInfoByStores[index].storeName,
+      products: order.orderInfoByStores[index].products,
+      totalAmount: order.orderInfoByStores[index].totalAmount,
+      deliveryCost: order.orderInfoByStores[index].deliveryCost,
       couponId: couponId,
       couponAmount: couponAmount,
-      actualAmount: orderInfo[index].actualAmount - couponAmount,
+      actualAmount: order.orderInfoByStores[index].actualAmount - couponAmount,
     };
 
-    setOrderInfo([
-      ...orderInfo.slice(0, index),
+    setOrderInfoByStore([
+      ...orderInfoByStore.slice(0, index),
       tmp,
-      ...orderInfo.slice(index + 1),
+      ...orderInfoByStore.slice(index + 1),
     ]);
 
     setTotalCouponAmount((prev) => prev + couponAmount);
@@ -74,7 +74,7 @@ export default function CartOrderDetail() {
       order.recipientPhone !== ""
     ) {
       const payDto = {
-        orderInfo: orderInfo,
+        orderInfo: orderInfoByStore,
         sumOfActualAmount: order.sumOfActualAmount, // 총 실 결제금액
         ordererName: order.ordererName,
         ordererPhoneNumber: order.ordererPhoneNumber,
@@ -205,7 +205,7 @@ export default function CartOrderDetail() {
     var couponIds: number[] = [];
     var couponAmounts: number[] = [];
 
-    orderInfo.forEach((item: orderInfoByStore) => {
+    order.orderInfoByStores.forEach((item: orderInfoByStore) => {
       totalAmount += item.totalAmount;
       totalDelivery += item.deliveryCost;
       totalActualAmount += item.actualAmount;
@@ -227,80 +227,85 @@ export default function CartOrderDetail() {
             <p className="border-b-[1px] border-grayscale7 text-[1.5rem]">
               주문상품 정보
             </p>
-            {orderInfo.map((item: orderInfoByStore, index: number) => (
-              <div
-                className="border-[1px] border-grayscale3 mt-3 relative"
-                key={item.storeId}
-              >
-                <div className="bg-grayscale2 px-2 py-1">{item.storeName}</div>
-                <div className="absolute top-1 right-2">
-                  배송:{" "}
-                  {item.deliveryCost === 0
-                    ? "무료배송"
-                    : item.deliveryCost.toLocaleString()}
-                </div>
-                {item.products.map((product: productCreate) => (
-                  <div className="p-2" key={product.productId}>
-                    <p className="text-[1.2rem] font-bold">
-                      {product.productName}
-                    </p>
-                    <div className="h-full flex flex-row justify-between flex-wrap align-center">
-                      <div className="flex flex-row gap-2">
-                        <div className="w-[150px] h-[150px]">
-                          <img
-                            className="w-full h-full"
-                            src={product.productThumbnailImage}
-                            alt="상품 이미지"
-                          />
-                        </div>
-                        <div className="flex flex-col gap-3 w-[20%] max-w-[160px] min-w-[160px]">
-                          <div className="flex flex-row gap-3">
-                            <span className="border-[1px] px-2 py-1 rounded-lg">
-                              수량
-                            </span>
-                            <span className="mt-1">
-                              {product.quantity.toLocaleString()}개
-                            </span>
+            {order.orderInfoByStores.map(
+              (item: orderInfoByStore, index: number) => (
+                <div
+                  className="border-[1px] border-grayscale3 mt-3 relative"
+                  key={item.storeId}
+                >
+                  <div className="bg-grayscale2 px-2 py-1">
+                    {item.storeName}
+                  </div>
+                  <div className="absolute top-1 right-2">
+                    배송:{" "}
+                    {item.deliveryCost === 0
+                      ? "무료배송"
+                      : item.deliveryCost.toLocaleString()}
+                  </div>
+                  {item.products.map((product: productCreate) => (
+                    <div className="p-2" key={product.productId}>
+                      <p className="text-[1.2rem] font-bold">
+                        {product.productName}
+                      </p>
+                      <div className="h-full flex flex-row justify-between flex-wrap align-center">
+                        <div className="flex flex-row gap-2">
+                          <div className="w-[150px] h-[150px]">
+                            <img
+                              className="w-full h-full"
+                              src={product.productThumbnailImage}
+                              alt="상품 이미지"
+                            />
+                          </div>
+                          <div className="flex flex-col gap-3 w-[20%] max-w-[160px] min-w-[160px]">
+                            <div className="flex flex-row gap-3">
+                              <span className="border-[1px] px-2 py-1 rounded-lg">
+                                수량
+                              </span>
+                              <span className="mt-1">
+                                {product.quantity.toLocaleString()}개
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="font-bold text-[1.5rem] my-auto max-[1200px]:w-full max-[1200px]:text-right">
-                        {(product.price * product.quantity).toLocaleString()}원
+                        <div className="font-bold text-[1.5rem] my-auto max-[1200px]:w-full max-[1200px]:text-right">
+                          {(product.price * product.quantity).toLocaleString()}
+                          원
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-                <div className="border-t-[1px]"></div>
-                <div className="flex flex-row p-2 justify-between">
-                  <div className="mt-12">
-                    <Button
-                      size="large"
-                      onClick={() => handleCouponModal(index)}
-                    >
-                      쿠폰 사용
-                    </Button>
-                  </div>
-                  <div className="flex flex-row gap-16 text-[1.2rem]">
-                    <div className="flex flex-col gap-2">
-                      <p>총 주문금액</p>
-                      <p>총 할인금액</p>
-                      <p>배송비</p>
-                      <p className="font-bold">총 결제금액</p>
+                  ))}
+                  <div className="border-t-[1px]"></div>
+                  <div className="flex flex-row p-2 justify-between">
+                    <div className="mt-12">
+                      <Button
+                        size="large"
+                        onClick={() => handleCouponModal(index)}
+                      >
+                        쿠폰 사용
+                      </Button>
                     </div>
-                    <div className="flex flex-col gap-2 text-right">
-                      <p>{item.totalAmount.toLocaleString()}원</p>
-                      <p className="text-[#FF5555]">
-                        {item.couponAmount.toLocaleString()}원
-                      </p>
-                      <p>{item.deliveryCost.toLocaleString()}원</p>
-                      <p className="font-bold text-primary4">
-                        {item.actualAmount.toLocaleString()}원
-                      </p>
+                    <div className="flex flex-row gap-16 text-[1.2rem]">
+                      <div className="flex flex-col gap-2">
+                        <p>총 주문금액</p>
+                        <p>총 할인금액</p>
+                        <p>배송비</p>
+                        <p className="font-bold">총 결제금액</p>
+                      </div>
+                      <div className="flex flex-col gap-2 text-right">
+                        <p>{item.totalAmount.toLocaleString()}원</p>
+                        <p className="text-[#FF5555]">
+                          {item.couponAmount.toLocaleString()}원
+                        </p>
+                        <p>{item.deliveryCost.toLocaleString()}원</p>
+                        <p className="font-bold text-primary4">
+                          {item.actualAmount.toLocaleString()}원
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            )}
           </div>
           <Form
             form={form}
@@ -589,8 +594,8 @@ export default function CartOrderDetail() {
         <MyCouponModal
           handleCancel={handleCancel}
           handleCoupons={handleCoupons}
-          storeId={orderInfo[index].storeId}
-          actualAmount={orderInfo[index].actualAmount}
+          storeId={order.orderInfoByStores[index].storeId}
+          actualAmount={order.orderInfoByStores[index].actualAmount}
           couponId={0}
           couponAmount={0}
         />
@@ -601,7 +606,11 @@ export default function CartOrderDetail() {
         footer={[]}
         title="최근 배송지"
       >
-        <RecentDeliveryPlaceModal handleCancel={handleCancel} type="general" />
+        <RecentDeliveryPlaceModal
+          handleCancel={handleCancel}
+          type="general"
+          addressId={order.deliveryAddressId}
+        />
       </Modal>
     </div>
   );

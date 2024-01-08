@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -26,6 +26,20 @@ import { Badge } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { modifyStoreWishList, modifyWishList } from "../../apis/member";
 import { productWishState, storeWishState } from "../../recoil/atom/member";
+import {
+  cartOrderState,
+  orderInfoState,
+  orderState,
+  pickupOrderState,
+  subscriptionOrderState,
+} from "../../recoil/atom/order";
+import Notification from "./Notification";
+import {
+  notiCountState,
+  notiEventState,
+  notiShowState,
+} from "../../recoil/atom/noti";
+import { getUnreadNotificationsCount } from "../../apis/noti";
 
 interface parameter {
   istoggled: string;
@@ -110,9 +124,14 @@ const HeaderStyle = styled.div<parameter>`
 
 export default function Header() {
   const resetLoginState = useResetRecoilState(loginState);
-  const isMall = useRecoilValue<boolean>(mallState);
   const resetNicknameState = useResetRecoilState(nicknameState);
   const resetProfileImage = useResetRecoilState(profileImageState);
+  const resetPickup = useResetRecoilState(pickupOrderState);
+  const resetOrder = useResetRecoilState(orderState);
+  const resetSubscription = useResetRecoilState(subscriptionOrderState);
+  const resetCart = useResetRecoilState(cartOrderState);
+  const resetOrderInfo = useResetRecoilState(orderInfoState);
+  const isMall = useRecoilValue<boolean>(mallState);
   const [isToggled, setIsToggled] = useState<boolean>(false);
   const [userToggled, setUserToggled] = useState<boolean>(false);
   const [mall, setMallState] = useRecoilState<boolean>(mallState);
@@ -123,6 +142,9 @@ export default function Header() {
     useRecoilState<string[]>(productWishState);
   const [storeWishList, setStoreWishList] =
     useRecoilState<number[]>(storeWishState);
+  const notiEvent = useRecoilValue<boolean>(notiEventState);
+  const setNotiShow = useSetRecoilState<boolean>(notiShowState);
+  const [notiCount, setNotiCount] = useRecoilState<number>(notiCountState);
 
   const activeStyle = {
     borderBottom: "3px solid #41744D",
@@ -152,6 +174,12 @@ export default function Header() {
       resetLoginState();
       resetNicknameState();
       resetProfileImage();
+      resetPickup();
+      resetOrder();
+      resetSubscription();
+      resetCart();
+      resetOrderInfo();
+      localStorage.clear();
       localStorage.removeItem("accessToken");
       isMall ? navigate("/") : navigate("/pickup");
       SuccessToast("로그아웃 되었습니다.");
@@ -190,6 +218,23 @@ export default function Header() {
       },
     }
   );
+
+  const notiCountMutate = useMutation(
+    ["getUnreadNotificationsCount", notiEvent],
+    () => getUnreadNotificationsCount(),
+    {
+      onSuccess: (data) => {
+        setNotiCount(data.data.unreadCount);
+      },
+      onError: () => {},
+    }
+  );
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) notiCountMutate.mutate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogin, notiEvent]);
 
   return (
     <div className="mt-5">
@@ -298,10 +343,15 @@ export default function Header() {
         )}
         {isLogin ? (
           <ul className="header__right">
-            <li>
-              <Badge badgeContent={1} color="success">
-                <NotificationsIcon fontSize="medium" />
-              </Badge>
+            <li className="relative">
+              <button onClick={() => setNotiShow((cur) => !cur)}>
+                <Badge badgeContent={notiCount} color="warning">
+                  <NotificationsIcon fontSize="medium" />
+                </Badge>
+              </button>
+              <div className="absolute top-[48px] left-[-90px] z-20 max-[500px]:top-[0px] max-[500px]:left-0">
+                <Notification />
+              </div>
             </li>
             <li className="font-light">
               <NavLink

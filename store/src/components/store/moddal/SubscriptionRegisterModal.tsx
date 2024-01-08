@@ -148,6 +148,7 @@ export default function SubscriptionRegisterModal(param: param) {
     if (url !== "") {
       uploadMutation.mutate(url);
     }
+    // eslint-disable-next-line
   }, [url]);
 
   return (

@@ -108,6 +108,7 @@ export default function LoginPage() {
     {
       onSuccess: () => {
         SuccessToast("제출되었습니다.");
+        setBusinessNumberImage("");
         setIsModalOpen(false);
       },
       onError: () => {
@@ -133,6 +134,7 @@ export default function LoginPage() {
     if (url !== "") {
       uploadMutation.mutate(url);
     }
+    // eslint-disable-next-line
   }, [url]);
 
   return (

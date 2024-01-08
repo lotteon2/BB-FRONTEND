@@ -17,6 +17,8 @@ import {
 import { getStoreDeliveryPolicy } from "../../apis/store";
 import { subscriptionOrderState } from "../../recoil/atom/order";
 import ProductImage from "./ProductImage";
+import { getMyPhoneNumber } from "../../apis/member";
+import { FailToast } from "../common/toast/FailToast";
 
 interface param {
   productId: string | undefined;
@@ -41,6 +43,7 @@ export default function SubscriptionInfo(param: param) {
     deliveryPrice: 0,
     freeDeliveryMinPrice: 0,
   });
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   const { data, isLoading } = useQuery({
     queryKey: ["getProductDetail"],
@@ -93,7 +96,7 @@ export default function SubscriptionInfo(param: param) {
         data.productPrice >= deliveryPolicy.freeDeliveryMinPrice
           ? 0
           : deliveryPolicy.deliveryPrice,
-      couponId: 0,
+      couponId: null,
       couponAmount: 0,
       actualAmount:
         data.productPrice >= deliveryPolicy.freeDeliveryMinPrice
@@ -108,7 +111,7 @@ export default function SubscriptionInfo(param: param) {
       deliveryAddressDetail: "",
       recipientPhone: "",
       deliveryRequest: "",
-      deliveryAddressId: 0,
+      deliveryAddressId: null,
     };
 
     setSubscriptionOrder(subscriptionOrder);
@@ -131,7 +134,7 @@ export default function SubscriptionInfo(param: param) {
       objectType: "feed",
       content: {
         title: data.data.productName,
-        describe: "소중한 마음, 향기에 담아 전해보세요",
+        description: "소중한 마음, 향기에 담아 전해보세요",
         imageUrl: data.data.productThumbnail,
         link: {
           webUrl: `https://localhost:3000/subscription/product/detail/${data.data.storeId}`,
@@ -150,10 +153,24 @@ export default function SubscriptionInfo(param: param) {
     });
   };
 
+  const getPhoneNumberMutation = useMutation(
+    ["getMyPhoneNumber"],
+    () => getMyPhoneNumber(),
+    {
+      onSuccess: (data) => {
+        setPhoneNumber(data.data);
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
+
   useEffect(() => {
     if (data) {
       param.setProductName(data.data.productName);
       getPolilcyMutation.mutate(data.data.storeId);
+      getPhoneNumberMutation.mutate();
 
       if (!window.Kakao.isInitialized()) {
         window.Kakao.init(process.env.REACT_APP_KAKAO_JS_API_KEY);
@@ -300,7 +317,10 @@ export default function SubscriptionInfo(param: param) {
             onCancel={handleCancel}
             footer={[]}
           >
-            <CouponModal storeId={data.data.storeId} />
+            <CouponModal
+              storeId={data.data.storeId}
+              phoneNumber={phoneNumber}
+            />
           </Modal>
         ) : (
           ""

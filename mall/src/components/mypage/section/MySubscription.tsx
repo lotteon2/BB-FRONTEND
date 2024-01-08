@@ -4,7 +4,6 @@ import {
   cancelSubscription,
   getMySubscriptionList,
 } from "../../../apis/member";
-import { mySubscriptionsData } from "../../../mocks/mypage";
 import { mySubscriptionItemDto } from "../../../recoil/common/interfaces";
 import { Button, Empty } from "antd";
 import { SuccessToast } from "../../common/toast/SuccessToast";

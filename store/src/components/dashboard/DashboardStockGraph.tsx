@@ -1,6 +1,5 @@
 import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
-import { productStockGraph } from "../../mocks/dashboard";
 import { useQuery } from "react-query";
 import { useRecoilValue } from "recoil";
 import { storeIdState } from "../../recoil/atom/common";

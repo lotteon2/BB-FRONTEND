@@ -1,3 +1,4 @@
+import { simpleUserInfo } from "../recoil/common/interfaces";
 import { authInstance, defaultInstance } from "./utils";
 
 const isLogin = localStorage.getItem("isLogin");
@@ -87,17 +88,31 @@ export const getCouponListFromProductDetail = async (
 };
 
 // 쿠폰 개별 다운로드
-export const downloadSingleCoupon = async (couponId: number | undefined) => {
-  const { data } = await authInstance.post("/stores/coupons/" + couponId);
-  return data;
+export const downloadSingleCoupon = async (
+  couponId: number | undefined,
+  userInfo: simpleUserInfo | undefined
+) => {
+  if (couponId && userInfo) {
+    const { data } = await authInstance.post(
+      "/stores/coupons/" + couponId,
+      userInfo
+    );
+    return data;
+  }
 };
 
 // 쿠폰 전체 다운로드
-export const downloadAllCoupons = async (storeId: number | undefined) => {
-  const { data } = await authInstance.post(
-    "/stores/" + storeId + "/coupons/all"
-  );
-  return data;
+export const downloadAllCoupons = async (
+  storeId: number | undefined,
+  userInfo: simpleUserInfo | undefined
+) => {
+  if (storeId && userInfo) {
+    const { data } = await authInstance.post(
+      "/stores/" + storeId + "/coupons/all",
+      userInfo
+    );
+    return data;
+  }
 };
 
 // 배송 정책

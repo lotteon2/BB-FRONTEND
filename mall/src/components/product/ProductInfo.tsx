@@ -47,6 +47,7 @@ export default function ProductInfo(param: param) {
     deliveryPrice: 0,
     freeDeliveryMinPrice: 0,
   });
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   const { data, isLoading } = useQuery({
     queryKey: ["getProductDetail", param.productId],
@@ -107,18 +108,28 @@ export default function ProductInfo(param: param) {
       },
     ];
 
+    const orderInfoByStore = [
+      {
+        storeId: data.data.storeId,
+        storeName: data.data.storeName,
+        products: productCreate,
+        totalAmount: data.data.productPrice * count,
+        deliveryCost:
+          data.data.productPrice * count >= deliveryPolicy.freeDeliveryMinPrice
+            ? 0
+            : deliveryPolicy.deliveryPrice,
+        couponId: null,
+        couponAmount: 0,
+        actualAmount:
+          data.data.productPrice * count >= deliveryPolicy.freeDeliveryMinPrice
+            ? data.data.productPrice * count
+            : data.data.productPrice * count + deliveryPolicy.deliveryPrice,
+      },
+    ];
+
     const order = {
-      storeId: data.data.storeId,
-      storeName: data.data.storeName,
-      products: productCreate,
-      totalAmount: data.data.productPrice * count,
-      deliveryCost:
-        data.data.productPrice * count >= deliveryPolicy.freeDeliveryMinPrice
-          ? 0
-          : deliveryPolicy.deliveryPrice,
-      couponId: 0,
-      couponAmount: 0,
-      actualAmount:
+      orderInfoByStores: orderInfoByStore,
+      sumOfActualAmount:
         data.data.productPrice * count >= deliveryPolicy.freeDeliveryMinPrice
           ? data.data.productPrice * count
           : data.data.productPrice * count + deliveryPolicy.deliveryPrice,
@@ -131,7 +142,7 @@ export default function ProductInfo(param: param) {
       deliveryAddressDetail: "",
       recipientPhone: "",
       deliveryRequest: "",
-      deliveryAddressId: 0,
+      deliveryAddressId: null,
     };
 
     setOrder(order);
@@ -149,7 +160,12 @@ export default function ProductInfo(param: param) {
 
   const handleSaleResume = () => {
     if (isLogin) {
-      getPhoneNumberMutation.mutate();
+      const resumeDto = {
+        phoneNumber: phoneNumber,
+        userName: nickname,
+      };
+
+      saleResumeMutation.mutate(resumeDto);
     } else if (window.confirm("회원만 사용가능합니다. 로그인하시겠습니까?")) {
       navigate("/login");
     }
@@ -160,20 +176,9 @@ export default function ProductInfo(param: param) {
     () => getMyPhoneNumber(),
     {
       onSuccess: (data) => {
-        const resumeDto = {
-          phoneNumber: data.phoneNumber,
-          userName: nickname,
-        };
-
-        saleResumeMutation.mutate(resumeDto);
+        setPhoneNumber(data.data);
       },
       onError: () => {
-        const resumeDto = {
-          phoneNumber: "01011111111",
-          userName: nickname,
-        };
-
-        saleResumeMutation.mutate(resumeDto);
         FailToast(null);
       },
     }
@@ -222,7 +227,7 @@ export default function ProductInfo(param: param) {
       objectType: "feed",
       content: {
         title: data.data.productName,
-        describe: "소중한 마음, 향기에 담아 전해보세요",
+        description: "소중한 마음, 향기에 담아 전해보세요",
         imageUrl: data.data.productThumbnail,
         link: {
           webUrl: `https://localhost:3000/product/detail/${data.data.productId}`,
@@ -246,12 +251,16 @@ export default function ProductInfo(param: param) {
       param.setProductName(data.data.productName);
       getPolilcyMutation.mutate(data.data.storeId);
 
+      if (isLogin) {
+        getPhoneNumberMutation.mutate();
+      }
+
       if (!window.Kakao.isInitialized()) {
         window.Kakao.init(process.env.REACT_APP_KAKAO_JS_API_KEY);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data]);
 
   if (!data || isLoading) return <ProductInfoFallback />;
 
@@ -296,19 +305,19 @@ export default function ProductInfo(param: param) {
             ))}
           </div>
         </div>
-        <div
-          className={
-            data.data.productSaleStatus === "DISCONTINUED"
-              ? "w-full h-full contrast-50 relative"
-              : "w-full h-full relative"
-          }
-        >
+        <div className="w-full h-full relative">
           <ProductImage src={data.data.productThumbnail} alt="상품 썸네일" />
         </div>
       </div>
       <div className="w-1/2 max-w-[800px] min-w-[370px]">
         <div className="flex flex-row gap-2">
-          <p className="text-[2.3rem] font-bold mt-3">
+          <p
+            className={
+              data.data.productSaleStatus === "DISCONTINUED"
+                ? "text-[2.3rem] font-bold mt-3 text-grayscale5"
+                : "text-[2.3rem] font-bold mt-3"
+            }
+          >
             {data.data.productName}
           </p>
         </div>
@@ -472,7 +481,10 @@ export default function ProductInfo(param: param) {
             onCancel={handleCancel}
             footer={[]}
           >
-            <CouponModal storeId={data.data.storeId} />
+            <CouponModal
+              storeId={data.data.storeId}
+              phoneNumber={phoneNumber}
+            />
           </Modal>
         ) : (
           ""

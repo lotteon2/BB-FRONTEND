@@ -14,7 +14,6 @@ import { SuccessToast } from "../components/common/toast/SuccessToast";
 import { FailToast } from "../components/common/toast/FailToast";
 import { signupDto } from "../recoil/common/interfaces";
 import { getImageUrl, uploadS3Server } from "../apis/image";
-import axios from "axios";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -238,6 +237,7 @@ export default function RegisterPage() {
     if (url !== "") {
       uploadMutation.mutate(url);
     }
+    // eslint-disable-next-line
   }, [url]);
 
   return (
