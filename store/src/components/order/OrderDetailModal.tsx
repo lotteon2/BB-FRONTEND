@@ -45,6 +45,7 @@ export default function OrderDetailModal(param: param) {
     if (data && !orderState) {
       setOrderState(data.data.orderDeliveryStatus);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (!data || isLoading) return null;

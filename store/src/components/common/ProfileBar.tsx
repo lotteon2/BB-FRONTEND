@@ -1,11 +1,6 @@
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Badge from "@mui/material/Badge";
-import {
-  useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState,
-} from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import { SuccessToast } from "./toast/SuccessToast";
 import { useMutation } from "react-query";
 import { loginState, nameState, storeIdState } from "../../recoil/atom/common";
@@ -67,6 +62,7 @@ export default function ProfileBar() {
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken && storeId !== null) notiCountMutate.mutate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isNotiShow]);
 
   return (

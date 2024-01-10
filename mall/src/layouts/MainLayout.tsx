@@ -11,7 +11,6 @@ import { ConfigProvider } from "antd";
 import { useMutation } from "react-query";
 import { modifyStoreWishList, modifyWishList } from "../apis/member";
 import { productWishState, storeWishState } from "../recoil/atom/member";
-import { FailToast } from "../components/common/toast/FailToast";
 
 export default function MainLayout() {
   const navigate = useNavigate();
