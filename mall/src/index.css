@@ -55,6 +55,12 @@ code {
   background: rgba(0, 0, 0, 0.041);
 }
 
+:where(.css-1lq5t2e).ant-btn-primary {
+  color: #fff;
+  background-color: #85c031 !important;
+  box-shadow: 0 2px 0 rgba(188, 255, 5, 0.06);
+}
+
 :where(.css-dev-only-do-not-override-1lq5t2e).ant-btn-primary:not(
     :disabled
   ):not(.ant-btn-disabled) {
