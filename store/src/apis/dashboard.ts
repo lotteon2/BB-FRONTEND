@@ -5,7 +5,7 @@ import { authInstance } from "./utils";
  */
 export const getWeeklySaleGraph = async (storeId: number) => {
   const { data } = await authInstance.get(
-    "/api/orders/store/" + storeId + "/weekly/sale"
+    "/orders/store/" + storeId + "/weekly/sales"
   );
   return data;
 };
@@ -15,7 +15,7 @@ export const getWeeklySaleGraph = async (storeId: number) => {
  */
 export const getBestProductsGraph = async (storeId: number) => {
   const { data } = await authInstance.get(
-    "/api/products/store/" + storeId + "/best-top-ten"
+    "/products/store/" + storeId + "/best-top-ten"
   );
   return data;
 };
@@ -25,7 +25,7 @@ export const getBestProductsGraph = async (storeId: number) => {
  */
 export const getFlowerStockGraph = async (storeId: number) => {
   const { data } = await authInstance.get(
-    "/api/stores/" + storeId + "/flowers/stocks"
+    "/stores/" + storeId + "/flowers/stocks"
   );
   return data;
 };

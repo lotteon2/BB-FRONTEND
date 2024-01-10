@@ -10,6 +10,7 @@ import { useQuery } from "react-query";
 import { dateState, storeIdState } from "../../recoil/atom/common";
 import { getScheduleInfo } from "../../apis/order";
 import SchedulerCalendarFallback from "../fallbacks/SchedulerCalendarFallback";
+import { Button, Modal } from "antd";
 
 interface dateInfo {
   year: number;
@@ -69,7 +70,7 @@ export default function SchedulerCalendar() {
     if (data) {
       let attendanceTmp: calendarEvents[] = [];
 
-      data.data.forEach(function (item: string) {
+      data.data.data.forEach(function (item: string) {
         const date = item.split(" ")[0];
         const year = Number(date.split("-")[0]);
         const month = Number(date.split("-")[1]) - 1;
@@ -88,7 +89,7 @@ export default function SchedulerCalendar() {
   }, [data]);
 
   if (!data || isLoading) return <SchedulerCalendarFallback />;
-  if (true) return <SchedulerCalendarFallback />;
+
   return (
     <div>
       <Calendar
@@ -102,11 +103,18 @@ export default function SchedulerCalendar() {
         eventPropGetter={eventHandlePropGetter}
       />
       {isModalOpen && modalState ? (
-        <SubscriptionInfoModal
-          selectedId={selectedId}
-          isModalOpen={isModalOpen}
-          handleCancel={handleCancel}
-        />
+        <Modal
+          open={isModalOpen}
+          onCancel={handleCancel}
+          title={selectedId.split(" ")[0] + " 정기구독"}
+          footer={<Button onClick={handleCancel}>닫기</Button>}
+        >
+          <SubscriptionInfoModal
+            selectedId={selectedId}
+            isModalOpen={isModalOpen}
+            handleCancel={handleCancel}
+          />
+        </Modal>
       ) : isModalOpen && !modalState ? (
         <PickupInfoModal
           selectedId={selectedId}

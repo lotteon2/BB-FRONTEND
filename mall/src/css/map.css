@@ -1,0 +1,32 @@
+.map-wrapper svg {
+  margin: auto;
+}
+.region {
+  fill: #41744d;
+  stroke: white;
+  stroke-width: 1px;
+  cursor: pointer;
+}
+.region.click {
+  fill: #315136;
+}
+.region:hover {
+  fill: #315136;
+}
+.sido {
+  font-size: 1.2rem;
+  font-weight: 700;
+  user-select: none;
+}
+.info {
+  display: none;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 0.5rem;
+}

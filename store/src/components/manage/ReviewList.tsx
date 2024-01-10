@@ -51,14 +51,14 @@ export default function ReviewList() {
         </span>
       </div>
       <div>
-        {data.totalCnt === 0 ? (
+        {data.data.totalCnt === 0 ? (
           <div className="mt-72">
             <Empty description="등록된 리뷰가 없습니다." />
           </div>
         ) : (
           <div>
             <div className="mt-3 h-[765px]">
-              {data.reviews.map((item: reviewDto) => (
+              {data.data.reviews.map((item: reviewDto) => (
                 <div
                   key={item.reviewId}
                   className="flex flex-row gap-3 relative py-3 border-y-[1px] border-grayscale2 text-left cursor-pointer hover:bg-purple-100"

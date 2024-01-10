@@ -40,10 +40,6 @@ export const categoryOptions = [
   },
   {
     value: 4,
-    label: "화분",
-  },
-  {
-    value: 5,
     label: "화환",
   },
 ];
@@ -177,11 +173,7 @@ export const saleStatusOptions = [
   },
   {
     value: "DISCONTINUED",
-    label: "판매 중단",
-  },
-  {
-    value: "DELETED",
-    label: "상품 삭제",
+    label: "판매 중지",
   },
 ];
 
@@ -202,26 +194,26 @@ export const deliveryStatusOptions = [
 
 export const deliverStatusFirst = [
   {
-    value: "ORDER_RECEIVED",
+    value: "PENDING",
     label: "주문접수",
   },
   {
-    value: "DELIVERY_STARTED",
+    value: "PROCESSING",
     label: "배송시작",
   },
   {
-    value: "DELIVERY_COMPLETED",
+    value: "COMPLETED",
     label: "배송완료",
   },
 ];
 
 export const deliverStatusSecond = [
   {
-    value: "DELIVERY_STARTED",
+    value: "PROCESSING",
     label: "배송시작",
   },
   {
-    value: "DELIVERY_COMPLETED",
+    value: "COMPLETED",
     label: "배송완료",
   },
 ];

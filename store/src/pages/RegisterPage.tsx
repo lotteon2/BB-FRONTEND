@@ -13,7 +13,7 @@ import {
 import { SuccessToast } from "../components/common/toast/SuccessToast";
 import { FailToast } from "../components/common/toast/FailToast";
 import { signupDto } from "../recoil/common/interfaces";
-import { getImageUrl } from "../apis/image";
+import { getImageUrl, uploadS3Server } from "../apis/image";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -21,9 +21,12 @@ export default function RegisterPage() {
   const [email, setEmail] = useState<string>("");
   const [emailcode, setEmailCode] = useState<string>("");
   const [isValid, setIsValid] = useState<boolean>(false);
+  const [isShow, setIsShow] = useState<boolean>(false);
   const [isConfirm, setIsConfirm] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
+  const [image, setImage] = useState<File>();
+  const [url, setUrl] = useState<string>("");
   const [businessNumberImage, setBusinessNumberImage] = useState<string>("");
   const defaultValues = {
     email: "",
@@ -35,8 +38,7 @@ export default function RegisterPage() {
   const email_pattern =
     /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+.[a-zA-Z]+$/i;
   const blank_pattern = "/^s+|s+$/g";
-  const password_pattern =
-    /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+  const password_pattern = /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,16}$/;
   const korean_pattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
   // 이메일 중복 확인
@@ -57,9 +59,8 @@ export default function RegisterPage() {
   // 이미지 등록
   const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files !== null) {
-      const formData = new FormData();
-      formData.append("image", e.target.files[0]);
-      imageMutation.mutate(formData);
+      setImage(e.target.files[0]);
+      imageMutation.mutate(e.target.files[0].name);
     }
   };
 
@@ -86,7 +87,7 @@ export default function RegisterPage() {
     ) {
       const signupDto = {
         email: email,
-        emailVerified: isConfirm,
+        isEmailVerified: isConfirm,
         password: password,
         name: name,
         businessNumberImage: businessNumberImage,
@@ -127,7 +128,7 @@ export default function RegisterPage() {
     }
     if (!value.match(password_pattern)) {
       return Promise.reject(
-        new Error("8~16자의 영문자, 숫자, 특수문자를 사용해 주세요.")
+        new Error("8~16자의 영문자, 숫자를 사용해 주세요.")
       );
     }
     if (value.match(blank_pattern)) {
@@ -161,6 +162,7 @@ export default function RegisterPage() {
     {
       onSuccess: () => {
         SuccessToast("인증코드가 발송되었습니다.");
+        setIsShow(true);
       },
       onError: () => {
         FailToast(null);
@@ -170,11 +172,28 @@ export default function RegisterPage() {
 
   const checkEmailCodeMutation = useMutation(
     ["verifyEmailCode"],
-    () => verifyEmailCode(email),
+    () => verifyEmailCode(email, emailcode),
     {
       onSuccess: () => {
         SuccessToast("인증되었습니다.");
         setIsConfirm(true);
+      },
+      onError: (error: any) => {
+        if (error.response.status === 400) {
+          FailToast("인증코드가 일치하지 않습니다.");
+        } else {
+          FailToast(null);
+        }
+      },
+    }
+  );
+
+  const imageMutation = useMutation(
+    ["uploadImage"],
+    (image: string) => getImageUrl(image),
+    {
+      onSuccess: (data) => {
+        setUrl(data.data.presignedUrl);
       },
       onError: () => {
         FailToast(null);
@@ -182,15 +201,15 @@ export default function RegisterPage() {
     }
   );
 
-  const imageMutation = useMutation(
-    ["uploadImage"],
-    (image: FormData) => getImageUrl(image),
+  const uploadMutation = useMutation(
+    ["uploadS3"],
+    (url: string) => uploadS3Server(url, image, image?.type),
     {
-      onSuccess: (data) => {
-        setBusinessNumberImage(data);
+      onSuccess: () => {
+        setBusinessNumberImage(url.split("?")[0]);
       },
       onError: () => {
-        FailToast(null);
+        FailToast("");
       },
     }
   );
@@ -214,6 +233,13 @@ export default function RegisterPage() {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    if (url !== "") {
+      uploadMutation.mutate(url);
+    }
+    // eslint-disable-next-line
+  }, [url]);
+
   return (
     <div className="relative top-32 left-[550px] w-[800px] h-[600px] bg-grayscale1 shadow-lg z-10 rounded-lg">
       <p className="relative top-[-40px] logo text-8xl text-primary1 text-center">
@@ -232,6 +258,7 @@ export default function RegisterPage() {
           label="이메일"
           rules={[
             {
+              required: true,
               validator: rightEmail,
             },
           ]}
@@ -263,6 +290,7 @@ export default function RegisterPage() {
           label="비밀번호"
           rules={[
             {
+              required: true,
               validator: rightPassword,
             },
           ]}
@@ -302,6 +330,7 @@ export default function RegisterPage() {
           label="이름"
           rules={[
             {
+              required: true,
               validator: rightName,
             },
           ]}
@@ -324,12 +353,14 @@ export default function RegisterPage() {
             },
           ]}
         >
-          <input
-            value={businessNumberImage}
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleUploadImage(e)}
-          />
+          <div>
+            <Input className="hidden" value={businessNumberImage} />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleUploadImage(e)}
+            />
+          </div>
         </Form.Item>
         <Button
           type="primary"
@@ -351,12 +382,17 @@ export default function RegisterPage() {
             중복확인
           </Button>
           {isValid ? (
-            <Button onClick={handleSendEmailCode}>인증코드 발송</Button>
+            <Button
+              onClick={handleSendEmailCode}
+              disabled={isConfirm ? true : false}
+            >
+              인증코드 발송
+            </Button>
           ) : (
             ""
           )}
         </div>
-        {isConfirm ? (
+        {isShow ? (
           <Button
             type="primary"
             onClick={handleCheckEmailCode}

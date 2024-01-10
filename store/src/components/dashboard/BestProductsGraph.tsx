@@ -1,17 +1,20 @@
 import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
-import { weeklySaleProductData } from "../../mocks/dashboard";
+import { useQuery } from "react-query";
+import { getBestProductsGraph } from "../../apis/dashboard";
+import { useRecoilValue } from "recoil";
+import { storeIdState } from "../../recoil/atom/common";
+import QuarterDiv from "../fallbacks/QuarterDiv";
 
 export default function BestProductsGraph() {
-  const data = weeklySaleProductData;
+  const storeId = useRecoilValue<number>(storeIdState);
 
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ["getWeeklyProduct"],
-  //   queryFn: () => getWeeklySaleProductGraph(),
-  // });
-  // const isLoading = true;
+  const { data, isLoading } = useQuery({
+    queryKey: ["getWeeklyProduct"],
+    queryFn: () => getBestProductsGraph(storeId),
+  });
 
-  // if (!data || isLoading) return <QuarterDiv />;
+  if (!data || isLoading) return <QuarterDiv />;
 
   const options: ApexOptions = {
     colors: [
@@ -83,7 +86,7 @@ export default function BestProductsGraph() {
       },
     },
   };
-  const series = data;
+  const series = data.data.products;
 
   return (
     <div className="p-3">

@@ -39,18 +39,22 @@ export default function StoreInfo() {
       </Button>
       <div className="flex flex-row gap-3 mt-2">
         <div className="w-[200px] h-[200px]">
-          <img src={data.storeThumbnailImage} alt="가게 썸네일 이미지" />
+          <img
+            src={data.data.storeThumbnailImage}
+            alt="가게 썸네일 이미지"
+            className="w-full h-full"
+          />
         </div>
-        <div className="flex flex-col gap-3 text-[1.2rem]">
-          <p className="text-[2rem] font-bold">{data.storeName}</p>
+        <div className="flex flex-col gap-3 text-[1rem]">
+          <p className="text-[1.8rem] font-bold">{data.data.storeName}</p>
           <p className="text-grayscale5">
-            {data.address + " " + data.addressDetail}
+            {data.data.address + " " + data.data.addressDetail}
           </p>
-          <p>{data.phoneNumber}</p>
-          <p>{data.bank + " " + data.accountNumber}</p>
+          <p>연락처: {data.data.phoneNumber}</p>
+          <p>대표계좌: {data.data.bank + " " + data.data.accountNumber}</p>
         </div>
       </div>
-      <p className="mt-2 h-40 overflow-auto">{data.detailInfo}</p>
+      <p className="mt-2 h-40 overflow-auto">{data.data.detailInfo}</p>
       {isModalOpen ? (
         <StoreModifyModal
           isModalOpen={isModalOpen}

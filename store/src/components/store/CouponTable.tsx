@@ -1,5 +1,14 @@
 import { useRef, useState } from "react";
-import { Button, Empty, Input, Space, Typography, Table, InputRef } from "antd";
+import {
+  Button,
+  Empty,
+  Input,
+  Space,
+  Typography,
+  Table,
+  InputRef,
+  Modal,
+} from "antd";
 import { useMutation, useQuery } from "react-query";
 import { deleteCoupon, getCouponList } from "../../apis/store";
 import { useRecoilValue } from "recoil";
@@ -17,6 +26,7 @@ import CouponModifyModal from "./moddal/CouponModifyModal";
 import { SuccessToast } from "../common/toast/SuccessToast";
 import { FailToast } from "../common/toast/FailToast";
 import CouponTableFallback from "../fallbacks/CouponTableFallback";
+import CouponDownloadList from "./moddal/CouponDownloadList";
 
 type DataIndex = keyof couponItemDto;
 export default function CouponTable() {
@@ -35,6 +45,8 @@ export default function CouponTable() {
     startDate: "",
     endDate: "",
   });
+  const [couponId, setCouponId] = useState<number>(0);
+  const [isShowList, setIsShowList] = useState<boolean>(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ["getCouponList", isChange],
@@ -44,6 +56,7 @@ export default function CouponTable() {
   const handleCancel = () => {
     setIsRegisterModal(false);
     setIsModalOpen(false);
+    setIsShowList(false);
   };
 
   const handleChange = () => {
@@ -246,6 +259,7 @@ export default function CouponTable() {
                 startDate: record.startDate,
                 endDate: record.endDate,
               });
+              setCouponId(record.key);
             }}
             disabled={
               new Date(record.endDate) < new Date() ||
@@ -295,8 +309,16 @@ export default function CouponTable() {
           <Empty description="등록된 쿠폰 정보가 없습니다." className="mt-72" />
         ) : (
           <Table
+            onRow={(record) => {
+              return {
+                onClick: () => {
+                  setCouponId(record.key);
+                  setIsShowList(true);
+                },
+              };
+            }}
             columns={columns}
-            dataSource={data.data}
+            dataSource={data.data.data}
             pagination={{ position: ["bottomCenter"], pageSize: 13 }}
           ></Table>
         )}
@@ -304,8 +326,9 @@ export default function CouponTable() {
           <CouponModifyModal
             isModalOpen={isModalOpen}
             handleCancel={handleCancel}
-            handleChange={handleCancel}
+            handleChange={handleChange}
             data={couponInfo}
+            couponId={couponId}
           />
         ) : (
           ""
@@ -320,6 +343,15 @@ export default function CouponTable() {
       ) : (
         ""
       )}
+      <Modal
+        open={isShowList}
+        onCancel={handleCancel}
+        title="발급 현황"
+        width={800}
+        footer={[]}
+      >
+        <CouponDownloadList couponId={couponId} />
+      </Modal>
     </div>
   );
 }

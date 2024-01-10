@@ -3,7 +3,7 @@ import { Button, Form, Input, InputNumber, Modal, Select } from "antd";
 import { storeInfoDto } from "../../../recoil/common/interfaces";
 import { PictureFilled } from "@ant-design/icons";
 import { useMutation } from "react-query";
-import { getImageUrl } from "../../../apis/image";
+import { getImageUrl, uploadS3Server } from "../../../apis/image";
 import { FailToast } from "../../common/toast/FailToast";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import { bankOptions } from "../../../recoil/common/options";
@@ -28,16 +28,16 @@ const { TextArea } = Input;
 export default function StoreRegisterModal(param: param) {
   const setStoreId = useSetRecoilState<number>(storeIdState);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [file, setFile] = useState<File>();
   const [isAddressModalOpen, setIsAddressModalOpen] = useState<boolean>(false);
+  const [url, setUrl] = useState<string>("");
   const [registerValues, setRegisterValues] = useState<storeInfoDto>({
     storeName: "",
     detailInfo: "",
-    storeThumbnailImage:
-      "https://f-mans.com/data/goods/1/2023/10/681_temp_16972473985275list1.jpg",
+    storeThumbnailImage: "",
     phoneNumber: "",
     accountNumber: "",
     bank: "국민은행",
-    minOrderPrice: null,
     deliveryPrice: null,
     freeDeliveryMinPrice: null,
     sido: "",
@@ -57,7 +57,6 @@ export default function StoreRegisterModal(param: param) {
       phoneNumber: "",
       accountNumber: "",
       bank: "",
-      minOrderPrice: null,
       deliveryPrice: null,
       freeDeliveryMinPrice: null,
       sido: "",
@@ -73,10 +72,9 @@ export default function StoreRegisterModal(param: param) {
   };
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formData = new FormData();
     if (e.target.files !== null) {
-      formData.append("image", e.target.files[0]);
-      thumbnailMutation.mutate(formData);
+      setFile(e.target.files[0]);
+      thumbnailMutation.mutate(e.target.files[0].name);
     }
   };
 
@@ -128,7 +126,6 @@ export default function StoreRegisterModal(param: param) {
       registerValues.detailInfo !== "" &&
       registerValues.phoneNumber !== "" &&
       registerValues.accountNumber !== "" &&
-      registerValues.minOrderPrice !== null &&
       registerValues.deliveryPrice !== null &&
       registerValues.freeDeliveryMinPrice !== null
     ) {
@@ -137,14 +134,30 @@ export default function StoreRegisterModal(param: param) {
   };
 
   const thumbnailMutation = useMutation(
-    ["imageUpload"],
-    (image: FormData) => getImageUrl(image),
+    ["uploadImage"],
+    (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
-        setRegisterValues((prev) => ({ ...prev, storeThumbnailImage: data }));
+        setUrl(data.data.presignedUrl);
       },
       onError: () => {
         FailToast(null);
+      },
+    }
+  );
+
+  const uploadMutation = useMutation(
+    ["uploadS3"],
+    (url: string) => uploadS3Server(url, file, file?.type),
+    {
+      onSuccess: () => {
+        setRegisterValues((prev) => ({
+          ...prev,
+          storeThumbnailImage: url.split("?")[0],
+        }));
+      },
+      onError: () => {
+        FailToast("");
       },
     }
   );
@@ -154,7 +167,7 @@ export default function StoreRegisterModal(param: param) {
     () => registerStore(registerValues),
     {
       onSuccess: (data) => {
-        setStoreId(data);
+        setStoreId(data.data);
         SuccessToast("가게 정보가 등록되었습니다.");
         param.handleCancel();
       },
@@ -172,6 +185,13 @@ export default function StoreRegisterModal(param: param) {
   useEffect(() => {
     form.setFieldsValue(registerValues);
   }, [form, registerValues]);
+
+  useEffect(() => {
+    if (url !== "") {
+      uploadMutation.mutate(url);
+    }
+    // eslint-disable-next-line
+  }, [url]);
 
   return (
     <div>
@@ -265,6 +285,12 @@ export default function StoreRegisterModal(param: param) {
               <Form.Item name="detailAddress">
                 <Input
                   placeholder="상세주소"
+                  onChange={(e) =>
+                    setRegisterValues((prev) => ({
+                      ...prev,
+                      detailAddress: e.target.value,
+                    }))
+                  }
                   value={registerValues.detailAddress}
                   style={{ marginLeft: 60, width: 190 }}
                 />
@@ -334,25 +360,6 @@ export default function StoreRegisterModal(param: param) {
                   }
                 />
               </div>
-            </Form.Item>
-            <Form.Item
-              name="minOrderPrice"
-              label="최소 주문금액"
-              rules={[
-                {
-                  required: true,
-                  message: "필수 입력값입니다.",
-                },
-              ]}
-            >
-              <InputNumber
-                placeholder="최소 주문금액"
-                value={registerValues.minOrderPrice}
-                onChange={(e) =>
-                  setRegisterValues((prev) => ({ ...prev, minOrderPrice: e }))
-                }
-                style={{ width: "100%" }}
-              />
             </Form.Item>
             <Form.Item
               name="deliveryPrice"

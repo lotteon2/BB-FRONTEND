@@ -29,22 +29,24 @@ export default function QuestionDetailModal(param: param) {
         <div className="w-full overflow-auto">
           <p className="py-2"></p>
           <Tag bordered={false}>
-            {data.createdAt.split("T")[0] + " " + data.createdAt.split("T")[1]}{" "}
+            {data.data.createdAt.split("T")[0] +
+              " " +
+              data.data.createdAt.split("T")[1]}{" "}
             작성됨
           </Tag>
-          <p className="text-[1.3rem] font-bold">{data.title}</p>
+          <p className="text-[1.3rem] font-bold">{data.data.title}</p>
           <div className="text-[1rem] h-32 rounded-lg p-2 overflow-auto">
-            {data.content}
+            {data.data.content}
           </div>
           <p className="border-b-[1px] border-grayscale3 mt-5"></p>
           <div className="mt-5">
             <div className="flex flex-row gap-2 mb-2">
               <span>답변 내용</span>
-              <Tag bordered={false}>{data.answer.repliedAt} 작성됨</Tag>
+              <Tag bordered={false}>{data.data.answer.repliedAt} 작성됨</Tag>
             </div>
             <TextArea
               disabled
-              value={data.answer.content}
+              value={data.data.answer.content}
               autoSize={{ minRows: 6, maxRows: 6 }}
               placeholder="답변 내용을 작성해주세요."
             />

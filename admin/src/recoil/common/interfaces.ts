@@ -1,9 +1,10 @@
 export interface signinDto {
-  email: string;
+  id: string;
   password: string;
 }
 
 export interface settlementItem {
+  key: number;
   storeName: string;
   settlementDate: string;
   totalAmountPerMonth: number;
@@ -40,4 +41,10 @@ export interface storeItemDto {
 export interface options {
   value: number;
   label: string;
+}
+
+export interface notiDto {
+  notificationId: number;
+  notificationContent: string;
+  notificationLink: string;
 }

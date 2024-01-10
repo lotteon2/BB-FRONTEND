@@ -13,7 +13,7 @@ import {
   couponRegisterDto,
 } from "../../../recoil/common/interfaces";
 import { useMutation } from "react-query";
-import { registerCoupon } from "../../../apis/store";
+import { modifyCoupon } from "../../../apis/store";
 import { useRecoilValue } from "recoil";
 import { storeIdState } from "../../../recoil/atom/common";
 import { FailToast } from "../../common/toast/FailToast";
@@ -25,11 +25,12 @@ interface param {
   handleCancel: () => void;
   handleChange: () => void;
   data: couponRegisterDto;
+  couponId: number;
 }
 export default function CouponModifyModal(param: param) {
   const storeId = useRecoilValue<number>(storeIdState);
-  const [start, setStart] = useState<string>("");
-  const [end, setEnd] = useState<string>("");
+  const [start, setStart] = useState<string>(param.data.startDate);
+  const [end, setEnd] = useState<string>(param.data.endDate);
   const [modifyValues, setModifyValues] = useState<couponDto>({
     couponName: param.data.couponName,
     discountPrice: param.data.discountPrice,
@@ -39,7 +40,7 @@ export default function CouponModifyModal(param: param) {
     endDate: dayjs(param.data.endDate),
   });
 
-  const handleRegister = () => {
+  const handleModify = () => {
     if (
       modifyValues.couponName !== "" &&
       modifyValues.limitCount !== null &&
@@ -56,16 +57,17 @@ export default function CouponModifyModal(param: param) {
         startDate: start,
         endDate: end,
       };
-      registerMutation.mutate(couponInfo);
+      modifyMutation.mutate(couponInfo);
     }
   };
 
-  const registerMutation = useMutation(
-    ["registerCouponInfo"],
-    (couponInfo: couponRegisterDto) => registerCoupon(storeId, couponInfo),
+  const modifyMutation = useMutation(
+    ["modifyCouponInfo"],
+    (couponInfo: couponRegisterDto) =>
+      modifyCoupon(storeId, param.couponId, couponInfo),
     {
       onSuccess: () => {
-        SuccessToast("등록되었습니다.");
+        SuccessToast("수정되었습니다.");
         param.handleCancel();
         param.handleChange();
       },
@@ -90,6 +92,7 @@ export default function CouponModifyModal(param: param) {
     form.setFieldsValue(modifyValues);
   }, [form, modifyValues]);
 
+  console.log(param.couponId);
   return (
     <Modal
       title="쿠폰 수정"
@@ -207,9 +210,9 @@ export default function CouponModifyModal(param: param) {
             key="submit"
             htmlType="submit"
             type="primary"
-            onClick={handleRegister}
+            onClick={handleModify}
           >
-            등록
+            수정
           </Button>
         </div>
       </Form>

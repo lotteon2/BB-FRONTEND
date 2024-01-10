@@ -5,9 +5,14 @@ export interface signinDto {
   password: string;
 }
 
+export interface reRegisterBusinessNumberImageDto {
+  email: string;
+  businessNumberImage: string;
+}
+
 export interface signupDto {
   email: string;
-  emailVerified: boolean;
+  isEmailVerified: boolean;
   password: string;
   name: string;
   businessNumberImage: string;
@@ -20,7 +25,6 @@ export interface storeInfoDto {
   phoneNumber: string;
   accountNumber: string;
   bank: string;
-  minOrderPrice: number | null;
   deliveryPrice: number | null;
   freeDeliveryMinPrice: number | null;
   sido: string;
@@ -96,7 +100,7 @@ export interface productRegisterDto {
 }
 
 export interface productItemDto {
-  key: number;
+  key: string;
   productThumbnail: string;
   productName: string;
   representativeFlower: string;
@@ -120,21 +124,24 @@ export interface productModifyInfoDto {
   productThumbnail: string;
   productPrice: number | null;
   productSaleStatus: string;
-  categoryId: number;
+  category: number;
   productTag: number[];
   representativeFlower: flowers;
   flowers: flowers[];
 }
 
 export interface orderDeliveryDetail {
+  key: number;
   productId: number;
   thumbnailImage: string;
   name: string;
   price: number;
   quantity: number;
+  paymentAmount: number;
 }
 export interface orderDelivery {
   key: string;
+  orderDeliveryId: string;
   products: orderDeliveryDetail[];
   orderDeliveryStatus: string;
   paymentAmount: number;
@@ -143,6 +150,10 @@ export interface orderDelivery {
   roadName: string;
   addressDetail: string;
   deliveryRequest: string;
+  ordererName: string;
+  ordererPhoneNumber: string;
+  recipientName: string;
+  recipientPhone: string;
 }
 export interface productRead {
   productId: number;
@@ -180,7 +191,7 @@ export interface reservationInfoDto {
 }
 
 export interface stockDto {
-  id: number;
+  flowerId: number;
   name: string;
   data: number[];
 }
@@ -233,4 +244,17 @@ export interface settlementDto {
   settlementAmount: number;
   bankName: string;
   accountNumber: string;
+}
+
+export interface notiDto {
+  notificationId: number;
+  notificationContent: string;
+  notificationLink: string;
+}
+
+export interface couponDownloadDto {
+  nickname: string;
+  phoneNumber: string;
+  createdAt: string;
+  isUsed: boolean;
 }

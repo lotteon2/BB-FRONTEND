@@ -26,7 +26,7 @@ export default function SettlementPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["getSettlementList", page, year, month],
-    queryFn: () => getSettlementList(storeId, year, month, page - 1, 13),
+    queryFn: () => getSettlementList(year, month, storeId, page - 1, 13),
   });
 
   const steps: TourProps["steps"] = [
@@ -47,14 +47,14 @@ export default function SettlementPage() {
     if (data) {
       var years: option[] = [];
       var months: option[] = [];
-      data.year.forEach((element: number) => {
+      data.data.year.forEach((element: number) => {
         const info = {
           value: element,
           label: element + "년",
         };
         years.push(info);
       });
-      data.month.forEach((element: number) => {
+      data.data.month.forEach((element: number) => {
         const info = {
           value: element,
           label: element + "월",
@@ -92,7 +92,7 @@ export default function SettlementPage() {
           />
         </div>
         <div className="h-[770px]">
-          <SettlementTable data={data.settlement} />
+          <SettlementTable data={data.data.settlementDtoList} />
         </div>
         <div className="text-center mt-3">
           <Pagination

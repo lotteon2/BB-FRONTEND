@@ -7,34 +7,32 @@ import { authInstance } from "./utils";
 
 // 가게 정보 등록
 export const registerStore = async (storeInfo: storeInfoDto) => {
-  const { data } = await authInstance.post("/api/stores", storeInfo);
+  const { data } = await authInstance.post("/stores/", storeInfo);
   return data;
 };
 
 // 가게 정보 조회
 export const getStoreInfo = async (storeId: number) => {
-  const { data } = await authInstance.get(
-    "/api/stores/" + storeId + "/manager"
-  );
+  const { data } = await authInstance.get("/stores/" + storeId + "/manager");
   return data;
 };
 
 // 가게정보 상세 조회
 export const getStoreDetail = async (storeId: number) => {
-  const { data } = await authInstance.get("/api/stores/" + storeId);
+  const { data } = await authInstance.get("/stores/" + storeId);
   return data;
 };
 
 // 가게정보 수정
 export const modifyStore = async (storeId: number, storeInfo: storeInfoDto) => {
-  const { data } = await authInstance.put("/api/stores/" + storeId, storeInfo);
+  const { data } = await authInstance.put("/stores/" + storeId, storeInfo);
   return data;
 };
 
 // 구독상품 조회
 export const getSubscriptionInfo = async (storeId: number) => {
   const { data } = await authInstance.get(
-    "/store/" + storeId + "/subscribe-product"
+    "/products/store/" + storeId + "/subscribe-product"
   );
   return data;
 };
@@ -45,7 +43,7 @@ export const registerSubscriptionInfo = async (
   subscriptionInfo: subscriptionRegisterDto
 ) => {
   const { data } = await authInstance.post(
-    "/store/" + storeId + "/subscribe-product",
+    "/products/store/" + storeId + "/subscribe-product",
     subscriptionInfo
   );
   return data;
@@ -57,7 +55,7 @@ export const modifySubscriptionInfo = async (
   subscriptionInfo: subscriptionRegisterDto
 ) => {
   const { data } = await authInstance.put(
-    "/" + productId + "/subscribe-product",
+    "/products/" + productId + "/subscribe-product",
     subscriptionInfo
   );
   return data;
@@ -65,9 +63,7 @@ export const modifySubscriptionInfo = async (
 
 // 쿠폰 조회
 export const getCouponList = async (storeId: number) => {
-  const { data } = await authInstance.get(
-    "/api/stores/" + storeId + "/coupons"
-  );
+  const { data } = await authInstance.get("/stores/" + storeId + "/coupons");
   return data;
 };
 
@@ -77,7 +73,20 @@ export const registerCoupon = async (
   couponInfo: couponRegisterDto
 ) => {
   const { data } = await authInstance.post(
-    "/api/stores/" + storeId + "/coupons",
+    "/stores/" + storeId + "/coupons",
+    couponInfo
+  );
+  return data;
+};
+
+// 쿠폰 수정
+export const modifyCoupon = async (
+  storeId: number,
+  couponId: number,
+  couponInfo: couponRegisterDto
+) => {
+  const { data } = await authInstance.put(
+    "/stores/" + storeId + "/coupons/" + couponId,
     couponInfo
   );
   return data;
@@ -86,7 +95,7 @@ export const registerCoupon = async (
 // 쿠폰 삭제
 export const deleteCoupon = async (storeId: number, couponId: number) => {
   const { data } = await authInstance.delete(
-    "/api/stores/" + storeId + "/coupons/" + couponId
+    "/stores/" + storeId + "/coupons/" + couponId
   );
   return data;
 };
@@ -95,21 +104,69 @@ export const deleteCoupon = async (storeId: number, couponId: number) => {
 export const getSettlementList = async (
   year: number | undefined,
   month: number | undefined,
-  storeId: number | undefined,
+  storeId: number,
+  page: number,
+  size: number
+) => {
+  if (year && month) {
+    const { data } = await authInstance.get(
+      "/orders/store/settlement?year=" +
+        year +
+        "&month=" +
+        month +
+        "&storeId=" +
+        storeId +
+        "&page=" +
+        page +
+        "&size=" +
+        size
+    );
+    return data;
+  } else if (year && !month) {
+    const { data } = await authInstance.get(
+      "/orders/store/settlement?year=" +
+        year +
+        "&storeId=" +
+        storeId +
+        "&page=" +
+        page +
+        "&size=" +
+        size
+    );
+    return data;
+  } else if (!year && month) {
+    const { data } = await authInstance.get(
+      "/orders/store/settlement?month=" +
+        month +
+        "&storeId=" +
+        storeId +
+        "&page=" +
+        page +
+        "&size=" +
+        size
+    );
+    return data;
+  } else {
+    const { data } = await authInstance.get(
+      "/orders/store/settlement?storeId=" +
+        storeId +
+        "&page=" +
+        page +
+        "&size=" +
+        size
+    );
+    return data;
+  }
+};
+
+// 쿠폰 발급현황 조회
+export const getCouponDownloadList = async (
+  couponId: number,
   page: number,
   size: number
 ) => {
   const { data } = await authInstance.get(
-    "/settlement?year=" +
-      year +
-      "&month=" +
-      month +
-      "&storeId=" +
-      storeId +
-      "&page=" +
-      page +
-      "&size=" +
-      size
+    "/stores/coupons/" + couponId + "/members?page=" + page + "&size=" + size
   );
   return data;
 };

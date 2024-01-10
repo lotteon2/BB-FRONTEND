@@ -7,9 +7,11 @@ import {
   Table,
 } from "antd";
 import { useState } from "react";
-import { useMutation } from "react-query";
-import { modifyStoreStatus } from "../../apis/dashboard";
-import { registerRequestListData } from "../../mocks/dashboard";
+import { useMutation, useQuery } from "react-query";
+import {
+  getRegisterRequestList,
+  modifyStoreStatus,
+} from "../../apis/dashboard";
 import { ColumnsType } from "antd/es/table";
 import {
   registerRequestItemDto,
@@ -18,17 +20,17 @@ import {
 import { registerOptions } from "../../recoil/common/options";
 import { SuccessToast } from "../common/toast/SuccessToast";
 import { FailToast } from "../common/toast/FailToast";
+import QuarterDiv from "../fallbacks/QuarterDiv";
 
 export default function RegisterRequestList() {
   const [page, setPage] = useState<number>(1);
   const [status, setStatus] = useState<string>("ROLE_STORE_MANAGER_PENDING");
+  const [isChange, setIsChange] = useState<boolean>(false);
 
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getRegisterRequestList", status, page],
-  //     queryFn: () => getRegisterRequestList(status, page - 1, 4),
-  //   });
-
-  const data = registerRequestListData;
+  const { data, isLoading } = useQuery({
+    queryKey: ["getRegisterRequestList", status, page, isChange],
+    queryFn: () => getRegisterRequestList(status, page - 1, 5),
+  });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
@@ -39,12 +41,6 @@ export default function RegisterRequestList() {
       title: "이름",
       dataIndex: "storeManagerName",
       key: "storeManagerName",
-      ellipsis: true,
-    },
-    {
-      title: "연락처",
-      dataIndex: "storeManagerPhoneNumber",
-      key: "storeManagerPhoneNumber",
       ellipsis: true,
     },
     {
@@ -133,6 +129,7 @@ export default function RegisterRequestList() {
     (moddifyDto: storeStatusModifyDto) => modifyStoreStatus(moddifyDto),
     {
       onSuccess: () => {
+        setIsChange((cur) => !cur);
         SuccessToast("처리되었습니다.");
       },
       onError: () => {
@@ -141,11 +138,16 @@ export default function RegisterRequestList() {
     }
   );
 
-  //   if (!data || isLoading) return <QuarterDiv />
+  if (!data || isLoading) return <QuarterDiv />;
 
   return (
     <div>
-      <Table dataSource={data.data} columns={columns} pagination={false} />
+      <Table
+        dataSource={data.data.data}
+        columns={columns}
+        pagination={false}
+        style={{ height: 380 }}
+      />
       <div className="mt-2 text-center">
         <Pagination
           defaultCurrent={page}

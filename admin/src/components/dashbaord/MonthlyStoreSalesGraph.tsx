@@ -1,14 +1,14 @@
 import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
-import { MonthlyStoreSalesGraphData } from "../../mocks/dashboard";
+import { useQuery } from "react-query";
+import { getStoreSalesGraph } from "../../apis/dashboard";
+import QuarterDiv from "../fallbacks/QuarterDiv";
 
 export default function MonthlyStoreSalesGraph() {
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getStoreSalesGraph"],
-  //     queryFn: () => getStoreSalesGraph(),
-  //   });
-
-  const data = MonthlyStoreSalesGraphData;
+  const { data, isLoading } = useQuery({
+    queryKey: ["getStoreSalesGraph"],
+    queryFn: () => getStoreSalesGraph(),
+  });
 
   const options: ApexOptions = {
     colors: [
@@ -81,9 +81,9 @@ export default function MonthlyStoreSalesGraph() {
     },
   };
 
-  //   if (!data || isLoading) return <QuarterDiv />;
+  if (!data || isLoading) return <QuarterDiv />;
 
-  const series = data;
+  const series = data.data.bestSettlementDtoList;
 
   return (
     <div className="p-3">

@@ -10,7 +10,7 @@ const { persistAtom } = recoilPersist();
  */
 export const loginState = atom({
   key: "loginState",
-  default: true,
+  default: false,
   effects_UNSTABLE: [persistAtom],
 });
 
@@ -28,7 +28,7 @@ export const nameState = atom({
  */
 export const storeIdState = atom({
   key: "storeIdState",
-  default: 1,
+  default: null,
   effects_UNSTABLE: [persistAtom],
 });
 

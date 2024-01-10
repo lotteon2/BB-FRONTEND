@@ -68,7 +68,7 @@ export default function ProductPage() {
               onChange={(e) => setCategory(e)}
             />
             <Select
-              placeholder="대표꽃"
+              placeholder="대표/구성 꽃"
               style={{ width: 150 }}
               showSearch
               allowClear

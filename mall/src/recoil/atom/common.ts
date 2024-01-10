@@ -10,7 +10,7 @@ const { persistAtom } = recoilPersist();
  */
 export const loginState = atom({
   key: "loginState",
-  default: true,
+  default: false,
   effects_UNSTABLE: [persistAtom],
 });
 
@@ -40,6 +40,7 @@ export const sideMenuState = atom({
 export const nicknameState = atom({
   key: "nicknameState",
   default: "",
+  effects_UNSTABLE: [persistAtom],
 });
 
 /**
@@ -48,4 +49,14 @@ export const nicknameState = atom({
 export const profileImageState = atom({
   key: "profileImageState",
   default: "",
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const locationstate = atom({
+  key: "locationState",
+  default: {
+    lat: 37.4923615,
+    lng: 127.0292881,
+    level: 5,
+  },
 });

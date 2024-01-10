@@ -1,9 +1,12 @@
 import { Button } from "antd";
 import NotFoundGif from "../../assets/images/notfound.gif";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { mallState } from "../../recoil/atom/common";
 
 export default function NotFound() {
   const navigate = useNavigate();
+  const isMall = useRecoilValue<boolean>(mallState);
 
   return (
     <div>
@@ -15,7 +18,11 @@ export default function NotFound() {
         요청하신 페이지를 찾을 수 없습니다.
       </p>
       <div className="text-center mt-5">
-        <Button size="large" type="primary" onClick={() => navigate("/")}>
+        <Button
+          size="large"
+          type="primary"
+          onClick={() => (isMall ? navigate("/") : navigate("/pickup"))}
+        >
           메인으로 돌아가기
         </Button>
       </div>

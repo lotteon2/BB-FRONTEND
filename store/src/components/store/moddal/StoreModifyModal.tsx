@@ -37,7 +37,6 @@ export default function StoreModifyModal(param: param) {
     phoneNumber: "",
     accountNumber: "",
     bank: "국민은행",
-    minOrderPrice: null,
     deliveryPrice: null,
     freeDeliveryMinPrice: null,
     sido: "",
@@ -56,17 +55,15 @@ export default function StoreModifyModal(param: param) {
 
   const handleResetValues = () => {
     if (data) {
-      setModifyValues(data);
+      setModifyValues(data.data);
     }
 
     param.handleCancel();
   };
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formData = new FormData();
     if (e.target.files !== null) {
-      formData.append("image", e.target.files[0]);
-      thumbnailMutation.mutate(formData);
+      thumbnailMutation.mutate(e.target.files[0].name);
     }
   };
 
@@ -118,7 +115,6 @@ export default function StoreModifyModal(param: param) {
       modifyValues.detailInfo !== "" &&
       modifyValues.phoneNumber !== "" &&
       modifyValues.accountNumber !== "" &&
-      modifyValues.minOrderPrice !== null &&
       modifyValues.deliveryPrice !== null &&
       modifyValues.freeDeliveryMinPrice !== null
     ) {
@@ -128,7 +124,7 @@ export default function StoreModifyModal(param: param) {
 
   const thumbnailMutation = useMutation(
     ["imageUpload"],
-    (image: FormData) => getImageUrl(image),
+    (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
         setModifyValues((prev) => ({ ...prev, storeThumbnailImage: data }));
@@ -165,7 +161,7 @@ export default function StoreModifyModal(param: param) {
 
   useEffect(() => {
     if (data) {
-      setModifyValues(data);
+      setModifyValues(data.data);
     }
   }, [data]);
 
@@ -325,25 +321,6 @@ export default function StoreModifyModal(param: param) {
                   }
                 />
               </div>
-            </Form.Item>
-            <Form.Item
-              name="minOrderPrice"
-              label="최소 주문금액"
-              rules={[
-                {
-                  required: true,
-                  message: "필수 입력값입니다.",
-                },
-              ]}
-            >
-              <InputNumber
-                placeholder="최소 주문금액"
-                value={modifyValues.minOrderPrice}
-                onChange={(e) =>
-                  setModifyValues((prev) => ({ ...prev, minOrderPrice: e }))
-                }
-                style={{ width: "100%" }}
-              />
             </Form.Item>
             <Form.Item
               name="deliveryPrice"

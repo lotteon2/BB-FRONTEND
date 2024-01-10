@@ -1,17 +1,20 @@
 import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
-import { productStockGraph } from "../../mocks/dashboard";
+import { useQuery } from "react-query";
+import { useRecoilValue } from "recoil";
+import { storeIdState } from "../../recoil/atom/common";
+import { getFlowerStockGraph } from "../../apis/dashboard";
+import HalfDiv from "../fallbacks/HalfDiv";
 
 export default function DashboardStockGraph() {
-  const data = productStockGraph;
+  const storeId = useRecoilValue<number>(storeIdState);
 
-  //  const { data, isLoading } = useQuery({
-  //   queryKey: ["getWeeklyProduct"],
-  //   queryFn: () => getWeeklySaleProductGraph(),
-  // });
-  //   const isLoading = true;
+  const { data, isLoading } = useQuery({
+    queryKey: ["getFlowerStockGraph"],
+    queryFn: () => getFlowerStockGraph(storeId),
+  });
 
-  //   if (!data || isLoading) return <HalfDiv />;
+  if (!data || isLoading) return <HalfDiv />;
 
   const options: ApexOptions = {
     colors: ["#A843D6"],
@@ -61,7 +64,7 @@ export default function DashboardStockGraph() {
       },
     },
   };
-  const series = data;
+  const series = data.data.stockInfoDtos;
 
   return (
     <div className="p-3">

@@ -3,7 +3,7 @@ import { PictureFilled } from "@ant-design/icons";
 import { Button, Form, Input, InputNumber, Modal } from "antd";
 import { subscriptionRegisterDto } from "../../../recoil/common/interfaces";
 import { useMutation } from "react-query";
-import { getImageUrl } from "../../../apis/image";
+import { getImageUrl, uploadS3Server } from "../../../apis/image";
 import { FailToast } from "../../common/toast/FailToast";
 import { registerSubscriptionInfo } from "../../../apis/store";
 import { useRecoilValue } from "recoil";
@@ -18,6 +18,9 @@ interface param {
 export default function SubscriptionRegisterModal(param: param) {
   const storeId = useRecoilValue<number>(storeIdState);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [url, setUrl] = useState<string>("");
+  const [file, setFile] = useState<File>();
+  const [type, setType] = useState<string>();
   const [registerValues, setRegisterValues] = useState<subscriptionRegisterDto>(
     {
       productName: "",
@@ -44,13 +47,14 @@ export default function SubscriptionRegisterModal(param: param) {
     e: React.ChangeEvent<HTMLInputElement>,
     type: string
   ) => {
-    const formData = new FormData();
     if (e.target.files !== null) {
-      formData.append("image", e.target.files[0]);
+      setFile(e.target.files[0]);
       if (type === "thumbnail") {
-        thumbnailMutation.mutate(formData);
+        setType("thumbnail");
+        thumbnailMutation.mutate(e.target.files[0].name);
       } else {
-        descriptionMutation.mutate(formData);
+        setType("description");
+        descriptionMutation.mutate(e.target.files[0].name);
       }
     }
   };
@@ -69,10 +73,10 @@ export default function SubscriptionRegisterModal(param: param) {
 
   const thumbnailMutation = useMutation(
     ["imageUpload"],
-    (image: FormData) => getImageUrl(image),
+    (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
-        setRegisterValues((prev) => ({ ...prev, productThumbnail: data }));
+        setUrl(data.data.presignedUrl);
       },
       onError: () => {
         FailToast(null);
@@ -82,13 +86,10 @@ export default function SubscriptionRegisterModal(param: param) {
 
   const descriptionMutation = useMutation(
     ["descriptionImageUpload"],
-    (image: FormData) => getImageUrl(image),
+    (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
-        setRegisterValues((prev) => ({
-          ...prev,
-          productDescriptionImage: data,
-        }));
+        setUrl(data.data.presignedUrl);
       },
       onError: () => {
         FailToast(null);
@@ -111,6 +112,29 @@ export default function SubscriptionRegisterModal(param: param) {
     }
   );
 
+  const uploadMutation = useMutation(
+    ["uploadS3"],
+    (url: string) => uploadS3Server(url, file, file?.type),
+    {
+      onSuccess: () => {
+        if (type === "thumbnail") {
+          setRegisterValues((prev) => ({
+            ...prev,
+            productThumbnail: url.split("?")[0],
+          }));
+        } else {
+          setRegisterValues((prev) => ({
+            ...prev,
+            productDescriptionImage: url.split("?")[0],
+          }));
+        }
+      },
+      onError: () => {
+        FailToast("");
+      },
+    }
+  );
+
   const handleThumbnailImage = useCallback(() => {
     inputRef.current?.click();
   }, []);
@@ -119,6 +143,13 @@ export default function SubscriptionRegisterModal(param: param) {
   useEffect(() => {
     form.setFieldsValue(registerValues);
   }, [form, registerValues]);
+
+  useEffect(() => {
+    if (url !== "") {
+      uploadMutation.mutate(url);
+    }
+    // eslint-disable-next-line
+  }, [url]);
 
   return (
     <Modal
@@ -142,14 +173,14 @@ export default function SubscriptionRegisterModal(param: param) {
             name="productThumbnail"
             rules={[{ required: true, message: "필수 입력값입니다." }]}
           >
-            <Input
-              value={registerValues.productThumbnail}
-              style={{ display: "none" }}
-            />
             <div
               className="w-[200px] h-[200px] cursor-pointer"
               onClick={handleThumbnailImage}
             >
+              <Input
+                value={registerValues.productThumbnail}
+                style={{ display: "none" }}
+              />
               <input
                 type="file"
                 ref={inputRef}
@@ -179,7 +210,7 @@ export default function SubscriptionRegisterModal(param: param) {
               rules={[{ required: true, message: "필수 입력값입니다." }]}
             >
               <Input
-                placeholder="가게 이름"
+                placeholder="상품명"
                 value={registerValues.productName}
                 onChange={(e) =>
                   setRegisterValues((prev) => ({
@@ -225,16 +256,18 @@ export default function SubscriptionRegisterModal(param: param) {
               label="상세설명"
               rules={[{ required: true, message: "필수 입력값입니다." }]}
             >
-              <Input
-                value={registerValues.productDescriptionImage}
-                style={{ display: "none" }}
-              />
-              <input
-                type="file"
-                accept="image/*"
-                className="w-full h-full"
-                onChange={(e) => handleImage(e, "description")}
-              />
+              <div>
+                <Input
+                  value={registerValues.productDescriptionImage}
+                  style={{ display: "none" }}
+                />
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="w-full h-full"
+                  onChange={(e) => handleImage(e, "description")}
+                />
+              </div>
             </Form.Item>
           </div>
         </div>

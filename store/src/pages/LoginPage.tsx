@@ -1,21 +1,30 @@
-import { useState, useEffect } from "react";
-import { Button, Form, Input } from "antd";
+import { useEffect, useState } from "react";
+import { Button, Form, Input, Modal } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { loginState, nameState } from "../recoil/atom/common";
+import { useSetRecoilState } from "recoil";
+import { loginState, nameState, storeIdState } from "../recoil/atom/common";
 import { useNavigate } from "react-router";
 import { useMutation } from "react-query";
-import { signin } from "../apis/auth";
-import { signinDto } from "../recoil/common/interfaces";
+import { reRegisterBusinessNumberImage, signin } from "../apis/auth";
+import {
+  reRegisterBusinessNumberImageDto,
+  signinDto,
+} from "../recoil/common/interfaces";
 import { SuccessToast } from "../components/common/toast/SuccessToast";
 import { FailToast } from "../components/common/toast/FailToast";
+import { getImageUrl, uploadS3Server } from "../apis/image";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const isLogin = useRecoilValue<boolean>(loginState);
+  const setIsLogin = useSetRecoilState<boolean>(loginState);
   const setName = useSetRecoilState<string>(nameState);
+  const setStoreId = useSetRecoilState<number | null>(storeIdState);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [url, setUrl] = useState<string>("");
+  const [file, setFile] = useState<File>();
+  const [businessNumberImage, setBusinessNumberImage] = useState<string>("");
   const defaultValues = {
     email: "",
     password: "",
@@ -31,14 +40,60 @@ export default function LoginPage() {
     signinMutation.mutate(signinDto);
   };
 
+  // 이미지 등록
+  const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files !== null) {
+      setFile(e.target.files[0]);
+      imageMutation.mutate(e.target.files[0].name);
+    }
+  };
+
+  // 사업자등록번호 재등록
+  const handleReRegister = () => {
+    const reRegisterDto = {
+      email: email,
+      businessNumberImage: businessNumberImage,
+    };
+
+    if (businessNumberImage !== "") reRegisterMutation.mutate(reRegisterDto);
+  };
+
   const signinMutation = useMutation(
     ["signin"],
     (signinDto: signinDto) => signin(signinDto),
     {
-      onSuccess: (data) => {
-        setName(data.name);
+      onSuccess: (res) => {
+        setName(res.data.data.name);
+        setStoreId(res.data.data.storeId);
+        localStorage.setItem("accessToken", res.headers["authorization"]);
         SuccessToast("로그인되었습니다.");
+        setIsLogin(true);
         navigate("/");
+      },
+      onError: (error: any) => {
+        if (error.response.status === 401) {
+          if (error.response.data.message === "관리자의 승인을 기다려주세요.") {
+            FailToast(error.response.data.message);
+          } else if (
+            error.response.data.message ===
+            "잘못된 사업자 등록증입니다. 다시 요청하세요"
+          ) {
+            FailToast("사업자 등록증을 다시 제출해주세요.");
+            setIsModalOpen(true);
+          } else FailToast("아이디/비밀번호를 확인해주세요.");
+        } else {
+          FailToast(null);
+        }
+      },
+    }
+  );
+
+  const imageMutation = useMutation(
+    ["uploadImage"],
+    (image: string) => getImageUrl(image),
+    {
+      onSuccess: (data) => {
+        setUrl(data.data.presignedUrl);
       },
       onError: () => {
         FailToast(null);
@@ -46,10 +101,41 @@ export default function LoginPage() {
     }
   );
 
+  const reRegisterMutation = useMutation(
+    ["reRegisterBusinessNumberImage"],
+    (reRegisterDto: reRegisterBusinessNumberImageDto) =>
+      reRegisterBusinessNumberImage(reRegisterDto),
+    {
+      onSuccess: () => {
+        SuccessToast("제출되었습니다.");
+        setBusinessNumberImage("");
+        setIsModalOpen(false);
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
+
+  const uploadMutation = useMutation(
+    ["uploadS3"],
+    (url: string) => uploadS3Server(url, file, file?.type),
+    {
+      onSuccess: () => {
+        setBusinessNumberImage(url.split("?")[0]);
+      },
+      onError: () => {
+        FailToast("");
+      },
+    }
+  );
+
   useEffect(() => {
-    if (isLogin) navigate("/");
+    if (url !== "") {
+      uploadMutation.mutate(url);
+    }
     // eslint-disable-next-line
-  }, []);
+  }, [url]);
 
   return (
     <div className="relative top-72 left-[550px] w-[800px] h-[350px] bg-grayscale1 shadow-lg z-10 rounded-lg">
@@ -116,6 +202,49 @@ export default function LoginPage() {
           회원가입
         </span>
       </div>
+      <Modal
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        footer={[]}
+      >
+        <Form
+          name="registerBusinessNumberImage"
+          initialValues={{ remember: false }}
+          autoComplete="off"
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 10 }}
+          style={{ marginLeft: 20, marginTop: 20 }}
+        >
+          <Form.Item
+            name="businessNumberImage"
+            label="사업자 등록증"
+            rules={[
+              {
+                required: true,
+                message: "사업자 등록증을 제출해주세요",
+              },
+            ]}
+          >
+            <div>
+              <Input className="hidden" value={businessNumberImage} />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleUploadImage(e)}
+              />
+            </div>
+          </Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            size="large"
+            className="w-[435px]"
+            onClick={handleReRegister}
+          >
+            재등록
+          </Button>
+        </Form>
+      </Modal>
     </div>
   );
 }

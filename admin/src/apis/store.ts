@@ -2,32 +2,47 @@ import { authInstance } from "./utils";
 
 // 구군 리스트
 export const getGugunList = async (sidoCode: number | undefined) => {
-  if (!sidoCode) return [];
-  else {
-    const { data } = await authInstance.get("/address/gugun?sido=" + sidoCode);
+  if (sidoCode) {
+    const { data } = await authInstance.get(
+      "/stores/address/gugun?sido=" + sidoCode
+    );
     return data;
-  }
+  } else return [];
 };
 
 // 가게 정보 조회
 export const getStoreList = async (
   page: number,
   size: number,
-  sido: number | undefined,
+  sido: number,
   gugun: number | undefined,
   sort: string
 ) => {
-  const { data } = await authInstance.get(
-    "/stores?page=" +
-      page +
-      "&size=" +
-      size +
-      "&sido=" +
-      sido +
-      "&gugun=" +
-      gugun +
-      "&sort=" +
-      sort
-  );
-  return data;
+  if (!gugun) {
+    const { data } = await authInstance.get(
+      "/stores/admin?page=" +
+        page +
+        "&size=" +
+        size +
+        "&sido=" +
+        sido +
+        "&sort=" +
+        sort
+    );
+    return data;
+  } else {
+    const { data } = await authInstance.get(
+      "/stores/admin?page=" +
+        page +
+        "&size=" +
+        size +
+        "&sido=" +
+        sido +
+        "&gugun=" +
+        gugun +
+        "&sort=" +
+        sort
+    );
+    return data;
+  }
 };

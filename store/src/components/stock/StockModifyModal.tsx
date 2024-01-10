@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Input, Modal } from "antd";
+import { Button, InputNumber, Modal } from "antd";
 import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
 import { storeIdState } from "../../recoil/atom/common";
@@ -23,7 +23,7 @@ export default function StockModifyModal(param: param) {
     modifyMutation.mutate(flowerStocks);
   };
 
-  const handleFlowerStock = (e: string, id: number) => {
+  const handleFlowerStock = (e: number | null, id: number) => {
     var stocks = flowerStocks;
     const index = stocks.findIndex((e) => e.flowerId === id);
 
@@ -31,6 +31,7 @@ export default function StockModifyModal(param: param) {
       flowerId: id,
       stock: Number(e),
     };
+
     setflowerStocks(stocks);
   };
 
@@ -38,14 +39,15 @@ export default function StockModifyModal(param: param) {
     var stocks: stockModifyDto[] = [];
     param.data.forEach((element: stockDto) => {
       const info = {
-        flowerId: element.id,
+        flowerId: element.flowerId,
         stock: element.data[0],
       };
       stocks.push(info);
     });
 
     setflowerStocks(stocks);
-  }, [param.data]);
+    // eslint-disable-next-line
+  }, []);
 
   const modifyMutation = useMutation(
     ["modifyStocks"],
@@ -84,8 +86,8 @@ export default function StockModifyModal(param: param) {
                 <div className="w-full flex flex-row gap-3" key={index}>
                   <p className="mt-[23px] text-[1rem] w-1/4">{item.name}</p>
                   <span className="mt-[23px]">:</span>
-                  <Input
-                    onChange={(e) => handleFlowerStock(e.target.value, item.id)}
+                  <InputNumber
+                    onChange={(e) => handleFlowerStock(e, item.flowerId)}
                     defaultValue={item.data[0]}
                     className="mt-5"
                     style={{ width: 250 }}

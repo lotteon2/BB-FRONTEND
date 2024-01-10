@@ -1,19 +1,20 @@
 import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
-import { weeklySaleData } from "../../mocks/dashboard";
+import { useRecoilValue } from "recoil";
+import { storeIdState } from "../../recoil/atom/common";
+import { useQuery } from "react-query";
+import { getWeeklySaleGraph } from "../../apis/dashboard";
+import QuarterDiv from "../fallbacks/QuarterDiv";
 
 export default function WeeklySaleGraph() {
-  // const storeId = useRecoilValue<number>(storeIdState);
-  const data = weeklySaleData;
+  const storeId = useRecoilValue<number>(storeIdState);
 
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ["getWeeklySaleGraph"],
-  //   queryFn: () => getWeeklySaleGraph(storeId),
-  // });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getWeeklySaleGraph"],
+    queryFn: () => getWeeklySaleGraph(storeId),
+  });
 
-  // const isLoading = true;
-
-  // if (!data || isLoading) return <QuarterDiv />;
+  if (!data || isLoading) return <QuarterDiv />;
 
   const options: ApexOptions = {
     colors: ["#A843D6"],
@@ -40,7 +41,7 @@ export default function WeeklySaleGraph() {
       colors: ["#42009E"],
     },
     xaxis: {
-      categories: data.categories,
+      categories: data.data.categories,
     },
     yaxis: {
       title: {
@@ -56,7 +57,7 @@ export default function WeeklySaleGraph() {
   const series = [
     {
       name: "매출액",
-      data: data.data,
+      data: data.data.data,
     },
   ];
 

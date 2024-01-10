@@ -3,15 +3,7 @@ import { storeStatusModifyDto } from "../recoil/common/interfaces";
 
 // 이전달 가게 매출액 top 10
 export const getStoreSalesGraph = async () => {
-  const { data } = await authInstance.get("/sales");
-  return data;
-};
-
-// 이전달 정산내역
-export const getLastMonthSettlement = async (page: number, size: number) => {
-  const { data } = await authInstance.get(
-    "/settlement?page=" + page + "&size=" + size
-  );
+  const { data } = await authInstance.get("/orders/admin/sales");
   return data;
 };
 
@@ -22,7 +14,7 @@ export const getRegisterRequestList = async (
   size: number
 ) => {
   const { data } = await authInstance.get(
-    "/store-managers/applications?status=" +
+    "/users/admin/store-managers/applications?status=" +
       status +
       "&page=" +
       page +
@@ -34,6 +26,9 @@ export const getRegisterRequestList = async (
 
 // 요청 승인/거절
 export const modifyStoreStatus = async (modifyDto: storeStatusModifyDto) => {
-  const { data } = await authInstance.patch("/admin/store-manager", modifyDto);
+  const { data } = await authInstance.patch(
+    "/auth/admin/store-manager",
+    modifyDto
+  );
   return data;
 };

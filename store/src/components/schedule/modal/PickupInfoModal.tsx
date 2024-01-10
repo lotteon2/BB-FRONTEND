@@ -30,7 +30,7 @@ export default function SubscriptionInfoModal(param: param) {
         footer={<Button onClick={param.handleCancel}>닫기</Button>}
       >
         <div className="w-full max-h-[500px] overflow-auto">
-          {data.map((item: reservationInfoDto) => (
+          {data.data.data.map((item: reservationInfoDto) => (
             <div
               key={item.pickupReservationId}
               className="w-full flex flex-row gap-3 mt-2"
@@ -39,7 +39,7 @@ export default function SubscriptionInfoModal(param: param) {
                 <img src={item.productThumbnailImage} alt="" />
               </div>
               <div className="w-2/3 flex flex-row gap-3">
-                <div className="flex flex-col gap-1">
+                <div className="w-20 flex flex-col gap-1">
                   <p>예약번호: </p>
                   <p>상품명: </p>
                   <p>결제 금액: </p>
@@ -48,7 +48,7 @@ export default function SubscriptionInfoModal(param: param) {
                   <p>픽업일시: </p>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <p>{item.reservationCode}</p>
+                  <p>{item.reservationCode.split("-")[0]}</p>
                   <p>
                     {item.productName} / {item.count.toLocaleString()}개
                   </p>

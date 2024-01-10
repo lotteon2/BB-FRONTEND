@@ -24,13 +24,13 @@ export default function OrderDetailModal(param: param) {
     queryFn: () => getOrderDetail(param.orderGroupId),
   });
 
-  const handleOrderState = (groupId: string) => {
-    modifyMutation.mutate(groupId);
+  const handleOrderState = (id: string) => {
+    modifyMutation.mutate(id);
   };
 
   const modifyMutation = useMutation(
     ["modifyOrderState"],
-    (groupId: string) => modifyOrderState(orderState, groupId),
+    (id: string) => modifyOrderState(orderState, id),
     {
       onSuccess: () => {
         SuccessToast("수정되었습니다.");
@@ -42,17 +42,17 @@ export default function OrderDetailModal(param: param) {
   );
 
   useEffect(() => {
-    if (data) {
-      setOrderState(data.orderDeliveryStatus);
+    if (data && !orderState) {
+      setOrderState(data.data.orderDeliveryStatus);
     }
-  }, [data, orderState]);
+  }, [data]);
 
   if (!data || isLoading) return null;
 
   return (
     <div>
       <Modal
-        title={"주문 번호 " + data.orderGroupId}
+        title={"주문 번호 " + data.data.orderGroupId.split("-")[0]}
         open={param.isModalOpen}
         onCancel={param.handleCancel}
         footer={<Button onClick={param.handleCancel}>닫기</Button>}
@@ -61,25 +61,25 @@ export default function OrderDetailModal(param: param) {
           <Tag
             bordered={false}
             color={
-              data.orderDeliveryStatus === "ORDER_RECEIVED"
+              data.orderDeliveryStatus === "PENDING"
                 ? "purple"
-                : data.orderDeliveryStatus === "DELIVERY_STARTED"
+                : data.orderDeliveryStatus === "PROCESSING"
                 ? "green"
                 : ""
             }
           >
-            {data.orderDeliveryStatus === "ORDER_RECEIVED"
+            {data.orderDeliveryStatus === "PENDING"
               ? "주문 접수"
-              : data.orderDeliveryStatus === "DELIVERY_STARTED"
+              : data.orderDeliveryStatus === "PROCESSING"
               ? "배송 시작"
               : "배송 완료"}
           </Tag>
-          <Tag bordered={false}>결제일시: {data.paymentDate}</Tag>
+          <Tag bordered={false}>결제일시: {data.data.paymentDate}</Tag>
         </div>
 
         <div className="w-full h-[500px] overflow-auto">
           <div className="flex flex-col gap-5 w-full mt-3">
-            {data.products.map((item: productRead) => (
+            {data.data.products.map((item: productRead) => (
               <div className="flex flex-row w-full gap-3" key={item.productId}>
                 <div className="w-1/4">
                   <img src={item.thumbnailImage} alt="" />
@@ -105,25 +105,25 @@ export default function OrderDetailModal(param: param) {
             <p className="font-bold">
               할인 금액:{" "}
               <span className="text-[#FF0000]">
-                {data.couponAmount.toLocaleString()}원
+                {data.data.couponAmount.toLocaleString()}원
               </span>
             </p>
             <p className="font-bold text-lg">
               총 결제 금액:{" "}
               <span className="text-primary1">
-                {data.paymentAmount.toLocaleString()}원
+                {data.data.paymentAmount.toLocaleString()}원
               </span>
             </p>
             <div className="flex flex-row gap-5">
               <p className="text-md font-bold mt-1">주문 상태: </p>
               <div className="flex flex-row gap-2">
-                {data.orderDeliveryStatus === "ORDER_RECEIVED" ||
-                data.orderDeliveryStatus === "DELIVERY_STARTED" ? (
+                {data.data.orderDeliveryStatus === "PENDING" ||
+                data.data.orderDeliveryStatus === "PROCESSING" ? (
                   <Select
                     style={{ width: 100 }}
-                    defaultValue={data.orderDeliveryStatus}
+                    defaultValue={data.data.orderDeliveryStatus}
                     options={
-                      data.orderDeliveryStatus === "ORDER_RECEIVED"
+                      data.data.orderDeliveryStatus === "PENDING"
                         ? deliverStatusFirst
                         : deliverStatusSecond
                     }
@@ -131,16 +131,16 @@ export default function OrderDetailModal(param: param) {
                   />
                 ) : (
                   <Select
-                    defaultValue={data.orderDeliveryStatus}
+                    defaultValue={data.data.orderDeliveryStatus}
                     disabled
                     options={deliverStatusFirst}
                   />
                 )}
-                {data.orderDeliveryStatus === "DELIVERY_COMPLETED" ? (
+                {data.data.orderDeliveryStatus === "DELIVERY_COMPLETED" ? (
                   ""
                 ) : (
                   <Button
-                    onClick={() => handleOrderState(data.orderGroupId)}
+                    onClick={() => handleOrderState(data.data.orderDeliveryId)}
                     type="primary"
                   >
                     변경 완료
@@ -158,19 +158,21 @@ export default function OrderDetailModal(param: param) {
                 <div>주소: </div>
               </div>
               <div className="flex flex-col gap-5">
-                <div>{data.recipientName}</div>
-                <div>{data.recipientPhoneNumber}</div>
+                <div>{data.data.recipientName}</div>
+                <div>{data.data.recipientPhoneNumber}</div>
                 <div>
-                  <p>{data.zipcode}</p>
-                  <p>{data.roadName}</p>
-                  <p>{data.addressDetail}</p>
+                  <p>{data.data.zipcode}</p>
+                  <p>{data.data.roadName}</p>
+                  <p>{data.data.addressDetail}</p>
                 </div>
               </div>
             </div>
           </div>
           <div className="mt-5">
             <p className="font-bold mb-2">요청사항</p>
-            <div className="w-full text-[1rem]">{data.deliveryRequest}</div>
+            <div className="w-full text-[1rem]">
+              {data.data.deliveryRequest}
+            </div>
           </div>
         </div>
       </Modal>
