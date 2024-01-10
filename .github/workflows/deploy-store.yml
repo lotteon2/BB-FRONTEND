@@ -12,6 +12,10 @@ jobs:
     steps:
       - name: checkout Github Action
         uses: actions/checkout@v3
+      # .env에 있던 환경변수들을 등록해주는 단계
+      - name: .env setting
+        run: |
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" >> ./store/.env
 
       - name: Get npm cache directory
         id: npm-cache-dir

@@ -12,6 +12,14 @@ jobs:
     steps:
       - name: checkout Github Action
         uses: actions/checkout@v3
+      # .env에 있던 환경변수들을 등록해주는 단계
+      - name: .env setting
+        run: |
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" >> ./mall/.env
+          echo "REACT_APP_KAKAO_APP_KEY=${{ secrets.REACT_APP_KAKAO_APP_KEY }}" >> ./mall/.env
+          echo "REACT_APP_KAKAO_REST_API_KEY=${{ secrets.REACT_APP_KAKAO_REST_API_KEY }}" >> ./mall/.env
+          echo "REACT_APP_KAKAO_JS_API_KEY=${{ secrets.REACT_APP_KAKAO_JS_API_KEY }}" >> ./mall/.env
+          echo "REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.REACT_APP_KAKAO_REDIRECT_URI }}" >> ./mall/.env
 
       - name: Get npm cache directory
         id: npm-cache-dir
