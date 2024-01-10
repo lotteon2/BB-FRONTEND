@@ -16,6 +16,8 @@ export default function MainLayout() {
     // eslint-disable-next-line
   }, []);
 
+  if (!isLogin) return null;
+
   return (
     <div className="w-[1920px] h-screen font-regular flex flex-row">
       <div className="w-[300px] bg-grayscale7 relative">

@@ -127,7 +127,8 @@ export default function Notification() {
         });
       };
 
-      getAllNotiMutation.mutate();
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken && storeId !== null) getAllNotiMutation.mutate();
 
       return () => eventSource.close();
     }
@@ -135,7 +136,8 @@ export default function Notification() {
   }, [storeId]);
 
   useEffect(() => {
-    getAllNotiMutation.mutate();
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken && storeId !== null) getAllNotiMutation.mutate();
     // eslint-disable-next-line
   }, [isNotiShow]);
 
