@@ -9,6 +9,7 @@ import PickupListFallback from "../../fallbacks/PickupListFallback";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { storeWishState } from "../../../recoil/atom/member";
 import { loginState } from "../../../recoil/atom/common";
+import { storeListNearByDto } from "../../../recoil/common/interfaces";
 
 interface param {
   sido: string | null;
@@ -21,8 +22,8 @@ export default function RegionStoreList(param: param) {
     useRecoilState<number[]>(storeWishState);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getFlowerShopsRegion", param.sido, param.gugun],
-    queryFn: () => getFlowerShopsRegion(param.sido, param.gugun),
+    queryKey: ["getFlowerShopsRegion", param.sido, param.gugun, isLogin],
+    queryFn: () => getFlowerShopsRegion(param.sido, param.gugun, isLogin),
   });
 
   const handleWishButton = (e: React.MouseEvent, storeId: number) => {
@@ -57,9 +58,9 @@ export default function RegionStoreList(param: param) {
             />
           ) : (
             <div>
-              {data.data.stores.map((item: any) => (
+              {data.data.stores.map((item: storeListNearByDto) => (
                 <div
-                  className="px-[2vw] flex flex-row gap-1 cursor-pointer"
+                  className="px-[2vw] flex flex-row gap-1 cursor-pointer py-2 hover:bg-[#C2DABC55]"
                   key={item.storeId}
                   onClick={() => navigate("/store/detail/" + item.storeId)}
                 >
@@ -105,8 +106,11 @@ export default function RegionStoreList(param: param) {
                     <p className="w-[25vw] min-w-[150px] max-w-[300px] text-[1.3rem] max-[1000px]:text-[1rem]">
                       {item.storeName}
                     </p>
-                    <p className="w-[32vw] min-w-[220px] max-w-[430px] text-[1rem] text-grayscale5 max-[1000px]:text-[0.8rem] line-clamp-2">
+                    <p className="w-[32vw] min-w-[220px] max-w-[430px] text-[1rem] text-grayscale5 max-[1000px]:text-[0.8rem] mt-[-8px] line-clamp-2">
                       {item.detailInfo}
+                    </p>
+                    <p className="font-light text-[0.8rem]">
+                      {item.address} {item.detailAddress}
                     </p>
                     <div className="w-[25vw] min-w-[100px] max-w-[400px] text-primary4">
                       <div className="flex flex-row gap-2 text-[1rem] max-[1000px]:text-[0.8rem]">

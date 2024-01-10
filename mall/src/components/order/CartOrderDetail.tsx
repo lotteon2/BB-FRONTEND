@@ -4,7 +4,7 @@ import {
   orderInfoByStore,
   productCreate,
 } from "../../recoil/common/interfaces";
-import { cartOrderState, orderInfoState } from "../../recoil/atom/order";
+import { orderState } from "../../recoil/atom/order";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useMutation } from "react-query";
 import { getMyInfo } from "../../apis/member";
@@ -14,14 +14,14 @@ import MyCouponModal from "./modal/MyCouponModal";
 import PayIcon from "../../assets/images/pay.png";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import RecentDeliveryPlaceModal from "./modal/RecentDeliveryPlaceModal";
+import { useNavigate } from "react-router-dom";
+import { paymentDeliveryMultiProducts } from "../../apis/order";
 
 const { TextArea } = Input;
 
 export default function CartOrderDetail() {
   const ButtonRef = useRef<HTMLButtonElement | null>(null);
-  const [order, setOrder] = useRecoilState<orderDto>(cartOrderState);
-  const [orderInfoByStore, setOrderInfoByStore] =
-    useRecoilState<orderInfoByStore[]>(orderInfoState);
+  const [order, setOrder] = useRecoilState<orderDto>(orderState);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState<boolean>(false);
   const [isRecentDeliveryOpen, setIsRecentDeliveryOpen] =
@@ -31,6 +31,7 @@ export default function CartOrderDetail() {
   const [totalDeliveryCost, setTotalDeliveryCost] = useState<number>(0);
   const [totalActualAmount, setTotalActualAmount] = useState<number>(0);
   const [totalCouponAmount, setTotalCouponAmount] = useState<number>(0);
+  const navigate = useNavigate();
 
   const email_pattern =
     /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+.[a-zA-Z]+$/i;
@@ -41,22 +42,32 @@ export default function CartOrderDetail() {
   };
 
   const handleCoupons = (couponId: number | null, couponAmount: number) => {
-    const tmp = {
-      storeId: order.orderInfoByStores[index].storeId,
-      storeName: order.orderInfoByStores[index].storeName,
-      products: order.orderInfoByStores[index].products,
-      totalAmount: order.orderInfoByStores[index].totalAmount,
-      deliveryCost: order.orderInfoByStores[index].deliveryCost,
-      couponId: couponId,
-      couponAmount: couponAmount,
-      actualAmount: order.orderInfoByStores[index].actualAmount - couponAmount,
-    };
+    const tmpList: orderInfoByStore[] = [];
 
-    setOrderInfoByStore([
-      ...orderInfoByStore.slice(0, index),
-      tmp,
-      ...orderInfoByStore.slice(index + 1),
-    ]);
+    order.orderInfoByStores.forEach((item: orderInfoByStore, idx: number) => {
+      if (idx === index) {
+        const tmp = {
+          storeId: order.orderInfoByStores[index].storeId,
+          storeName: order.orderInfoByStores[index].storeName,
+          products: order.orderInfoByStores[index].products,
+          totalAmount: order.orderInfoByStores[index].totalAmount,
+          deliveryCost: order.orderInfoByStores[index].deliveryCost,
+          couponId: couponId,
+          couponAmount: couponAmount,
+          actualAmount:
+            order.orderInfoByStores[index].actualAmount - couponAmount,
+        };
+        tmpList.push(tmp);
+      } else {
+        tmpList.push(item);
+      }
+    });
+
+    setOrder((prev) => ({
+      ...prev,
+      orderInfoByStores: tmpList,
+      sumOfActualAmount: order.sumOfActualAmount - couponAmount,
+    }));
 
     setTotalCouponAmount((prev) => prev + couponAmount);
     setTotalActualAmount((prev) => prev - couponAmount);
@@ -73,23 +84,32 @@ export default function CartOrderDetail() {
       order.recipientName !== "" &&
       order.recipientPhone !== ""
     ) {
-      const payDto = {
-        orderInfo: orderInfoByStore,
-        sumOfActualAmount: order.sumOfActualAmount, // 총 실 결제금액
-        ordererName: order.ordererName,
-        ordererPhoneNumber: order.ordererPhoneNumber,
-        ordererEmail: order.ordererEmail,
-        recipientName: order.recipientName,
-        deliveryZipcode: order.deliveryZipcode,
-        deliveryRoadName: order.deliveryRoadName,
-        deliveryAddressDetail: order.deliveryAddressDetail,
-        recipientPhone: order.recipientPhone,
-        deliveryRequest: order.deliveryRequest,
-      };
-
-      console.log(payDto);
+      paymentMutation.mutate();
     }
   };
+
+  const paymentMutation = useMutation(
+    ["paymentDeliveryMultiProducts"],
+    () => paymentDeliveryMultiProducts(order),
+    {
+      onSuccess: (data) => {
+        const width = 370; // 팝업의 가로 길이: 500
+        const height = 500; // 팝업의 세로 길이 : 500
+        // 팝업을 부모 브라우저의 정 중앙에 위치시킨다.
+        const left = window.screenX + (window.outerWidth - width) / 2;
+        const top = window.screenY + (window.outerHeight - height) / 2;
+
+        window.open(
+          data.data.next_redirect_pc_url,
+          "BB 카카오페이 QR 결제",
+          `width=${width},height=${height},left=${left},top=${top}`
+        );
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -175,6 +195,7 @@ export default function CartOrderDetail() {
     if (value.length < 11) {
       return Promise.reject(new Error("정확한 핸드폰번호를 입력해주세요."));
     }
+    return Promise.resolve();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -182,6 +203,7 @@ export default function CartOrderDetail() {
     if (!value) {
       return Promise.reject(new Error("필수 입력값입니다."));
     }
+    return Promise.resolve();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -197,6 +219,28 @@ export default function CartOrderDetail() {
     form.setFieldsValue(order);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, order]);
+
+  const handleMessage = (ev: any) => {
+    if (ev.origin !== "http://localhost:3000") return;
+
+    const message = ev.data.state;
+
+    if (message === "approve") {
+      navigate("/success");
+    } else if (message === "fail") {
+      navigate("/fail");
+    }
+  };
+
+  useEffect(() => {
+    (() => {
+      window.addEventListener("message", handleMessage);
+    })();
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     var totalAmount = 0;
@@ -309,7 +353,7 @@ export default function CartOrderDetail() {
           </div>
           <Form
             form={form}
-            name="orderForm"
+            name="cartOrderForm"
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 16 }}
             style={{ maxWidth: 600, width: "100%" }}

@@ -40,9 +40,13 @@ export default function CouponModal(param: param) {
     ["downloadSingle"],
     (couponId: number) => downloadSingleCoupon(couponId, userSimpleInfo),
     {
-      onSuccess: () => {
-        SuccessToast("발급되었습니다.");
-        setIsChange((cur) => !cur);
+      onSuccess: (data) => {
+        if (data.result === "FAIL") {
+          FailToast(data.message);
+        } else {
+          SuccessToast("발급되었습니다.");
+          setIsChange((cur) => !cur);
+        }
       },
       onError: () => {
         FailToast(null);
@@ -54,9 +58,14 @@ export default function CouponModal(param: param) {
     ["downloadAll"],
     () => downloadAllCoupons(param.storeId, userSimpleInfo),
     {
-      onSuccess: () => {
-        SuccessToast("발급되었습니다.");
-        setIsChange((cur) => !cur);
+      onSuccess: (data) => {
+        console.log(data);
+        if (data.result === "FAIL") {
+          FailToast(data.message);
+        } else {
+          SuccessToast("발급되었습니다.");
+          setIsChange((cur) => !cur);
+        }
       },
       onError: () => {
         FailToast(null);

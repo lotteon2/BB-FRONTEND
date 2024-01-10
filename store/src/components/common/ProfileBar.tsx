@@ -30,7 +30,7 @@ export default function ProfileBar() {
   const storeId = useRecoilValue<number>(storeIdState);
   const isLogin = useRecoilValue<boolean>(loginState);
   const notiEvent = useRecoilValue<boolean>(notiEventState);
-  const setNotiShow = useSetRecoilState<boolean>(notiShowState);
+  const [isNotiShow, setNotiShow] = useRecoilState<boolean>(notiShowState);
   const [notiCount, setNotiCount] = useRecoilState<number>(notiCountState);
 
   const logoutMutation = useMutation(["logout"], () => logout(), {
@@ -49,7 +49,7 @@ export default function ProfileBar() {
 
   const notiCountMutate = useMutation(
     ["getUnreadNotificationsCount", notiEvent],
-    () => getUnreadNotificationsCount(),
+    () => getUnreadNotificationsCount(storeId),
     {
       onSuccess: (data) => {
         setNotiCount(data.data.unreadCount);
@@ -63,6 +63,11 @@ export default function ProfileBar() {
     if (accessToken && storeId !== null) notiCountMutate.mutate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin, notiEvent, storeId]);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken && storeId !== null) notiCountMutate.mutate();
+  }, [isNotiShow]);
 
   return (
     <div className="w-full h-[32px] mt-4">

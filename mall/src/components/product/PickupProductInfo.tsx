@@ -12,12 +12,7 @@ import { useMutation, useQuery } from "react-query";
 import { getProductDetail, requestSaleResume } from "../../apis/product";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
 import { Dayjs } from "dayjs";
-import { getStoreDeliveryPolicy } from "../../apis/store";
-import {
-  pickupOrderDto,
-  saleResumeDto,
-  storeDeliveryPolicyDto,
-} from "../../recoil/common/interfaces";
+import { pickupOrderDto, saleResumeDto } from "../../recoil/common/interfaces";
 import { pickupTime } from "../../recoil/common/data";
 import { pickupOrderState } from "../../recoil/atom/order";
 import dayjs from "dayjs";
@@ -43,10 +38,6 @@ export default function PickupProductInfo(param: param) {
   const isLogin = useRecoilValue<boolean>(loginState);
   const [productWishList, setProductWishList] =
     useRecoilState<string[]>(productWishState);
-  const [deliveryPolicy, setDeliveryPolicy] = useState<storeDeliveryPolicyDto>({
-    deliveryPrice: 0,
-    freeDeliveryMinPrice: 0,
-  });
   const [pickupDate, setPickupDate] = useState<string>("");
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [date, setDate] = useState<Dayjs>(dayjs());
@@ -54,8 +45,8 @@ export default function PickupProductInfo(param: param) {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getProductDetail"],
-    queryFn: () => getProductDetail(param.productId),
+    queryKey: ["getProductDetail", isLogin],
+    queryFn: () => getProductDetail(param.productId, isLogin),
   });
 
   const handleWishButton = (productId: string) => {
@@ -133,16 +124,10 @@ export default function PickupProductInfo(param: param) {
         pickupTime: selectedTime,
         product: productCreate,
         totalAmount: data.data.productPrice * count,
-        deliveryCost:
-          data.data.productPrice * count >= deliveryPolicy.freeDeliveryMinPrice
-            ? 0
-            : deliveryPolicy.deliveryPrice,
+        deliveryCost: 0,
         couponId: null,
         couponAmount: 0,
-        actualAmount:
-          data.data.productPrice * count >= deliveryPolicy.freeDeliveryMinPrice
-            ? data.data.productPrice * count
-            : data.data.productPrice * count + deliveryPolicy.deliveryPrice,
+        actualAmount: data.data.productPrice * count,
         ordererName: "",
         ordererPhoneNumber: "",
         ordererEmail: "",
@@ -193,17 +178,6 @@ export default function PickupProductInfo(param: param) {
     }
   );
 
-  const getPolilcyMutation = useMutation(
-    ["getStorePolicy"],
-    (storeId: number) => getStoreDeliveryPolicy(storeId),
-    {
-      onSuccess: (data) => {
-        setDeliveryPolicy(data.data);
-      },
-      onError: () => {},
-    }
-  );
-
   const shareKakao = () => {
     window.Kakao.Link.sendDefault({
       objectType: "feed",
@@ -231,7 +205,6 @@ export default function PickupProductInfo(param: param) {
   useEffect(() => {
     if (data) {
       param.setProductName(data.data.productName);
-      getPolilcyMutation.mutate(data.data.storeId);
       getPhoneNumberMutation.mutate();
 
       if (!window.Kakao.isInitialized()) {
@@ -370,22 +343,6 @@ export default function PickupProductInfo(param: param) {
           <p className="text-[2.3rem] font-bold text-primary4 mt-2">
             {/* {data.data.productPrice.toLocaleString()}원 */}
           </p>
-        </div>
-        <div className="text-[0.9rem] border-b-[1px] pb-2 flex flex-row gap-2">
-          <span>택배 배송</span>
-          {deliveryPolicy.deliveryPrice === 0 ? (
-            <span className="font-bold">무료배송</span>
-          ) : (
-            <div className="flex flex-row gap-2">
-              <span className="font-bold">
-                {deliveryPolicy.deliveryPrice.toLocaleString()}원
-              </span>
-              <span className="font-light">
-                ({deliveryPolicy.freeDeliveryMinPrice.toLocaleString()}원 이상
-                결제 시 무료)
-              </span>
-            </div>
-          )}
         </div>
         <div className="w-full h-14 border-[1px] border-grayscale3 relative mt-2">
           <div className="absolute left-3 top-3">

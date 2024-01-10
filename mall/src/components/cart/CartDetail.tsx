@@ -21,12 +21,12 @@ import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { FailToast } from "../common/toast/FailToast";
 import { SuccessToast } from "../common/toast/SuccessToast";
 import { useSetRecoilState } from "recoil";
-import { cartOrderState, orderInfoState } from "../../recoil/atom/order";
+import { orderInfoState, orderState } from "../../recoil/atom/order";
 import { useNavigate } from "react-router";
 
 export default function CartDetail() {
   const navigate = useNavigate();
-  const setCartOrder = useSetRecoilState<orderDto>(cartOrderState);
+  const setCartOrder = useSetRecoilState<orderDto>(orderState);
   const setOrderInfo = useSetRecoilState<orderInfoByStore[]>(orderInfoState);
   const [totalStoreList, setTotalStoreList] = useState<number[]>([]);
   const [totalProductList, setTotalProductList] = useState<string[]>([]);
@@ -275,7 +275,7 @@ export default function CartDetail() {
           products: productCreate,
           totalAmount: storeTotal,
           deliveryCost: delivery,
-          couponId: 0,
+          couponId: null,
           couponAmount: 0,
           actualAmount: storeTotal + delivery,
         };
@@ -534,8 +534,7 @@ export default function CartDetail() {
                             </div>
                             <div className="font-bold text-[1.5rem] my-auto max-[1200px]:w-full max-[1200px]:text-right">
                               {(
-                                product.price *
-                                quantities[productIndex + index * 2]
+                                product.price * quantities[productIndex + index]
                               ).toLocaleString()}
                               원
                             </div>

@@ -13,12 +13,7 @@ import {
   notiShowState,
 } from "../../recoil/atom/noti";
 import { getUnreadNotificationsCount } from "../../apis/noti";
-import {
-  useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState,
-} from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import Notification from "./Notification";
 
 export default function ProfileBar() {
@@ -26,7 +21,7 @@ export default function ProfileBar() {
   const resetLoginState = useResetRecoilState(loginState);
   const isLogin = useRecoilValue<boolean>(loginState);
   const notiEvent = useRecoilValue<boolean>(notiEventState);
-  const setNotiShow = useSetRecoilState<boolean>(notiShowState);
+  const [isNotiShow, setNotiShow] = useRecoilState<boolean>(notiShowState);
   const [notiCount, setNotiCount] = useRecoilState<number>(notiCountState);
 
   const logoutMutation = useMutation(["logout"], () => logout(), {
@@ -57,6 +52,11 @@ export default function ProfileBar() {
     if (accessToken) notiCountMutate.mutate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin, notiEvent]);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) notiCountMutate.mutate();
+  }, [isNotiShow]);
 
   return (
     <div className="w-full h-[32px] mt-4">

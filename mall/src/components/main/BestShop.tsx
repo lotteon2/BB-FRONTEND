@@ -17,7 +17,7 @@ export default function BestShop() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["getStoreList", isLogin],
-    queryFn: () => getStoreList(0, 4),
+    queryFn: () => getStoreList(0, 4, isLogin),
   });
 
   const handleWishButton = (e: React.MouseEvent, storeId: number) => {
@@ -51,7 +51,7 @@ export default function BestShop() {
           <div className="flex flex-row gap-3 text-center flex-wrap">
             {data.data.stores.map((item: mainStoreListDto) => (
               <div
-                className="flex flex-col gap-1 text-left mx-auto w-[23vw] min-w-[180px] max-w-[320px] cursor-pointer"
+                className="flex flex-col gap-1 text-left mx-auto w-[23vw] min-w-[180px] max-w-[320px] cursor-pointer hover:-translate-y-1"
                 key={item.storeId}
                 onClick={() => navigate("/store/detail/" + item.storeId)}
               >

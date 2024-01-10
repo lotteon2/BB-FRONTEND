@@ -18,8 +18,8 @@ export default function StoreInfo(param: param) {
     useRecoilState<number[]>(storeWishState);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getStoreDetailInfo"],
-    queryFn: () => getStoreDetailInfo(param.storeId),
+    queryKey: ["getStoreDetailInfo", isLogin],
+    queryFn: () => getStoreDetailInfo(param.storeId, isLogin),
   });
 
   const handleWishButton = (storeId: number) => {

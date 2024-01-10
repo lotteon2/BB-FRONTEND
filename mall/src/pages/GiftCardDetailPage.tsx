@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
-import { cardDetail } from "../mocks/giftcard";
 import ShareIcon from "@mui/icons-material/Share";
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useQuery } from "react-query";
+import { getGiftCardDetail } from "../apis/giftcard";
+import Loading from "../components/common/Loading";
 
 declare const window: typeof globalThis & {
   Kakao: any;
@@ -14,13 +16,10 @@ export default function GiftCardDetailPage() {
   const cardId = param.cardId;
   const password = param.password;
 
-  const data = cardDetail;
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getCardDetail"],
-  //     queryFn: () => getGiftCardDetail(cardId, password),
-  //   });
-
-  //   if (!data || isLoading) return <Loading />;
+  const { data, isLoading } = useQuery({
+    queryKey: ["getCardDetail"],
+    queryFn: () => getGiftCardDetail(cardId, password),
+  });
 
   const shareKakao = () => {
     window.Kakao.Link.sendDefault({
@@ -53,6 +52,8 @@ export default function GiftCardDetailPage() {
     AOS.init();
   }, []);
 
+  if (!data || isLoading) return <Loading />;
+
   return (
     <div className="w-full h-full">
       <div className="w-[30vw] h-full min-w-[370px] m-auto relative mt-2">
@@ -76,7 +77,7 @@ export default function GiftCardDetailPage() {
           ></div>
         </div>
         <p className="text-right text-[0.9rem] font-thin my-2">
-          작성일시: {data.createdAt.split("T")[0]}
+          작성일시: {data.createdAt}
         </p>
       </div>
     </div>

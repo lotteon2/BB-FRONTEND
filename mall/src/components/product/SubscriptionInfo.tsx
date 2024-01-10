@@ -46,8 +46,8 @@ export default function SubscriptionInfo(param: param) {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getProductDetail"],
-    queryFn: () => getProductDetail(param.productId),
+    queryKey: ["getProductDetail", isLogin],
+    queryFn: () => getProductDetail(param.productId, isLogin),
   });
 
   const handleWishButton = (productId: string) => {
@@ -88,7 +88,7 @@ export default function SubscriptionInfo(param: param) {
       deliveryDay: new Date(
         today.getFullYear(),
         today.getMonth(),
-        today.getDate()
+        today.getDate() + 3
       ).getDate(),
       products: productCreate,
       totalAmount: data.data.productPrice,

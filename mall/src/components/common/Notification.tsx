@@ -18,7 +18,7 @@ export default function Notification() {
   const subscribeUrl = `${process.env.REACT_APP_API_URL}/notification/subscribe/customer`;
 
   const getAllNotiMutation = useMutation(
-    ["getAllNotifications"],
+    ["getAllNotifications", isNotiShow],
     () => getAllNotifications(),
     {
       onSuccess: (data) => {
@@ -107,13 +107,17 @@ export default function Notification() {
         });
       };
 
-      getAllNotiMutation.mutate();
-
       return () => eventSource.close();
     }
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    if (isNotiShow) {
+      getAllNotiMutation.mutate();
+    }
+    // eslint-disable-next-line
+  }, [isNotiShow]);
   return (
     <div>
       {isNotiShow ? (
@@ -121,10 +125,13 @@ export default function Notification() {
           {notiList.length === 0 ? (
             <Empty description="알림이 없습니다." className="my-10" />
           ) : (
-            <div className="py-1 px-2">
+            <div className="py-1 px-2 text-left">
+              <p className="font-bold pb-2 border-b-2 border-grayscale7">
+                알림
+              </p>
               {notiList.map((item: notiDto) => (
                 <p
-                  className="my-2 cursor-pointer hover:font-bold"
+                  className="my-3 cursor-pointer hover:font-bold"
                   key={item.notificationId}
                   onClick={() => navigate(item.notificationLink)}
                 >

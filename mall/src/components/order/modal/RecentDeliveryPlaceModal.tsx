@@ -5,7 +5,7 @@ import {
   subscriptionOrderDto,
 } from "../../../recoil/common/interfaces";
 import { Empty, Button } from "antd";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { orderState, subscriptionOrderState } from "../../../recoil/atom/order";
 import { useQuery } from "react-query";
 import { getRecentDeliveryAddress } from "../../../apis/delivery";
@@ -20,7 +20,7 @@ export default function RecentDeliveryPlaceModal(param: param) {
   const setSubscriptionOrder = useSetRecoilState<subscriptionOrderDto>(
     subscriptionOrderState
   );
-  const [order, setOrder] = useRecoilState<orderDto>(orderState);
+  const setOrder = useSetRecoilState<orderDto>(orderState);
 
   const [selected, setSelected] = useState<deliveryAddressDto>({
     deliveryAddressId: param.addressId,
@@ -31,7 +31,6 @@ export default function RecentDeliveryPlaceModal(param: param) {
     phoneNumber: "",
   });
 
-  console.log(selected);
   const { data, isLoading } = useQuery({
     queryKey: ["getRecentDeliveryAddress"],
     queryFn: () => getRecentDeliveryAddress(),
@@ -65,7 +64,6 @@ export default function RecentDeliveryPlaceModal(param: param) {
 
   if (!data || isLoading) return <Loading />;
 
-  console.log(order);
   return (
     <div>
       <div className="max-h-[500px] overflow-auto px-2">

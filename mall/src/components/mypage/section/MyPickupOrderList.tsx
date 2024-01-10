@@ -26,6 +26,8 @@ export default function MyPickupOrderList() {
       dataIndex: "key",
       key: "key",
       ellipsis: true,
+      width: 100,
+      render: (record) => <p>{record.split("-")[0]}</p>,
     },
     {
       title: "",
@@ -47,6 +49,7 @@ export default function MyPickupOrderList() {
       dataIndex: "",
       key: "productName",
       ellipsis: true,
+      width: 400,
       render: (record) => (
         <div>
           <p className="text-ellipsis overflow-hidden ...">

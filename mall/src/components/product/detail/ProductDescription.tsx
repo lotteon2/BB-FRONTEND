@@ -1,13 +1,17 @@
 import { useQuery } from "react-query";
 import SquareFallback from "../../fallbacks/SquareFallback";
 import { getProductDetail } from "../../../apis/product";
+import { useRecoilValue } from "recoil";
+import { loginState } from "../../../recoil/atom/common";
 interface param {
   productId: string;
 }
 export default function ProductDescription(param: param) {
+  const isLogin = useRecoilValue<boolean>(loginState);
+
   const { data, isLoading } = useQuery({
-    queryKey: ["getProductDetailForDescription", param.productId],
-    queryFn: () => getProductDetail(param.productId),
+    queryKey: ["getProductDetailForDescription", param.productId, isLogin],
+    queryFn: () => getProductDetail(param.productId, isLogin),
   });
 
   if (!data || isLoading)

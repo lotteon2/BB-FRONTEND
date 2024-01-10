@@ -50,8 +50,8 @@ export default function ProductInfo(param: param) {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getProductDetail", param.productId],
-    queryFn: () => getProductDetail(param.productId),
+    queryKey: ["getProductDetail", param.productId, isLogin],
+    queryFn: () => getProductDetail(param.productId, isLogin),
   });
 
   const handleWishButton = (productId: string) => {

@@ -19,7 +19,7 @@ export default function MyCouponModal(param: param) {
   const [couponAmount, setCouponAmount] = useState<number>(param.couponAmount);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getValidCouponListForPayment"],
+    queryKey: ["getValidCouponListForPayment", param],
     queryFn: () =>
       getValidCouponListForPayment(param.storeId, param.actualAmount),
   });

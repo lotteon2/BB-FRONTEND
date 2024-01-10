@@ -7,14 +7,19 @@ import {
 import { useMemo, useState } from "react";
 import ReactQuill from "react-quill";
 import "../../css/quill.snow.css";
-import { useMutation } from "react-query";
-import { registerGiftCard } from "../../apis/giftcard";
+import { useMutation, useQuery } from "react-query";
+import {
+  getLanguageOfFlowers,
+  getRecommandLetter,
+  registerGiftCard,
+} from "../../apis/giftcard";
 import { FailToast } from "../common/toast/FailToast";
 import GiftCardContent from "./GiftCardContent";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useRecoilValue } from "recoil";
 import { mallState } from "../../recoil/atom/common";
+import Loading from "../common/Loading";
 
 interface param {
   cardTemplate: cardTemplateListDto;
@@ -30,18 +35,10 @@ export default function GiftCardRegister(param: param) {
   const [clickBtn, setClickBtn] = useState<boolean>(false);
   const isMall = useRecoilValue<boolean>(mallState);
 
-  const data = {
-    data: {
-      languageOfFlower: "첫사랑",
-    },
-    message: null,
-    errorCode: null,
-    result: "SUCCESS",
-  };
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getLanguageOfFlowers", param],
-  //     queryFn: () => getLanguageOfFlowers(param.productId),
-  //   });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getLanguageOfFlowers", param],
+    queryFn: () => getLanguageOfFlowers(param.productId),
+  });
 
   const handleContentRecommand = () => {
     if (param.cardTemplate.cardTemplateId === 0) {
@@ -55,7 +52,7 @@ export default function GiftCardRegister(param: param) {
       };
       setRecommandDto(recommandDto);
       setClickBtn((cur) => !cur);
-      //   recommandMutation.mutate(recommandDto);
+      recommandMutation.mutate(recommandDto);
     }
   };
 
@@ -108,6 +105,19 @@ export default function GiftCardRegister(param: param) {
       },
     }
   );
+
+  const recommandMutation = useMutation(
+    ["getRecommandLetter"],
+    (recommandDto: recommandDto) => getRecommandLetter(recommandDto),
+    {
+      onSuccess: (data) => {
+        setValue(data);
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
   const formats = ["header"];
 
   const modules = useMemo(() => {
@@ -120,7 +130,7 @@ export default function GiftCardRegister(param: param) {
     };
   }, []);
 
-  //   if (!data || isLoading) return <Loading />;
+  if (!data || isLoading) return <Loading />;
 
   return (
     <div className="mt-3">

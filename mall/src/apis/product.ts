@@ -5,8 +5,6 @@ import {
 } from "../recoil/common/interfaces";
 import { authInstance, defaultInstance } from "./utils";
 
-const isLogin = localStorage.getItem("isLogin");
-
 // 메인페이지 상품 조회
 export const getMainProductList = async (type: string, isLogin: boolean) => {
   if (isLogin) {
@@ -24,9 +22,10 @@ export const getProductListByCategory = async (
   page: number,
   size: number,
   sortOption: string,
-  storeId: number | null
+  storeId: number | null,
+  isLogin: boolean
 ) => {
-  if (isLogin === "T") {
+  if (isLogin) {
     if (storeId === null) {
       const { data } = await authInstance.get(
         "/products/category/" +
@@ -91,9 +90,10 @@ export const getProductListByTag = async (
   categoryId: number | null | undefined,
   page: number,
   size: number,
-  sortOption: string
+  sortOption: string,
+  isLogin: boolean
 ) => {
-  if (isLogin === "T") {
+  if (isLogin) {
     if (!categoryId) {
       const { data } = await authInstance.get(
         "/products/tag/" +
@@ -153,8 +153,11 @@ export const getProductListByTag = async (
 };
 
 // 상품 상세 조회
-export const getProductDetail = async (productId: string | undefined) => {
-  if (isLogin === "T") {
+export const getProductDetail = async (
+  productId: string | undefined,
+  isLogin: boolean
+) => {
+  if (isLogin) {
     const { data } = await authInstance.get("/products/" + productId);
     return data;
   } else {
@@ -189,24 +192,38 @@ export const getProductQuestionList = async (
   page: number,
   size: number,
   replied: boolean | undefined,
-  isMine: boolean
+  isMine: boolean,
+  isLogin: boolean
 ) => {
-  if (!isMine) {
+  if (isLogin) {
+    if (isMine) {
+      const { data } = await authInstance.get(
+        "/stores/questions/product/" +
+          productId +
+          "/my?page=" +
+          page +
+          "&size=" +
+          size +
+          (replied === undefined ? "" : "&is-replied=" + replied)
+      );
+      return data;
+    } else {
+      const { data } = await authInstance.get(
+        "/stores/questions/product/" +
+          productId +
+          "?page=" +
+          page +
+          "&size=" +
+          size +
+          (replied === undefined ? "" : "&is-replied=" + replied)
+      );
+      return data;
+    }
+  } else {
     const { data } = await defaultInstance.get(
       "/stores/questions/product/" +
         productId +
         "?page=" +
-        page +
-        "&size=" +
-        size +
-        (replied === undefined ? "" : "&is-replied=" + replied)
-    );
-    return data;
-  } else {
-    const { data } = await authInstance.get(
-      "/stores/questions/product/" +
-        productId +
-        "/my?page=" +
         page +
         "&size=" +
         size +

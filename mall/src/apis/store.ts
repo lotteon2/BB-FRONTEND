@@ -1,11 +1,13 @@
 import { simpleUserInfo } from "../recoil/common/interfaces";
 import { authInstance, defaultInstance } from "./utils";
 
-const isLogin = localStorage.getItem("isLogin");
-
 // 가게 리스트
-export const getStoreList = async (page: number, size: number) => {
-  if (isLogin === "T") {
+export const getStoreList = async (
+  page: number,
+  size: number,
+  isLogin: boolean
+) => {
+  if (isLogin) {
     const { data } = await authInstance.get(
       "/stores/list?page=" + page + "&size=" + size
     );
@@ -22,9 +24,10 @@ export const getStoreList = async (page: number, size: number) => {
 export const getFlowerShopsNearBy = async (
   lat: number,
   lon: number,
-  level: number
+  level: number,
+  isLogin: boolean
 ) => {
-  if (isLogin === "T") {
+  if (isLogin) {
     const { data } = await authInstance.get(
       "/stores/map/location?lat=" + lat + "&lon=" + lon + "&level=" + level
     );
@@ -49,9 +52,10 @@ export const getGugunList = async (sidoCode: string | null) => {
 // 지역별 꽃집 조회
 export const getFlowerShopsRegion = async (
   sido: string | null,
-  gugun: string
+  gugun: string,
+  isLogin: boolean
 ) => {
-  if (isLogin === "T") {
+  if (isLogin) {
     if (sido === null && gugun === "") return "ready";
     const { data } = await authInstance.get(
       "/stores/map/region?sido=" + sido + "&gugun=" + gugun
@@ -67,8 +71,8 @@ export const getFlowerShopsRegion = async (
 };
 
 // 가게정보 조회
-export const getStoreDetailInfo = async (storeId: number) => {
-  if (isLogin === "T") {
+export const getStoreDetailInfo = async (storeId: number, isLogin: boolean) => {
+  if (isLogin) {
     const { data } = await authInstance.get("/stores/" + storeId + "/user");
     return data;
   } else {

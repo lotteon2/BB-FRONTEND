@@ -27,6 +27,8 @@ export default function MyOrderList() {
       dataIndex: "key",
       key: "key",
       ellipsis: true,
+      width: 100,
+      render: (record) => <p>{record.split("-")[0]}</p>,
     },
     {
       title: "",
@@ -47,6 +49,7 @@ export default function MyOrderList() {
       dataIndex: "",
       key: "productName",
       ellipsis: true,
+      width: 400,
       render: (record) => (
         <div>
           {record.quantity === 1 ? (

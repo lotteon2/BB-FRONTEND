@@ -6,16 +6,18 @@ import ManMarker from "../../../assets/images/map/person.png";
 import SquareFallback from "../../fallbacks/SquareFallback";
 import { getFlowerShopsNearBy } from "../../../apis/store";
 import { storeListNearByDto } from "../../../recoil/common/interfaces";
-import { useRecoilState } from "recoil";
-import { locationstate } from "../../../recoil/atom/common";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { locationstate, loginState } from "../../../recoil/atom/common";
 
 export default function KakaoMap() {
   const [state, setState] = useRecoilState(locationstate);
   const [markerList, setMarkerList] = useState<boolean[]>([]);
+  const isLogin = useRecoilValue<boolean>(loginState);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getFlowerShopsNearBy", state],
-    queryFn: () => getFlowerShopsNearBy(state.lat, state.lng, state.level),
+    queryKey: ["getFlowerShopsNearBy", state, isLogin],
+    queryFn: () =>
+      getFlowerShopsNearBy(state.lat, state.lng, state.level, isLogin),
   });
 
   const handleMarkerClose = (index: number) => {

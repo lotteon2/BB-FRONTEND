@@ -47,7 +47,7 @@ export default function MainLayout() {
         resetProductWishList();
       },
       onError: () => {
-        FailToast(null);
+        productWishMutation.mutate();
       },
     }
   );
@@ -62,7 +62,7 @@ export default function MainLayout() {
         resetStoreWishList();
       },
       onError: () => {
-        FailToast(null);
+        storeWishMutation.mutate();
       },
     }
   );

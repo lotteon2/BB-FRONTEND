@@ -57,24 +57,20 @@ export default function Notification() {
         });
 
         eventSource.addEventListener("CONNECT", () => {
-          console.log("!!!!!!!!");
           setNotiEvent((cur) => !cur);
         });
 
         eventSource.addEventListener("NEWCOMER", () => {
-          console.log("NEWCOMMER");
           setNotiEvent((cur) => !cur);
         });
       };
 
       eventSource.onopen = () => {
         eventSource.addEventListener("CONNECT", () => {
-          console.log("!!!!!!!!");
           setNotiEvent((cur) => !cur);
         });
 
         eventSource.addEventListener("NEWCOMER", () => {
-          console.log("NEWCOMMER");
           setNotiEvent((cur) => !cur);
         });
       };
@@ -94,6 +90,9 @@ export default function Notification() {
             <Empty description="알림이 없습니다." className="my-10" />
           ) : (
             <div className="py-1 px-2">
+              <p className="font-bold pb-2 border-b-2 border-grayscale7">
+                알림
+              </p>
               {notiList.map((item: notiDto) => (
                 <p
                   className="my-2 cursor-pointer hover:font-bold"

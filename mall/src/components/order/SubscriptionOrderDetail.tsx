@@ -6,7 +6,6 @@ import { useMutation } from "react-query";
 import { getMyInfo } from "../../apis/member";
 import { FailToast } from "../common/toast/FailToast";
 import { Modal, Form, Input, Button } from "antd";
-import MyCouponModal from "./modal/MyCouponModal";
 import PayIcon from "../../assets/images/pay.png";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import RecentDeliveryPlaceModal from "./modal/RecentDeliveryPlaceModal";
@@ -21,7 +20,6 @@ export default function SubscriptionOrderDetail() {
   const [order, setOrder] = useRecoilState<subscriptionOrderDto>(
     subscriptionOrderState
   );
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState<boolean>(false);
   const [isRecentDeliveryOpen, setIsRecentDeliveryOpen] =
     useState<boolean>(false);
@@ -32,15 +30,6 @@ export default function SubscriptionOrderDetail() {
 
   const handleMyInfo = () => {
     getMyInfoMutation.mutate();
-  };
-
-  const handleCoupons = (couponId: number | null, couponAmount: number) => {
-    setOrder((prev) => ({
-      ...prev,
-      couponId: couponId,
-      couponAmount: couponAmount,
-    }));
-    handleCancel();
   };
 
   const handleOrder = () => {
@@ -62,10 +51,16 @@ export default function SubscriptionOrderDetail() {
     () => paymentSubscribeProduct(order),
     {
       onSuccess: (data) => {
+        const width = 370; // 팝업의 가로 길이: 500
+        const height = 500; // 팝업의 세로 길이 : 500
+        // 팝업을 부모 브라우저의 정 중앙에 위치시킨다.
+        const left = window.screenX + (window.outerWidth - width) / 2;
+        const top = window.screenY + (window.outerHeight - height) / 2;
+
         window.open(
           data.data.next_redirect_pc_url,
           "BB 카카오페이 QR 결제",
-          "top=0, left=0, width=500, height=600, menubar=no, toolbar=no, resizable=no, status=no, scrollbars=no"
+          `width=${width},height=${height},left=${left},top=${top}`
         );
       },
       onError: () => {
@@ -87,7 +82,6 @@ export default function SubscriptionOrderDetail() {
   };
 
   const handleCancel = () => {
-    setIsModalOpen(false);
     setIsRecentDeliveryOpen(false);
   };
 
@@ -198,7 +192,6 @@ export default function SubscriptionOrderDetail() {
     // eslint-disable-next-line
   }, []);
 
-  console.log(order);
   return (
     <div>
       <div className="flex flex-row gap-5 flex-wrap justify-center mt-5">
@@ -249,32 +242,18 @@ export default function SubscriptionOrderDetail() {
                 </div>
               </div>
               <div className="border-t-[1px]"></div>
-              <div className="flex flex-row p-2 justify-between">
-                <div className="mt-12">
-                  <Button size="large" onClick={() => setIsModalOpen(true)}>
-                    쿠폰 사용
-                  </Button>
-                </div>
+              <div className="flex flex-row p-2 justify-end">
                 <div className="flex flex-row gap-16 text-[1.2rem]">
                   <div className="flex flex-col gap-2">
                     <p>총 주문금액</p>
-                    <p>총 할인금액</p>
                     <p>배송비</p>
                     <p className="font-bold">총 결제금액</p>
                   </div>
                   <div className="flex flex-col gap-2 text-right">
                     <p>{order.actualAmount.toLocaleString()}원</p>
-                    <p className="text-[#FF5555]">
-                      {order.couponAmount.toLocaleString()}원
-                    </p>
                     <p>{order.deliveryCost.toLocaleString()}원</p>
                     <p className="font-bold text-primary4">
-                      {(
-                        order.actualAmount +
-                        order.deliveryCost -
-                        order.couponAmount
-                      ).toLocaleString()}
-                      원
+                      {order.actualAmount.toLocaleString()}원
                     </p>
                   </div>
                 </div>
@@ -536,15 +515,11 @@ export default function SubscriptionOrderDetail() {
           <div className="flex flex-row gap-20 w-full text-[1.2rem] justify-between">
             <div className="flex flex-col gap-2">
               <p>총 주문금액</p>
-              <p>총 할인금액</p>
               <p>배송비</p>
               <p className="font-bold text-[1.5rem]">총 결제금액</p>
             </div>
             <div className="flex flex-col gap-2 text-right">
               <p>{order.actualAmount.toLocaleString()}원</p>
-              <p className="text-[#FF5555]">
-                {order.couponAmount.toLocaleString()}원
-              </p>
               <p>{order.deliveryCost.toLocaleString()}원</p>
               <p className="font-bold text-primary4 text-[1.5rem]">
                 {(
@@ -569,16 +544,6 @@ export default function SubscriptionOrderDetail() {
           </div>
         </div>
       </div>
-      <Modal open={isModalOpen} onCancel={handleCancel} footer={[]}>
-        <MyCouponModal
-          handleCancel={handleCancel}
-          handleCoupons={handleCoupons}
-          storeId={order.storeId}
-          actualAmount={order.actualAmount}
-          couponId={order.couponId}
-          couponAmount={order.couponAmount}
-        />
-      </Modal>
       <Modal
         open={isRecentDeliveryOpen}
         onCancel={handleCancel}

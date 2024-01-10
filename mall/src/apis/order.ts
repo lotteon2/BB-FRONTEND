@@ -16,7 +16,7 @@ export const getDeliveryDetail = async (orderGroupId: string) => {
 // 픽업 주문 상세 조회
 export const getPickupDetail = async (reservationId: string) => {
   const { data } = await authInstance.get(
-    "/stores/reservations/" + reservationId
+    "/orderquery/reservations/" + reservationId
   );
   return data;
 };
@@ -46,5 +46,11 @@ export const paymentSubscribeProduct = async (
   orderDto: subscriptionOrderDto
 ) => {
   const { data } = await authInstance.post("/orders/subscription", orderDto);
+  return data;
+};
+
+// 장바구니 결제
+export const paymentDeliveryMultiProducts = async (orderDto: orderDto) => {
+  const { data } = await authInstance.post("/orders/cart", orderDto);
   return data;
 };

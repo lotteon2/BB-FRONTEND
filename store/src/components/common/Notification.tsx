@@ -21,9 +21,10 @@ export default function Notification() {
 
   const getAllNotiMutation = useMutation(
     ["getAllNotifications"],
-    () => getAllNotifications(),
+    () => getAllNotifications(storeId),
     {
       onSuccess: (data) => {
+        console.log(data.data.notification);
         setNotiList(data.data.notifications);
       },
       onError: () => {
@@ -97,7 +98,7 @@ export default function Notification() {
           setNotiEvent((cur) => !cur);
         });
 
-        eventSource.addEventListener("QUESTION", (event: any) => {
+        eventSource.addEventListener("QUESTION", () => {
           setNotiEvent((cur) => !cur);
         });
 
@@ -132,17 +133,24 @@ export default function Notification() {
     }
   }, [storeId]);
 
+  useEffect(() => {
+    getAllNotiMutation.mutate();
+  }, [isNotiShow]);
+
   return (
     <div>
       {isNotiShow ? (
-        <div className="w-60 max-h-80 bg-grayscale1 overflow-auto rounded-sm shadow-lg">
+        <div className="w-64 max-h-80 bg-grayscale1 overflow-auto rounded-sm shadow-lg">
           {notiList.length === 0 ? (
             <Empty description="알림이 없습니다." className="my-10" />
           ) : (
             <div className="py-1 px-2">
+              <p className="font-bold pb-2 border-b-2 border-grayscale7">
+                알림
+              </p>
               {notiList.map((item: notiDto) => (
                 <p
-                  className="my-2 cursor-pointer hover:font-bold"
+                  className="my-3 cursor-pointer hover:font-bold"
                   key={item.notificationId}
                   onClick={() => navigate(item.notificationLink)}
                 >

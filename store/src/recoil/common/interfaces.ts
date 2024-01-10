@@ -131,14 +131,17 @@ export interface productModifyInfoDto {
 }
 
 export interface orderDeliveryDetail {
+  key: number;
   productId: number;
   thumbnailImage: string;
   name: string;
   price: number;
   quantity: number;
+  paymentAmount: number;
 }
 export interface orderDelivery {
   key: string;
+  orderDeliveryId: string;
   products: orderDeliveryDetail[];
   orderDeliveryStatus: string;
   paymentAmount: number;
@@ -147,6 +150,10 @@ export interface orderDelivery {
   roadName: string;
   addressDetail: string;
   deliveryRequest: string;
+  ordererName: string;
+  ordererPhoneNumber: string;
+  recipientName: string;
+  recipientPhone: string;
 }
 export interface productRead {
   productId: number;

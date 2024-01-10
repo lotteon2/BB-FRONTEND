@@ -32,14 +32,21 @@ export default function ProductByTagList(param: param) {
     useRecoilState<string[]>(productWishState);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getProductListByTag", categoryOption, page, sortOption],
+    queryKey: [
+      "getProductListByTag",
+      categoryOption,
+      page,
+      sortOption,
+      isLogin,
+    ],
     queryFn: () =>
       getProductListByTag(
         param.tagId,
         categoryOption,
         page - 1,
         24,
-        sortOption
+        sortOption,
+        isLogin
       ),
   });
 
@@ -358,7 +365,7 @@ export default function ProductByTagList(param: param) {
           <div className="text-center mt-10">
             <Pagination
               defaultPageSize={24}
-              total={data.totalCnt}
+              total={data.data.totalCnt}
               defaultCurrent={page}
               onChange={handlePage}
             />

@@ -39,7 +39,6 @@ export default function OrderPage() {
             placeholder="주문 상태"
             options={deliveryStatusOptions}
             value={orderState}
-            allowClear={true}
           />
         </div>
         <div ref={ref1} className="mt-3">

@@ -3,7 +3,7 @@ import { authInstance } from "./utils";
 // 주문 상태 변경
 export const modifyOrderState = async (orderState: string, groupId: string) => {
   const { data } = await authInstance.patch(
-    "/delivery/" + groupId + "?status=" + orderState
+    "/delivery/" + groupId + "/" + orderState
   );
   return data;
 };
@@ -62,7 +62,7 @@ export const getSubscriptionsInfo = async (storeId: number, date: string) => {
 // 픽업 상세
 export const getReservationsInfo = async (storeId: number, date: string) => {
   const { data } = await authInstance.get(
-    "/stores/" +
+    "/orderquery/" +
       storeId +
       "/reservations?year=" +
       date.split("-")[0] +

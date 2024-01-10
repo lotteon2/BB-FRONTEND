@@ -5,6 +5,8 @@ import ProductQuestion from "./detail/ProductQuestion";
 import { Link } from "react-scroll/modules";
 import { useQuery } from "react-query";
 import { getProductDetail } from "../../apis/product";
+import { loginState } from "../../recoil/atom/common";
+import { useRecoilValue } from "recoil";
 
 interface param {
   productId: string;
@@ -15,10 +17,11 @@ export default function ProductContents(param: param) {
   const detailRef = useRef<HTMLDivElement | null>(null);
   const reviewRef = useRef<HTMLDivElement | null>(null);
   const questionRef = useRef<HTMLDivElement | null>(null);
+  const isLogin = useRecoilValue<boolean>(loginState);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getProductDetailForQuestion", param.productId],
-    queryFn: () => getProductDetail(param.productId),
+    queryKey: ["getProductDetailForQuestion", param.productId, isLogin],
+    queryFn: () => getProductDetail(param.productId, isLogin),
   });
 
   const yScrollEvent = () => {

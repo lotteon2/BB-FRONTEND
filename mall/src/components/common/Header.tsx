@@ -143,7 +143,7 @@ export default function Header() {
   const [storeWishList, setStoreWishList] =
     useRecoilState<number[]>(storeWishState);
   const notiEvent = useRecoilValue<boolean>(notiEventState);
-  const setNotiShow = useSetRecoilState<boolean>(notiShowState);
+  const [isNotiShow, setNotiShow] = useRecoilState<boolean>(notiShowState);
   const [notiCount, setNotiCount] = useRecoilState<number>(notiCountState);
 
   const activeStyle = {
@@ -199,7 +199,7 @@ export default function Header() {
         if (accessToken) logouMutation.mutate();
       },
       onError: () => {
-        FailToast(null);
+        productWishMutation.mutate();
       },
     }
   );
@@ -214,7 +214,7 @@ export default function Header() {
         if (accessToken) logouMutation.mutate();
       },
       onError: () => {
-        FailToast(null);
+        storeWishMutation.mutate();
       },
     }
   );
@@ -235,6 +235,11 @@ export default function Header() {
     if (accessToken) notiCountMutate.mutate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin, notiEvent]);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) notiCountMutate.mutate();
+  }, [isNotiShow]);
 
   return (
     <div className="mt-5">

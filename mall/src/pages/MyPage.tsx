@@ -16,7 +16,6 @@ import MyReviewList from "../components/mypage/section/MyReviewList";
 import { useMutation } from "react-query";
 import { productWishState, storeWishState } from "../recoil/atom/member";
 import { modifyStoreWishList, modifyWishList } from "../apis/member";
-import { FailToast } from "../components/common/toast/FailToast";
 import MyGiftCardList from "../components/mypage/section/MyGiftCardList";
 
 export default function MyPage() {
@@ -37,7 +36,7 @@ export default function MyPage() {
         setProductWishList([]);
       },
       onError: () => {
-        FailToast(null);
+        productWishMutation.mutate();
       },
     }
   );
@@ -50,7 +49,7 @@ export default function MyPage() {
         setStoreWishList([]);
       },
       onError: () => {
-        FailToast(null);
+        storeWishMutation.mutate();
       },
     }
   );

@@ -91,6 +91,7 @@ export default function OrderDetail() {
       },
     }
   );
+
   const handleCancel = () => {
     setIsModalOpen(false);
     setIsRecentDeliveryOpen(false);
@@ -190,7 +191,6 @@ export default function OrderDetail() {
   useEffect(() => {
     form.setFieldsValue(order);
   }, [form, order]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   const handleMessage = (ev: any) => {
     if (ev.origin !== "http://localhost:3000") return;
@@ -281,7 +281,7 @@ export default function OrderDetail() {
                   </div>
                   <div className="flex flex-col gap-2 text-right">
                     <p>
-                      {order.orderInfoByStores[0].actualAmount.toLocaleString()}
+                      {order.orderInfoByStores[0].totalAmount.toLocaleString()}
                       원
                     </p>
                     <p className="text-[#FF5555]">
@@ -293,11 +293,7 @@ export default function OrderDetail() {
                       원
                     </p>
                     <p className="font-bold text-primary4">
-                      {(
-                        order.orderInfoByStores[0].actualAmount +
-                        order.orderInfoByStores[0].deliveryCost -
-                        order.orderInfoByStores[0].couponAmount
-                      ).toLocaleString()}
+                      {order.orderInfoByStores[0].actualAmount.toLocaleString()}
                       원
                     </p>
                   </div>
@@ -565,9 +561,7 @@ export default function OrderDetail() {
               <p className="font-bold text-[1.5rem]">총 결제금액</p>
             </div>
             <div className="flex flex-col gap-2 text-right">
-              <p>
-                {order.orderInfoByStores[0].actualAmount.toLocaleString()}원
-              </p>
+              <p>{order.orderInfoByStores[0].totalAmount.toLocaleString()}원</p>
               <p className="text-[#FF5555]">
                 {order.orderInfoByStores[0].couponAmount.toLocaleString()}원
               </p>
@@ -575,12 +569,7 @@ export default function OrderDetail() {
                 {order.orderInfoByStores[0].deliveryCost.toLocaleString()}원
               </p>
               <p className="font-bold text-primary4 text-[1.5rem]">
-                {(
-                  order.orderInfoByStores[0].actualAmount +
-                  order.orderInfoByStores[0].deliveryCost -
-                  order.orderInfoByStores[0].couponAmount
-                ).toLocaleString()}
-                원
+                {order.orderInfoByStores[0].actualAmount.toLocaleString()}원
               </p>
             </div>
           </div>

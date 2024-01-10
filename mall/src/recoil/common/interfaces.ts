@@ -49,6 +49,8 @@ export interface storeListNearByDto {
   detailInfo: string;
   thumbnailImage: string;
   averageRating: number;
+  address: string;
+  detailAddress: string;
   position: {
     lat: number;
     lon: number;

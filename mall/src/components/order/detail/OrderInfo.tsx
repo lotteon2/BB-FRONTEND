@@ -1,5 +1,4 @@
 import { Button, Form, Input, Modal, Tag } from "antd";
-import { orderDeliveryDetailData } from "../../../mocks/order";
 import {
   orderInfoForStore,
   productRead,
@@ -7,6 +6,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ReviewRegisterModal from "../modal/ReviewRegisterModal";
+import { useQuery } from "react-query";
+import { getDeliveryDetail } from "../../../apis/order";
+import Loading from "../../common/Loading";
 
 interface param {
   id: string;
@@ -22,10 +24,10 @@ export default function OrderInfo(param: param) {
   const [productOrderId, setProductOrderId] = useState<number>(0);
   const [isChange, setIsChange] = useState<boolean>(false);
 
-  //   const { data, isLoading } = useQuery({
-  //     queryKey: ["getDeliveryDetail", isChange],
-  //     queryFn: () => getDeliveryDetail(param.id),
-  //   });
+  const { data, isLoading } = useQuery({
+    queryKey: ["getDeliveryDetail", isChange],
+    queryFn: () => getDeliveryDetail(param.id),
+  });
 
   const handleChange = () => {
     setIsChange((cur) => !cur);
@@ -42,10 +44,9 @@ export default function OrderInfo(param: param) {
     setProductOrderId(orderProductId);
     setIsModalOpen(true);
   };
-  const data = orderDeliveryDetailData;
 
-  console.log(isChange);
-  //   if (!data || isLoading) return <Loading />;
+  if (!data || isLoading) return <Loading />;
+
   return (
     <div>
       <div className="flex flex-row gap-5 flex-wrap justify-center mt-5">
@@ -55,7 +56,7 @@ export default function OrderInfo(param: param) {
               <p>주문상품 정보</p>
               <p className="text-[1rem] pt-3">주문번호: {data.orderGroupId}</p>
             </div>
-            {data.orderDeliveries.map((item: orderInfoForStore) => (
+            {data.data.orderDeliveries.map((item: orderInfoForStore) => (
               <div
                 className="border-[1px] border-grayscale3 mt-3 relative rounded-lg"
                 key={item.storeId}
@@ -173,7 +174,7 @@ export default function OrderInfo(param: param) {
             wrapperCol={{ span: 16 }}
             style={{ maxWidth: 600, width: "100%" }}
             autoComplete="off"
-            initialValues={data}
+            initialValues={data.data}
           >
             {/* 주문자 정보 */}
             <div className="mt-10">
@@ -199,17 +200,13 @@ export default function OrderInfo(param: param) {
               </div>
               <div className="flex flex-col gap-5 mt-10">
                 <Form.Item name="recipientName" label="성함">
-                  <div>
-                    <Input value={data.recipientName} disabled />
-                  </div>
+                  <Input value={data.recipientName} disabled />
                 </Form.Item>
                 <Form.Item name="recipientPhoneNumber" label="연락처">
                   <Input disabled />
                 </Form.Item>
                 <Form.Item name="zipcode" label="주소">
-                  <div className="flex flex-row gap-2">
-                    <Input value={data.zipcode} disabled />
-                  </div>
+                  <Input value={data.zipcode} disabled />
                 </Form.Item>
                 <Form.Item name="roadName" label=" ">
                   <Input value={data.roadName} disabled />
@@ -225,7 +222,7 @@ export default function OrderInfo(param: param) {
               </div>
               <div className="mt-3">
                 <TextArea
-                  value={data.deliveryRequest}
+                  value={data.data.deliveryRequest}
                   autoSize={{ minRows: 5, maxRows: 5 }}
                   disabled
                 />
@@ -248,11 +245,11 @@ export default function OrderInfo(param: param) {
               <p className="font-bold text-[1.5rem]">총 결제금액</p>
             </div>
             <div className="flex flex-col gap-2 text-right">
-              <p>{data.totalAmount.toLocaleString()}원</p>
-              <p>{data.couponAmount.toLocaleString()}원</p>
-              <p>{data.deliveryCost.toLocaleString()}원</p>
+              <p>{data.data.totalAmount.toLocaleString()}원</p>
+              <p>{data.data.couponAmount.toLocaleString()}원</p>
+              <p>{data.data.deliveryCost.toLocaleString()}원</p>
               <p className="font-bold text-primary4 text-[1.5rem]">
-                {data.paymentAmount.toLocaleString()}원
+                {data.data.paymentAmount.toLocaleString()}원
               </p>
             </div>
           </div>

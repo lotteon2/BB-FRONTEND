@@ -42,6 +42,7 @@ export default function OrderTable(param: param) {
       dataIndex: "orderDeliveryId",
       key: "productName",
       width: 150,
+      render: (record) => <p>{record.split("-")[0]}</p>,
     },
     {
       title: "",
@@ -130,13 +131,13 @@ export default function OrderTable(param: param) {
     <div className="w-full text-center">
       <div className="h-[780px] overflow-auto">
         <Table
-          dataSource={data.orders}
+          dataSource={data.data.orders}
           columns={columns}
           pagination={false}
           onRow={(record) => {
             return {
               onClick: () => {
-                handleOrderDetail(record.key);
+                handleOrderDetail(record.orderDeliveryId);
               },
             };
           }}
@@ -144,7 +145,7 @@ export default function OrderTable(param: param) {
       </div>
       <Pagination
         defaultCurrent={page}
-        total={data.totalCnt}
+        total={data.data.totalCnt}
         defaultPageSize={5}
         onChange={handlePage}
       />

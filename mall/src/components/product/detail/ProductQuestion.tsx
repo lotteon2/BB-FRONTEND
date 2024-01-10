@@ -37,9 +37,23 @@ export default function ProductQuestion(param: param) {
   const [isChange, setIsChange] = useState<boolean>(false);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getProductQuestionList", page, replied, findMine, isChange],
+    queryKey: [
+      "getProductQuestionList",
+      page,
+      replied,
+      findMine,
+      isChange,
+      isLogin,
+    ],
     queryFn: () =>
-      getProductQuestionList(param.productId, page - 1, 10, replied, findMine),
+      getProductQuestionList(
+        param.productId,
+        page - 1,
+        10,
+        replied,
+        findMine,
+        isLogin
+      ),
   });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
@@ -212,7 +226,7 @@ export default function ProductQuestion(param: param) {
             <div className="text-center mt-5">
               <Pagination
                 defaultCurrent={page}
-                total={data.totalCnt}
+                total={data.data.totalCnt}
                 onChange={handlePage}
               />
             </div>

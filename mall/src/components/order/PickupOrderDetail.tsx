@@ -30,6 +30,7 @@ export default function PickupOrderDetail() {
   const handleCoupons = (couponId: number | null, couponAmount: number) => {
     setPickupOrder((prev) => ({
       ...prev,
+      actualAmount: pickupOrder.actualAmount - couponAmount,
       couponId: couponId,
       couponAmount: couponAmount,
     }));
@@ -61,10 +62,16 @@ export default function PickupOrderDetail() {
     () => paymentPickupSingleProduct(pickupOrder),
     {
       onSuccess: (data) => {
+        const width = 370; // 팝업의 가로 길이: 500
+        const height = 500; // 팝업의 세로 길이 : 500
+        // 팝업을 부모 브라우저의 정 중앙에 위치시킨다.
+        const left = window.screenX + (window.outerWidth - width) / 2;
+        const top = window.screenY + (window.outerHeight - height) / 2;
+
         window.open(
           data.data.next_redirect_pc_url,
           "BB 카카오페이 QR 결제",
-          "top=0, left=0, width=500, height=600, menubar=no, toolbar=no, resizable=no, status=no, scrollbars=no"
+          `width=${width},height=${height},left=${left},top=${top}`
         );
       },
       onError: () => {
@@ -167,12 +174,6 @@ export default function PickupOrderDetail() {
               <div className="bg-grayscale2 px-2 py-1">
                 {pickupOrder.storeName}
               </div>
-              <div className="absolute top-1 right-2">
-                배송:{" "}
-                {pickupOrder.deliveryCost === 0
-                  ? "무료배송"
-                  : pickupOrder.deliveryCost.toLocaleString()}
-              </div>
               <div className="p-2">
                 <p className="text-[1.2rem] font-bold">
                   {pickupOrder.product.productName}
@@ -225,22 +226,16 @@ export default function PickupOrderDetail() {
                   <div className="flex flex-col gap-2">
                     <p>총 주문금액</p>
                     <p>총 할인금액</p>
-                    <p>배송비</p>
                     <p className="font-bold">총 결제금액</p>
                   </div>
                   <div className="flex flex-col gap-2 text-right">
-                    <p>{pickupOrder.actualAmount.toLocaleString()}원</p>
+                    <p>{pickupOrder.totalAmount.toLocaleString()}원</p>
                     <p className="text-[#FF5555]">
                       {pickupOrder.couponAmount.toLocaleString()}원
                     </p>
                     <p>{pickupOrder.deliveryCost.toLocaleString()}원</p>
                     <p className="font-bold text-primary4">
-                      {(
-                        pickupOrder.actualAmount +
-                        pickupOrder.deliveryCost -
-                        pickupOrder.couponAmount
-                      ).toLocaleString()}
-                      원
+                      {pickupOrder.actualAmount.toLocaleString()}원
                     </p>
                   </div>
                 </div>
@@ -348,7 +343,6 @@ export default function PickupOrderDetail() {
             <div className="flex flex-col gap-2">
               <p>총 주문금액</p>
               <p>총 할인금액</p>
-              <p>배송비</p>
               <p className="font-bold text-[1.5rem]">총 결제금액</p>
             </div>
             <div className="flex flex-col gap-2 text-right">
@@ -356,14 +350,8 @@ export default function PickupOrderDetail() {
               <p className="text-[#FF5555]">
                 {pickupOrder.couponAmount.toLocaleString()}원
               </p>
-              <p>{pickupOrder.deliveryCost.toLocaleString()}원</p>
               <p className="font-bold text-primary4 text-[1.5rem]">
-                {(
-                  pickupOrder.actualAmount +
-                  pickupOrder.deliveryCost -
-                  pickupOrder.couponAmount
-                ).toLocaleString()}
-                원
+                {pickupOrder.actualAmount.toLocaleString()}원
               </p>
             </div>
           </div>

@@ -17,8 +17,9 @@ export default function NearbyStoreList() {
     useRecoilState<number[]>(storeWishState);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getFlowerShopsNearByList", state],
-    queryFn: () => getFlowerShopsNearBy(state.lat, state.lng, state.level),
+    queryKey: ["getFlowerShopsNearByList", state, isLogin],
+    queryFn: () =>
+      getFlowerShopsNearBy(state.lat, state.lng, state.level, isLogin),
   });
 
   const handleWishButton = (e: React.MouseEvent, storeId: number) => {
@@ -48,7 +49,7 @@ export default function NearbyStoreList() {
         <div className="flex flex-col gap-1 h-[55vw] max-h-[655px] min-h-[432px] overflow-auto">
           {data.data.stores.map((item: storeListNearByDto) => (
             <div
-              className="px-[2vw] flex flex-row gap-1 cursor-pointer"
+              className="px-[2vw] flex flex-row gap-1 cursor-pointer py-2 hover:bg-[#C2DABC55]"
               key={item.storeId}
               onClick={() => navigate("/store/detail/" + item.storeId)}
             >
@@ -94,8 +95,11 @@ export default function NearbyStoreList() {
                 <p className="w-[25vw] min-w-[150px] max-w-[300px] text-[1.3rem] max-[1000px]:text-[1rem]">
                   {item.storeName}
                 </p>
-                <p className="w-[32vw] min-w-[220px] max-w-[430px] text-[1rem] text-grayscale5 max-[1000px]:text-[0.8rem] line-clamp-2">
+                <p className="w-[32vw] min-w-[220px] max-w-[430px] text-[1rem] text-grayscale5 max-[1000px]:text-[0.8rem] mt-[-8px] line-clamp-2">
                   {item.detailInfo}
+                </p>
+                <p className="font-light text-[0.8rem]">
+                  {item.address} {item.detailAddress}
                 </p>
                 <div className="w-[25vw] min-w-[100px] max-w-[400px] text-primary4">
                   <div className="flex flex-row gap-2 text-[1rem] max-[1000px]:text-[0.8rem]">

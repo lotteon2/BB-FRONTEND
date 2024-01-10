@@ -1,7 +1,9 @@
 import { Button, Form, Input, Modal } from "antd";
-import { subscriptionOrderDetailData } from "../../../mocks/order";
 import { useState } from "react";
 import ReviewRegisterModal from "../modal/ReviewRegisterModal";
+import { useQuery } from "react-query";
+import { getSubscriptionDetail } from "../../../apis/order";
+import Loading from "../../common/Loading";
 
 interface param {
   id: string;
@@ -10,15 +12,14 @@ interface param {
 const { TextArea } = Input;
 
 export default function SubscriptionOrderInfo(param: param) {
-  const data = subscriptionOrderDetailData;
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [productId, setProductId] = useState<string>("");
   const [isChange, setIsChange] = useState<boolean>(false);
 
-  // const {data, isLoading} = useQuery({
-  //   queryKey: ["getSubscriptionDetail", isChange],
-  //   queryFn: () => getSubscriptionDetail(param.id),
-  // })
+  const { data, isLoading } = useQuery({
+    queryKey: ["getSubscriptionDetail", isChange],
+    queryFn: () => getSubscriptionDetail(param.id),
+  });
 
   const handleChange = () => {
     setIsChange((cur) => !cur);
@@ -30,8 +31,7 @@ export default function SubscriptionOrderInfo(param: param) {
     setIsModalOpen(true);
   };
 
-  console.log(isChange);
-  // if (!data || isLoading) return <Loading />
+  if (!data || isLoading) return <Loading />;
 
   return (
     <div>
