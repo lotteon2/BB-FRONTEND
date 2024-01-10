@@ -56,6 +56,7 @@ export default function ProfileBar() {
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) notiCountMutate.mutate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isNotiShow]);
 
   return (

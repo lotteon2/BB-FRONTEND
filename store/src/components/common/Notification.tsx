@@ -131,10 +131,12 @@ export default function Notification() {
 
       return () => eventSource.close();
     }
+    // eslint-disable-next-line
   }, [storeId]);
 
   useEffect(() => {
     getAllNotiMutation.mutate();
+    // eslint-disable-next-line
   }, [isNotiShow]);
 
   return (
