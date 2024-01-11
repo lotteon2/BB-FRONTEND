@@ -65,12 +65,6 @@ export default function ModifyMemberInfo() {
     queryFn: () => getMyInfo(),
   });
 
-  //   const data = infoData;
-
-  const handleThumbnailImage = useCallback(() => {
-    inputRef.current?.click();
-  }, []);
-
   const handleRegister = () => {
     if (
       defaultValues.nickname !== "" &&
@@ -117,15 +111,7 @@ export default function ModifyMemberInfo() {
 
   return (
     <div className="flex flex-row gap-5 mt-5 flex-wrap max-[375px]:justify-center">
-      <div className="w-40 h-40 curwor-pointer" onClick={handleThumbnailImage}>
-        <input
-          type="file"
-          ref={inputRef}
-          accept="image/*"
-          className="w-full h-full"
-          style={{ display: "none" }}
-          // onChange={handleImage}
-        />
+      <div className="w-40 h-40 curwor-pointer">
         <img
           src={data.data.data.profileImage}
           alt="프로필 이미지"
