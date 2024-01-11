@@ -70,7 +70,7 @@ export default function SubscriptionOrderDetail() {
   );
 
   const handleMessage = (ev: any) => {
-    if (ev.origin !== "http://localhost:3000") return;
+    if (ev.origin !== "https://blooming.blooms.mall.stockey.kr") return;
 
     const message = ev.data.state;
 
