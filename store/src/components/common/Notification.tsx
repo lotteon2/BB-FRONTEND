@@ -24,7 +24,6 @@ export default function Notification() {
     () => getAllNotifications(storeId),
     {
       onSuccess: (data) => {
-        console.log(data.data.notification);
         setNotiList(data.data.notifications);
       },
       onError: () => {
@@ -46,6 +45,7 @@ export default function Notification() {
           // storeId: storeId.toString(),
         },
         withCredentials: true,
+        heartbeatTimeout: 86400000,
       });
 
       eventSource.onerror = () => {
