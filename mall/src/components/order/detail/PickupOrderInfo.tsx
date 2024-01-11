@@ -44,7 +44,9 @@ export default function PickupOrderInfo(param: param) {
           <div>
             <div className="flex flex-row justify-between border-b-[1px] border-grayscale7 text-[1.5rem]">
               <p>주문상품 정보</p>
-              <p className="text-[1rem] pt-3">예약번호: {param.id}</p>
+              <p className="text-[1rem] pt-3">
+                예약번호: {param.id.split("-")[0]}
+              </p>
             </div>
 
             <div className="border-[1px] border-grayscale3 mt-3 relative rounded-lg">

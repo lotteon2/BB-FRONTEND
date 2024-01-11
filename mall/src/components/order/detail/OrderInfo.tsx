@@ -54,7 +54,9 @@ export default function OrderInfo(param: param) {
           <div>
             <div className="flex flex-row justify-between border-b-[1px] border-grayscale7 text-[1.5rem]">
               <p>주문상품 정보</p>
-              <p className="text-[1rem] pt-3">주문번호: {data.orderGroupId}</p>
+              <p className="text-[1rem] pt-3">
+                주문번호: {data.data.orderGroupId.split("-")[0]}
+              </p>
             </div>
             {data.data.orderDeliveries.map((item: orderInfoForStore) => (
               <div

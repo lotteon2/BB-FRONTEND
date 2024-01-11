@@ -169,6 +169,13 @@ export default function ProductModifyModal(param: param) {
   }, [form, defaultValues]);
 
   useEffect(() => {
+    if (url !== "") {
+      uploadMutation.mutate(url);
+    }
+    // eslint-disable-next-line
+  }, [url]);
+
+  useEffect(() => {
     if (data) {
       const tmpTag: number[] = [];
       data.data.tag.forEach((e: { key: number; tagName: string }) => {
@@ -241,7 +248,7 @@ export default function ProductModifyModal(param: param) {
                 style={{ display: "none" }}
               />
 
-              <img src={data.data.productThumbnail} alt="상품 썸네일" />
+              <img src={productThumbnail} alt="상품 썸네일" />
             </div>
 
             <div className="w-[95%] ml-3">
