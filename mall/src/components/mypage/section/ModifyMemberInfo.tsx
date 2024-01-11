@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Form, Input, Button } from "antd";
 import { modifyMemberDto } from "../../../recoil/common/interfaces";
 import { useMutation, useQuery } from "react-query";
@@ -8,7 +8,6 @@ import { SuccessToast } from "../../common/toast/SuccessToast";
 import ModifyMemberInfoFallback from "../../fallbacks/ModifyMemberInfoFallback";
 
 export default function ModifyMemberInfo() {
-  const inputRef = useRef<HTMLInputElement | null>(null);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [defaultValues, setDefaultValues] = useState<modifyMemberDto>({
     nickname: "",
