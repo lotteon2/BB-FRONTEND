@@ -193,8 +193,7 @@ export default function OrderDetail() {
   }, [form, order]);
 
   const handleMessage = (ev: any) => {
-    alert(ev.origin);
-    // if (ev.origin !== "https://blooming.blooms.mall.stockey.kr") return;
+    if (ev.origin !== "https://blooming.blooms.mall.stockey.kr") return;
 
     const message = ev.data.state;
     alert(message);
