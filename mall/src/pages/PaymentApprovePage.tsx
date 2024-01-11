@@ -9,6 +9,7 @@ export default function PaymentApprovePage() {
     if (param === "cancel") {
       window.close();
     } else {
+      console.log("param");
       setTimeout(() => {
         window.opener.postMessage({
           state: param,
