@@ -119,10 +119,6 @@ export const categoryOptions = [
   },
   {
     value: 4,
-    label: "화분",
-  },
-  {
-    value: 5,
     label: "화환",
   },
 ];
