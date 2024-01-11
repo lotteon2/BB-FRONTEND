@@ -193,11 +193,11 @@ export default function OrderDetail() {
   }, [form, order]);
 
   const handleMessage = (ev: any) => {
-    console.log(ev);
+    alert(ev.origin);
     // if (ev.origin !== "https://blooming.blooms.mall.stockey.kr") return;
 
     const message = ev.data.state;
-
+    alert(message);
     if (message === "approve") {
       navigate("/success");
     } else if (message === "fail") {
