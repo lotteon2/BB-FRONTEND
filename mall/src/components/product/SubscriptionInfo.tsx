@@ -78,7 +78,7 @@ export default function SubscriptionInfo(param: param) {
       productName: data.data.productName,
       quantity: 1,
       price: data.data.productPrice,
-      productThumbnailImage: data.data.productDetailImage,
+      productThumbnailImage: data.data.productThumbnail,
     };
 
     const subscriptionOrder = {

@@ -6,7 +6,7 @@ import { Button, Form, Rate } from "antd";
 import { PictureFilled } from "@ant-design/icons";
 import { useMutation } from "react-query";
 import { FailToast } from "../../common/toast/FailToast";
-import { getImageUrl } from "../../../apis/image";
+import { getImageUrl, uploadS3Server } from "../../../apis/image";
 import TextArea from "antd/es/input/TextArea";
 import { registerReview } from "../../../apis/product";
 import { SuccessToast } from "../../common/toast/SuccessToast";
@@ -30,17 +30,14 @@ export default function ReviewRegisterModal(param: param) {
     nickname: nickname,
     profileImage: profileImage,
   });
+  const [url, setUrl] = useState<string>("");
+  const [file, setFile] = useState<File>();
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files !== null) {
-      const length = e.target.files.length;
-
-      for (let i = 0; i < length; i++) {
-        const formData = new FormData();
-        formData.append("image", e.target.files[i]);
-        reviewImageMutation.mutate(formData);
-      }
+      setFile(e.target.files[0]);
+      reviewImageMutation.mutate(e.target.files[0].name);
     }
   };
 
@@ -59,13 +56,10 @@ export default function ReviewRegisterModal(param: param) {
 
   const reviewImageMutation = useMutation(
     ["imageUpload"],
-    (image: FormData) => getImageUrl(image),
+    (image: string) => getImageUrl(image),
     {
       onSuccess: (data) => {
-        let reviewImage = defaultValues.reviewImage;
-        reviewImage.push(data);
-
-        setDefaultValues((prev) => ({ ...prev, reviewImage: reviewImage }));
+        setUrl(data.data.presignedUrl);
       },
       onError: () => {
         FailToast(null);
@@ -96,10 +90,37 @@ export default function ReviewRegisterModal(param: param) {
     inputRef.current?.click();
   }, []);
 
+  interface param {
+    url: string;
+    index: number;
+  }
+  const uploadMutation = useMutation(
+    ["uploadS3"],
+    (url: string) => uploadS3Server(url, file, file?.type),
+    {
+      onSuccess: () => {
+        setDefaultValues((prev) => ({
+          ...prev,
+          reviewImage: [url.split("?")[0]],
+        }));
+      },
+      onError: () => {
+        FailToast("");
+      },
+    }
+  );
+
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue(defaultValues);
   }, [form, defaultValues]);
+
+  useEffect(() => {
+    if (url !== "") {
+      uploadMutation.mutate(url);
+    }
+    // eslint-disable-next-line
+  }, [url]);
 
   return (
     <div>
@@ -125,11 +146,15 @@ export default function ReviewRegisterModal(param: param) {
               multiple
             />
             {defaultValues.reviewImage.length === 0 ? (
-              <div className="text-center">
-                <PictureFilled style={{ fontSize: 150 }} />
-                <p className="text-[1rem]">
-                  {defaultValues.reviewImage.length} / 3
-                </p>
+              <div>
+                <PictureFilled
+                  style={{
+                    fontSize: "150px",
+                    marginLeft: "22px",
+                    marginTop: "10px",
+                  }}
+                />
+                <p className="text-center">리뷰 이미지 등록</p>
               </div>
             ) : (
               <img
@@ -139,7 +164,7 @@ export default function ReviewRegisterModal(param: param) {
               />
             )}
           </div>
-          <div className="flex flex-col gap-2 w-full mt-4">
+          <div className="flex flex-col gap-2 w-[250px] mt-4">
             <Rate
               allowHalf
               defaultValue={defaultValues.rating}
@@ -153,7 +178,7 @@ export default function ReviewRegisterModal(param: param) {
               rules={[{ required: true, message: "필수 입력값입니다." }]}
             >
               <TextArea
-                placeholder="주문한 상품에 대한 솔직한 후기를 남겨주세요."
+                placeholder="솔직한 후기를 남겨주세요."
                 autoSize={{ minRows: 5, maxRows: 5 }}
                 value={defaultValues.reviewContent}
                 onChange={(e) =>

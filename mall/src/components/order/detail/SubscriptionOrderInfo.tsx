@@ -40,21 +40,25 @@ export default function SubscriptionOrderInfo(param: param) {
           <div>
             <div className="flex flex-row justify-between border-b-[1px] border-grayscale7 text-[1.5rem]">
               <p>주문상품 정보</p>
-              <p className="text-[1rem] pt-3">주문번호: {param.id}</p>
+              <p className="text-[1rem] pt-3">
+                주문번호: {param.id.split("-")[0]}
+              </p>
             </div>
 
             <div className="border-[1px] border-grayscale3 mt-3 relative rounded-lg">
               <div className="bg-grayscale2 pl-2 py-1 flex justify-between">
-                <p>{data.storeName}</p>
+                <p>{data.data.storeName}</p>
               </div>
               <div className="p-2 border-b-[1px]">
-                <p className="text-[1.2rem] font-bold">{data.productName}</p>
+                <p className="text-[1.2rem] font-bold">
+                  {data.data.productName}
+                </p>
                 <div className="h-full flex flex-row justify-between flex-wrap align-center">
                   <div className="flex flex-row gap-2">
                     <div className="w-[150px] h-[150px]">
                       <img
                         className="w-full h-full rounded-lg"
-                        src={data.productThumbnail}
+                        src={data.data.productThumbnail}
                         alt="상품 이미지"
                       />
                     </div>
@@ -64,7 +68,7 @@ export default function SubscriptionOrderInfo(param: param) {
                           가격
                         </span>
                         <span className="mt-1">
-                          {data.unitPrce.toLocaleString()}원
+                          {data.data.unitPrice.toLocaleString()}원
                         </span>
                       </div>
                       <div className="flex flex-row gap-3">
@@ -72,35 +76,39 @@ export default function SubscriptionOrderInfo(param: param) {
                           수량
                         </span>
                         <span className="mt-1">
-                          {data.quantity.toLocaleString()}개
+                          {data.data.quantity.toLocaleString()}개
                         </span>
                       </div>
                       <div className="font-bold text-[1.5rem]">
-                        {data.totalOrderPrice.toLocaleString()}원
+                        {data.data.totalOrderPrice.toLocaleString()}원
                       </div>
                     </div>
                   </div>
                   <div className="flex flex-row gap-2 my-auto max-[1200px]:w-full max-[1200px]:justify-end">
                     <Button
-                      disabled={data.reviewStatus === "ABLE" ? false : true}
+                      disabled={
+                        data.data.reviewStatus === "ABLE" ? false : true
+                      }
                       onClick={() =>
-                        data.reviewStatus === "ABLE"
-                          ? handleReviewModalOpen(data.productId)
+                        data.data.reviewStatus === "ABLE"
+                          ? handleReviewModalOpen(data.data.productId)
                           : ""
                       }
                     >
-                      {data.reviewStatus === "DONE" ? "작성 완료" : "리뷰 작성"}
+                      {data.data.reviewStatus === "DONE"
+                        ? "작성 완료"
+                        : "리뷰 작성"}
                     </Button>
                   </div>
                 </div>
               </div>
               <p className="px-2 py-2">
                 다음 결제일:{" "}
-                <span className="font-bold">{data.nextPaymentDate}</span>
+                <span className="font-bold">{data.data.nextPaymentDate}</span>
               </p>
               <p className="px-2 py-2">
                 다음 배송일:{" "}
-                <span className="font-bold">{data.nextDeliveryDate}</span>
+                <span className="font-bold">{data.data.nextDeliveryDate}</span>
               </p>
               <div className="border-t-[1px]"></div>
               <div className="flex flex-row p-2">
@@ -112,13 +120,13 @@ export default function SubscriptionOrderInfo(param: param) {
                     <p className="font-bold">총 결제금액</p>
                   </div>
                   <div className="flex flex-col gap-2 text-right">
-                    <p>{data.totalOrderPrice.toLocaleString()}원</p>
+                    <p>{data.data.totalOrderPrice.toLocaleString()}원</p>
                     <p className="text-[#FF5555]">
-                      {data.totalDiscountPrice.toLocaleString()}원
+                      {data.data.totalDiscountPrice.toLocaleString()}원
                     </p>
-                    <p>{data.deliveryPrice.toLocaleString()}원</p>
+                    <p>{data.data.deliveryPrice.toLocaleString()}원</p>
                     <p className="font-bold text-primary4">
-                      {data.actualPrice.toLocaleString()}원
+                      {data.data.actualPrice.toLocaleString()}원
                     </p>
                   </div>
                 </div>
@@ -131,7 +139,7 @@ export default function SubscriptionOrderInfo(param: param) {
             wrapperCol={{ span: 16 }}
             style={{ maxWidth: 600, width: "100%" }}
             autoComplete="off"
-            initialValues={data}
+            initialValues={data.data}
           >
             {/* 주문자 정보 */}
             <div className="mt-10">
@@ -158,7 +166,7 @@ export default function SubscriptionOrderInfo(param: param) {
               <div className="flex flex-col gap-5 mt-10">
                 <Form.Item name="recipientName" label="성함">
                   <div>
-                    <Input value={data.recipientName} disabled />
+                    <Input value={data.data.recipientName} disabled />
                   </div>
                 </Form.Item>
                 <Form.Item name="recipientPhoneNumber" label="연락처">
@@ -166,14 +174,14 @@ export default function SubscriptionOrderInfo(param: param) {
                 </Form.Item>
                 <Form.Item name="zipcode" label="주소">
                   <div className="flex flex-row gap-2">
-                    <Input value={data.zipcode} disabled />
+                    <Input value={data.data.zipcode} disabled />
                   </div>
                 </Form.Item>
                 <Form.Item name="roadName" label=" ">
-                  <Input value={data.roadName} disabled />
+                  <Input value={data.data.roadName} disabled />
                 </Form.Item>
                 <Form.Item name="addressDetail" label=" ">
-                  <Input value={data.addressDetail} disabled />
+                  <Input value={data.data.addressDetail} disabled />
                 </Form.Item>
               </div>
             </div>
@@ -183,7 +191,7 @@ export default function SubscriptionOrderInfo(param: param) {
               </div>
               <div className="mt-3">
                 <TextArea
-                  value={data.deliveryRequest}
+                  value={data.data.deliveryRequest}
                   autoSize={{ minRows: 5, maxRows: 5 }}
                   disabled
                 />
@@ -195,7 +203,7 @@ export default function SubscriptionOrderInfo(param: param) {
           <div className="flex flex-row justify-between border-b-[1px] border-grayscale7 text-[1.5rem]">
             <p>결제 금액</p>
             <p className="text-[1rem] pt-3 text-grayscale5 font-light">
-              {data.paymentDateTime}
+              {data.data.paymentDateTime}
             </p>
           </div>
           <div className="flex flex-row gap-20 w-full text-[1.2rem] justify-between">
@@ -206,13 +214,13 @@ export default function SubscriptionOrderInfo(param: param) {
               <p className="font-bold text-[1.5rem]">총 결제금액</p>
             </div>
             <div className="flex flex-col gap-2 text-right">
-              <p>{data.totalOrderPrice.toLocaleString()}원</p>
+              <p>{data.data.totalOrderPrice.toLocaleString()}원</p>
               <p className="text-[#FF5555]">
-                {data.totalDiscountPrice.toLocaleString()}원
+                {data.data.totalDiscountPrice.toLocaleString()}원
               </p>
-              <p>{data.deliveryPrice.toLocaleString()}원</p>
+              <p>{data.data.deliveryPrice.toLocaleString()}원</p>
               <p className="font-bold text-primary4 text-[1.5rem]">
-                {data.actualPrice.toLocaleString()}원
+                {data.data.actualPrice.toLocaleString()}원
               </p>
             </div>
           </div>

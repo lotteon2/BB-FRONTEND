@@ -24,7 +24,7 @@ export const getPickupDetail = async (reservationId: string) => {
 // 구독 주문 상세 조회
 export const getSubscriptionDetail = async (subscriptionId: string) => {
   const { data } = await authInstance.get(
-    "/stores/store-subscriptions/" + subscriptionId
+    "/orderquery/store-subscriptions/" + subscriptionId
   );
   return data;
 };

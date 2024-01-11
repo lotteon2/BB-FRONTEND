@@ -233,6 +233,7 @@ export default function Header() {
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) notiCountMutate.mutate();
+    console.log("!!!!");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin, notiEvent]);
 
