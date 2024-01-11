@@ -16,7 +16,7 @@ export default function BestProduct() {
     useRecoilState<string[]>(productWishState);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getMainProductList", isLogin],
+    queryKey: ["getBestProductList", isLogin],
     queryFn: () => getMainProductList("rating", isLogin),
   });
 

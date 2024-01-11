@@ -16,7 +16,7 @@ export default function RecommandProduct() {
     useRecoilState<string[]>(productWishState);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getMainProductList", isLogin],
+    queryKey: ["getRecommandList", isLogin],
     queryFn: () => getMainProductList("recommend", isLogin),
   });
 

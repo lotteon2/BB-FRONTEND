@@ -16,7 +16,7 @@ export default function NewProduct() {
     useRecoilState<string[]>(productWishState);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getMainProductList", isLogin],
+    queryKey: ["getNewArrivalList", isLogin],
     queryFn: () => getMainProductList("new-arrival", isLogin),
   });
 
