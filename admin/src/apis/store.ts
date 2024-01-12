@@ -46,3 +46,32 @@ export const getStoreList = async (
     return data;
   }
 };
+
+// 상품 리스트 조회
+export const getProductList = async (
+  status: string,
+  date: string,
+  sales: string,
+  page: number,
+  size: number
+) => {
+  console.log(date, sales);
+  const { data } = await authInstance.get(
+    "/products/admin/products?page=" +
+      page +
+      "$size=" +
+      size +
+      "&status=" +
+      status +
+      "&date=" +
+      date +
+      "&sales=" +
+      sales
+  );
+  return data;
+};
+
+export const deleteSelectedProduct = async (list: string[]) => {
+  const { data } = await authInstance.put("/products/admin/products", list);
+  return data;
+};

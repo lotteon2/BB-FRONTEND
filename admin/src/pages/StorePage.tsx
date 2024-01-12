@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Select } from "antd";
 import StoreList from "../components/store/StoreList";
 import { sidoOptions, sortOptions } from "../recoil/common/options";
@@ -15,6 +15,10 @@ export default function StorePage() {
     queryKey: ["getGugunList", sido],
     queryFn: () => getGugunList(sido),
   });
+
+  useEffect(() => {
+    setGugun(undefined);
+  }, [sido]);
 
   if (!data || isLoading)
     return (
@@ -41,7 +45,6 @@ export default function StorePage() {
             onChange={(e) => setSido(e)}
             style={{ width: 150 }}
             showSearch
-            allowClear
           />
           <Select
             placeholder="구/군 선택"

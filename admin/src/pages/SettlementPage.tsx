@@ -81,6 +81,10 @@ export default function SettlementPage() {
     // eslint-disable-next-line
   }, [data]);
 
+  useEffect(() => {
+    setGugun(undefined);
+  }, [sido]);
+
   if (!data || isLoading)
     return (
       <div className="w-[1620px] h-[897px] bg-grayscale3 p-2">

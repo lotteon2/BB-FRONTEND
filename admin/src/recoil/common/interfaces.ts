@@ -48,3 +48,16 @@ export interface notiDto {
   notificationContent: string;
   notificationLink: string;
 }
+
+export interface productListDto {
+  key: string;
+  productName: string;
+  productPrice: number;
+  productThumbnail: string;
+  productSaleAmount: number;
+  storeId: number;
+  storeName: string;
+  averageRating: number;
+  productSaleStatus: string;
+  createdAt: string;
+}

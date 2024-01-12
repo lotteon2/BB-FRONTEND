@@ -5,8 +5,8 @@ import { useQuery } from "react-query";
 import { getSubscriptionDetail } from "../../../apis/order";
 import Loading from "../../common/Loading";
 import { useNavigate } from "react-router";
-import { useSetRecoilState } from "recoil";
-import { mallState } from "../../../recoil/atom/common";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { loginState, mallState } from "../../../recoil/atom/common";
 
 interface param {
   id: string;
@@ -16,6 +16,7 @@ const { TextArea } = Input;
 
 export default function SubscriptionOrderInfo(param: param) {
   const navigate = useNavigate();
+  const isLogin = useRecoilValue<boolean>(loginState);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [productId, setProductId] = useState<string>("");
   const [isChange, setIsChange] = useState<boolean>(false);
@@ -23,7 +24,7 @@ export default function SubscriptionOrderInfo(param: param) {
 
   const { data, isLoading } = useQuery({
     queryKey: ["getSubscriptionDetail", isChange],
-    queryFn: () => getSubscriptionDetail(param.id),
+    queryFn: () => getSubscriptionDetail(param.id, isLogin),
   });
 
   const handleChange = () => {

@@ -12,7 +12,6 @@ import { SuccessToast } from "../../common/toast/SuccessToast";
 import {
   categoryOptions,
   flowerOptions,
-  saleStatusOptions,
   tagOptions,
 } from "../../../recoil/common/options";
 import { getProductDetailInfo, modifyProduct } from "../../../apis/product";
@@ -306,7 +305,20 @@ export default function ProductModifyModal(param: param) {
                   style={{ width: 348 }}
                   placeholder="판매상태"
                   optionFilterProp="children"
-                  options={saleStatusOptions}
+                  options={[
+                    {
+                      value: "SALE",
+                      label: "판매중",
+                    },
+                    {
+                      value: "DISCONTINUED",
+                      label: "판매 중지",
+                    },
+                    {
+                      value: "DELETED",
+                      label: "삭제",
+                    },
+                  ]}
                 />
               </Form.Item>
               <Form.Item

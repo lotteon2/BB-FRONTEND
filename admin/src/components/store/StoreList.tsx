@@ -14,7 +14,6 @@ interface param {
 export default function StoreList(param: param) {
   const [page, setPage] = useState<number>(1);
 
-  // const data = storeListData;
   const { data, isLoading } = useQuery({
     queryKey: ["getStoreList", page, param],
     queryFn: () =>
@@ -105,7 +104,7 @@ export default function StoreList(param: param) {
           <div className="mt-2 text-center ab">
             <Pagination
               defaultCurrent={page}
-              total={data.totalCnt}
+              total={data.data.totalCnt}
               defaultPageSize={13}
               onChange={handlePage}
             />

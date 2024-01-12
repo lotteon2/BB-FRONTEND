@@ -3,7 +3,7 @@ import {
   pickupOrderDto,
   subscriptionOrderDto,
 } from "../recoil/common/interfaces";
-import { authInstance } from "./utils";
+import { authInstance, defaultInstance } from "./utils";
 
 // 배송 주문 상세 조회
 export const getDeliveryDetail = async (orderGroupId: string) => {
@@ -22,11 +22,21 @@ export const getPickupDetail = async (reservationId: string) => {
 };
 
 // 구독 주문 상세 조회
-export const getSubscriptionDetail = async (subscriptionId: string) => {
-  const { data } = await authInstance.get(
-    "/orderquery/store-subscriptions/" + subscriptionId
-  );
-  return data;
+export const getSubscriptionDetail = async (
+  subscriptionId: string,
+  isLogin: boolean
+) => {
+  if (isLogin) {
+    const { data } = await authInstance.get(
+      "/orderquery/store-subscriptions/" + subscriptionId
+    );
+    return data;
+  } else {
+    const { data } = await defaultInstance.get(
+      "/orderquery/store-subscriptions/" + subscriptionId
+    );
+    return data;
+  }
 };
 
 // 단건결제

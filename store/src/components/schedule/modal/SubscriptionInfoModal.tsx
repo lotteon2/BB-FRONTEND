@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import { storeIdState } from "../../../recoil/atom/common";
 import Loading from "../../common/Loading";
 import { getSubscriptionsInfo } from "../../../apis/order";
-import { subscriptionInfoDto } from "../../../recoil/common/interfaces";
+import { subscriptionListDto } from "../../../recoil/common/interfaces";
 
 interface param {
   selectedId: string;
@@ -22,7 +22,7 @@ export default function SubscriptionInfoModal(param: param) {
 
   return (
     <div className="w-full max-h-[500px] overflow-auto">
-      {data.data.data.map((item: subscriptionInfoDto) => (
+      {data.data.data.map((item: subscriptionListDto) => (
         <div
           key={item.storeSubscriptionId}
           className="w-full flex flex-row gap-3 mt-2"
@@ -40,14 +40,12 @@ export default function SubscriptionInfoModal(param: param) {
               <p>주소: </p>
             </div>
             <div className="flex flex-col gap-1">
-              <p>{item.storeSubscriptionId}</p>
+              <p>{item.storeSubscriptionId.split("-")[0]}</p>
               <p>{item.productName}</p>
               <p>{item.productPrice.toLocaleString()}원</p>
               <p>{item.deliveryRecipientName}</p>
               <p>{item.deliveryRecipientPhoneNumber}</p>
-              <p>
-                {item.deliveryRoadName} {item.deliveryAddressDetail}
-              </p>
+              <p>{item.deliveryAddress}</p>
             </div>
           </div>
         </div>

@@ -164,15 +164,14 @@ export interface productRead {
   totalAmount: number; // price*quantity 계산하기
 }
 
-export interface subscriptionInfoDto {
-  storeSubscriptionId: number;
+export interface subscriptionListDto {
+  storeSubscriptionId: string;
   subscriptionCode: string;
   productName: string; // feign
   productThumbnailImage: string; // feign
   deliveryRecipientName: string; // feign
   deliveryRecipientPhoneNumber: string; // feign
-  deliveryRoadName: string; // feign
-  deliveryAddressDetail: string; // feign
+  deliveryAddress: string; // feign
   productPrice: number; // feign
 }
 

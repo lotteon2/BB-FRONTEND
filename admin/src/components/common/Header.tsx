@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import StoreIcon from "@mui/icons-material/Store";
 import PaidIcon from "@mui/icons-material/Paid";
+import InventoryIcon from "@mui/icons-material/Inventory";
 
 export default function Header() {
   const activeStyle = {
@@ -28,6 +29,15 @@ export default function Header() {
           >
             <StoreIcon sx={{ fontSize: 40, marginRight: 2 }} />
             가게 관리
+          </NavLink>
+        </li>
+        <li className="w-[90%]">
+          <NavLink
+            style={({ isActive }) => (isActive ? activeStyle : {})}
+            to="/product"
+          >
+            <InventoryIcon sx={{ fontSize: 40, marginRight: 2 }} />
+            상품 관리
           </NavLink>
         </li>
         <li className="w-[90%]">

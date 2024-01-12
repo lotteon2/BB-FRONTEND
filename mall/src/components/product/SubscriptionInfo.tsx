@@ -3,11 +3,9 @@ import { getProductDetail } from "../../apis/product";
 import { useState, useEffect } from "react";
 import { Button, Modal, Rate } from "antd";
 import ShareIcon from "@mui/icons-material/Share";
-import { HeartFilled } from "@ant-design/icons";
 import CouponModal from "./modal/CouponModal";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loginState } from "../../recoil/atom/common";
-import { productWishState } from "../../recoil/atom/member";
 import { useNavigate } from "react-router";
 import ProductInfoFallback from "../fallbacks/ProductInfoFallback";
 import {
@@ -37,8 +35,6 @@ export default function SubscriptionInfo(param: param) {
   );
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const isLogin = useRecoilValue<boolean>(loginState);
-  const [productWishList, setProductWishList] =
-    useRecoilState<string[]>(productWishState);
   const [deliveryPolicy, setDeliveryPolicy] = useState<storeDeliveryPolicyDto>({
     deliveryPrice: 0,
     freeDeliveryMinPrice: 0,
@@ -46,23 +42,9 @@ export default function SubscriptionInfo(param: param) {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getProductDetail", isLogin],
+    queryKey: ["getSubscriptionProductDetail", isLogin],
     queryFn: () => getProductDetail(param.productId, isLogin),
   });
-
-  const handleWishButton = (productId: string) => {
-    if (isLogin) {
-      if (productWishList.includes(productId)) {
-        setProductWishList(
-          productWishList.filter((prev) => prev !== productId)
-        );
-      } else {
-        setProductWishList((prev) => [...prev, productId]);
-      }
-    } else if (window.confirm("회원만 사용가능합니다. 로그인하시겠습니까?")) {
-      navigate("/login");
-    }
-  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -203,7 +185,7 @@ export default function SubscriptionInfo(param: param) {
       <div className="w-1/2 max-w-[800px] min-w-[370px]">
         <p className="text-[2.3rem] font-bold mt-3">{data.data.productName}</p>
         <p className="text-[1rem] text-grayscale5 font-thin">
-          {data.data.productSummary}
+          {data.data.productDescription}
         </p>
         <div className="flex flex-row gap-5 justify-end text-grayscale5 font-light mt-2">
           <div
@@ -211,36 +193,6 @@ export default function SubscriptionInfo(param: param) {
             onClick={shareKakao}
           >
             <ShareIcon /> <span>공유</span>
-          </div>
-          <div className="flex flex-row gap-2 cursor-pointer">
-            {productWishList.includes(data.data.productId) ? (
-              !data.data.isLiked ? (
-                <div className="mt-[-4px] text-[#FF6464] text-[25px] hover:-translate-y-[2px]">
-                  <HeartFilled
-                    onClick={() => handleWishButton(data.data.productId)}
-                  />
-                </div>
-              ) : (
-                <div className="mt-[-4px] text-grayscale5 text-[25px] hover:-translate-y-[2px]">
-                  <HeartFilled
-                    onClick={() => handleWishButton(data.data.productId)}
-                  />
-                </div>
-              )
-            ) : data.isLiked ? (
-              <div className="mt-[-4px] text-[#FF6464] text-[25px] hover:-translate-y-[2px]">
-                <HeartFilled
-                  onClick={() => handleWishButton(data.data.productId)}
-                />
-              </div>
-            ) : (
-              <div className="mt-[-4px] text-grayscale5 text-[25px] hover:-translate-y-[2px]">
-                <HeartFilled
-                  onClick={() => handleWishButton(data.data.productId)}
-                />
-              </div>
-            )}
-            <span>찜</span>
           </div>
         </div>
         <div className="border-t-[1px] border-b-[1px] py-5 my-2">

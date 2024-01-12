@@ -98,3 +98,40 @@ export const sortOptions = [
     label: "매출액순",
   },
 ];
+
+export const statusOptions = [
+  {
+    value: "SALE",
+    label: "판매중",
+  },
+  {
+    value: "DISCONTINUED",
+    label: "판매중지",
+  },
+  {
+    value: "DELETED",
+    label: "삭제됨",
+  },
+];
+
+export const dateOptions = [
+  {
+    value: "NEW",
+    label: "최신순",
+  },
+  {
+    value: "OLD",
+    label: "오래된순",
+  },
+];
+
+export const salesOptions = [
+  {
+    value: "TOP_SALE",
+    label: "판매량 높은순",
+  },
+  {
+    value: "BOTTOM_SALE",
+    label: "판매량 낮은순",
+  },
+];
