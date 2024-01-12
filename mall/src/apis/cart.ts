@@ -15,7 +15,6 @@ export const addToCart = async (cartDto: modifyCartCountDto) => {
 
 // 카트 수량 변경
 export const modifyCartCount = async (cartDto: modifyCartCountDto) => {
-  console.log(cartDto);
   const { data } = await authInstance.patch(
     "/wishlist/carts/products",
     cartDto

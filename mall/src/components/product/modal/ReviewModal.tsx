@@ -1,7 +1,4 @@
 import { Button, Modal, Rate } from "antd";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "../../../css/slick-theme.css";
 import { reviewItemDto } from "../../../recoil/common/interfaces";
 
 interface param {
@@ -11,13 +8,6 @@ interface param {
 }
 
 export default function ReviewModal(param: param) {
-  const settings = {
-    infinite: false,
-    pauseOnHover: true,
-    autoplaySpeed: 5000,
-    arrows: true,
-    slidesToShow: 2,
-  };
   return (
     <div>
       <Modal

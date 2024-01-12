@@ -50,7 +50,6 @@ export default function OrderTable(param: param) {
       dataIndex: "",
       key: "productThumbnail",
       render: (record) => {
-        console.log(record.products[0]);
         return (
           <img
             className="w-[110px] h-[110px]"

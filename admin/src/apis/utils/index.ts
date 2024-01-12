@@ -45,7 +45,6 @@ const axiosAuthApi = (baseURL: string | undefined) => {
               expiredAccessToken: accessToken,
             })
             .then((data) => {
-              console.log(data);
               // const {
               //   data: {
               //     accessToken: newAccessToken,
@@ -57,7 +56,6 @@ const axiosAuthApi = (baseURL: string | undefined) => {
               // originalRequest.headers.AccessToken = `Bearer ${newAccessToken}`;
             })
             .catch((error) => {
-              console.log(error);
               // localStorage.removeItem("accessToken");
               // window.location.href = "/login";
               // if (error.response.data.code === "008") {

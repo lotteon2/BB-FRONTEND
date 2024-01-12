@@ -90,10 +90,6 @@ export default function ReviewRegisterModal(param: param) {
     inputRef.current?.click();
   }, []);
 
-  interface param {
-    url: string;
-    index: number;
-  }
   const uploadMutation = useMutation(
     ["uploadS3"],
     (url: string) => uploadS3Server(url, file, file?.type),

@@ -59,7 +59,6 @@ export default function CouponModal(param: param) {
     () => downloadAllCoupons(param.storeId, userSimpleInfo),
     {
       onSuccess: (data) => {
-        console.log(data);
         if (data.result === "FAIL") {
           FailToast(data.message);
         } else {

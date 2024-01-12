@@ -9,7 +9,6 @@ interface param {
   data: questionItemDto | undefined;
 }
 export default function QuestionModal(param: param) {
-  console.log(param.data);
   return (
     <div>
       <Modal

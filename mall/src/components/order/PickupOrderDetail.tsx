@@ -142,8 +142,6 @@ export default function PickupOrderDetail() {
     } else if (message === "fail") {
       navigate("/fail");
     }
-
-    // console.log(params);
   };
 
   const [form] = Form.useForm();

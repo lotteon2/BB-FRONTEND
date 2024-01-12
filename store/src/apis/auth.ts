@@ -30,7 +30,6 @@ export const sendEmailCode = async (email: string) => {
 
 // 이메일 인증코드 확인
 export const verifyEmailCode = async (email: string, code: string) => {
-  console.log(code);
   const { data } = await defaultInstance.patch("/auth/emails/" + email, code);
   return data;
 };

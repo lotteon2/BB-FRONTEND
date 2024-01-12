@@ -92,7 +92,6 @@ export default function CouponModifyModal(param: param) {
     form.setFieldsValue(modifyValues);
   }, [form, modifyValues]);
 
-  console.log(param.couponId);
   return (
     <Modal
       title="쿠폰 수정"
