@@ -186,16 +186,16 @@ export default function PickupProductInfo(param: param) {
         description: "소중한 마음, 향기에 담아 전해보세요",
         imageUrl: data.data.productThumbnail,
         link: {
-          webUrl: `https://localhost:3000/pickup/product/detail/${data.data.productId}`,
-          mobileWebUrl: `https://localhost:3000/pickup/product/detail/${data.data.productId}`,
+          webUrl: `https://blooming.blooms.mall.stockey.kr/pickup/product/detail/${data.data.productId}`,
+          mobileWebUrl: `https://blooming.blooms.mall.stockey.kr/pickup/product/detail/${data.data.productId}`,
         },
       },
       buttons: [
         {
           title: "확인하러 가기",
           link: {
-            webUrl: `https://localhost:3000/pickup/product/detail/${data.data.productId}`,
-            mobileWebUrl: `https://localhost:3000/pickup/product/detail/${data.data.productId}`,
+            webUrl: `https://blooming.blooms.mall.stockey.kr/pickup/product/detail/${data.data.productId}`,
+            mobileWebUrl: `https://blooming.blooms.mall.stockey.kr/pickup/product/detail/${data.data.productId}`,
           },
         },
       ],

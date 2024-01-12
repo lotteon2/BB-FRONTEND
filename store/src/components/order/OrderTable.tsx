@@ -6,7 +6,7 @@ import OrderDetailModal from "./OrderDetailModal";
 import { useQuery } from "react-query";
 import { getOrderList } from "../../apis/order";
 import { useRecoilValue } from "recoil";
-import { storeIdState } from "../../recoil/atom/common";
+import { deliveryState, storeIdState } from "../../recoil/atom/common";
 import ListFallback from "../fallbacks/ListFallback";
 
 interface param {
@@ -17,7 +17,7 @@ export default function OrderTable(param: param) {
   const [page, setPage] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [orderGroupId, setOrderGroupId] = useState<string>("");
-  const [isChange, setIsChange] = useState<boolean>(false);
+  const isChange = useRecoilValue<boolean>(deliveryState);
 
   const { data, isLoading } = useQuery({
     queryKey: ["getOrderList", param, page, isChange],
@@ -151,8 +151,6 @@ export default function OrderTable(param: param) {
       />
       {isModalOpen ? (
         <OrderDetailModal
-          isChange={isChange}
-          setIsChange={setIsChange}
           isModalOpen={isModalOpen}
           handleCancel={handleCancel}
           orderGroupId={orderGroupId}

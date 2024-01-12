@@ -42,3 +42,8 @@ export const dateState = atom({
     month: new Date().getMonth(),
   },
 });
+
+export const deliveryState = atom({
+  key: "deliveryState",
+  default: false,
+});

@@ -21,6 +21,8 @@ export const registerGiftCard = async (
   type: string,
   registerDto: cardRegisterDto
 ) => {
+  console.log(registerDto);
+
   const { data } = await authInstance.post(
     "/giftcard/register?type=" + type,
     registerDto

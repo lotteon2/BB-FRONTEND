@@ -29,16 +29,16 @@ export default function GiftCardDetailPage() {
         imageUrl:
           "https://i.pinimg.com/originals/c3/fe/1a/c3fe1addb7c1df50f7e5ba2d6b53426f.gif",
         link: {
-          webUrl: `https://localhost:3000/giftcard/detail/${cardId}/${password}`,
-          mobileWebUrl: `https://localhost:3000/giftcard/detail/${cardId}/${password}`,
+          webUrl: `https://blooming.blooms.mall.stockey.kr/giftcard/detail/${cardId}/${password}`,
+          mobileWebUrl: `https://blooming.blooms.mall.stockey.kr/giftcard/detail/${cardId}/${password}`,
         },
       },
       buttons: [
         {
           title: "확인하러 가기",
           link: {
-            webUrl: `https://localhost:3000/giftcard/detail/${cardId}/${password}`,
-            mobileWebUrl: `https://localhost:3000/giftcard/detail/${cardId}/${password}`,
+            webUrl: `https://blooming.blooms.mall.stockey.kr/giftcard/detail/${cardId}/${password}`,
+            mobileWebUrl: `https://blooming.blooms.mall.stockey.kr/giftcard/detail/${cardId}/${password}`,
           },
         },
       ],
@@ -58,7 +58,7 @@ export default function GiftCardDetailPage() {
     <div className="w-full h-full">
       <div className="w-[30vw] h-full min-w-[370px] m-auto relative mt-2">
         <div
-          className="flex justify-end cursor-pointer text-grayscale5 font-light pb-5"
+          className="flex justify-end cursor-pointer text-grayscale5 font-light pb-5 relative z-30"
           onClick={shareKakao}
         >
           <ShareIcon /> <span>공유</span>

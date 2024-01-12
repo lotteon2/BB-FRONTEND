@@ -371,7 +371,7 @@ export interface recommandDto {
 }
 
 export interface cardRegisterDto {
-  orderProductId: string;
+  orderProductId: number;
   cardTemplateId: number;
   content: string;
 }

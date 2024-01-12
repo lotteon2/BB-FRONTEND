@@ -61,7 +61,7 @@ export default function GiftCardRegister(param: param) {
       alert("메세지를 작성해주세요");
     } else {
       const registerDto = {
-        orderProductId: param.orderProductId,
+        orderProductId: Number(param.orderProductId),
         cardTemplateId: param.cardTemplate.cardTemplateId,
         content: value,
       };

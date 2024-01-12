@@ -9,16 +9,17 @@ import {
   deliverStatusSecond,
 } from "../../recoil/common/options";
 import { getOrderDetail, modifyOrderState } from "../../apis/order";
+import { useSetRecoilState } from "recoil";
+import { deliveryState } from "../../recoil/atom/common";
 
 interface param {
-  isChange: boolean;
-  setIsChange: (cur: boolean) => void;
   handleCancel: () => void;
   isModalOpen: boolean;
   orderGroupId: string;
 }
 export default function OrderDetailModal(param: param) {
   const [orderState, setOrderState] = useState<string>("");
+  const setIsChange = useSetRecoilState<boolean>(deliveryState);
 
   //   const data = orderDetailData;
   const { data, isLoading } = useQuery({
@@ -35,7 +36,7 @@ export default function OrderDetailModal(param: param) {
     (id: string) => modifyOrderState(orderState, id),
     {
       onSuccess: () => {
-        param.setIsChange(!param.isChange);
+        setIsChange((cur) => !cur);
         SuccessToast("수정되었습니다.");
       },
       onError: () => {
