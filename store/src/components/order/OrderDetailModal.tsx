@@ -8,9 +8,14 @@ import {
   deliverStatusFirst,
   deliverStatusSecond,
 } from "../../recoil/common/options";
-import { getOrderDetail, modifyOrderState } from "../../apis/order";
+import {
+  cancelDeliveryOrder,
+  getOrderDetail,
+  modifyOrderState,
+} from "../../apis/order";
 import { useSetRecoilState } from "recoil";
 import { deliveryState } from "../../recoil/atom/common";
+import TextArea from "antd/es/input/TextArea";
 
 interface param {
   handleCancel: () => void;
@@ -38,6 +43,28 @@ export default function OrderDetailModal(param: param) {
       onSuccess: () => {
         setIsChange((cur) => !cur);
         SuccessToast("수정되었습니다.");
+        param.handleCancel();
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
+
+  const handleCancelOrder = () => {
+    if (window.confirm("선택된 주문을 거절하시겠습니까?")) {
+      cancelMutation.mutate(data.data.orderDeliveryId);
+    }
+  };
+
+  const cancelMutation = useMutation(
+    ["deliveryCancel"],
+    (orderDeliveryId: string) => cancelDeliveryOrder(orderDeliveryId),
+    {
+      onSuccess: () => {
+        setIsChange((cur) => !cur);
+        SuccessToast("주문이 취소되었습니다.");
+        param.handleCancel();
       },
       onError: () => {
         FailToast(null);
@@ -175,9 +202,15 @@ export default function OrderDetailModal(param: param) {
           </div>
           <div className="mt-5">
             <p className="font-bold mb-2">요청사항</p>
-            <div className="w-full text-[1rem]">
-              {data.data.deliveryRequest}
-            </div>
+            <TextArea
+              style={{ width: 450 }}
+              value={data.data.deliveryRequest}
+              autoSize={{ minRows: 2, maxRows: 2 }}
+              disabled
+            />
+          </div>
+          <div className="flex mt-5">
+            <Button onClick={handleCancelOrder}>주문 거절</Button>
           </div>
         </div>
       </Modal>

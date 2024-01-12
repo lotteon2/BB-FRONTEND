@@ -6,11 +6,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ReviewRegisterModal from "../modal/ReviewRegisterModal";
-import { useQuery } from "react-query";
-import { getDeliveryDetail } from "../../../apis/order";
+import { useMutation, useQuery } from "react-query";
+import { cancelDeliveryOrder, getDeliveryDetail } from "../../../apis/order";
 import Loading from "../../common/Loading";
 import { useSetRecoilState } from "recoil";
 import { mallState } from "../../../recoil/atom/common";
+import { SuccessToast } from "../../common/toast/SuccessToast";
+import { FailToast } from "../../common/toast/FailToast";
 
 interface param {
   id: string;
@@ -53,6 +55,26 @@ export default function OrderInfo(param: param) {
     setIsMall(true);
   };
 
+  const handleCancelOrder = (orderDeliveryId: string) => {
+    if (window.confirm("선택된 주문을 취소하시겠습니까?")) {
+      cancelMutation.mutate(orderDeliveryId);
+    }
+  };
+
+  const cancelMutation = useMutation(
+    ["deliveryCancel"],
+    (orderDeliveryId: string) => cancelDeliveryOrder(orderDeliveryId),
+    {
+      onSuccess: () => {
+        setIsChange((cur) => !cur);
+        SuccessToast("주문이 취소되었습니다.");
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
+
   if (!data || isLoading) return <Loading />;
 
   return (
@@ -77,8 +99,10 @@ export default function OrderInfo(param: param) {
                     {item.orderDeliveryStatus === "PENDING"
                       ? "주문접수"
                       : item.orderDeliveryStatus === "PROCESSING"
-                      ? "배송 시작"
-                      : "배송 완료"}
+                      ? "배송시작"
+                      : item.orderDeliveryStatus === "COMPLETED"
+                      ? "배송완료"
+                      : "취소완료"}
                   </Tag>
                 </div>
                 {item.products.map((product: productRead) => (
@@ -120,46 +144,63 @@ export default function OrderInfo(param: param) {
                           </div>
                         </div>
                       </div>
-                      <div className="flex flex-row gap-2 my-auto max-[1200px]:w-full max-[1200px]:justify-end">
-                        <Button
-                          disabled={
-                            product.reviewStatus === "ABLE" ? false : true
-                          }
-                          onClick={() =>
-                            product.reviewStatus === "ABLE"
-                              ? handleReviewModalOpen(
-                                  product.productId,
-                                  product.orderProductId
-                                )
-                              : ""
-                          }
-                        >
-                          {product.reviewStatus === "DONE"
-                            ? "작성 완료"
-                            : "리뷰 작성"}
-                        </Button>
-                        <Button
-                          disabled={
-                            product.cardStatus === "ABLE" ? false : true
-                          }
-                          type="primary"
-                          onClick={() =>
-                            handleGiftcard(
-                              product.cardStatus,
-                              product.orderProductId,
-                              product.productId
-                            )
-                          }
-                        >
-                          {product.cardStatus === "DONE"
-                            ? "작성 완료"
-                            : "카드 작성"}
-                        </Button>
+                      <div className="flex flex-col gap-2 my-auto max-[1200px]:w-full max-[1200px]:justify-end">
+                        <div className="flex flex-row gap-2">
+                          <Button
+                            disabled={
+                              product.reviewStatus === "ABLE" ? false : true
+                            }
+                            onClick={() =>
+                              product.reviewStatus === "ABLE"
+                                ? handleReviewModalOpen(
+                                    product.productId,
+                                    product.orderProductId
+                                  )
+                                : ""
+                            }
+                          >
+                            {product.reviewStatus === "DONE"
+                              ? "작성 완료"
+                              : "리뷰 작성"}
+                          </Button>
+                          <Button
+                            disabled={
+                              product.cardStatus === "ABLE" ? false : true
+                            }
+                            type="primary"
+                            onClick={() =>
+                              handleGiftcard(
+                                product.cardStatus,
+                                product.orderProductId,
+                                product.productId
+                              )
+                            }
+                          >
+                            {product.cardStatus === "DONE"
+                              ? "작성 완료"
+                              : "카드 작성"}
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 ))}
                 <div className="border-t-[1px]"></div>
+                {item.orderDeliveryStatus === "PENDING" ? (
+                  <div>
+                    <div className="m-1 flex justify-end">
+                      <Button
+                        className="my-2 "
+                        onClick={() => handleCancelOrder(item.orderDeliveryId)}
+                      >
+                        주문 취소
+                      </Button>
+                    </div>
+                    <div className="border-t-[1px]"></div>
+                  </div>
+                ) : (
+                  ""
+                )}
                 <div className="flex flex-row p-2">
                   <div className="w-full flex flex-row justify-between gap-16 text-[1.2rem]">
                     <div className="flex flex-col gap-2">
@@ -256,13 +297,15 @@ export default function OrderInfo(param: param) {
           <div className="flex flex-row gap-20 w-full text-[1.2rem] justify-between">
             <div className="flex flex-col gap-2">
               <p>총 주문금액</p>
-              <p className="text-[#FF5555]">총 할인금액</p>
+              <p>총 할인금액</p>
               <p>배송비</p>
               <p className="font-bold text-[1.5rem]">총 결제금액</p>
             </div>
             <div className="flex flex-col gap-2 text-right">
               <p>{data.data.totalAmount.toLocaleString()}원</p>
-              <p>{data.data.couponAmount.toLocaleString()}원</p>
+              <p className="text-[#FF5555]">
+                {data.data.couponAmount.toLocaleString()}원
+              </p>
               <p>{data.data.deliveryCost.toLocaleString()}원</p>
               <p className="font-bold text-primary4 text-[1.5rem]">
                 {data.data.paymentAmount.toLocaleString()}원

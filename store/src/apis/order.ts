@@ -73,3 +73,11 @@ export const getReservationsInfo = async (storeId: number, date: string) => {
   );
   return data;
 };
+
+// 배송 주문 취소
+export const cancelDeliveryOrder = async (orderDeliveryId: string) => {
+  const { data } = await authInstance.delete(
+    "/orders/delivery/" + orderDeliveryId
+  );
+  return data;
+};
