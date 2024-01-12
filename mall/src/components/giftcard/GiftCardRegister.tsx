@@ -23,7 +23,7 @@ import Loading from "../common/Loading";
 
 interface param {
   cardTemplate: cardTemplateListDto;
-  orderProductId: number;
+  orderProductId: string;
   productId: string;
   orderType: string;
 }
@@ -100,7 +100,6 @@ export default function GiftCardRegister(param: param) {
         });
       },
       onError: () => {
-        navigate("/giftcard/detail/" + 1 + "/1234");
         FailToast(null);
       },
     }

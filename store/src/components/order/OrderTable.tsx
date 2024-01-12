@@ -17,9 +17,10 @@ export default function OrderTable(param: param) {
   const [page, setPage] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [orderGroupId, setOrderGroupId] = useState<string>("");
+  const [isChange, setIsChange] = useState<boolean>(false);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getOrderList", param, page],
+    queryKey: ["getOrderList", param, page, isChange],
     queryFn: () => getOrderList(storeId, page - 1, 5, param.status),
   });
 
@@ -151,6 +152,8 @@ export default function OrderTable(param: param) {
       />
       {isModalOpen ? (
         <OrderDetailModal
+          isChange={isChange}
+          setIsChange={setIsChange}
           isModalOpen={isModalOpen}
           handleCancel={handleCancel}
           orderGroupId={orderGroupId}

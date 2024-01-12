@@ -33,7 +33,7 @@ export default function GiftCardPage() {
       </div>
       <GiftCardRegister
         cardTemplate={cardTemplate}
-        orderProductId={Number(orderProductId)}
+        orderProductId={orderProductId}
         productId={productId}
         orderType={type}
       />

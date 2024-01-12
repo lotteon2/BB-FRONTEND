@@ -3,20 +3,22 @@ import { useQuery } from "react-query";
 import { getMyWishList } from "../../../../apis/member";
 import { myWishProductItemDto } from "../../../../recoil/common/interfaces";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { productWishState } from "../../../../recoil/atom/member";
 import { HeartFilled } from "@ant-design/icons";
 import { Empty, Pagination, PaginationProps, Rate } from "antd";
 import MypageBigListFallback from "../../../fallbacks/MypageBigListFallback";
+import { wishState } from "../../../../recoil/atom/common";
 
 export default function WishProductList() {
   const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
   const [productWishList, setProductWishList] =
     useRecoilState<string[]>(productWishState);
+  const isChange = useRecoilValue<boolean>(wishState);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getMyWishList", page],
+    queryKey: ["getMyWishList", page, isChange],
     queryFn: () => getMyWishList(page - 1, 6),
   });
 

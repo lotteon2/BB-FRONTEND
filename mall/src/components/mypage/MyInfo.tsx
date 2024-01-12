@@ -2,14 +2,18 @@ import { useQuery } from "react-query";
 import { getMyInfo } from "../../apis/member";
 import MyInfoFallback from "../fallbacks/MyInfoFallback";
 import { Button } from "antd";
+import { useRecoilValue } from "recoil";
+import { wishState } from "../../recoil/atom/common";
 
 interface param {
   setSelected: (selected: string) => void;
 }
 
 export default function MyInfo(param: param) {
+  const isChange = useRecoilValue<boolean>(wishState);
+
   const { data, isLoading } = useQuery({
-    queryKey: ["getMyInfo"],
+    queryKey: ["getMyInfo", isChange],
     queryFn: () => getMyInfo(),
   });
 

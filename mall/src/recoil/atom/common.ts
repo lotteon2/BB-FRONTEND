@@ -60,3 +60,8 @@ export const locationstate = atom({
     level: 5,
   },
 });
+
+export const wishState = atom({
+  key: "wishState",
+  default: false,
+});

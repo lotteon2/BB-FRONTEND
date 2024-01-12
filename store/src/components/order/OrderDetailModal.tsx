@@ -11,6 +11,8 @@ import {
 import { getOrderDetail, modifyOrderState } from "../../apis/order";
 
 interface param {
+  isChange: boolean;
+  setIsChange: (cur: boolean) => void;
   handleCancel: () => void;
   isModalOpen: boolean;
   orderGroupId: string;
@@ -20,7 +22,7 @@ export default function OrderDetailModal(param: param) {
 
   //   const data = orderDetailData;
   const { data, isLoading } = useQuery({
-    queryKey: ["getOrderDetailInfo"],
+    queryKey: ["getOrderDetailInfo", param],
     queryFn: () => getOrderDetail(param.orderGroupId),
   });
 
@@ -33,6 +35,7 @@ export default function OrderDetailModal(param: param) {
     (id: string) => modifyOrderState(orderState, id),
     {
       onSuccess: () => {
+        param.setIsChange(!param.isChange);
         SuccessToast("수정되었습니다.");
       },
       onError: () => {

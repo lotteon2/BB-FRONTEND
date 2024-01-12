@@ -6,7 +6,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
-import { loginState, sideMenuState } from "../recoil/atom/common";
+import { loginState, sideMenuState, wishState } from "../recoil/atom/common";
 import { ConfigProvider } from "antd";
 import { useMutation } from "react-query";
 import { modifyStoreWishList, modifyWishList } from "../apis/member";
@@ -20,6 +20,7 @@ export default function MainLayout() {
   const storeWishList = useRecoilValue<number[]>(storeWishState);
   const resetStoreWishList = useResetRecoilState(storeWishState);
   const setSideMenuState = useSetRecoilState<number>(sideMenuState);
+  const setIsChange = useSetRecoilState<boolean>(wishState);
 
   const handleWishList = () => {
     if (productWishList.length !== 0) {
@@ -44,9 +45,11 @@ export default function MainLayout() {
         navigate("/mypage");
         setSideMenuState(1);
         resetProductWishList();
+        setIsChange((cur) => !cur);
       },
       onError: () => {
         productWishMutation.mutate();
+        setIsChange((cur) => !cur);
       },
     }
   );
@@ -59,9 +62,11 @@ export default function MainLayout() {
         navigate("/mypage");
         setSideMenuState(1);
         resetStoreWishList();
+        setIsChange((cur) => !cur);
       },
       onError: () => {
         storeWishMutation.mutate();
+        setIsChange((cur) => !cur);
       },
     }
   );
