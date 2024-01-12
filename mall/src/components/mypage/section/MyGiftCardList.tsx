@@ -44,7 +44,7 @@ export default function MyGiftCardList() {
                   className="w-40 min-w-[100px]"
                 />
                 <p className="text-[0.8rem] font-light text-right">
-                  {item.createdAt} 작성됨
+                  {item.createdAt.split("T")[0]} 작성됨
                 </p>
               </div>
             ))}

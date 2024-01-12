@@ -9,6 +9,7 @@ import {
   sideMenuState,
   nicknameState,
   profileImageState,
+  wishState,
 } from "../../recoil/atom/common";
 import {
   useRecoilState,
@@ -145,6 +146,7 @@ export default function Header() {
   const notiEvent = useRecoilValue<boolean>(notiEventState);
   const [isNotiShow, setNotiShow] = useRecoilState<boolean>(notiShowState);
   const [notiCount, setNotiCount] = useRecoilState<number>(notiCountState);
+  const setIsChange = useSetRecoilState<boolean>(wishState);
 
   const activeStyle = {
     borderBottom: "3px solid #41744D",
@@ -195,6 +197,7 @@ export default function Header() {
     {
       onSuccess: () => {
         setProductWishList([]);
+        setIsChange((cur) => !cur);
         const accessToken = localStorage.getItem("accessToken");
         if (accessToken) logouMutation.mutate();
       },
@@ -210,6 +213,7 @@ export default function Header() {
     {
       onSuccess: () => {
         setStoreWishList([]);
+        setIsChange((cur) => !cur);
         const accessToken = localStorage.getItem("accessToken");
         if (accessToken) logouMutation.mutate();
       },
@@ -253,6 +257,7 @@ export default function Header() {
             { value: "shoppingmall", label: "꽃 쇼핑몰" },
             { value: "pickup", label: "픽업/예약" },
           ]}
+          value={mall ? "shoppingmall" : "pickup"}
         />
       </div>
       <img

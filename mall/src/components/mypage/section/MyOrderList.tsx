@@ -76,7 +76,7 @@ export default function MyOrderList() {
       ),
     },
     {
-      title: "결제일시",
+      title: "결제일",
       dataIndex: "paymentDate",
       key: "paymentDate",
       ellipsis: true,

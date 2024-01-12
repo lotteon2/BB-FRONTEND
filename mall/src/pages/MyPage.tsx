@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { loginState, sideMenuState } from "../recoil/atom/common";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { loginState, sideMenuState, wishState } from "../recoil/atom/common";
 import { useNavigate } from "react-router";
 import MyInfo from "../components/mypage/MyInfo";
 import MyPageHeader from "../components/mypage/MyPageHeader";
@@ -27,6 +27,7 @@ export default function MyPage() {
     useRecoilState<string[]>(productWishState);
   const [storeWishList, setStoreWishList] =
     useRecoilState<number[]>(storeWishState);
+  const setIsChange = useSetRecoilState<boolean>(wishState);
 
   const productWishMutation = useMutation(
     ["modifyWishList"],
@@ -34,9 +35,11 @@ export default function MyPage() {
     {
       onSuccess: () => {
         setProductWishList([]);
+        setIsChange((cur) => !cur);
       },
       onError: () => {
         productWishMutation.mutate();
+        setIsChange((cur) => !cur);
       },
     }
   );
@@ -47,9 +50,11 @@ export default function MyPage() {
     {
       onSuccess: () => {
         setStoreWishList([]);
+        setIsChange((cur) => !cur);
       },
       onError: () => {
         storeWishMutation.mutate();
+        setIsChange((cur) => !cur);
       },
     }
   );

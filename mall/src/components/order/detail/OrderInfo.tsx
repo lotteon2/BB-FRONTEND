@@ -9,6 +9,8 @@ import ReviewRegisterModal from "../modal/ReviewRegisterModal";
 import { useQuery } from "react-query";
 import { getDeliveryDetail } from "../../../apis/order";
 import Loading from "../../common/Loading";
+import { useSetRecoilState } from "recoil";
+import { mallState } from "../../../recoil/atom/common";
 
 interface param {
   id: string;
@@ -23,6 +25,7 @@ export default function OrderInfo(param: param) {
   const [productId, setProductId] = useState<string>("");
   const [productOrderId, setProductOrderId] = useState<number>(0);
   const [isChange, setIsChange] = useState<boolean>(false);
+  const setIsMall = useSetRecoilState<boolean>(mallState);
 
   const { data, isLoading } = useQuery({
     queryKey: ["getDeliveryDetail", isChange],
@@ -43,6 +46,11 @@ export default function OrderInfo(param: param) {
     setProductId(productId);
     setProductOrderId(orderProductId);
     setIsModalOpen(true);
+  };
+
+  const handleDeliveryProduct = (id: string) => {
+    navigate("/product/detail/" + id);
+    setIsMall(true);
   };
 
   if (!data || isLoading) return <Loading />;
@@ -75,7 +83,12 @@ export default function OrderInfo(param: param) {
                 </div>
                 {item.products.map((product: productRead) => (
                   <div className="p-2 border-b-[1px]" key={product.productId}>
-                    <p className="text-[1.2rem] font-bold">{product.name}</p>
+                    <p
+                      className="text-[1.2rem] font-bold cursor-pointer"
+                      onClick={() => handleDeliveryProduct(product.productId)}
+                    >
+                      {product.name}
+                    </p>
                     <div className="h-full flex flex-row justify-between flex-wrap align-center">
                       <div className="flex flex-row gap-2">
                         <div className="w-[150px] h-[150px]">
@@ -232,11 +245,12 @@ export default function OrderInfo(param: param) {
             </div>
           </Form>
         </div>
-        <div className="w-[20vw] max-w-[400px] min-w-[370px]">
+        <div className="w-[20vw] max-w-[400px] min-w-[370px] sticky top-0">
           <div className="flex flex-row justify-between border-b-[1px] border-grayscale7 text-[1.5rem]">
             <p>결제 금액</p>
             <p className="text-[1rem] pt-3 text-grayscale5 font-light">
-              {data.paymentDate}
+              {data.data.paymentDate.split("T")[0]}{" "}
+              {data.data.paymentDate.split("T")[1].split(".")[0]}
             </p>
           </div>
           <div className="flex flex-row gap-20 w-full text-[1.2rem] justify-between">

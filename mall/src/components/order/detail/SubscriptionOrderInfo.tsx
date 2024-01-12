@@ -4,6 +4,9 @@ import ReviewRegisterModal from "../modal/ReviewRegisterModal";
 import { useQuery } from "react-query";
 import { getSubscriptionDetail } from "../../../apis/order";
 import Loading from "../../common/Loading";
+import { useNavigate } from "react-router";
+import { useSetRecoilState } from "recoil";
+import { mallState } from "../../../recoil/atom/common";
 
 interface param {
   id: string;
@@ -12,9 +15,11 @@ interface param {
 const { TextArea } = Input;
 
 export default function SubscriptionOrderInfo(param: param) {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [productId, setProductId] = useState<string>("");
   const [isChange, setIsChange] = useState<boolean>(false);
+  const setIsMall = useSetRecoilState<boolean>(mallState);
 
   const { data, isLoading } = useQuery({
     queryKey: ["getSubscriptionDetail", isChange],
@@ -29,6 +34,11 @@ export default function SubscriptionOrderInfo(param: param) {
   const handleReviewModalOpen = (productId: string) => {
     setProductId(productId);
     setIsModalOpen(true);
+  };
+
+  const handleDeliveryProduct = () => {
+    navigate("/product/detail/" + data.data.productId);
+    setIsMall(true);
   };
 
   if (!data || isLoading) return <Loading />;
@@ -50,7 +60,10 @@ export default function SubscriptionOrderInfo(param: param) {
                 <p>{data.data.storeName}</p>
               </div>
               <div className="p-2 border-b-[1px]">
-                <p className="text-[1.2rem] font-bold">
+                <p
+                  className="text-[1.2rem] font-bold cursor-pointer"
+                  onClick={() => handleDeliveryProduct()}
+                >
                   {data.data.productName}
                 </p>
                 <div className="h-full flex flex-row justify-between flex-wrap align-center">

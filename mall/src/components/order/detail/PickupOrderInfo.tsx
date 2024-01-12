@@ -5,6 +5,8 @@ import ReviewRegisterModal from "../modal/ReviewRegisterModal";
 import { useQuery } from "react-query";
 import { getPickupDetail } from "../../../apis/order";
 import Loading from "../../common/Loading";
+import { useSetRecoilState } from "recoil";
+import { mallState } from "../../../recoil/atom/common";
 
 interface param {
   id: string;
@@ -15,6 +17,7 @@ export default function PickupOrderInfo(param: param) {
   const [productId, setProductId] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isChange, setIsChange] = useState<boolean>(false);
+  const setIsMall = useSetRecoilState<boolean>(mallState);
 
   const { data, isLoading } = useQuery({
     queryKey: ["getPickupDetail", isChange],
@@ -34,6 +37,11 @@ export default function PickupOrderInfo(param: param) {
   const handleGiftcard = (status: string, productId: string) => {
     if (status === "ABLE")
       navigate("/giftcard/pickup/" + param.id + "/" + productId);
+  };
+
+  const handleClickPickupProduct = () => {
+    navigate("/pickup/product/detail/" + data.data.productId);
+    setIsMall(false);
   };
 
   if (!data || isLoading) return <Loading />;
@@ -64,7 +72,10 @@ export default function PickupOrderInfo(param: param) {
                 </Tag>
               </div>
               <div className="p-2 border-b-[1px]">
-                <p className="text-[1.2rem] font-bold">
+                <p
+                  className="text-[1.2rem] font-bold cursor-pointer"
+                  onClick={() => handleClickPickupProduct()}
+                >
                   {data.data.productName}
                 </p>
                 <div className="h-full flex flex-row justify-between flex-wrap align-center">

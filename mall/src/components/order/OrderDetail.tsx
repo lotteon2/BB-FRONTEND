@@ -196,7 +196,6 @@ export default function OrderDetail() {
     if (ev.origin !== "https://blooming.blooms.mall.stockey.kr") return;
 
     const message = ev.data.state;
-    alert(message);
     if (message === "approve") {
       navigate("/success");
     } else if (message === "fail") {

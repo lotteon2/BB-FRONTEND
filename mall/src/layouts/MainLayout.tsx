@@ -11,6 +11,7 @@ import { ConfigProvider } from "antd";
 import { useMutation } from "react-query";
 import { modifyStoreWishList, modifyWishList } from "../apis/member";
 import { productWishState, storeWishState } from "../recoil/atom/member";
+import ScrollToTop from "../components/common/ScrollToTop";
 
 export default function MainLayout() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function MainLayout() {
   const setIsChange = useSetRecoilState<boolean>(wishState);
 
   const handleWishList = () => {
+    console.log(productWishList, storeWishList);
     if (productWishList.length !== 0) {
       productWishMutation.mutate();
     } else {
@@ -73,6 +75,7 @@ export default function MainLayout() {
 
   return (
     <div className="font-regular">
+      <ScrollToTop />
       <ConfigProvider
         theme={{
           token: {
