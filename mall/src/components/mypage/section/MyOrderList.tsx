@@ -93,14 +93,14 @@ export default function MyOrderList() {
             color={
               record.orderStatus === "PENDING"
                 ? "purple"
-                : record === "PROCESSING"
+                : record.orderStatus === "PROCESSING"
                 ? "green"
                 : ""
             }
           >
             {record.orderStatus === "PENDING"
               ? "주문접수"
-              : record === "PROCESSING"
+              : record.orderStatus === "PROCESSING"
               ? "배송시작"
               : "배송완료"}
           </Tag>

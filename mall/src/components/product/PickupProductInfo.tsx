@@ -216,7 +216,6 @@ export default function PickupProductInfo(param: param) {
 
   if (!data || isLoading) return <ProductInfoFallback />;
 
-  console.log(data);
   return (
     <div className="w-full flex flex-row gap-10 flex-wrap justify-center">
       <div className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px] relative">

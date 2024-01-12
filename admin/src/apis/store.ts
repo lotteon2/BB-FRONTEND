@@ -55,7 +55,6 @@ export const getProductList = async (
   page: number,
   size: number
 ) => {
-  console.log(date, sales);
   const { data } = await authInstance.get(
     "/products/admin/products?page=" +
       page +

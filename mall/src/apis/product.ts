@@ -7,7 +7,6 @@ import { authInstance, defaultInstance } from "./utils";
 
 // 메인페이지 상품 조회
 export const getMainProductList = async (type: string, isLogin: boolean) => {
-  console.log(isLogin);
   if (isLogin) {
     const { data } = await authInstance.get("/products/main/" + type);
     return data;

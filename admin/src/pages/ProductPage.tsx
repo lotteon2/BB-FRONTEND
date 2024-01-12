@@ -35,8 +35,6 @@ export default function ProductPage() {
     queryFn: () => getProductList(status, date, sale, page - 1, 13),
   });
 
-  console.log(date, sale);
-
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
   };

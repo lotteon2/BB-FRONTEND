@@ -48,7 +48,7 @@ export default function MyReviewList() {
         <div>
           <div className="w-full p-2 flex flex-col gap-5 justify-center">
             {data.data.reviews.map((item: myReviewItemDto) => (
-              <div>
+              <div key={item.reviewId}>
                 <div
                   className="flex flex-row gap-2 flex-wrap justify-between cursor-pointer py-2 hover:translate-y-[-4px]"
                   key={item.reviewId}

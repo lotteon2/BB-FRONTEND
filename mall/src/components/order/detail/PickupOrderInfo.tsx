@@ -199,7 +199,8 @@ export default function PickupOrderInfo(param: param) {
           <div className="flex flex-row justify-between border-b-[1px] border-grayscale7 text-[1.5rem]">
             <p>결제 금액</p>
             <p className="text-[1rem] pt-3 text-grayscale5 font-light">
-              {data.paymentDateTime}
+              {data.data.paymentDateTime.split("T")[0]}{" "}
+              {data.data.paymentDateTime.split("T")[1]}
             </p>
           </div>
           <div className="flex flex-row gap-20 w-full text-[1.2rem] justify-between">

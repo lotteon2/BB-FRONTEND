@@ -24,7 +24,6 @@ export default function MainLayout() {
   const setIsChange = useSetRecoilState<boolean>(wishState);
 
   const handleWishList = () => {
-    console.log(productWishList, storeWishList);
     if (productWishList.length !== 0) {
       productWishMutation.mutate();
     } else {
