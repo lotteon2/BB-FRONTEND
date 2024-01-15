@@ -38,11 +38,11 @@ export default function StoreInfo(param: param) {
 
   return (
     <div className="w-full h-full flex flex-row gap-5 flex-wrap justify-center">
-      <div className="w-[20vw] min-w-[250px] max-w-[300px]">
+      <div className="w-[20vw] h-[20vw] min-w-[250px] max-w-[250px] min-h-[250px] max-h-[250px]">
         <img
           src={data.data.storeThumbnailImage}
           alt=""
-          className="rounded-lg"
+          className="rounded-lg w-full h-full"
         />
       </div>
       <div className="flex flex-col gap-2 w-[70vw] max-w-[1000px]">
