@@ -1,9 +1,5 @@
-import { useState } from "react";
-import { useMutation, useQuery } from "react-query";
-import {
-  cancelSubscription,
-  getMySubscriptionList,
-} from "../../../apis/member";
+import { useQuery } from "react-query";
+import { getMySubscriptionList } from "../../../apis/member";
 import { mySubscriptionItemDto } from "../../../recoil/common/interfaces";
 import { Empty } from "antd";
 import { useNavigate } from "react-router-dom";
