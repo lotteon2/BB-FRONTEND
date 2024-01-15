@@ -176,7 +176,7 @@ export interface subscriptionListDto {
 }
 
 export interface reservationInfoDto {
-  pickupReservationId: number;
+  pickupReservationId: string;
   reservationCode: string;
   productName: string; // feign
   productThumbnailImage: string; // feign

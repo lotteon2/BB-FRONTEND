@@ -114,7 +114,7 @@ export default function PickupProductInfo(param: param) {
         productName: data.data.productName,
         quantity: count,
         price: data.data.productPrice,
-        productThumbnailImage: data.data.productDetailImage,
+        productThumbnailImage: data.data.productThumbnail,
       };
 
       const pickupOrder = {

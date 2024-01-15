@@ -7,7 +7,11 @@ import "../../css/react-big-calendar.css";
 import SubscriptionInfoModal from "./modal/SubscriptionInfoModal";
 import PickupInfoModal from "./modal/PickupInfoModal";
 import { useQuery } from "react-query";
-import { dateState, storeIdState } from "../../recoil/atom/common";
+import {
+  dateState,
+  deliveryState,
+  storeIdState,
+} from "../../recoil/atom/common";
 import { getScheduleInfo } from "../../apis/order";
 import SchedulerCalendarFallback from "../fallbacks/SchedulerCalendarFallback";
 import { Button, Modal } from "antd";
@@ -31,6 +35,7 @@ export default function SchedulerCalendar() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalState, setModalState] = useState<boolean>(false);
   const [selectedId, setSelectedId] = useState<string>("");
+  const isChange = useRecoilValue<boolean>(deliveryState);
 
   moment.locale("ko-KR");
   const localizer = momentLocalizer(moment);
@@ -46,7 +51,7 @@ export default function SchedulerCalendar() {
   };
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getScheduleInfo"],
+    queryKey: ["getScheduleInfo", isChange],
     queryFn: () => getScheduleInfo(storeId),
   });
 

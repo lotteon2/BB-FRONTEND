@@ -13,7 +13,7 @@ import {
   getOrderDetail,
   modifyOrderState,
 } from "../../apis/order";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { deliveryState } from "../../recoil/atom/common";
 import TextArea from "antd/es/input/TextArea";
 
@@ -24,11 +24,11 @@ interface param {
 }
 export default function OrderDetailModal(param: param) {
   const [orderState, setOrderState] = useState<string>("");
-  const setIsChange = useSetRecoilState<boolean>(deliveryState);
+  const [isChange, setIsChange] = useRecoilState<boolean>(deliveryState);
 
   //   const data = orderDetailData;
   const { data, isLoading } = useQuery({
-    queryKey: ["getOrderDetailInfo", param],
+    queryKey: ["getOrderDetailInfo", param, isChange],
     queryFn: () => getOrderDetail(param.orderGroupId),
   });
 
@@ -52,7 +52,7 @@ export default function OrderDetailModal(param: param) {
   );
 
   const handleCancelOrder = () => {
-    if (window.confirm("선택된 주문을 거절하시겠습니까?")) {
+    if (window.confirm("해당 주문을 거절하시겠습니까?")) {
       cancelMutation.mutate(data.data.orderDeliveryId);
     }
   };
@@ -63,8 +63,9 @@ export default function OrderDetailModal(param: param) {
     {
       onSuccess: () => {
         setIsChange((cur) => !cur);
-        SuccessToast("주문이 취소되었습니다.");
+        SuccessToast("주문이 거절되었습니다.");
         param.handleCancel();
+        setIsChange((cur) => !cur);
       },
       onError: () => {
         FailToast(null);

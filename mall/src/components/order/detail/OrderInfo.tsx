@@ -146,42 +146,46 @@ export default function OrderInfo(param: param) {
                         </div>
                       </div>
                       <div className="flex flex-col gap-2 my-auto max-[1200px]:w-full max-[1200px]:justify-end">
-                        <div className="flex flex-row gap-2">
-                          <Button
-                            disabled={
-                              product.reviewStatus === "ABLE" ? false : true
-                            }
-                            onClick={() =>
-                              product.reviewStatus === "ABLE"
-                                ? handleReviewModalOpen(
-                                    product.productId,
-                                    product.orderProductId
-                                  )
-                                : ""
-                            }
-                          >
-                            {product.reviewStatus === "DONE"
-                              ? "작성 완료"
-                              : "리뷰 작성"}
-                          </Button>
-                          <Button
-                            disabled={
-                              product.cardStatus === "ABLE" ? false : true
-                            }
-                            type="primary"
-                            onClick={() =>
-                              handleGiftcard(
-                                product.cardStatus,
-                                product.orderProductId,
-                                product.productId
-                              )
-                            }
-                          >
-                            {product.cardStatus === "DONE"
-                              ? "작성 완료"
-                              : "카드 작성"}
-                          </Button>
-                        </div>
+                        {item.orderDeliveryStatus === "CANCELED" ? (
+                          ""
+                        ) : (
+                          <div className="flex flex-row gap-2">
+                            <Button
+                              disabled={
+                                product.reviewStatus === "ABLE" ? false : true
+                              }
+                              onClick={() =>
+                                product.reviewStatus === "ABLE"
+                                  ? handleReviewModalOpen(
+                                      product.productId,
+                                      product.orderProductId
+                                    )
+                                  : ""
+                              }
+                            >
+                              {product.reviewStatus === "DONE"
+                                ? "작성 완료"
+                                : "리뷰 작성"}
+                            </Button>
+                            <Button
+                              disabled={
+                                product.cardStatus === "ABLE" ? false : true
+                              }
+                              type="primary"
+                              onClick={() =>
+                                handleGiftcard(
+                                  product.cardStatus,
+                                  product.orderProductId,
+                                  product.productId
+                                )
+                              }
+                            >
+                              {product.cardStatus === "DONE"
+                                ? "작성 완료"
+                                : "카드 작성"}
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

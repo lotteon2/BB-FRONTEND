@@ -63,7 +63,7 @@ export default function SubscriptionOrderInfo(param: param) {
     {
       onSuccess: () => {
         setIsChange((cur) => !cur);
-        SuccessToast("픽업 예약이 취소되었습니다.");
+        SuccessToast("구독이 취소되었습니다.");
         navigate("/mypage");
       },
       onError: () => {
