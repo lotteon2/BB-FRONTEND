@@ -72,3 +72,17 @@ export const cancelDeliveryOrder = async (orderDeliveryId: string) => {
   );
   return data;
 };
+
+// 픽업 주문 취소
+export const cancelPickupOrder = async (orderPickupId: string) => {
+  const { data } = await authInstance.delete("/orders/pickup/" + orderPickupId);
+  return data;
+};
+
+// 구독 주문 취소
+export const cancelSubscriptionOrder = async (orderSubscriptionId: string) => {
+  const { data } = await authInstance.delete(
+    "/orders/subscription/" + orderSubscriptionId
+  );
+  return data;
+};

@@ -1,12 +1,17 @@
 import { Button, Form, Input, Modal } from "antd";
 import { useState } from "react";
 import ReviewRegisterModal from "../modal/ReviewRegisterModal";
-import { useQuery } from "react-query";
-import { getSubscriptionDetail } from "../../../apis/order";
+import { useMutation, useQuery } from "react-query";
+import {
+  cancelSubscriptionOrder,
+  getSubscriptionDetail,
+} from "../../../apis/order";
 import Loading from "../../common/Loading";
 import { useNavigate } from "react-router";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loginState, mallState } from "../../../recoil/atom/common";
+import { SuccessToast } from "../../common/toast/SuccessToast";
+import { FailToast } from "../../common/toast/FailToast";
 
 interface param {
   id: string;
@@ -41,6 +46,26 @@ export default function SubscriptionOrderInfo(param: param) {
     navigate("/product/detail/" + data.data.productId);
     setIsMall(true);
   };
+
+  const handleCancelOrder = () => {
+    if (window.confirm("선택된 주문을 취소하시겠습니까?")) {
+      cancelMutation.mutate();
+    }
+  };
+
+  const cancelMutation = useMutation(
+    ["cancelSubscriptionOrder"],
+    () => cancelSubscriptionOrder(param.id),
+    {
+      onSuccess: () => {
+        setIsChange((cur) => !cur);
+        SuccessToast("픽업 예약이 취소되었습니다.");
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
 
   if (!data || isLoading) return <Loading />;
 
@@ -125,6 +150,21 @@ export default function SubscriptionOrderInfo(param: param) {
                 <span className="font-bold">{data.data.nextDeliveryDate}</span>
               </p>
               <div className="border-t-[1px]"></div>
+              {data.data.reservationStatus === "PENDING" ? (
+                <div>
+                  <div className="m-1 flex justify-end">
+                    <Button
+                      className="my-2 "
+                      onClick={() => handleCancelOrder()}
+                    >
+                      주문 취소
+                    </Button>
+                  </div>
+                  <div className="border-t-[1px]"></div>
+                </div>
+              ) : (
+                ""
+              )}
               <div className="flex flex-row p-2">
                 <div className="w-full flex flex-row justify-between gap-16 text-[1.2rem]">
                   <div className="flex flex-col gap-2">

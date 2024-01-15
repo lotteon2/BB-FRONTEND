@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Button, Form, Input, Modal, Tag } from "antd";
 import { useNavigate } from "react-router-dom";
 import ReviewRegisterModal from "../modal/ReviewRegisterModal";
-import { useQuery } from "react-query";
-import { getPickupDetail } from "../../../apis/order";
+import { useMutation, useQuery } from "react-query";
+import { cancelPickupOrder, getPickupDetail } from "../../../apis/order";
 import Loading from "../../common/Loading";
 import { useSetRecoilState } from "recoil";
 import { mallState } from "../../../recoil/atom/common";
+import { SuccessToast } from "../../common/toast/SuccessToast";
+import { FailToast } from "../../common/toast/FailToast";
 
 interface param {
   id: string;
@@ -43,6 +45,26 @@ export default function PickupOrderInfo(param: param) {
     navigate("/pickup/product/detail/" + data.data.productId);
     setIsMall(false);
   };
+
+  const handleCancelOrder = () => {
+    if (window.confirm("선택된 주문을 취소하시겠습니까?")) {
+      cancelMutation.mutate();
+    }
+  };
+
+  const cancelMutation = useMutation(
+    ["cancelPickupOrder"],
+    () => cancelPickupOrder(param.id),
+    {
+      onSuccess: () => {
+        setIsChange((cur) => !cur);
+        SuccessToast("픽업 예약이 취소되었습니다.");
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
 
   if (!data || isLoading) return <Loading />;
   return (
@@ -148,6 +170,21 @@ export default function PickupOrderInfo(param: param) {
                 </span>
               </p>
               <div className="border-t-[1px]"></div>
+              {data.data.reservationStatus === "PENDING" ? (
+                <div>
+                  <div className="m-1 flex justify-end">
+                    <Button
+                      className="my-2 "
+                      onClick={() => handleCancelOrder()}
+                    >
+                      주문 취소
+                    </Button>
+                  </div>
+                  <div className="border-t-[1px]"></div>
+                </div>
+              ) : (
+                ""
+              )}
               <div className="flex flex-row p-2">
                 <div className="w-full flex flex-row justify-between gap-16 text-[1.2rem]">
                   <div className="flex flex-col gap-2">
