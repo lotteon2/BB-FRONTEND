@@ -43,7 +43,9 @@ export default function RegisterPage() {
 
   // 이메일 중복 확인
   const handleCheckEmail = () => {
-    emailCheckMutation.mutate();
+    if (email_pattern.test(email) && !email.match(blank_pattern)) {
+      emailCheckMutation.mutate();
+    }
   };
 
   // 인증코드 발송
