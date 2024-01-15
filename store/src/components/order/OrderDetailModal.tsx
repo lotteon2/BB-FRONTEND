@@ -13,7 +13,7 @@ import {
   getOrderDetail,
   modifyOrderState,
 } from "../../apis/order";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { deliveryState } from "../../recoil/atom/common";
 import TextArea from "antd/es/input/TextArea";
 
