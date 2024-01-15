@@ -10,6 +10,7 @@ import { getImageUrl, uploadS3Server } from "../../../apis/image";
 import TextArea from "antd/es/input/TextArea";
 import { registerReview } from "../../../apis/product";
 import { SuccessToast } from "../../common/toast/SuccessToast";
+import { useNavigate } from "react-router-dom";
 
 interface param {
   productId: string;
@@ -19,6 +20,7 @@ interface param {
   setIsModalOpen: (cur: boolean) => void;
 }
 export default function ReviewRegisterModal(param: param) {
+  const navigate = useNavigate();
   const nickname = useRecoilValue<string>(nicknameState);
   const profileImage = useRecoilValue<string>(profileImageState);
   const [defaultValues, setDefaultValues] = useState<reviewRegisterDto>({
@@ -80,6 +82,7 @@ export default function ReviewRegisterModal(param: param) {
       onSuccess: () => {
         param.handleChange();
         SuccessToast("등록되었습니다.");
+        navigate("/navigate");
       },
       onError: () => {
         FailToast(null);
