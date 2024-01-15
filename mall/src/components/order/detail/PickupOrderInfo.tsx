@@ -59,6 +59,7 @@ export default function PickupOrderInfo(param: param) {
       onSuccess: () => {
         setIsChange((cur) => !cur);
         SuccessToast("픽업 예약이 취소되었습니다.");
+        navigate("/mypage");
       },
       onError: () => {
         FailToast(null);

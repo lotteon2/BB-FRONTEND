@@ -68,6 +68,7 @@ export default function OrderInfo(param: param) {
       onSuccess: () => {
         setIsChange((cur) => !cur);
         SuccessToast("주문이 취소되었습니다.");
+        navigate("/mypage");
       },
       onError: () => {
         FailToast(null);

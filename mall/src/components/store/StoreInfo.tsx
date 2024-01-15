@@ -109,7 +109,7 @@ export default function StoreInfo(param: param) {
                       data.data.subscriptionProductId
                   )
             }
-            disabled={data.data.subscriptionProductId === "" ? true : false}
+            disabled={data.data.subscriptionProductId === null ? true : false}
           >
             정기구독 신청
           </Button>

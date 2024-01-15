@@ -48,7 +48,11 @@ export default function SubscriptionOrderInfo(param: param) {
   };
 
   const handleCancelOrder = () => {
-    if (window.confirm("선택된 주문을 취소하시겠습니까?")) {
+    if (
+      window.confirm(
+        "구독을 취소하시겠습니까? \n\n이전 결제건에 대해서는 정상적으로 배송이 이루어지며, 이후 결제 및 배송이 진행되지 않습니다."
+      )
+    ) {
       cancelMutation.mutate();
     }
   };
@@ -60,6 +64,7 @@ export default function SubscriptionOrderInfo(param: param) {
       onSuccess: () => {
         setIsChange((cur) => !cur);
         SuccessToast("픽업 예약이 취소되었습니다.");
+        navigate("/mypage");
       },
       onError: () => {
         FailToast(null);
@@ -150,21 +155,14 @@ export default function SubscriptionOrderInfo(param: param) {
                 <span className="font-bold">{data.data.nextDeliveryDate}</span>
               </p>
               <div className="border-t-[1px]"></div>
-              {data.data.reservationStatus === "PENDING" ? (
-                <div>
-                  <div className="m-1 flex justify-end">
-                    <Button
-                      className="my-2 "
-                      onClick={() => handleCancelOrder()}
-                    >
-                      주문 취소
-                    </Button>
-                  </div>
-                  <div className="border-t-[1px]"></div>
+              <div>
+                <div className="m-1 flex justify-end">
+                  <Button className="my-2 " onClick={() => handleCancelOrder()}>
+                    구독 취소
+                  </Button>
                 </div>
-              ) : (
-                ""
-              )}
+                <div className="border-t-[1px]"></div>
+              </div>
               <div className="flex flex-row p-2">
                 <div className="w-full flex flex-row justify-between gap-16 text-[1.2rem]">
                   <div className="flex flex-col gap-2">
