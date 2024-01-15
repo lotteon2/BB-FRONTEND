@@ -92,28 +92,31 @@ export default function StoreInfo(param: param) {
             <HeartFilled />
           </div>
         )}
-        <div className="flex justify-end">
-          <Button
-            style={{
-              width: "20vw",
-              height: 50,
-              minWidth: "200px",
-              maxWidth: "300px",
-            }}
-            type="primary"
-            onClick={() =>
-              data.data.subscriptionProductId === ""
-                ? ""
-                : navigate(
-                    "/subscription/product/detail/" +
-                      data.data.subscriptionProductId
-                  )
-            }
-            disabled={data.data.subscriptionProductId === null ? true : false}
-          >
-            정기구독 신청
-          </Button>
-        </div>
+        {data.data.subscriptionProductId === null ? (
+          ""
+        ) : (
+          <div className="flex justify-end">
+            <Button
+              style={{
+                width: "20vw",
+                height: 50,
+                minWidth: "200px",
+                maxWidth: "300px",
+              }}
+              type="primary"
+              onClick={() =>
+                data.data.subscriptionProductId === ""
+                  ? ""
+                  : navigate(
+                      "/subscription/product/detail/" +
+                        data.data.subscriptionProductId
+                    )
+              }
+            >
+              정기구독 신청
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
