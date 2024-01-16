@@ -37,6 +37,7 @@ const axiosAuthApi = (baseURL: string | undefined) => {
     (error) => {
       if (error.response.status === 400) {
         localStorage.clear();
+        // eslint-disable-next-line no-restricted-globals
         location.replace("https://blooming.blooms.store.stockey.kr/login");
       }
       return Promise.reject(error);
