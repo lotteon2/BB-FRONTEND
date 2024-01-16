@@ -269,6 +269,7 @@ export default function RegisterPage() {
             placeholder="이메일 입력"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={isValid ? true : false}
           />
         </Form.Item>
         <Form.Item
@@ -285,6 +286,7 @@ export default function RegisterPage() {
             placeholder="인증코드 입력"
             value={emailcode}
             onChange={(e) => setEmailCode(e.target.value)}
+            disabled={isConfirm ? true : false}
           />
         </Form.Item>
         <Form.Item

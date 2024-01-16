@@ -26,6 +26,10 @@ const axiosAuthApi = (baseURL: string | undefined) => {
       return config;
     },
     (error) => {
+      if (error.response.status === 400) {
+        localStorage.clear();
+        location.replace("https://blooming.blooms.mall.stockey.kr/");
+      }
       return Promise.reject(error);
     }
   );
