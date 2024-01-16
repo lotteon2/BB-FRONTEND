@@ -29,8 +29,8 @@ export default function CartOrderDetail() {
   const [index, setIndex] = useState<number>(0);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [totalDeliveryCost, setTotalDeliveryCost] = useState<number>(0);
-  const [totalActualAmount, setTotalActualAmount] = useState<number>(0);
-  const [totalCouponAmount, setTotalCouponAmount] = useState<number>(0);
+  const [totalActualAmount, setTotalActualAmount] = useState<number[]>([]);
+  const [totalCouponAmount, setTotalCouponAmount] = useState<number[]>([]);
   const navigate = useNavigate();
 
   const email_pattern =
@@ -63,14 +63,20 @@ export default function CartOrderDetail() {
       }
     });
 
+    var totalCoupon = totalCouponAmount;
+    totalCoupon[index] = couponAmount;
+    setTotalCouponAmount(totalCoupon);
+
+    var totalActual = totalActualAmount;
+    totalActualAmount[index] =
+      order.orderInfoByStores[index].totalAmount - couponAmount;
+    setTotalActualAmount(totalActual);
+
     setOrder((prev) => ({
       ...prev,
       orderInfoByStores: tmpList,
-      sumOfActualAmount: order.sumOfActualAmount - couponAmount,
+      sumOfActualAmount: totalActual.reduce((a, b) => a + b, 0),
     }));
-
-    setTotalCouponAmount((prev) => prev + couponAmount);
-    setTotalActualAmount((prev) => prev - couponAmount);
     handleCancel();
   };
 
@@ -245,14 +251,16 @@ export default function CartOrderDetail() {
   useEffect(() => {
     var totalAmount = 0;
     var totalDelivery = 0;
-    var totalActualAmount = 0;
+    var totalActualAmount: number[] = [];
+    var totalCouponAmount: number[] = [];
     var couponIds: number[] = [];
     var couponAmounts: number[] = [];
 
     order.orderInfoByStores.forEach((item: orderInfoByStore) => {
       totalAmount += item.totalAmount;
       totalDelivery += item.deliveryCost;
-      totalActualAmount += item.actualAmount;
+      totalActualAmount.push(item.actualAmount);
+      totalCouponAmount.push(item.couponAmount);
       couponIds.push(0);
       couponAmounts.push(0);
     });
@@ -260,6 +268,7 @@ export default function CartOrderDetail() {
     setTotalAmount(totalAmount);
     setTotalDeliveryCost(totalDelivery);
     setTotalActualAmount(totalActualAmount);
+    setTotalCouponAmount(totalCouponAmount);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -613,11 +622,13 @@ export default function CartOrderDetail() {
             <div className="flex flex-col gap-2 text-right">
               <p>{totalAmount.toLocaleString()}원</p>
               <p className="text-[#FF5555]">
-                {totalCouponAmount.toLocaleString()}원
+                {totalCouponAmount.reduce((a, b) => a + b, 0).toLocaleString()}
+                원
               </p>
               <p>{totalDeliveryCost.toLocaleString()}원</p>
               <p className="font-bold text-primary4 text-[1.5rem]">
-                {totalActualAmount.toLocaleString()}원
+                {totalActualAmount.reduce((a, b) => a + b, 0).toLocaleString()}
+                원
               </p>
             </div>
           </div>
