@@ -104,7 +104,7 @@ export default function ProductInfo(param: param) {
         productName: data.data.productName,
         quantity: count,
         price: data.data.productPrice,
-        productThumbnailImage: data.data.productDetailImage,
+        productThumbnailImage: data.data.productThumbnail,
       },
     ];
 
@@ -440,39 +440,55 @@ export default function ProductInfo(param: param) {
             {(data.data.productPrice * count).toLocaleString()}원
           </b>
         </p>
-        {data.data.productSaleStatus === "DISCONTINUED" ? (
-          <div className="flex flex-row gap-2 mt-3">
-            <Button
-              type="primary"
-              style={{ width: "100%", height: "3rem" }}
-              onClick={handleSaleResume}
-            >
-              재판매 알림 요청
-            </Button>
-          </div>
-        ) : (
-          <div className="flex flex-row gap-2 mt-3">
-            <Button
-              style={{ width: "50%", height: "3rem", backgroundColor: "#fff" }}
-              onClick={handleAddToCart}
-              disabled={
-                data.data.productSaleStatus === "DISCONTINUED" ? true : false
-              }
-            >
-              장바구니
-            </Button>
-            <Button
-              type="primary"
-              style={{ width: "50%", height: "3rem" }}
-              onClick={handleOrder}
-              disabled={
-                data.data.productSaleStatus === "DISCONTINUED" ? true : false
-              }
-            >
-              구매하기
-            </Button>
-          </div>
-        )}
+        <div>
+          {isLogin ? (
+            <div>
+              {data.data.productSaleStatus === "DISCONTINUED" ? (
+                <div className="flex flex-row gap-2 mt-3">
+                  <Button
+                    type="primary"
+                    style={{ width: "100%", height: "3rem" }}
+                    onClick={handleSaleResume}
+                  >
+                    재판매 알림 요청
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex flex-row gap-2 mt-3">
+                  <Button
+                    style={{
+                      width: "50%",
+                      height: "3rem",
+                      backgroundColor: "#fff",
+                    }}
+                    onClick={handleAddToCart}
+                    disabled={
+                      data.data.productSaleStatus === "DISCONTINUED"
+                        ? true
+                        : false
+                    }
+                  >
+                    장바구니
+                  </Button>
+                  <Button
+                    type="primary"
+                    style={{ width: "50%", height: "3rem" }}
+                    onClick={handleOrder}
+                    disabled={
+                      data.data.productSaleStatus === "DISCONTINUED"
+                        ? true
+                        : false
+                    }
+                  >
+                    구매하기
+                  </Button>
+                </div>
+              )}
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
 
         {isModalOpen ? (
           <Modal
