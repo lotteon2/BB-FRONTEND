@@ -51,30 +51,42 @@ export default function ProductRegisterModal(param: param) {
   });
 
   const handleOk = () => {
-    const flowers = [];
-    for (let index = 0; index < extraFlowers.length; index++) {
-      flowers.push({
-        flowerId: extraFlowers[index],
-        flowerCount: extraFlowersCnt[index],
-      });
+    if (defaultValues.productThumbnail === "")
+      alert("썸네일 이미지를 등록해주세요.");
+    if (
+      defaultValues.productThumbnail !== "" &&
+      defaultValues.productName !== "" &&
+      defaultValues.productDescriptionImage !== "" &&
+      defaultValues.productSummary &&
+      defaultValues.categoryId !== undefined &&
+      representativeFlower !== undefined &&
+      representativeFlowerCnt !== null
+    ) {
+      const flowers = [];
+      for (let index = 0; index < extraFlowers.length; index++) {
+        flowers.push({
+          flowerId: extraFlowers[index],
+          flowerCount: extraFlowersCnt[index],
+        });
+      }
+
+      const productInfo = {
+        productName: defaultValues.productName,
+        productSummary: defaultValues.productSummary,
+        productDescriptionImage: defaultValues.productDescriptionImage,
+        productThumbnail: defaultValues.productThumbnail,
+        productPrice: defaultValues.productPrice,
+        categoryId: defaultValues.categoryId,
+        productTag: defaultValues.productTag,
+        representativeFlower: {
+          flowerId: representativeFlower,
+          flowerCount: representativeFlowerCnt,
+        },
+        flowers: flowers,
+      };
+
+      registerMutation.mutate(productInfo);
     }
-
-    const productInfo = {
-      productName: defaultValues.productName,
-      productSummary: defaultValues.productSummary,
-      productDescriptionImage: defaultValues.productDescriptionImage,
-      productThumbnail: defaultValues.productThumbnail,
-      productPrice: defaultValues.productPrice,
-      categoryId: defaultValues.categoryId,
-      productTag: defaultValues.productTag,
-      representativeFlower: {
-        flowerId: representativeFlower,
-        flowerCount: representativeFlowerCnt,
-      },
-      flowers: flowers,
-    };
-
-    registerMutation.mutate(productInfo);
   };
 
   // 이미지 처리
@@ -203,6 +215,18 @@ export default function ProductRegisterModal(param: param) {
       },
     }
   );
+
+  const checkRepFlower = useCallback(() => {
+    if (!representativeFlower) {
+      return Promise.reject(new Error("대표꽃과 수량을 설정해주세요."));
+    }
+    if (representativeFlowerCnt === null) {
+      return Promise.reject(new Error("대표꽃과 수량을 설정해주세요."));
+    }
+
+    return Promise.resolve();
+    // eslint-disable-next-line
+  }, [representativeFlower, representativeFlowerCnt]);
 
   const uploadImgBtn = useCallback(() => {
     inputRef.current?.click();
@@ -374,7 +398,7 @@ export default function ProductRegisterModal(param: param) {
                   rules={[
                     {
                       required: true,
-                      message: "대표꽃과 수량 정보를 설정해주세요",
+                      validator: checkRepFlower,
                     },
                   ]}
                 >
