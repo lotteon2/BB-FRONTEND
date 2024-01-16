@@ -8,6 +8,7 @@ import { productListDto } from "../../recoil/common/interfaces";
 import { useState } from "react";
 import { productWishState } from "../../recoil/atom/member";
 import { HeartFilled } from "@ant-design/icons";
+import ProductListFallback from "../fallbacks/ProductListFallback";
 
 export default function ProductBySearchWordList() {
   const navigate = useNavigate();
@@ -41,7 +42,14 @@ export default function ProductBySearchWordList() {
     }
   };
 
-  if (!data || isLoading) return null;
+  if (data || isLoading)
+    return (
+      <div>
+        <div className="text-center font-bold mt-5">"{word}"</div>
+        <div className="text-center mb-5">검색결과</div>
+        <ProductListFallback />
+      </div>
+    );
 
   return (
     <div>
