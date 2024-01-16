@@ -30,7 +30,7 @@ export default function PickupOrderDetail() {
   const handleCoupons = (couponId: number | null, couponAmount: number) => {
     setPickupOrder((prev) => ({
       ...prev,
-      actualAmount: pickupOrder.actualAmount - couponAmount,
+      actualAmount: pickupOrder.totalAmount - couponAmount,
       couponId: couponId,
       couponAmount: couponAmount,
     }));
@@ -371,9 +371,11 @@ export default function PickupOrderDetail() {
           handleCancel={handleCancel}
           handleCoupons={handleCoupons}
           storeId={pickupOrder.storeId}
-          actualAmount={pickupOrder.actualAmount}
+          actualAmount={pickupOrder.totalAmount}
           couponId={pickupOrder.couponId}
           couponAmount={pickupOrder.couponAmount}
+          index={0}
+          type="pickup"
         />
       </Modal>
     </div>

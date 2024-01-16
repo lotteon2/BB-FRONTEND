@@ -20,7 +20,7 @@ export default function QuestionList() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["getQuestions", isChange, page, isReplied],
-    queryFn: () => getQuestions(storeId, page - 1, 15, isReplied),
+    queryFn: () => getQuestions(storeId, page - 1, 12, isReplied),
   });
 
   const handleCancel = () => {
@@ -117,8 +117,8 @@ export default function QuestionList() {
             <div className="w-full text-center mt-2">
               <Pagination
                 defaultCurrent={page}
-                total={data.totalCnt}
-                defaultPageSize={15}
+                total={data.data.totalCnt}
+                defaultPageSize={12}
                 onChange={handlePage}
               />
             </div>

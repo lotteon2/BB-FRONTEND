@@ -42,7 +42,7 @@ export default function OrderDetail() {
         deliveryCost: order.orderInfoByStores[0].deliveryCost,
         couponId: couponId,
         couponAmount: couponAmount,
-        actualAmount: order.orderInfoByStores[0].actualAmount - couponAmount,
+        actualAmount: order.orderInfoByStores[0].totalAmount - couponAmount,
       },
     ];
 
@@ -590,9 +590,11 @@ export default function OrderDetail() {
           handleCancel={handleCancel}
           handleCoupons={handleCoupons}
           storeId={order.orderInfoByStores[0].storeId}
-          actualAmount={order.orderInfoByStores[0].actualAmount}
+          actualAmount={order.orderInfoByStores[0].totalAmount}
           couponId={order.orderInfoByStores[0].couponId}
           couponAmount={order.orderInfoByStores[0].couponAmount}
+          index={0}
+          type="delivery"
         />
       </Modal>
       <Modal

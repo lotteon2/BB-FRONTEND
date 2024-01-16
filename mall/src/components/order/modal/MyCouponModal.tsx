@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { couponForPayDto } from "../../../recoil/common/interfaces";
+import {
+  couponForPayDto,
+  orderDto,
+  pickupOrderDto,
+} from "../../../recoil/common/interfaces";
 import { getValidCouponListForPayment } from "../../../apis/store";
 import Loading from "../../common/Loading";
 import CouponBg from "../../../assets/images/coupon.png";
 import { Button, Empty } from "antd";
+import { useRecoilValue } from "recoil";
+import { orderState, pickupOrderState } from "../../../recoil/atom/order";
 
 interface param {
   handleCancel: () => void;
@@ -13,10 +19,14 @@ interface param {
   actualAmount: number;
   couponId: number | null;
   couponAmount: number;
+  index: number;
+  type: string;
 }
 export default function MyCouponModal(param: param) {
   const [couponId, setCouponId] = useState<number | null>(param.couponId);
   const [couponAmount, setCouponAmount] = useState<number>(param.couponAmount);
+  const order = useRecoilValue<orderDto>(orderState);
+  const pOrder = useRecoilValue<pickupOrderDto>(pickupOrderState);
 
   const { data, isLoading } = useQuery({
     queryKey: ["getValidCouponListForPayment", param],
@@ -80,11 +90,18 @@ export default function MyCouponModal(param: param) {
             style={{
               width: 370,
               height: 60,
-              backgroundColor: "#315136",
-              marginRight: 10,
             }}
             type="primary"
             onClick={() => param.handleCoupons(couponId, couponAmount)}
+            disabled={
+              param.type === "delivery"
+                ? order.orderInfoByStores[param.index].couponId === couponId
+                  ? true
+                  : false
+                : pOrder.couponId === couponId
+                ? true
+                : false
+            }
           >
             적용하기
           </Button>

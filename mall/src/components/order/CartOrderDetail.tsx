@@ -55,7 +55,7 @@ export default function CartOrderDetail() {
           couponId: couponId,
           couponAmount: couponAmount,
           actualAmount:
-            order.orderInfoByStores[index].actualAmount - couponAmount,
+            order.orderInfoByStores[index].totalAmount - couponAmount,
         };
         tmpList.push(tmp);
       } else {
@@ -639,9 +639,11 @@ export default function CartOrderDetail() {
           handleCancel={handleCancel}
           handleCoupons={handleCoupons}
           storeId={order.orderInfoByStores[index].storeId}
-          actualAmount={order.orderInfoByStores[index].actualAmount}
-          couponId={0}
+          actualAmount={order.orderInfoByStores[index].totalAmount}
+          couponId={order.orderInfoByStores[index].couponId}
           couponAmount={0}
+          index={index}
+          type="delivery"
         />
       </Modal>
       <Modal
