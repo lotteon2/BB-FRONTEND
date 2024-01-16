@@ -36,9 +36,8 @@ export default function PickupOrderInfo(param: param) {
     setIsModalOpen(true);
   };
 
-  const handleGiftcard = (status: string, productId: string) => {
-    if (status === "ABLE")
-      navigate("/giftcard/pickup/" + param.id + "/" + productId);
+  const handleGiftcard = (id: number, status: string, productId: string) => {
+    if (status === "ABLE") navigate("/giftcard/pickup/" + id + "/" + productId);
   };
 
   const handleClickPickupProduct = () => {
@@ -152,6 +151,7 @@ export default function PickupOrderInfo(param: param) {
                       type="primary"
                       onClick={() =>
                         handleGiftcard(
+                          data.data.orderProductId,
                           data.data.cardStatus,
                           data.data.productId
                         )

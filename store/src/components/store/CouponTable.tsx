@@ -249,7 +249,8 @@ export default function CouponTable() {
         return (
           <Button
             type="primary"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               setIsModalOpen(true);
               setCouponInfo({
                 couponName: record.couponName,

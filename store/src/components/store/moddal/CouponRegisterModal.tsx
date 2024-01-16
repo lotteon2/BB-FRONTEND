@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Button,
   DatePicker,
@@ -46,15 +46,20 @@ export default function CouponRegisterModal(param: param) {
       registerValues.startDate !== null &&
       registerValues.endDate !== null
     ) {
-      const couponInfo = {
-        couponName: registerValues.couponName,
-        discountPrice: registerValues.discountPrice,
-        minPrice: registerValues.minPrice,
-        limitCount: registerValues.limitCount,
-        startDate: start,
-        endDate: end,
-      };
-      registerMutation.mutate(couponInfo);
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+
+      if (endDate >= startDate) {
+        const couponInfo = {
+          couponName: registerValues.couponName,
+          discountPrice: registerValues.discountPrice,
+          minPrice: registerValues.minPrice,
+          limitCount: registerValues.limitCount,
+          startDate: start,
+          endDate: end,
+        };
+        registerMutation.mutate(couponInfo);
+      }
     }
   };
 
@@ -82,6 +87,44 @@ export default function CouponRegisterModal(param: param) {
     setEnd(dateString);
     setRegisterValues((prev) => ({ ...prev, endDate: date }));
   };
+
+  const checkStartDate = useCallback(
+    (_: any, value: string) => {
+      if (!value) {
+        return Promise.reject(new Error("필수 입력값입니다."));
+      }
+      if (end) {
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+
+        if (endDate < startDate)
+          return Promise.reject(new Error("잘못된 입력값입니다."));
+      }
+
+      return Promise.resolve();
+      // eslint-disable-next-line
+    },
+    [start, end]
+  );
+
+  const checkEndDate = useCallback(
+    (_: any, value: string) => {
+      if (!value) {
+        return Promise.reject(new Error("필수 입력값입니다."));
+      }
+      if (start) {
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+
+        if (endDate < startDate)
+          return Promise.reject(new Error("잘못된 입력값입니다."));
+      }
+
+      return Promise.resolve();
+      // eslint-disable-next-line
+    },
+    [start, end]
+  );
 
   const [form] = Form.useForm();
   useEffect(() => {
@@ -177,7 +220,7 @@ export default function CouponRegisterModal(param: param) {
           <Form.Item
             name="startDate"
             label="시작일"
-            rules={[{ required: true, message: "필수 입력값입니다." }]}
+            rules={[{ required: true, validator: checkStartDate }]}
           >
             <DatePicker
               onChange={handleStartDate}
@@ -188,7 +231,7 @@ export default function CouponRegisterModal(param: param) {
           <Form.Item
             name="endDate"
             label="종료일"
-            rules={[{ required: true, message: "필수 입력값입니다." }]}
+            rules={[{ required: true, validator: checkEndDate }]}
           >
             <DatePicker
               onChange={handleEndDate}

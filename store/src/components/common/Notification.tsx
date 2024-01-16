@@ -1,4 +1,4 @@
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { notiEventState, notiShowState } from "../../recoil/atom/noti";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 export default function Notification() {
   const navigate = useNavigate();
   const storeId = useRecoilValue<number>(storeIdState);
-  const isNotiShow = useRecoilValue<boolean>(notiShowState);
+  const [isNotiShow, setIsNotiShow] = useRecoilState<boolean>(notiShowState);
   const setNotiEvent = useSetRecoilState<boolean>(notiEventState);
   const [notiList, setNotiList] = useState<notiDto[]>([]);
 
@@ -157,7 +157,10 @@ export default function Notification() {
                 <p
                   className="my-3 cursor-pointer hover:font-bold"
                   key={item.notificationId}
-                  onClick={() => navigate(item.notificationLink)}
+                  onClick={() => {
+                    navigate(item.notificationLink);
+                    setIsNotiShow(false);
+                  }}
                 >
                   {item.notificationContent}
                 </p>

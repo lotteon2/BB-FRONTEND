@@ -1,4 +1,4 @@
-import { Button, Form, Input, Modal } from "antd";
+import { Button, Form, Input, Modal, Tag } from "antd";
 import { useState } from "react";
 import ReviewRegisterModal from "../modal/ReviewRegisterModal";
 import { useMutation, useQuery } from "react-query";
@@ -89,6 +89,9 @@ export default function SubscriptionOrderInfo(param: param) {
             <div className="border-[1px] border-grayscale3 mt-3 relative rounded-lg">
               <div className="bg-grayscale2 pl-2 py-1 flex justify-between">
                 <p>{data.data.storeName}</p>
+                <Tag color="#315136">
+                  {data.data.isUnsubscribed ? "취소완료" : "구독중"}
+                </Tag>
               </div>
               <div className="p-2 border-b-[1px]">
                 <p
@@ -155,14 +158,21 @@ export default function SubscriptionOrderInfo(param: param) {
                 <span className="font-bold">{data.data.nextDeliveryDate}</span>
               </p>
               <div className="border-t-[1px]"></div>
-              <div>
-                <div className="m-1 flex justify-end">
-                  <Button className="my-2 " onClick={() => handleCancelOrder()}>
-                    구독 취소
-                  </Button>
+              {data.data.isUnsubscribed ? (
+                ""
+              ) : (
+                <div>
+                  <div className="m-1 flex justify-end">
+                    <Button
+                      className="my-2 "
+                      onClick={() => handleCancelOrder()}
+                    >
+                      구독 취소
+                    </Button>
+                  </div>
+                  <div className="border-t-[1px]"></div>
                 </div>
-                <div className="border-t-[1px]"></div>
-              </div>
+              )}
               <div className="flex flex-row p-2">
                 <div className="w-full flex flex-row justify-between gap-16 text-[1.2rem]">
                   <div className="flex flex-col gap-2">

@@ -109,8 +109,17 @@ export default function ProductImage(param: param) {
   };
 
   return (
-    <div onMouseMove={handleMouseEvent} onMouseLeave={handleMouseLeave}>
-      <img src={param.src} alt={param.alt} ref={imageRef} />
+    <div
+      onMouseMove={handleMouseEvent}
+      onMouseLeave={handleMouseLeave}
+      className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px]"
+    >
+      <img
+        src={param.src}
+        alt={param.alt}
+        ref={imageRef}
+        className="w-full h-full"
+      />
 
       {imageRef.current && scannerPosition && (
         <div>

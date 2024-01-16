@@ -219,25 +219,16 @@ export default function PickupProductInfo(param: param) {
   return (
     <div className="w-full flex flex-row gap-10 flex-wrap justify-center">
       <div className="w-[33vw] h-[33vw] max-w-[440px] max-h-[440px] min-w-[370px] min-h-[370px] relative">
-        <div className="absolute z-20 top-7 left-2">
-          {data.data.productSaleStatus === "DISCONTINUED" ? (
-            <Tag bordered={false} color="red">
-              판매중지
-            </Tag>
-          ) : (
-            ""
-          )}
-        </div>
-        <div className="flex flex-row gap-3 text-grayscale5 font-light text-[0.8rem]">
+        <div className="w-full flex flex-row gap-2 text-grayscale5 font-light text-[0.8rem] flex-wrap">
           <p
-            className="cursor-pointer"
+            className="cursor-pointer w-fit whitespace-nowrap"
             onClick={() => navigate("/store/detail/" + data.data.storeId)}
           >
             {data.data.storeName}
           </p>
           <p>{">"}</p>
           <p
-            className="cursor-pointer"
+            className="cursor-pointer w-fit whitespace-nowrap"
             onClick={() =>
               navigate("/product/" + data.data.category.categoryId)
             }
@@ -245,26 +236,27 @@ export default function PickupProductInfo(param: param) {
             {data.data.category.categoryName}
           </p>
           <p>{">"}</p>
-          <div className="flex flex-row gap-2">
-            {data.data.tag.map((item: { key: number; tagName: string }) => (
-              <p
-                key={item.key}
-                className="cursor-pointer"
-                onClick={() => navigate("/product/tag/" + item.key)}
-              >
-                {item.tagName}
-              </p>
-            ))}
-          </div>
+          {data.data.tag.map((item: { key: number; tagName: string }) => (
+            <p
+              key={item.key}
+              className="cursor-pointer w-fit whitespace-nowrap"
+              onClick={() => navigate("/product/tag/" + item.key)}
+            >
+              {item.tagName}
+            </p>
+          ))}
         </div>
-        <div
-          className={
-            data.data.productSaleStatus === "DISCONTINUED"
-              ? "w-full h-full contrast-50 relative"
-              : "w-full h-full relative"
-          }
-        >
+        <div className="w-full h-full relative">
           <ProductImage src={data.data.productThumbnail} alt="상품 썸네일" />
+          <div className="absolute z-20 top-2 left-2">
+            {data.data.productSaleStatus === "DISCONTINUED" ? (
+              <Tag bordered={false} color="red">
+                판매중지
+              </Tag>
+            ) : (
+              ""
+            )}
+          </div>
         </div>
       </div>
       <div className="w-1/2 max-w-[800px] min-w-[370px]">

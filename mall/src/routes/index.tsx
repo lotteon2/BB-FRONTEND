@@ -25,6 +25,7 @@ import SuccessPage from "../pages/SuccessPage";
 import DefaultLayout from "../layouts/DefaultLayout";
 import PaymentApprovePage from "../pages/PaymentApprovePage";
 import FailPage from "../pages/FailPage";
+import ProductBySearchWordList from "../components/product/ProductBySearchWordList";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       { path: "product/:categoryId", element: <ProductByCategoryPage /> },
       { path: "product/tag/:tagId", element: <ProductByTagPage /> },
       { path: "product/detail/:productId", element: <ProductDetailPage /> },
+      {
+        path: "product/search",
+        element: <ProductBySearchWordList />,
+      },
       { path: "cart", element: <CartPage /> },
       { path: "giftcard/:type/:id/:productId", element: <GiftCardPage /> },
       {

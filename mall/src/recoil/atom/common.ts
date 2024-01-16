@@ -65,3 +65,14 @@ export const wishState = atom({
   key: "wishState",
   default: false,
 });
+
+// 검색어
+export const searchWordState = atom({
+  key: "searchWordState",
+  default: "",
+});
+
+export const wordState = atom({
+  key: "wordState",
+  default: "",
+});
