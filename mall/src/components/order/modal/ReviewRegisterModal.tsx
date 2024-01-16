@@ -82,7 +82,7 @@ export default function ReviewRegisterModal(param: param) {
       onSuccess: () => {
         param.handleChange();
         SuccessToast("등록되었습니다.");
-        navigate("/navigate");
+        navigate("/mypage");
       },
       onError: () => {
         FailToast(null);
