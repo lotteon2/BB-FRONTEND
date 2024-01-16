@@ -23,7 +23,7 @@ import { useMutation } from "react-query";
 import { modifyStoreWishList, modifyWishList } from "../apis/member";
 import { productWishState, storeWishState } from "../recoil/atom/member";
 import ScrollToTop from "../components/common/ScrollToTop";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function MainLayout() {
   const navigate = useNavigate();
@@ -147,6 +147,7 @@ export default function MainLayout() {
       window.removeEventListener("beforeunload", handleRefresh);
       // 5. 해당 이벤트 실행 후, beforeunload를 감지하는 것을 제거한다.
     };
+    // eslint-disable-next-line
   }, []);
   return (
     <div className="font-regular">

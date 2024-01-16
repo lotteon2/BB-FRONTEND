@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { notiEventState, notiShowState } from "../../recoil/atom/noti";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
