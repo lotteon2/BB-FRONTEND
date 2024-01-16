@@ -53,23 +53,31 @@ export default function ProductModifyModal(param: param) {
   });
 
   const handleOk = () => {
-    const productInfo = {
-      productName: productName,
-      productSummary: productSummary,
-      productDescriptionImage: productDescriptionImage,
-      productThumbnail: productThumbnail,
-      productPrice: productPrice,
-      productSaleStatus: productSaleStatus,
-      category: category,
-      productTag: tag,
-      representativeFlower: {
-        flowerId: representativeFlower,
-        flowerCount: representativeFlowerCnt,
-      },
-      flowers: extraFlowers,
-    };
+    if (
+      productThumbnail !== "" &&
+      productName !== "" &&
+      productDescriptionImage !== "" &&
+      productSummary &&
+      productPrice
+    ) {
+      const productInfo = {
+        productName: productName,
+        productSummary: productSummary,
+        productDescriptionImage: productDescriptionImage,
+        productThumbnail: productThumbnail,
+        productPrice: productPrice,
+        productSaleStatus: productSaleStatus,
+        category: category,
+        productTag: tag,
+        representativeFlower: {
+          flowerId: representativeFlower,
+          flowerCount: representativeFlowerCnt,
+        },
+        flowers: extraFlowers,
+      };
 
-    modifyMutation.mutate(productInfo);
+      modifyMutation.mutate(productInfo);
+    }
   };
   const uploadImgBtn = useCallback(() => {
     inputRef.current?.click();

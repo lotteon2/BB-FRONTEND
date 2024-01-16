@@ -59,7 +59,8 @@ export default function SubscriptionModifyModal(param: param) {
       modifyValues.productName !== "" &&
       modifyValues.productSummary !== "" &&
       modifyValues.productPrice !== null &&
-      modifyValues.productDescriptionImage !== ""
+      modifyValues.productDescriptionImage !== "" &&
+      modifyValues.productPrice
     ) {
       modifyMutation.mutate();
     }

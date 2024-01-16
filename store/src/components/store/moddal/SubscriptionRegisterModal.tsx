@@ -65,7 +65,8 @@ export default function SubscriptionRegisterModal(param: param) {
       registerValues.productName !== "" &&
       registerValues.productSummary !== "" &&
       registerValues.productPrice !== null &&
-      registerValues.productDescriptionImage !== ""
+      registerValues.productDescriptionImage !== "" &&
+      registerValues.productPrice
     ) {
       registerMutation.mutate();
     }
