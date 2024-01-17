@@ -5,6 +5,7 @@ const BASE_URL = process.env.REACT_APP_API_URL;
 const axiosApi = (baseURL: string | undefined) => {
   const instance = axios.create({
     baseURL,
+    withCredentials: true,
   });
   return instance;
 };
@@ -12,6 +13,7 @@ const axiosApi = (baseURL: string | undefined) => {
 const axiosAuthApi = (baseURL: string | undefined) => {
   const instance = axios.create({
     baseURL,
+    withCredentials: true,
   });
 
   instance.interceptors.request.use(
