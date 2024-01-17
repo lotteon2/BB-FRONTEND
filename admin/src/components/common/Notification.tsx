@@ -2,7 +2,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { notiEventState, notiShowState } from "../../recoil/atom/noti";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
-import { getAllNotifications } from "../../apis/noti";
+import { getAllNotifications, modifyNotiState } from "../../apis/noti";
 import { FailToast } from "./toast/FailToast";
 import { Empty } from "antd";
 import { notiDto } from "../../recoil/common/interfaces";
@@ -12,21 +12,41 @@ import { useNavigate } from "react-router-dom";
 export default function Notification() {
   const navigate = useNavigate();
   const [isNotiShow, setIsNotiShow] = useRecoilState<boolean>(notiShowState);
-  const setNotiEvent = useSetRecoilState<boolean>(notiEventState);
+  const [notiEvent, setNotiEvent] = useRecoilState<boolean>(notiEventState);
   const [notiList, setNotiList] = useState<notiDto[]>([]);
 
   const subscribeUrl = `${process.env.REACT_APP_API_URL}/notification/subscribe/admin`;
 
   const getAllNotiMutation = useMutation(
-    ["getAllNotifications"],
+    ["getAllNotifications", notiEvent],
     () => getAllNotifications(),
     {
       onSuccess: (data) => {
+        setNotiEvent((cur) => !cur);
         setNotiList(data.data.notifications);
       },
       onError: () => {
         FailToast(null);
       },
+    }
+  );
+
+  const handleCheckAll = () => {
+    let list: number[] = [];
+
+    notiList.forEach((item) => {
+      list.push(item.notificationId);
+    });
+
+    checkMutation.mutate(list);
+  };
+
+  const checkMutation = useMutation(
+    ["modifyNotiState"],
+    (list: number[]) => modifyNotiState(list),
+    {
+      onSuccess: () => {},
+      onError: () => {},
     }
   );
 
@@ -95,9 +115,12 @@ export default function Notification() {
               </p>
               {notiList.map((item: notiDto) => (
                 <p
-                  className="my-2 cursor-pointer hover:font-bold"
+                  className={`my-3 cursor-pointer hover:font-bold ${
+                    item.isRead ? "text-grayscale4" : ""
+                  }`}
                   key={item.notificationId}
                   onClick={() => {
+                    checkMutation.mutate([item.notificationId]);
                     navigate(item.notificationLink);
                     setIsNotiShow(false);
                   }}
@@ -107,6 +130,12 @@ export default function Notification() {
               ))}
             </div>
           )}
+          <div
+            className="text-right text-[0.8rem] font-light p-2 cursor-pointer"
+            onClick={handleCheckAll}
+          >
+            전채 읽음
+          </div>
         </div>
       ) : (
         ""

@@ -150,6 +150,7 @@ export default function Notification() {
     // eslint-disable-next-line
   }, [isNotiShow]);
 
+  console.log(notiList);
   return (
     <div>
       {isNotiShow ? (
@@ -163,7 +164,9 @@ export default function Notification() {
               </p>
               {notiList.map((item: notiDto) => (
                 <p
-                  className="my-3 cursor-pointer hover:font-bold"
+                  className={`my-3 cursor-pointer hover:font-bold ${
+                    item.isRead ? "text-grayscale4" : ""
+                  }`}
                   key={item.notificationId}
                   onClick={() => {
                     navigate(item.notificationLink);

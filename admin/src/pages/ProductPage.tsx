@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "react-query";
 import { deleteSelectedProduct, getProductList } from "../apis/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WholeDiv from "../components/fallbacks/WholeDiv";
 import {
   Button,
@@ -39,6 +39,9 @@ export default function ProductPage() {
     setPage(pageNumber);
   };
 
+  useEffect(() => {
+    setPage(1);
+  }, [date, sale, status]);
   const columns: ColumnsType<productListDto> = [
     {
       title: "",
@@ -161,6 +164,8 @@ export default function ProductPage() {
       </div>
     );
 
+  console.log(page);
+
   return (
     <div className="w-[1620px] h-[897px] bg-grayscale3 p-2">
       <div className="w-full h-full bg-grayscale1 rounded-lg relative">
@@ -191,13 +196,17 @@ export default function ProductPage() {
           <div className="absolute top-7 left-4 flex flex-row gap-2">
             <div>
               <Checkbox
-                checked={selectedId.length === data.data.totalCnt}
+                checked={selectedId.length === data.data.products.length}
                 onChange={handleSelectAll}
               >
                 전체 선택
               </Checkbox>
             </div>
-            <Button size="small" onClick={() => deleteMutation.mutate()}>
+            <Button
+              size="small"
+              onClick={() => deleteMutation.mutate()}
+              disabled={selectedId.length === 0 ? true : false}
+            >
               선택 상품 삭제
             </Button>
           </div>
