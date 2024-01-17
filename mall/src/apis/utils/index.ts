@@ -13,7 +13,7 @@ const axiosApi = (baseURL: string | undefined) => {
 const axiosAuthApi = (baseURL: string | undefined) => {
   const instance = axios.create({
     baseURL,
-    // withCredentials: true,
+    withCredentials: true,
   });
 
   instance.interceptors.request.use(

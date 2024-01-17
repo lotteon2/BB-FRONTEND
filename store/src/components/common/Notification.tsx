@@ -150,7 +150,6 @@ export default function Notification() {
     // eslint-disable-next-line
   }, [isNotiShow]);
 
-  console.log(notiList);
   return (
     <div>
       {isNotiShow ? (

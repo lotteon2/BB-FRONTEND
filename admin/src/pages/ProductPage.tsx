@@ -164,8 +164,6 @@ export default function ProductPage() {
       </div>
     );
 
-  console.log(page);
-
   return (
     <div className="w-[1620px] h-[897px] bg-grayscale3 p-2">
       <div className="w-full h-full bg-grayscale1 rounded-lg relative">
