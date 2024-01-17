@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../css/map.css";
 import { Select } from "antd";
 import { useQuery } from "react-query";
@@ -17,6 +17,10 @@ export default function PickupRegion() {
     queryKey: ["getGugunList", sido],
     queryFn: () => getGugunList(sido),
   });
+
+  useEffect(() => {
+    setGugun("");
+  }, [sido]);
 
   if (!data || isLoading)
     return (

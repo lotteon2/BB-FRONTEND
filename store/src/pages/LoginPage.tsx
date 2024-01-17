@@ -63,6 +63,7 @@ export default function LoginPage() {
     (signinDto: signinDto) => signin(signinDto),
     {
       onSuccess: (res) => {
+        console.log(res);
         setName(res.data.data.name);
         setStoreId(res.data.data.storeId);
         localStorage.setItem("accessToken", res.headers["authorization"]);

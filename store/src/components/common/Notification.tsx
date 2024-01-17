@@ -46,7 +46,6 @@ export default function Notification() {
           // storeId: storeId.toString(),
         },
         withCredentials: true,
-        heartbeatTimeout: 86400000,
       });
 
       eventSource.onerror = () => {
@@ -59,7 +58,6 @@ export default function Notification() {
             "Cache-Control": "no-cache",
           },
           withCredentials: true,
-          heartbeatTimeout: 86400000,
         });
 
         eventSource.addEventListener("CONNECT", () => {
@@ -110,6 +108,7 @@ export default function Notification() {
 
         eventSource.addEventListener("SHOPPINGMALL", () => {
           setNotiEvent((cur) => !cur);
+          alert("!!!");
           NotiToast("신규 배송주문이 접수되었습니다.");
         });
 
