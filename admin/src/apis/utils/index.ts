@@ -42,18 +42,20 @@ const axiosAuthApi = (baseURL: string | undefined) => {
           await axios
             .post(`${BASE_URL}/auth/refresh-token`)
             .then((data) => {
-              console.log(data);
               const newToken = data.headers["authorization"];
               localStorage.setItem("accessToken", newToken);
               originalRequest.headers.Authorization = newToken;
             })
-            .catch((error) => {
-              console.log(error);
+            .catch(() => {
               localStorage.clear();
               // eslint-disable-next-line no-restricted-globals
-              location.replace("https://blooming.blooms.admin.stockey.kr/");
+              window.location.href = "/login";
             });
           return axios(originalRequest);
+        } else {
+          localStorage.clear();
+          // eslint-disable-next-line no-restricted-globals
+          window.location.href = "/login";
         }
       }
       return Promise.reject(error);
