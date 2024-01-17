@@ -104,7 +104,7 @@ export const getMyOrderList = async (
     return data;
   } else {
     const { data } = await authInstance.get(
-      "/orders/delivery?page=" + page + "&size=" + size + "&status="
+      "/orders/delivery?page=" + page + "&size=" + size
     );
     return data;
   }
