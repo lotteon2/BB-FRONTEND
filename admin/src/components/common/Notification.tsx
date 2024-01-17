@@ -42,7 +42,7 @@ export default function Notification() {
           "Cache-Control": "no-cache",
         },
         withCredentials: true,
-        // heartbeatTimeout: 86400000,
+        heartbeatTimeout: 86400000,
       });
 
       eventSource.onerror = () => {
@@ -55,7 +55,7 @@ export default function Notification() {
             "Cache-Control": "no-cache",
           },
           withCredentials: true,
-          //   heartbeatTimeout: 86400000,
+          heartbeatTimeout: 86400000,
         });
 
         eventSource.addEventListener("CONNECT", () => {

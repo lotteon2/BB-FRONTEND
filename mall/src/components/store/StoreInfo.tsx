@@ -34,6 +34,16 @@ export default function StoreInfo(param: param) {
     }
   };
 
+  const handleSubscription = () => {
+    if (isLogin && data.data.subscriptionProductId !== "") {
+      navigate(
+        "/subscription/product/detail/" + data.data.subscriptionProductId
+      );
+    } else if (window.confirm("회원만 사용가능합니다. 로그인하시겠습니까?")) {
+      navigate("/login");
+    }
+  };
+
   if (!data || isLoading) return <StoreDetailFallback />;
 
   return (
@@ -104,14 +114,7 @@ export default function StoreInfo(param: param) {
                 maxWidth: "300px",
               }}
               type="primary"
-              onClick={() =>
-                data.data.subscriptionProductId === ""
-                  ? ""
-                  : navigate(
-                      "/subscription/product/detail/" +
-                        data.data.subscriptionProductId
-                    )
-              }
+              onClick={handleSubscription}
             >
               정기구독 신청
             </Button>
