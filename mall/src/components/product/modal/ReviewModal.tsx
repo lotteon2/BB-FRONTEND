@@ -39,7 +39,11 @@ export default function ReviewModal(param: param) {
             {param.data?.content}
           </div>
           <div className="w-full mx-auto mt-5">
-            <img src={param.data.reviewImages[0]} alt="리뷰 상세 이미지" />
+            {param.data.reviewImages.length === 0 ? (
+              ""
+            ) : (
+              <img src={param.data.reviewImages[0]} alt="리뷰 상세 이미지" />
+            )}
           </div>
         </div>
       </Modal>

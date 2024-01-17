@@ -82,11 +82,15 @@ export default function ReviewList() {
                       {item.content}
                     </p>
                   </div>
-                  <img
-                    className="w-[100px] h-[100px]"
-                    src={item.reviewImages[0]}
-                    alt=""
-                  />
+                  {item.reviewImages.length === 0 ? (
+                    ""
+                  ) : (
+                    <img
+                      className="w-[100px] h-[100px]"
+                      src={item.reviewImages[0]}
+                      alt=""
+                    />
+                  )}
                 </div>
               ))}
             </div>

@@ -170,7 +170,7 @@ export default function ReviewRegisterModal(param: param) {
               onChange={(value: number) =>
                 setDefaultValues((prev) => ({ ...prev, rating: value }))
               }
-              style={{ fontSize: 30 }}
+              style={{ fontSize: 30, color: "#85C031" }}
             />
             <Form.Item
               name="reviewContent"
