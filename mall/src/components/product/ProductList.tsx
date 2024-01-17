@@ -268,6 +268,7 @@ export default function ProductList(param: param) {
           </div>
           <div className="text-center mt-10">
             <Pagination
+              showSizeChanger={false}
               defaultPageSize={24}
               total={data.data.totalCnt}
               defaultCurrent={page}

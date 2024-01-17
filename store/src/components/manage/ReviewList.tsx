@@ -95,6 +95,7 @@ export default function ReviewList() {
               ))}
             </div>
             <Pagination
+              showSizeChanger={false}
               defaultCurrent={page}
               total={data.totalCnt}
               defaultPageSize={6}

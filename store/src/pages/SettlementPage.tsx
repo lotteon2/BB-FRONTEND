@@ -96,6 +96,7 @@ export default function SettlementPage() {
         </div>
         <div className="text-center mt-3">
           <Pagination
+            showSizeChanger={false}
             defaultCurrent={page}
             total={data.totalCnt}
             defaultPageSize={13}

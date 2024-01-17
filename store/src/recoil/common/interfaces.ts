@@ -62,6 +62,7 @@ export interface couponItemDto {
   discountPrice: number;
   unusedCount: number;
   startDate: string;
+  limitCount: number;
   endDate: string;
 }
 
@@ -249,6 +250,7 @@ export interface notiDto {
   notificationId: number;
   notificationContent: string;
   notificationLink: string;
+  isRead: boolean;
 }
 
 export interface couponDownloadDto {

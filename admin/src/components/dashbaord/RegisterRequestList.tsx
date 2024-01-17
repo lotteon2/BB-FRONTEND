@@ -150,6 +150,7 @@ export default function RegisterRequestList() {
       />
       <div className="mt-2 text-center">
         <Pagination
+          showSizeChanger={false}
           defaultCurrent={page}
           total={data.totalCnt}
           defaultPageSize={4}

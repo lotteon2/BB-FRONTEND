@@ -120,6 +120,7 @@ export default function MyPickupOrderList() {
       />
       <div className="w-full text-center mt-5">
         <Pagination
+          showSizeChanger={false}
           defaultCurrent={page}
           total={data.data.totalCnt}
           defaultPageSize={10}

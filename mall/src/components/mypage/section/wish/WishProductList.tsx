@@ -97,6 +97,7 @@ export default function WishProductList() {
           ))}
           <div className="w-full text-center mt-5">
             <Pagination
+              showSizeChanger={false}
               defaultCurrent={page}
               total={data.totalCnt}
               defaultPageSize={6}

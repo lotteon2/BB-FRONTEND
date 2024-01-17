@@ -88,7 +88,11 @@ export default function Header() {
 
   return (
     <div className="mt-10">
-      <p className="text-center logo text-primary2 text-5xl">Blooming Blooms</p>
+      <NavLink to="/">
+        <p className="text-center logo text-primary1 text-5xl cursor-pointer">
+          Blooming Blooms
+        </p>
+      </NavLink>
       <ul className="mt-10 ml-8 flex flex-col text-3xl gap-10 text-grayscale1">
         <li className="w-[90%]" ref={ref1}>
           <NavLink

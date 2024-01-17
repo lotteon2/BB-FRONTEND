@@ -103,6 +103,7 @@ export default function StoreList(param: param) {
           />
           <div className="mt-2 text-center ab">
             <Pagination
+              showSizeChanger={false}
               defaultCurrent={page}
               total={data.data.totalCnt}
               defaultPageSize={13}

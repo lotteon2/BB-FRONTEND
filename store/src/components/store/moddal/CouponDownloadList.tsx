@@ -14,7 +14,7 @@ export default function CouponDownloadList(param: param) {
   const [page, setPage] = useState<number>(1);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getCouponDownloadList", param],
+    queryKey: ["getCouponDownloadList", param, page],
     queryFn: () => getCouponDownloadList(param.couponId, page - 1, 10),
   });
 
@@ -24,10 +24,20 @@ export default function CouponDownloadList(param: param) {
 
   const columns: ColumnsType<couponDownloadDto> = [
     {
+      title: "",
+      key: "",
+      dataIndex: "",
+      render: (value: any, record: couponDownloadDto, index: number) => (
+        <p>{(page - 1) * 10 + index + 1}</p>
+      ),
+      width: 70,
+    },
+    {
       title: <Typography.Text>닉네임</Typography.Text>,
       key: "nickname",
       dataIndex: "nickname",
       ellipsis: true,
+      width: 150,
     },
     {
       title: <Typography.Text>연락처</Typography.Text>,
@@ -57,6 +67,7 @@ export default function CouponDownloadList(param: param) {
           )}
         </div>
       ),
+      width: 90,
     },
   ];
 
@@ -67,10 +78,11 @@ export default function CouponDownloadList(param: param) {
   if (!data || isLoading) return <Loading />;
 
   return (
-    <div className="">
+    <div>
       <Table dataSource={data.data.data} columns={columns} pagination={false} />
       <div className="w-full text-center mt-5">
         <Pagination
+          showSizeChanger={false}
           defaultCurrent={page}
           total={data.data.totalCnt}
           defaultPageSize={10}

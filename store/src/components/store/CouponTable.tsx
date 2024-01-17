@@ -182,7 +182,7 @@ export default function CouponTable() {
       title: <Typography.Text>쿠폰코드</Typography.Text>,
       key: "couponCode",
       dataIndex: "couponCode",
-      width: 130,
+      width: 100,
       ellipsis: true,
       ...getColumnSearchProps("couponCode"),
     },
@@ -190,9 +190,20 @@ export default function CouponTable() {
       title: "쿠폰명",
       key: "couponName",
       dataIndex: "couponName",
-      width: 130,
+      width: 120,
       ellipsis: true,
       ...getColumnSearchProps("couponName"),
+    },
+    {
+      title: "발행개수",
+      key: "limitCount",
+      dataIndex: "limitCount",
+      width: 100,
+      sorter: {
+        compare: (a, b) => a.limitCount - b.limitCount,
+        multiple: 3,
+      },
+      render: (record) => <p>{Number(record).toLocaleString()}개</p>,
     },
     {
       title: "잔여량",
@@ -209,7 +220,7 @@ export default function CouponTable() {
       title: "할인금액",
       key: "discountPrice",
       dataIndex: "discountPrice",
-      width: 130,
+      width: 100,
       ellipsis: true,
       sorter: {
         compare: (a, b) => a.discountPrice - b.discountPrice,
@@ -221,7 +232,7 @@ export default function CouponTable() {
       title: "최소주문금액",
       key: "minPrice",
       dataIndex: "minPrice",
-      width: 160,
+      width: 130,
       ellipsis: true,
       sorter: {
         compare: (a, b) => a.minPrice - b.minPrice,
@@ -320,7 +331,7 @@ export default function CouponTable() {
             }}
             columns={columns}
             dataSource={data.data.data}
-            pagination={{ position: ["bottomCenter"], pageSize: 13 }}
+            pagination={{ position: ["bottomCenter"], pageSize: 11 }}
           ></Table>
         )}
         {isModalOpen ? (

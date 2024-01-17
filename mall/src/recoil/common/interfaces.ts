@@ -393,4 +393,5 @@ export interface notiDto {
   notificationId: number;
   notificationContent: string;
   notificationLink: string;
+  isRead: boolean;
 }

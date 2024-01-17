@@ -60,6 +60,7 @@ export default function SettlementTable(param: param) {
           />
           <div className="mt-2 text-center">
             <Pagination
+              showSizeChanger={false}
               defaultCurrent={param.page}
               total={param.totalCnt}
               defaultPageSize={13}

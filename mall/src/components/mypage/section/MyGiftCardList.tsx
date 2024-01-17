@@ -51,6 +51,7 @@ export default function MyGiftCardList() {
           </div>
           <div className="mt-5 text-center">
             <Pagination
+              showSizeChanger={false}
               defaultCurrent={page}
               total={data.totalCnt}
               defaultPageSize={21}

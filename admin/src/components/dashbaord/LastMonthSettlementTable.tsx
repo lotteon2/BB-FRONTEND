@@ -77,6 +77,7 @@ export default function LastMonthSettlementTable() {
       />
       <div className="mt-2 text-center">
         <Pagination
+          showSizeChanger={false}
           defaultCurrent={page}
           total={data.data.totalCnt}
           defaultPageSize={6}

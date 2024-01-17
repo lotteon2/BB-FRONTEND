@@ -144,6 +144,7 @@ export default function OrderTable(param: param) {
         />
       </div>
       <Pagination
+        showSizeChanger={false}
         defaultCurrent={page}
         total={data.data.totalCnt}
         defaultPageSize={5}

@@ -116,6 +116,7 @@ export default function QuestionList() {
             />
             <div className="w-full text-center mt-2">
               <Pagination
+                showSizeChanger={false}
                 defaultCurrent={page}
                 total={data.data.totalCnt}
                 defaultPageSize={12}

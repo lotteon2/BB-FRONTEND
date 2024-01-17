@@ -225,6 +225,7 @@ export default function ProductQuestion(param: param) {
             />
             <div className="text-center mt-5">
               <Pagination
+                showSizeChanger={false}
                 defaultCurrent={page}
                 total={data.data.totalCnt}
                 onChange={handlePage}
