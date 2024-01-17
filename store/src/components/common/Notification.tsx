@@ -9,6 +9,7 @@ import { notiDto } from "../../recoil/common/interfaces";
 import { EventSourcePolyfill } from "event-source-polyfill";
 import { storeIdState } from "../../recoil/atom/common";
 import { useNavigate } from "react-router-dom";
+import { NotiToast } from "./toast/NotiToast";
 
 export default function Notification() {
   const navigate = useNavigate();
@@ -71,14 +72,17 @@ export default function Notification() {
 
         eventSource.addEventListener("SHOPPINGMALL", () => {
           setNotiEvent((cur) => !cur);
+          NotiToast("신규 배송주문이 접수되었습니다.");
         });
 
         eventSource.addEventListener("PICKUP", () => {
           setNotiEvent((cur) => !cur);
+          NotiToast("신규 픽업주문이 접수되었습니다.");
         });
 
         eventSource.addEventListener("SUBSCRIBE", () => {
           setNotiEvent((cur) => !cur);
+          NotiToast("신규 구독주문이 접수되었습니다.");
         });
 
         eventSource.addEventListener("SETTLEMENT", () => {
@@ -91,6 +95,7 @@ export default function Notification() {
 
         eventSource.addEventListener("ORDERCANCEL", () => {
           setNotiEvent((cur) => !cur);
+          NotiToast("주문이 취소되었습니다.");
         });
       };
 
@@ -105,14 +110,17 @@ export default function Notification() {
 
         eventSource.addEventListener("SHOPPINGMALL", () => {
           setNotiEvent((cur) => !cur);
+          NotiToast("신규 배송주문이 접수되었습니다.");
         });
 
         eventSource.addEventListener("PICKUP", () => {
           setNotiEvent((cur) => !cur);
+          NotiToast("신규 픽업주문이 접수되었습니다.");
         });
 
         eventSource.addEventListener("SUBSCRIBE", () => {
           setNotiEvent((cur) => !cur);
+          NotiToast("신규 구독주문이 접수되었습니다.");
         });
 
         eventSource.addEventListener("SETTLEMENT", () => {
@@ -125,6 +133,7 @@ export default function Notification() {
 
         eventSource.addEventListener("ORDERCANCEL", () => {
           setNotiEvent((cur) => !cur);
+          NotiToast("주문이 취소되었습니다.");
         });
       };
 
