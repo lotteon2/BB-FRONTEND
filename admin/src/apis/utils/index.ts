@@ -49,7 +49,7 @@ const axiosAuthApi = (baseURL: string | undefined) => {
               console.log(error);
               localStorage.clear();
               // eslint-disable-next-line no-restricted-globals
-              location.replace("https://blooming.blooms.mall.stockey.kr/");
+              location.replace("https://blooming.blooms.admin.stockey.kr/");
             });
           return axios(originalRequest);
         }
