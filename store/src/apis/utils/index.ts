@@ -36,10 +36,11 @@ const axiosAuthApi = (baseURL: string | undefined) => {
       return config;
     },
     (error) => {
+      console.log(error);
       if (error.response.status === 400) {
-        localStorage.clear();
-        // eslint-disable-next-line no-restricted-globals
-        location.replace("https://blooming.blooms.store.stockey.kr/login");
+        // localStorage.clear();
+        // // eslint-disable-next-line no-restricted-globals
+        // location.replace("https://blooming.blooms.store.stockey.kr/login");
       }
       return Promise.reject(error);
     }
