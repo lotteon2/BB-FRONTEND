@@ -42,6 +42,7 @@ export default function KakaoLoginRedirect() {
         setIsLogin(true);
         setNickname(res.data.data.nickname);
         setProfileImage(res.data.data.profileImage);
+        console.log(res.headers);
         localStorage.setItem("accessToken", res.headers["authorization"]);
         isMall ? navigate("/") : navigate("/pickup");
       },

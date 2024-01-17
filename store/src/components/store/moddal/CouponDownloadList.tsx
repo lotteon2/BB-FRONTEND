@@ -3,7 +3,7 @@ import { couponDownloadDto } from "../../../recoil/common/interfaces";
 import { Pagination, PaginationProps, Tag, Typography } from "antd";
 import { useQuery } from "react-query";
 import { getCouponDownloadList } from "../../../apis/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loading from "../../common/Loading";
 
 interface param {
@@ -59,6 +59,10 @@ export default function CouponDownloadList(param: param) {
       ),
     },
   ];
+
+  useEffect(() => {
+    setPage(1);
+  }, [param]);
 
   if (!data || isLoading) return <Loading />;
 
