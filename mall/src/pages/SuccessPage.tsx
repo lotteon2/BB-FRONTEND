@@ -12,7 +12,7 @@ export default function SuccessPage() {
     <div className="my-20">
       <img src={Success} alt="" className="m-auto w-40 h-40" />
       <p className="text-center text-[1.3rem] font-bold my-5">
-        결제가 완료되었습니다.
+        주문이 접수되었습니다.
       </p>
       <div className="flex flex-row gap-3 justify-center">
         <Button onClick={() => (isMall ? navigate("/") : navigate("/pickup"))}>

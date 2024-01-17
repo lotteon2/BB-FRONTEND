@@ -12,7 +12,7 @@ export default function FailPage() {
     <div className="my-20">
       <img src={Fail} alt="" className="m-auto w-40 h-40" />
       <p className="text-center text-[1.3rem] font-bold my-5">
-        결제 도중 오류가 발생했습니다.
+        주문 접수 도중 오류가 발생했습니다.
       </p>
       <div className="flex flex-row gap-3 justify-center">
         <Button onClick={() => (isMall ? navigate("/") : navigate("/pickup"))}>
