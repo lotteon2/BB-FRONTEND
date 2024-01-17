@@ -5,7 +5,7 @@ const BASE_URL = process.env.REACT_APP_API_URL;
 const axiosApi = (baseURL: string | undefined) => {
   const instance = axios.create({
     baseURL,
-    withCredentials: true,
+    // withCredentials: true,
   });
   return instance;
 };
@@ -52,7 +52,7 @@ const axiosAuthApi = (baseURL: string | undefined) => {
               window.location.href = "/login";
             });
           return axios(originalRequest);
-        } else {
+        } else if (error.response.data.message === "Refresh-Expired") {
           localStorage.clear();
           // eslint-disable-next-line no-restricted-globals
           window.location.href = "/login";

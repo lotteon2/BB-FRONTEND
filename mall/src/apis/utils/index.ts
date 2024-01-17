@@ -13,7 +13,7 @@ const axiosApi = (baseURL: string | undefined) => {
 const axiosAuthApi = (baseURL: string | undefined) => {
   const instance = axios.create({
     baseURL,
-    withCredentials: true,
+    // withCredentials: true,
   });
 
   instance.interceptors.request.use(
@@ -43,7 +43,7 @@ const axiosAuthApi = (baseURL: string | undefined) => {
               window.location.href = "/login";
             });
           return axios(originalRequest);
-        } else {
+        } else if (error.response.data.message === "Refresh-Expired") {
           localStorage.clear();
           // eslint-disable-next-line no-restricted-globals
           window.location.href = "/login";
