@@ -95,12 +95,19 @@ export const getMyWishStoreList = async (page: number, size: number) => {
 export const getMyOrderList = async (
   page: number,
   size: number,
-  sort: string
+  sort: string | undefined
 ) => {
-  const { data } = await authInstance.get(
-    "/orders/delivery?page=" + page + "&status=" + sort + "&size=" + size
-  );
-  return data;
+  if (sort) {
+    const { data } = await authInstance.get(
+      "/orders/delivery?page=" + page + "&status=" + sort + "&size=" + size
+    );
+    return data;
+  } else {
+    const { data } = await authInstance.get(
+      "/orders/delivery?page=" + page + "&size=" + size
+    );
+    return data;
+  }
 };
 
 // 픽업 주문 목록 조히

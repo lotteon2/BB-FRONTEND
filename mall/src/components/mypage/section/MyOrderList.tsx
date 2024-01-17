@@ -10,7 +10,7 @@ import Loading from "../../common/Loading";
 export default function MyOrderList() {
   const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
-  const [sort, setSort] = useState<string>("PENDING");
+  const [sort, setSort] = useState<string>();
 
   const { data, isLoading } = useQuery({
     queryKey: ["getMyOrderList", page, sort],
@@ -116,6 +116,7 @@ export default function MyOrderList() {
     <div className="w-full mt-3">
       <div className="flex justify-end mb-3">
         <Select
+          allowClear={true}
           value={sort}
           onChange={(e) => setSort(e)}
           options={[
@@ -132,7 +133,7 @@ export default function MyOrderList() {
               label: "배송 완료",
             },
           ]}
-          placeholder="답변 상태"
+          placeholder="주문 상태"
           style={{ width: 120 }}
         />
       </div>
