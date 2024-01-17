@@ -35,40 +35,22 @@ const axiosAuthApi = (baseURL: string | undefined) => {
     async (error) => {
       if (error.response.status === 401) {
         if (error.response.data.message === "Expired") {
-          const originalRequest = error.response.config;
-          const accessToken = localStorage.getItem("accessToken");
-          // token refresh 요청
+          const originalRequest = error.config;
+
           await axios
-            .post(`${process.env.REACT_APP_API_URL}/auth/refresh-token`, {
-              role: error.response.data.role,
-              id: error.response.data.id,
-              expiredAccessToken: accessToken,
-            })
+            .post(`${BASE_URL}/auth/refresh-token`)
             .then((data) => {
-              // const {
-              //   data: {
-              //     accessToken: newAccessToken,
-              //     refreshToken: newRefreshToken,
-              //   },
-              // } = data;
-              // localStorage.setItem("accessToken", newAccessToken);
-              // localStorage.setItem("refreshToken", newRefreshToken);
-              // originalRequest.headers.AccessToken = `Bearer ${newAccessToken}`;
+              console.log(data);
+              const newToken = data.headers["authorization"];
+              localStorage.setItem("accessToken", newToken);
+              originalRequest.headers.Authorization = newToken;
             })
             .catch((error) => {
-              // localStorage.removeItem("accessToken");
-              // window.location.href = "/login";
-              // if (error.response.data.code === "008") {
-              //   localStorage.removeItem("isLogin");
-              //   localStorage.removeItem("user");
-              //   localStorage.removeItem("refreshToken");
-              //   localStorage.removeItem("accessToken");
-              //   window.location.href = "/login";
-              // }
+              console.log(error);
+              localStorage.clear();
+              // eslint-disable-next-line no-restricted-globals
+              location.replace("https://blooming.blooms.mall.stockey.kr/");
             });
-          // 요청 후 새롭게 받은 access token과 refresh token 을 다시 저장
-          // localStorage에도 변경 해야하고 현재 request의 header도 변경
-
           return axios(originalRequest);
         }
       }
