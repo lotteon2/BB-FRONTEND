@@ -37,13 +37,17 @@ const axiosAuthApi = (baseURL: string | undefined) => {
     },
     async (error) => {
       if (error.response.status === 401) {
-        localStorage.clear();
-        window.location.href = "/login";
         if (error.response.data.message === "Expired") {
           const originalRequest = error.config;
 
+          const data = {
+            role: error.response.data.role,
+            id: error.response.data.id,
+            expiredAccessToken: localStorage.getItem("accessToken"),
+          };
+
           await axios
-            .post(`${BASE_URL}/auth/refresh-token`)
+            .post(`${BASE_URL}/auth/refresh-token`, data)
             .then((data) => {
               const newToken = data.headers["authorization"];
               localStorage.setItem("accessToken", newToken);
