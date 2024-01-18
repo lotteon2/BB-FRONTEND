@@ -94,11 +94,15 @@ export default function RecentDeliveryPlaceModal(param: param) {
         )}
         <div></div>
       </div>
-      <div className="flex justify-end mt-3">
-        <Button type="primary" size="large" onClick={handleSelect}>
-          선택
-        </Button>
-      </div>
+      {data.data.length === 0 ? (
+        ""
+      ) : (
+        <div className="flex justify-end mt-3">
+          <Button type="primary" size="large" onClick={handleSelect}>
+            선택
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
