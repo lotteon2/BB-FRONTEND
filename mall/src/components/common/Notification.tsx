@@ -172,12 +172,16 @@ export default function Notification() {
               </div>
             )}
           </div>
-          <div
-            className="text-right text-[0.8rem] font-light p-2 cursor-pointer"
-            onClick={handleCheckAll}
-          >
-            전체 읽음
-          </div>
+          {notiList.length === 0 ? (
+            ""
+          ) : (
+            <div
+              className="text-right text-[0.8rem] font-light p-2 cursor-pointer"
+              onClick={handleCheckAll}
+            >
+              전체 읽음
+            </div>
+          )}
         </div>
       ) : (
         ""

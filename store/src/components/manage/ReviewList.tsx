@@ -31,7 +31,7 @@ export default function ReviewList() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["getReviews", page, sortOption],
-    queryFn: () => getReviews(storeId, page - 1, 10, sortOption),
+    queryFn: () => getReviews(storeId, page - 1, 6, sortOption),
   });
 
   if (!data || isLoading) return <ReviewFallback />;
@@ -97,7 +97,7 @@ export default function ReviewList() {
             <Pagination
               showSizeChanger={false}
               defaultCurrent={page}
-              total={data.totalCnt}
+              total={data.data.totalCnt}
               defaultPageSize={6}
               onChange={handlePage}
             />
