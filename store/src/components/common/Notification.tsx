@@ -48,6 +48,7 @@ export default function Notification() {
     (list: number[]) => modifyNotiState(list, storeId),
     {
       onSuccess: () => {
+        setIsNotiShow(false);
         setNotiEvent((cur) => !cur);
       },
       onError: () => {
@@ -175,31 +176,33 @@ export default function Notification() {
   return (
     <div>
       {isNotiShow ? (
-        <div className="w-64 max-h-80 bg-grayscale1 overflow-auto rounded-sm shadow-lg">
-          {notiList.length === 0 ? (
-            <Empty description="알림이 없습니다." className="my-10" />
-          ) : (
-            <div className="py-1 px-2">
-              <p className="font-bold pb-2 border-b-2 border-grayscale7">
-                알림
-              </p>
-              {notiList.map((item: notiDto) => (
-                <p
-                  className={`my-3 cursor-pointer hover:font-bold ${
-                    item.isRead ? "text-grayscale4" : ""
-                  }`}
-                  key={item.notificationId}
-                  onClick={() => {
-                    checkMutation.mutate([item.notificationId]);
-                    navigate(item.notificationLink);
-                    setIsNotiShow(false);
-                  }}
-                >
-                  {item.notificationContent}
+        <div className="bg-grayscale1 rounded-sm shadow-lg">
+          <div className="w-64 max-h-80 overflow-auto">
+            {notiList.length === 0 ? (
+              <Empty description="알림이 없습니다." className="my-10" />
+            ) : (
+              <div className="py-1 px-2">
+                <p className="font-bold pb-2 border-b-2 border-grayscale7">
+                  알림
                 </p>
-              ))}
-            </div>
-          )}
+                {notiList.map((item: notiDto) => (
+                  <p
+                    className={`my-3 cursor-pointer hover:font-bold ${
+                      item.isRead ? "text-grayscale4" : ""
+                    }`}
+                    key={item.notificationId}
+                    onClick={() => {
+                      checkMutation.mutate([item.notificationId]);
+                      navigate(item.notificationLink);
+                      setIsNotiShow(false);
+                    }}
+                  >
+                    {item.notificationContent}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
           <div
             className="text-right text-[0.8rem] font-light p-2 cursor-pointer"
             onClick={handleCheckAll}
