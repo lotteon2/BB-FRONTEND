@@ -29,8 +29,8 @@ export default function GiftCardDetailPage() {
         imageUrl:
           "https://i.pinimg.com/originals/c3/fe/1a/c3fe1addb7c1df50f7e5ba2d6b53426f.gif",
         link: {
-          webUrl: `https://blooming.blooms.mall.stockey.kr/giftcard/detail/${cardId}/${password}`,
-          mobileWebUrl: `https://blooming.blooms.mall.stockey.kr/giftcard/detail/${cardId}/${password}`,
+          webUrl: `https://blooming.blooms.shop.stockey.kr/giftcard/detail/${cardId}/${password}`,
+          mobileWebUrl: `https://blooming.blooms.shop.stockey.kr/giftcard/detail/${cardId}/${password}`,
         },
       },
       buttons: [

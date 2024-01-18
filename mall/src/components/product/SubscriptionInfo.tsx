@@ -119,8 +119,8 @@ export default function SubscriptionInfo(param: param) {
         description: "소중한 마음, 향기에 담아 전해보세요",
         imageUrl: data.data.productThumbnail,
         link: {
-          webUrl: `https://blooming.blooms.mall.stockey.kr/subscription/product/detail/${data.data.storeId}`,
-          mobileWebUrl: `https://blooming.blooms.mall.stockey.kr/subscription/product/detail/${data.data.storeId}`,
+          webUrl: `https://blooming.blooms.shop.stockey.kr/subscription/product/detail/${data.data.storeId}`,
+          mobileWebUrl: `https://blooming.blooms.shop.stockey.kr/subscription/product/detail/${data.data.storeId}`,
         },
       },
       buttons: [
