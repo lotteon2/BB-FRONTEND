@@ -95,11 +95,17 @@ export default function MyQuestions() {
                     <p className="font-bold">{record.title}</p>
                     <p>{record.content}</p>
                     <p className="border-b-[1px]"></p>
-                    <p>{record.reply}</p>
-                    <p className="text-right">{record.repliedAt}</p>
+                    {record.isReplied ? (
+                      <div>
+                        <p>{record.reply}</p>
+                        <p className="text-right">{record.repliedAt}</p>
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 ),
-                rowExpandable: (record) => record.isReplied,
+                // rowExpandable: (record) => record.isReplied,
               }}
             />
             <div className="w-full text-center mt-5">
