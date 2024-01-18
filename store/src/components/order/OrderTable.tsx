@@ -10,7 +10,7 @@ import { deliveryState, storeIdState } from "../../recoil/atom/common";
 import ListFallback from "../fallbacks/ListFallback";
 
 interface param {
-  status: string;
+  status: string | undefined;
 }
 export default function OrderTable(param: param) {
   const storeId = useRecoilValue<number>(storeIdState);

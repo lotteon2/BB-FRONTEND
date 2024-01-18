@@ -39,27 +39,30 @@ const axiosAuthApi = (baseURL: string | undefined) => {
       if (error.response.status === 401) {
         localStorage.clear();
         window.location.href = "/login";
-        // if (error.response.data.message === "Expired") {
-        //   const originalRequest = error.config;
+        if (error.response.data.message === "Expired") {
+          const originalRequest = error.config;
 
-        //   await axios
-        //     .post(`${BASE_URL}/auth/refresh-token`)
-        //     .then((data) => {
-        //       const newToken = data.headers["authorization"];
-        //       localStorage.setItem("accessToken", newToken);
-        //       originalRequest.headers.Authorization = newToken;
-        //     })
-        //     .catch(() => {
-        //       localStorage.clear();
-        //       // eslint-disable-next-line no-restricted-globals
-        //       window.location.href = "/login";
-        //     });
-        //   return axios(originalRequest);
-        // } else if (error.response.data.message === "Refresh-Expired") {
-        //   localStorage.clear();
-        //   // eslint-disable-next-line no-restricted-globals
-        //   window.location.href = "/login";
-        // }
+          await axios
+            .post(`${BASE_URL}/auth/refresh-token`)
+            .then((data) => {
+              const newToken = data.headers["authorization"];
+              localStorage.setItem("accessToken", newToken);
+              originalRequest.headers.Authorization = newToken;
+            })
+            .catch(() => {
+              localStorage.clear();
+              // eslint-disable-next-line no-restricted-globals
+              window.location.href = "/login";
+            });
+          return axios(originalRequest);
+        } else if (error.response.data.message === "Refresh-Expired") {
+          localStorage.clear();
+          // eslint-disable-next-line no-restricted-globals
+          window.location.href = "/login";
+        }
+      } else {
+        localStorage.clear();
+        window.location.href = "/login";
       }
       return Promise.reject(error);
     }

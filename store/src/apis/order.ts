@@ -13,19 +13,31 @@ export const getOrderList = async (
   storeId: number,
   page: number,
   size: number,
-  sort: string
+  sort: string | undefined
 ) => {
-  const { data } = await authInstance.get(
-    "/orders/store/delivery?page=" +
-      page +
-      "&size=" +
-      size +
-      "&status=" +
-      sort +
-      "&storeId=" +
-      storeId
-  );
-  return data;
+  if (sort) {
+    const { data } = await authInstance.get(
+      "/orders/store/delivery?page=" +
+        page +
+        "&size=" +
+        size +
+        "&status=" +
+        sort +
+        "&storeId=" +
+        storeId
+    );
+    return data;
+  } else {
+    const { data } = await authInstance.get(
+      "/orders/store/delivery?page=" +
+        page +
+        "&size=" +
+        size +
+        "&storeId=" +
+        storeId
+    );
+    return data;
+  }
 };
 
 // 주문 상세 조회
