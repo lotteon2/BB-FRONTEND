@@ -40,6 +40,7 @@ export default function RegisterPage() {
   const blank_pattern = "/^s+|s+$/g";
   const password_pattern = /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,16}$/;
   const korean_pattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+  // eslint-disable-next-line
   const word_pattern = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 
   // 이메일 중복 확인
