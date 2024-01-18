@@ -40,7 +40,7 @@ export default function CardTemplateModal(param: param) {
       <div className="flex flex-row gap-4 flex-wrap justify-center mt-5 max-h-[400px] overflow-auto">
         {data.map((item: cardTemplateListDto) => (
           <img
-            src={item.imageUrl}
+            src={"/resize" + item.imageUrl}
             key={item.cardTemplateId}
             alt="카드 템플릿"
             className={

@@ -360,7 +360,7 @@ export default function Header() {
                   <NotificationsIcon fontSize="medium" />
                 </Badge>
               </button>
-              <div className="absolute top-[48px] left-[-90px] z-20 max-[500px]:top-[0px] max-[500px]:left-0">
+              <div className="absolute top-[35px] left-[-90px] z-20 max-[500px]:top-[0px] max-[500px]:left-0">
                 <Notification />
               </div>
             </li>

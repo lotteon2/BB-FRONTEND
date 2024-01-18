@@ -45,8 +45,12 @@ export default function Notification() {
     ["modifyNotiState"],
     (list: number[]) => modifyNotiState(list),
     {
-      onSuccess: () => {},
-      onError: () => {},
+      onSuccess: () => {
+        setNotiEvent((cur) => !cur);
+      },
+      onError: () => {
+        FailToast(null);
+      },
     }
   );
 
@@ -134,7 +138,7 @@ export default function Notification() {
             className="text-right text-[0.8rem] font-light p-2 cursor-pointer"
             onClick={handleCheckAll}
           >
-            전채 읽음
+            전체 읽음
           </div>
         </div>
       ) : (

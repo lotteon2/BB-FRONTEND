@@ -13,3 +13,11 @@ export const getUnreadNotificationsCount = async (storeId: number) => {
 
   return data;
 };
+
+export const modifyNotiState = async (idList: number[], storeId: number) => {
+  const { data } = await authInstance.put(
+    "/notification/manager/" + storeId + "/check",
+    idList
+  );
+  return data;
+};

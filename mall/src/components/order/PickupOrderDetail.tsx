@@ -133,7 +133,7 @@ export default function PickupOrderDetail() {
   }, []);
 
   const handleMessage = (ev: any) => {
-    if (ev.origin !== "https://blooming.blooms.mall.stockey.kr") return;
+    if (ev.origin !== "https://blooming.blooms.shop.stockey.kr") return;
 
     const message = ev.data.state;
 

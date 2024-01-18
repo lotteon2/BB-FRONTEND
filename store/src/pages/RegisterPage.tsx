@@ -211,7 +211,7 @@ export default function RegisterPage() {
         setBusinessNumberImage(url.split("?")[0]);
       },
       onError: () => {
-        FailToast("");
+        FailToast(null);
       },
     }
   );
