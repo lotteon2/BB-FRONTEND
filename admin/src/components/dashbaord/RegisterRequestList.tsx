@@ -153,7 +153,7 @@ export default function RegisterRequestList() {
           showSizeChanger={false}
           defaultCurrent={page}
           total={data.data.totalCnt}
-          defaultPageSize={5}
+          defaultPageSize={4}
           onChange={handlePage}
         />
       </div>
