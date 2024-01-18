@@ -176,7 +176,7 @@ export default function Notification() {
   return (
     <div>
       {isNotiShow ? (
-        <div className="bg-grayscale1 rounded-sm shadow-lg">
+        <div className="bg-grayscale1 rounded-sm shadow-lg text-left">
           <div className="w-64 max-h-80 overflow-auto">
             {notiList.length === 0 ? (
               <Empty description="알림이 없습니다." className="my-10" />
