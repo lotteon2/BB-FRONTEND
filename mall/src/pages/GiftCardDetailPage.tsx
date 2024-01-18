@@ -37,8 +37,8 @@ export default function GiftCardDetailPage() {
         {
           title: "확인하러 가기",
           link: {
-            webUrl: `https://blooming.blooms.mall.stockey.kr/giftcard/detail/${cardId}/${password}`,
-            mobileWebUrl: `https://blooming.blooms.mall.stockey.kr/giftcard/detail/${cardId}/${password}`,
+            webUrl: `https://blooming.blooms.shop.stockey.kr/giftcard/detail/${cardId}/${password}`,
+            mobileWebUrl: `https://blooming.blooms.shop.stockey.kr/giftcard/detail/${cardId}/${password}`,
           },
         },
       ],

@@ -238,8 +238,8 @@ export default function ProductInfo(param: param) {
         {
           title: "확인하러 가기",
           link: {
-            webUrl: `https://blooming.blooms.mall.stockey.kr/product/detail/${data.data.productId}`,
-            mobileWebUrl: `https://blooming.blooms.mall.stockey.kr/product/detail/${data.data.productId}`,
+            webUrl: `https://blooming.blooms.shop.stockey.kr/product/detail/${data.data.productId}`,
+            mobileWebUrl: `https://blooming.blooms.shop.stockey.kr/product/detail/${data.data.productId}`,
           },
         },
       ],

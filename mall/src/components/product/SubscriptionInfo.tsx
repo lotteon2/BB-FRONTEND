@@ -127,8 +127,8 @@ export default function SubscriptionInfo(param: param) {
         {
           title: "확인하러 가기",
           link: {
-            webUrl: `https://blooming.blooms.mall.stockey.kr/subscription/product/detail/${data.data.storeId}`,
-            mobileWebUrl: `https://blooming.blooms.mall.stockey.kr/subscription/product/detail/${data.data.storeId}`,
+            webUrl: `https://blooming.blooms.shop.stockey.kr/subscription/product/detail/${data.data.storeId}`,
+            mobileWebUrl: `https://blooming.blooms.shop.stockey.kr/subscription/product/detail/${data.data.storeId}`,
           },
         },
       ],
