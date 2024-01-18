@@ -11,7 +11,7 @@ export default function MyQuestions() {
   const [isReplied, setIsReplied] = useState<boolean>();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getMyQuestionsList"],
+    queryKey: ["getMyQuestionsList", page, isReplied],
     queryFn: () => getMyQuestionsList(page - 1, 10, isReplied),
   });
 
@@ -106,7 +106,7 @@ export default function MyQuestions() {
               <Pagination
                 showSizeChanger={false}
                 defaultCurrent={page}
-                total={data.totalCnt}
+                total={data.data.totalCnt}
                 defaultPageSize={10}
                 onChange={handlePage}
               />

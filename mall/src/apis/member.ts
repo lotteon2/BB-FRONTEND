@@ -50,7 +50,7 @@ export const getMyQuestionsList = async (
     return data;
   } else {
     const { data } = await authInstance.get(
-      "/stores/questions/myPage?page=" +
+      "/stores/questions/my-page?page=" +
         page +
         "&size=" +
         size +

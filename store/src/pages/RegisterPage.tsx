@@ -40,6 +40,7 @@ export default function RegisterPage() {
   const blank_pattern = "/^s+|s+$/g";
   const password_pattern = /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,16}$/;
   const korean_pattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+  const word_pattern = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 
   // 이메일 중복 확인
   const handleCheckEmail = () => {
@@ -83,6 +84,7 @@ export default function RegisterPage() {
       password.match(password_pattern) &&
       !password.match(blank_pattern) &&
       !password.match(korean_pattern) &&
+      !password.match(word_pattern) &&
       name !== "" &&
       !name.match(blank_pattern) &&
       businessNumberImage !== ""
@@ -138,6 +140,9 @@ export default function RegisterPage() {
     }
     if (value.match(korean_pattern)) {
       return Promise.reject(new Error("한글을 입력할 수 없습니다."));
+    }
+    if (word_pattern.test(value)) {
+      return Promise.reject(new Error("특수문자는 입력이 불가능합니다."));
     }
     return Promise.resolve();
     // eslint-disable-next-line
