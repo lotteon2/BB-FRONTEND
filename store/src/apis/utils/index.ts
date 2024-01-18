@@ -60,9 +60,6 @@ const axiosAuthApi = (baseURL: string | undefined) => {
           // eslint-disable-next-line no-restricted-globals
           window.location.href = "/login";
         }
-      } else {
-        localStorage.clear();
-        window.location.href = "/login";
       }
       return Promise.reject(error);
     }
