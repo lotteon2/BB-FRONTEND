@@ -29,7 +29,7 @@ export default function RegisterRequestList() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["getRegisterRequestList", status, page, isChange],
-    queryFn: () => getRegisterRequestList(status, page - 1, 5),
+    queryFn: () => getRegisterRequestList(status, page - 1, 4),
   });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
@@ -152,8 +152,8 @@ export default function RegisterRequestList() {
         <Pagination
           showSizeChanger={false}
           defaultCurrent={page}
-          total={data.totalCnt}
-          defaultPageSize={4}
+          total={data.data.totalCnt}
+          defaultPageSize={5}
           onChange={handlePage}
         />
       </div>

@@ -255,10 +255,14 @@ export default function ProductModifyModal(param: param) {
                 style={{ display: "none" }}
               />
 
-              <img src={productThumbnail} alt="상품 썸네일" />
+              <img
+                src={productThumbnail}
+                alt="상품 썸네일"
+                className="w-[180px] h-[180px]"
+              />
             </div>
 
-            <div className="w-[95%] ml-3">
+            <div className="w-[70%] ml-3">
               <Form.Item
                 name="productName"
                 label="상품명"
@@ -268,20 +272,18 @@ export default function ProductModifyModal(param: param) {
               >
                 <Input
                   onChange={(e) => setProductName(e.target.value)}
-                  className="w-[200px]"
                   placeholder="상품명"
                 />
               </Form.Item>
               <Form.Item
                 name="productSummary"
-                label="상품 요약정보"
+                label="상품 정보"
                 rules={[
                   { required: true, message: "요약 정보를 입력해주세요" },
                 ]}
               >
                 <TextArea
                   onChange={(e) => setProductSummary(e.target.value)}
-                  className="w-[200px]"
                   autoSize={{ minRows: 2, maxRows: 2 }}
                   placeholder="상품 요약정보"
                 />
@@ -295,7 +297,7 @@ export default function ProductModifyModal(param: param) {
               >
                 <InputNumber
                   onChange={(e) => setProductPrice(Number(e))}
-                  className="w-[200px]"
+                  className="w-[185px]"
                   placeholder="상품가격"
                 />
               </Form.Item>

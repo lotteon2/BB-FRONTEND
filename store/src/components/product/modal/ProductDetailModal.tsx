@@ -27,8 +27,12 @@ export default function ProductDetailModal(param: param) {
     <div>
       <div className="w-full h-[600px] overflow-scroll text-lg">
         <div className="flex flex-row gap-5">
-          <div className="w-2/5 h-[200px]">
-            <img src={data.data.productThumbnail} alt="" />
+          <div className="w-[180px] h-[180px]">
+            <img
+              src={data.data.productThumbnail}
+              alt=""
+              className="w-full h-full"
+            />
           </div>
           <div className="w-3/5 flex flex-col gap-3">
             <p>{data.data.productName}</p>
