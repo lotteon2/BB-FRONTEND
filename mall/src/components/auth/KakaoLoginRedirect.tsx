@@ -39,9 +39,6 @@ export default function KakaoLoginRedirect() {
     (loginDto: loginDto) => login(loginDto),
     {
       onSuccess: (res) => {
-        console.log(res);
-        console.log("!!!");
-        console.log(res.headers);
         setIsLogin(true);
         setNickname(res.data.data.nickname);
         setProfileImage(res.data.data.profileImage);

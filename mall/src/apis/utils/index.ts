@@ -26,7 +26,10 @@ const axiosAuthApi = (baseURL: string | undefined) => {
       return config;
     },
     async (error) => {
+      console.log(error.response.status);
+
       if (error.response.status === 401) {
+        console.log("💜💜💜💜💜💜💜💜");
         localStorage.clear();
         window.location.href = "/login";
         if (error.response.data.message === "Expired") {
@@ -51,6 +54,7 @@ const axiosAuthApi = (baseURL: string | undefined) => {
           window.location.href = "/login";
         }
       } else {
+        console.log("💜💜💜💜💜💜💜💜");
         localStorage.clear();
         window.location.href = "/login";
       }
