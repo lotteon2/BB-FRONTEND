@@ -27,6 +27,7 @@ import { SuccessToast } from "../common/toast/SuccessToast";
 import { FailToast } from "../common/toast/FailToast";
 import CouponTableFallback from "../fallbacks/CouponTableFallback";
 import CouponDownloadList from "./moddal/CouponDownloadList";
+import { Today } from "@mui/icons-material";
 
 type DataIndex = keyof couponItemDto;
 export default function CouponTable() {
@@ -177,6 +178,14 @@ export default function CouponTable() {
       ),
   });
 
+  const isSameDate = (date1: Date, date2: Date) => {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  };
+
   const columns: ColumnsType<couponItemDto> = [
     {
       title: <Typography.Text>쿠폰코드</Typography.Text>,
@@ -274,10 +283,7 @@ export default function CouponTable() {
               setCouponId(record.key);
             }}
             disabled={
-              new Date(record.endDate) < new Date() ||
-              new Date(record.startDate) > new Date()
-                ? false
-                : true
+              isSameDate(new Date(record.startDate), new Date()) ? true : false
             }
           >
             수정
@@ -291,8 +297,7 @@ export default function CouponTable() {
       width: 50,
       render: (record) => (
         <div>
-          {new Date(record.endDate) < new Date() ||
-          new Date(record.startDate) > new Date() ? (
+          {!isSameDate(new Date(record.startDate), new Date()) ? (
             <button onClick={() => handleDelete(record.key)}>
               <CloseCircleOutlined />
             </button>

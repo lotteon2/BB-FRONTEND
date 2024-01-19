@@ -534,7 +534,7 @@ export default function CartDetail() {
                             </div>
                             <div className="font-bold text-[1.5rem] my-auto max-[1200px]:w-full max-[1200px]:text-right">
                               {(
-                                product.price * quantities[productIndex + index]
+                                product.price * product.quantity
                               ).toLocaleString()}
                               원
                             </div>
