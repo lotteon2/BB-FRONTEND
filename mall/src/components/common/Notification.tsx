@@ -66,7 +66,6 @@ export default function Notification() {
           "Cache-Control": "no-cache",
         },
         withCredentials: true,
-        heartbeatTimeout: 1000,
       });
 
       eventSource.onerror = () => {
@@ -79,7 +78,6 @@ export default function Notification() {
             "Cache-Control": "no-cache",
           },
           withCredentials: true,
-          heartbeatTimeout: 1000,
         });
 
         eventSource.addEventListener("CONNECT", () => {
