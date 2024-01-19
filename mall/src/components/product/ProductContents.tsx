@@ -29,15 +29,16 @@ export default function ProductContents(param: param) {
     const reviewPosition = reviewRef.current?.getBoundingClientRect().y;
     const questionPosition = questionRef.current?.getBoundingClientRect().y;
 
+    console.log(reviewPosition, questionPosition);
     if (
-      Number(questionPosition) < 1 &&
+      Number(questionPosition) < 38 &&
       Number(reviewPosition) < 1 &&
       Number(detailPosition) < 1
     ) {
       setContentIndex(2);
     } else if (Number(reviewPosition) < 1 && Number(questionPosition) > 0) {
       setContentIndex(1);
-    } else if (Number(reviewPosition) > 1 && Number(questionPosition) > 0) {
+    } else if (Number(reviewPosition) > 0 && Number(questionPosition) > 0) {
       setContentIndex(0);
     }
   };
