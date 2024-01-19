@@ -10,6 +10,7 @@ import { EventSourcePolyfill } from "event-source-polyfill";
 import { storeIdState } from "../../recoil/atom/common";
 import { useNavigate } from "react-router-dom";
 import sound from "../../assets/noti.mp3";
+import warn from "../../assets/warn.mp3";
 
 export default function NotificationDropDown() {
   const navigate = useNavigate();
@@ -74,6 +75,7 @@ export default function NotificationDropDown() {
           // storeId: storeId.toString(),
         },
         withCredentials: true,
+        heartbeatTimeout: 10000,
       });
 
       eventSource.onerror = () => {
@@ -86,6 +88,7 @@ export default function NotificationDropDown() {
             "Cache-Control": "no-cache",
           },
           withCredentials: true,
+          heartbeatTimeout: 10000,
         });
 
         eventSource.addEventListener("CONNECT", () => {
@@ -121,13 +124,13 @@ export default function NotificationDropDown() {
         eventSource.addEventListener("OUT_OF_STOCK", () => {
           setNotiEvent((cur) => !cur);
           new Notification("재고가 부족합니다.", notiOption);
-          new Audio(sound).play();
+          new Audio(warn).play();
         });
 
         eventSource.addEventListener("ORDERCANCEL", () => {
           setNotiEvent((cur) => !cur);
           new Notification("주문이 취소되었습니다.", notiOption);
-          new Audio(sound).play();
+          new Audio(warn).play();
         });
       };
 
@@ -165,13 +168,13 @@ export default function NotificationDropDown() {
         eventSource.addEventListener("OUT_OF_STOCK", () => {
           setNotiEvent((cur) => !cur);
           new Notification("재고가 부족합니다.", notiOption);
-          new Audio(sound).play();
+          new Audio(warn).play();
         });
 
         eventSource.addEventListener("ORDERCANCEL", () => {
           setNotiEvent((cur) => !cur);
           new Notification("주문이 취소되었습니다.", notiOption);
-          new Audio(sound).play();
+          new Audio(warn).play();
         });
       };
 
