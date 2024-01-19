@@ -55,7 +55,9 @@ export default function CartOrderDetail() {
           couponId: couponId,
           couponAmount: couponAmount,
           actualAmount:
-            order.orderInfoByStores[index].totalAmount - couponAmount,
+            order.orderInfoByStores[index].totalAmount -
+            couponAmount +
+            order.orderInfoByStores[index].deliveryCost,
         };
         tmpList.push(tmp);
       } else {
@@ -69,7 +71,9 @@ export default function CartOrderDetail() {
 
     var totalActual = totalActualAmount;
     totalActualAmount[index] =
-      order.orderInfoByStores[index].totalAmount - couponAmount;
+      order.orderInfoByStores[index].totalAmount -
+      couponAmount +
+      order.orderInfoByStores[index].deliveryCost;
     setTotalActualAmount(totalActual);
 
     setOrder((prev) => ({

@@ -42,7 +42,10 @@ export default function OrderDetail() {
         deliveryCost: order.orderInfoByStores[0].deliveryCost,
         couponId: couponId,
         couponAmount: couponAmount,
-        actualAmount: order.orderInfoByStores[0].totalAmount - couponAmount,
+        actualAmount:
+          order.orderInfoByStores[0].totalAmount -
+          couponAmount +
+          order.orderInfoByStores[0].deliveryCost,
       },
     ];
 
