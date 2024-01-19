@@ -29,7 +29,6 @@ export default function ProductContents(param: param) {
     const reviewPosition = reviewRef.current?.getBoundingClientRect().y;
     const questionPosition = questionRef.current?.getBoundingClientRect().y;
 
-    console.log(reviewPosition, questionPosition);
     if (
       Number(questionPosition) < 38 &&
       Number(reviewPosition) < 1 &&

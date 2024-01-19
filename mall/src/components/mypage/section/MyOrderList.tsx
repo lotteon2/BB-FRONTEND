@@ -84,7 +84,7 @@ export default function MyOrderList() {
     {
       title: "주문상태",
       dataIndex: "",
-      key: "orderStatus",
+      key: "",
       ellipsis: true,
       render: (record) => (
         <div className="flex flex-row gap-1">
@@ -106,9 +106,9 @@ export default function MyOrderList() {
               ? "배송시작"
               : record.orderStatus === "CANCELED"
               ? "취소완료"
-              : "배송완료"}
+              : "배송완료"}{" "}
           </Tag>
-          {record.storeCount === 1 ? "" : <p>외 {record.storeCount - 1}건</p>}
+          {record.storeCount === 1 ? "" : `외  ${record.storeCount - 1}건`}
         </div>
       ),
     },
