@@ -34,7 +34,6 @@ export default function CartDetail() {
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [totalPrice, setTotalPrice] = useState<number[]>([]);
   const [deliveryCost, setDeliveryCost] = useState<number[]>([]);
-  const [quantities, setQuantities] = useState<number[]>([]);
   const [isChange, setIsChange] = useState<boolean>(false);
 
   const { data, isLoading } = useQuery({
@@ -358,7 +357,6 @@ export default function CartDetail() {
       setSelectedStores(stores);
       setTotalPrice(prices);
       setDeliveryCost(deliveries);
-      setQuantities(quantities);
     }
   }, [data]);
 
