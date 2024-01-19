@@ -94,8 +94,17 @@ export default function MyPickupOrderList() {
       key: "reservationStatus",
       ellipsis: true,
       render: (record) => (
-        <Tag bordered={false} color={record === "PENDING" ? "purple" : ""}>
-          {record === "PENDING" ? "예약접수" : "픽업완료"}
+        <Tag
+          bordered={false}
+          color={
+            record === "PENDING" ? "purple" : record === "CANCELED" ? "red" : ""
+          }
+        >
+          {record === "PENDING"
+            ? "예약접수"
+            : record === "CANCELED"
+            ? "취소완료"
+            : "픽업완료"}
         </Tag>
       ),
     },

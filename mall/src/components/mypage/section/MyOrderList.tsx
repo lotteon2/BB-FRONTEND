@@ -95,6 +95,8 @@ export default function MyOrderList() {
                 ? "purple"
                 : record.orderStatus === "PROCESSING"
                 ? "green"
+                : record.orderStatus === "CANCELED"
+                ? "red"
                 : ""
             }
           >
@@ -102,6 +104,8 @@ export default function MyOrderList() {
               ? "주문접수"
               : record.orderStatus === "PROCESSING"
               ? "배송시작"
+              : record.orderStatus === "CANCELED"
+              ? "취소완료"
               : "배송완료"}
           </Tag>
           {record.storeCount === 1 ? "" : <p>외 {record.storeCount - 1}건</p>}
