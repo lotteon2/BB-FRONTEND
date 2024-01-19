@@ -27,7 +27,6 @@ import { SuccessToast } from "../common/toast/SuccessToast";
 import { FailToast } from "../common/toast/FailToast";
 import CouponTableFallback from "../fallbacks/CouponTableFallback";
 import CouponDownloadList from "./moddal/CouponDownloadList";
-import { Today } from "@mui/icons-material";
 
 type DataIndex = keyof couponItemDto;
 export default function CouponTable() {
