@@ -9,15 +9,19 @@ import { notiDto } from "../../recoil/common/interfaces";
 import { EventSourcePolyfill } from "event-source-polyfill";
 import { storeIdState } from "../../recoil/atom/common";
 import { useNavigate } from "react-router-dom";
-import { NotiToast } from "./toast/NotiToast";
+import sound from "../../assets/noti.mp3";
 
-export default function Notification() {
+export default function NotificationDropDown() {
   const navigate = useNavigate();
   const storeId = useRecoilValue<number>(storeIdState);
   const [isNotiShow, setIsNotiShow] = useRecoilState<boolean>(notiShowState);
   const [notiEvent, setNotiEvent] = useRecoilState<boolean>(notiEventState);
   const [notiList, setNotiList] = useState<notiDto[]>([]);
 
+  const notiOption = {
+    badge: "https://i.ibb.co/10mtrnW/Group-1000004121.png",
+    icon: "",
+  };
   const subscribeUrl = `${process.env.REACT_APP_API_URL}/notification/subscribe/manager/${storeId}`;
 
   const getAllNotiMutation = useMutation(
@@ -94,17 +98,20 @@ export default function Notification() {
 
         eventSource.addEventListener("SHOPPINGMALL", () => {
           setNotiEvent((cur) => !cur);
-          NotiToast("신규 배송주문이 접수되었습니다.");
+          new Notification("신규 주문이 접수되었습니다.", notiOption);
+          new Audio(sound).play();
         });
 
         eventSource.addEventListener("PICKUP", () => {
           setNotiEvent((cur) => !cur);
-          NotiToast("신규 픽업주문이 접수되었습니다.");
+          new Notification("신규 주문이 접수되었습니다.", notiOption);
+          new Audio(sound).play();
         });
 
         eventSource.addEventListener("SUBSCRIBE", () => {
           setNotiEvent((cur) => !cur);
-          NotiToast("신규 구독주문이 접수되었습니다.");
+          new Notification("신규 주문이 접수되었습니다.", notiOption);
+          new Audio(sound).play();
         });
 
         eventSource.addEventListener("SETTLEMENT", () => {
@@ -113,11 +120,14 @@ export default function Notification() {
 
         eventSource.addEventListener("OUT_OF_STOCK", () => {
           setNotiEvent((cur) => !cur);
+          new Notification("재고가 부족합니다.", notiOption);
+          new Audio(sound).play();
         });
 
         eventSource.addEventListener("ORDERCANCEL", () => {
           setNotiEvent((cur) => !cur);
-          NotiToast("주문이 취소되었습니다.");
+          new Notification("주문이 취소되었습니다.", notiOption);
+          new Audio(sound).play();
         });
       };
 
@@ -132,17 +142,20 @@ export default function Notification() {
 
         eventSource.addEventListener("SHOPPINGMALL", () => {
           setNotiEvent((cur) => !cur);
-          NotiToast("신규 배송주문이 접수되었습니다.");
+          new Notification("신규 주문이 접수되었습니다.", notiOption);
+          new Audio(sound).play();
         });
 
         eventSource.addEventListener("PICKUP", () => {
           setNotiEvent((cur) => !cur);
-          NotiToast("신규 픽업주문이 접수되었습니다.");
+          new Notification("신규 주문이 접수되었습니다.", notiOption);
+          new Audio(sound).play();
         });
 
         eventSource.addEventListener("SUBSCRIBE", () => {
           setNotiEvent((cur) => !cur);
-          NotiToast("신규 구독주문이 접수되었습니다.");
+          new Notification("신규 주문이 접수되었습니다.", notiOption);
+          new Audio(sound).play();
         });
 
         eventSource.addEventListener("SETTLEMENT", () => {
@@ -151,11 +164,14 @@ export default function Notification() {
 
         eventSource.addEventListener("OUT_OF_STOCK", () => {
           setNotiEvent((cur) => !cur);
+          new Notification("재고가 부족합니다.", notiOption);
+          new Audio(sound).play();
         });
 
         eventSource.addEventListener("ORDERCANCEL", () => {
           setNotiEvent((cur) => !cur);
-          NotiToast("주문이 취소되었습니다.");
+          new Notification("주문이 취소되었습니다.", notiOption);
+          new Audio(sound).play();
         });
       };
 
@@ -173,6 +189,23 @@ export default function Notification() {
     // eslint-disable-next-line
   }, [isNotiShow]);
 
+  useEffect(() => {
+    if (!Notification) return;
+
+    if (Notification.permission !== "granted") {
+      try {
+        Notification.requestPermission().then((permission) => {
+          if (permission !== "granted") return;
+        });
+      } catch (error) {
+        if (error instanceof TypeError) {
+          Notification.requestPermission().then((permission) => {
+            if (permission !== "granted") return;
+          });
+        }
+      }
+    }
+  }, []);
   return (
     <div>
       {isNotiShow ? (

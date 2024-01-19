@@ -14,7 +14,7 @@ import {
 } from "../../recoil/atom/noti";
 import { getUnreadNotificationsCount } from "../../apis/noti";
 import { useEffect } from "react";
-import Notification from "./Notification";
+import Notification from "./NotificationDropDown";
 
 export default function ProfileBar() {
   const navigate = useNavigate();
