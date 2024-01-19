@@ -70,6 +70,7 @@ export default function Notification() {
           // storeId: storeId.toString(),
         },
         withCredentials: true,
+        heartbeatTimeout: 6000000,
       });
 
       eventSource.onerror = () => {
@@ -82,6 +83,7 @@ export default function Notification() {
             "Cache-Control": "no-cache",
           },
           withCredentials: true,
+          heartbeatTimeout: 6000000,
         });
 
         eventSource.addEventListener("CONNECT", () => {
