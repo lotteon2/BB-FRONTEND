@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Button,
   DatePicker,
@@ -47,7 +47,8 @@ export default function CouponModifyModal(param: param) {
       modifyValues.discountPrice !== null &&
       modifyValues.minPrice !== null &&
       modifyValues.startDate !== null &&
-      modifyValues.endDate !== null
+      modifyValues.endDate !== null &&
+      modifyValues.discountPrice < modifyValues.minPrice
     ) {
       const couponInfo = {
         couponName: modifyValues.couponName,
@@ -86,6 +87,84 @@ export default function CouponModifyModal(param: param) {
     setEnd(dateString);
     setModifyValues((prev) => ({ ...prev, endDate: date }));
   };
+
+  const checkStartDate = useCallback(
+    (_: any, value: string) => {
+      if (!value) {
+        return Promise.reject(new Error("필수 입력값입니다."));
+      }
+      if (end) {
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+
+        if (endDate < startDate)
+          return Promise.reject(new Error("잘못된 입력값입니다."));
+      }
+
+      return Promise.resolve();
+      // eslint-disable-next-line
+    },
+    [start, end]
+  );
+
+  const checkEndDate = useCallback(
+    (_: any, value: string) => {
+      if (!value) {
+        return Promise.reject(new Error("필수 입력값입니다."));
+      }
+      if (start) {
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+
+        if (endDate < startDate)
+          return Promise.reject(new Error("잘못된 입력값입니다."));
+      }
+
+      return Promise.resolve();
+      // eslint-disable-next-line
+    },
+    [start, end]
+  );
+
+  const checkCouponAmount = useCallback(
+    (_: any, value: number) => {
+      if (!value) {
+        return Promise.reject(new Error("필수 입력값입니다."));
+      }
+
+      if (modifyValues.minPrice !== null) {
+        if (value >= modifyValues.minPrice) {
+          return Promise.reject(
+            new Error("할인금액은 최소주문금액보다 작은 금액이어야 합니다.")
+          );
+        }
+      }
+
+      return Promise.resolve();
+      // eslint-disable-next-line
+    },
+    [modifyValues]
+  );
+
+  const checkMinPrice = useCallback(
+    (_: any, value: number) => {
+      if (!value) {
+        return Promise.reject(new Error("필수 입력값입니다."));
+      }
+
+      if (modifyValues.discountPrice !== null) {
+        if (value <= modifyValues.discountPrice) {
+          return Promise.reject(
+            new Error("최소주문금액은 할인금액보다 큰 금액이어야 합니다.")
+          );
+        }
+      }
+
+      return Promise.resolve();
+      // eslint-disable-next-line
+    },
+    [modifyValues]
+  );
 
   const [form] = Form.useForm();
   useEffect(() => {
@@ -146,7 +225,7 @@ export default function CouponModifyModal(param: param) {
         <Form.Item
           name="discountPrice"
           label="할인금액"
-          rules={[{ required: true, message: "필수 입력값입니다." }]}
+          rules={[{ required: true, validator: checkCouponAmount }]}
         >
           <InputNumber
             value={modifyValues.discountPrice}
@@ -163,7 +242,7 @@ export default function CouponModifyModal(param: param) {
         <Form.Item
           name="minPrice"
           label="최소주문금액"
-          rules={[{ required: true, message: "필수 입력값입니다." }]}
+          rules={[{ required: true, validator: checkMinPrice }]}
         >
           <InputNumber
             value={modifyValues.minPrice}
@@ -181,7 +260,7 @@ export default function CouponModifyModal(param: param) {
           <Form.Item
             name="startDate"
             label="시작일"
-            rules={[{ required: true, message: "필수 입력값입니다." }]}
+            rules={[{ required: true, validator: checkStartDate }]}
           >
             <DatePicker
               onChange={handleStartDate}
@@ -192,7 +271,7 @@ export default function CouponModifyModal(param: param) {
           <Form.Item
             name="endDate"
             label="종료일"
-            rules={[{ required: true, message: "필수 입력값입니다." }]}
+            rules={[{ required: true, validator: checkEndDate }]}
           >
             <DatePicker
               onChange={handleEndDate}

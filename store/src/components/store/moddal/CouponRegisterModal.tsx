@@ -44,7 +44,8 @@ export default function CouponRegisterModal(param: param) {
       registerValues.discountPrice !== null &&
       registerValues.minPrice !== null &&
       registerValues.startDate !== null &&
-      registerValues.endDate !== null
+      registerValues.endDate !== null &&
+      registerValues.discountPrice < registerValues.minPrice
     ) {
       const startDate = new Date(start);
       const endDate = new Date(end);
@@ -126,6 +127,46 @@ export default function CouponRegisterModal(param: param) {
     [start, end]
   );
 
+  const checkCouponAmount = useCallback(
+    (_: any, value: number) => {
+      if (!value) {
+        return Promise.reject(new Error("필수 입력값입니다."));
+      }
+
+      if (registerValues.minPrice !== null) {
+        if (value >= registerValues.minPrice) {
+          return Promise.reject(
+            new Error("할인금액은 최소주문금액보다 작은 금액이어야 합니다.")
+          );
+        }
+      }
+
+      return Promise.resolve();
+      // eslint-disable-next-line
+    },
+    [registerValues]
+  );
+
+  const checkMinPrice = useCallback(
+    (_: any, value: number) => {
+      if (!value) {
+        return Promise.reject(new Error("필수 입력값입니다."));
+      }
+
+      if (registerValues.discountPrice !== null) {
+        if (value <= registerValues.discountPrice) {
+          return Promise.reject(
+            new Error("최소주문금액은 할인금액보다 큰 금액이어야 합니다.")
+          );
+        }
+      }
+
+      return Promise.resolve();
+      // eslint-disable-next-line
+    },
+    [registerValues]
+  );
+
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue(registerValues);
@@ -185,7 +226,7 @@ export default function CouponRegisterModal(param: param) {
         <Form.Item
           name="discountPrice"
           label="할인금액"
-          rules={[{ required: true, message: "필수 입력값입니다." }]}
+          rules={[{ required: true, validator: checkCouponAmount }]}
         >
           <InputNumber
             value={registerValues.discountPrice}
@@ -202,7 +243,7 @@ export default function CouponRegisterModal(param: param) {
         <Form.Item
           name="minPrice"
           label="최소주문금액"
-          rules={[{ required: true, message: "필수 입력값입니다." }]}
+          rules={[{ required: true, validator: checkMinPrice }]}
         >
           <InputNumber
             value={registerValues.minPrice}

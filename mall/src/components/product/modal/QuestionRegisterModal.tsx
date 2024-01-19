@@ -33,7 +33,12 @@ export default function QuestionRegisterModal(param: param) {
   });
 
   const handleSubmit = () => {
-    registerMutation.mutate(defaultValues);
+    if (
+      defaultValues.title !== "" &&
+      defaultValues.content !== "" &&
+      defaultValues.content.length <= 100
+    )
+      registerMutation.mutate(defaultValues);
   };
 
   const registerMutation = useMutation(
@@ -94,6 +99,7 @@ export default function QuestionRegisterModal(param: param) {
             onChange={(e) =>
               setDefaultValues((prev) => ({ ...prev, title: e.target.value }))
             }
+            maxLength={50}
           />
         </Form.Item>
         <p className="ml-1">내용</p>
@@ -108,6 +114,8 @@ export default function QuestionRegisterModal(param: param) {
             onChange={(e) =>
               setDefaultValues((prev) => ({ ...prev, content: e.target.value }))
             }
+            maxLength={100}
+            showCount={true}
           />
         </Form.Item>
         <div className="flex flex-row justify-end gap-3">

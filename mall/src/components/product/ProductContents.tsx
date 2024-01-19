@@ -37,7 +37,7 @@ export default function ProductContents(param: param) {
       setContentIndex(2);
     } else if (Number(reviewPosition) < 1 && Number(questionPosition) > 0) {
       setContentIndex(1);
-    } else if (Number(reviewPosition) > 0 && Number(questionPosition) > 0) {
+    } else if (Number(reviewPosition) > 1 && Number(questionPosition) > 0) {
       setContentIndex(0);
     }
   };

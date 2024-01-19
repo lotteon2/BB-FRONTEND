@@ -267,7 +267,7 @@ export default function CouponTable() {
                 couponName: record.couponName,
                 discountPrice: record.discountPrice,
                 minPrice: record.minPrice,
-                limitCount: record.unusedCount,
+                limitCount: record.limitCount,
                 startDate: record.startDate,
                 endDate: record.endDate,
               });
