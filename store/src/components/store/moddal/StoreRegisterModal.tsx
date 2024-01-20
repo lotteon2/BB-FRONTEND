@@ -119,6 +119,9 @@ export default function StoreRegisterModal(param: param) {
   };
 
   const handleRegister = () => {
+    if (registerValues.storeThumbnailImage === "") {
+      alert("썸네일 이미지를 등록해주세요");
+    }
     if (
       registerValues.storeName !== "" &&
       registerValues.zipCode !== "" &&

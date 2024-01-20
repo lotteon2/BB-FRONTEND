@@ -60,6 +60,11 @@ export default function SubscriptionRegisterModal(param: param) {
   };
 
   const handleRegister = () => {
+    if (registerValues.productThumbnail === "") {
+      alert("썸네일 이미지를 등록해주세요");
+    } else if (registerValues.productDescriptionImage === "") {
+      alert("상세 이미지를 등록해주세요");
+    }
     if (
       registerValues.productThumbnail !== "" &&
       registerValues.productName !== "" &&
