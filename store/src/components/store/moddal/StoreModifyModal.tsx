@@ -114,6 +114,7 @@ export default function StoreModifyModal(param: param) {
       modifyValues.storeName !== "" &&
       modifyValues.zipCode !== "" &&
       modifyValues.address !== "" &&
+      modifyValues.detailAddress !== "" &&
       modifyValues.detailInfo !== "" &&
       modifyValues.phoneNumber !== "" &&
       modifyValues.accountNumber !== "" &&
@@ -279,6 +280,12 @@ export default function StoreModifyModal(param: param) {
                   placeholder="상세주소"
                   value={modifyValues.detailAddress}
                   style={{ marginLeft: 60, width: 190 }}
+                  onChange={(e) =>
+                    setModifyValues((prev) => ({
+                      ...prev,
+                      detailAddress: e.target.value,
+                    }))
+                  }
                 />
               </Form.Item>
             </div>
