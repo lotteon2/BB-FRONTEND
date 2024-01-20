@@ -285,7 +285,7 @@ export default function ProductRegisterModal(param: param) {
                     <PictureFilled
                       style={{
                         fontSize: "100px",
-                        marginLeft: "22px",
+                        marginLeft: "43px",
                         marginTop: "30px",
                       }}
                     />
