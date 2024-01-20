@@ -42,7 +42,7 @@ export default function ProductBySearchWordList() {
     }
   };
 
-  if (data || isLoading)
+  if (!data || isLoading)
     return (
       <div>
         <div className="text-center font-bold mt-5">"{word}"</div>
