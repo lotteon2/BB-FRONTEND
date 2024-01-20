@@ -89,7 +89,7 @@ export default function Header() {
   return (
     <div className="mt-10">
       <NavLink to="/">
-        <p className="text-center logo text-primary1 text-5xl cursor-pointer">
+        <p className="text-center logo text-primary2 text-5xl cursor-pointer">
           Blooming Blooms
         </p>
       </NavLink>
