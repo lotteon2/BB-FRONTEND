@@ -70,7 +70,7 @@ export default function PickupRegion() {
             </svg>
           </div>
         </div>
-        <div className="w-[48vw] h-[55vw] max-w-[655px] max-h-[655px] min-w-[370px] min-h-[652px] mx-auto flex align-center">
+        <div className="w-[48vw] h-[55vw] max-w-[655px] max-h-[655px] min-w-[370px] min-h-[652px] mx-auto flex align-center overflow-auto">
           <RegionStoreList sido={sido} gugun={gugun} />
         </div>
       </div>
