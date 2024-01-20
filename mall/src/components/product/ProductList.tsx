@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Empty, Pagination, PaginationProps, Rate, Tag } from "antd";
 import { useNavigate } from "react-router";
 import { HeartFilled } from "@ant-design/icons";
@@ -55,6 +55,10 @@ export default function ProductList(param: param) {
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {
     setPage(pageNumber);
   };
+
+  useEffect(() => {
+    setPage(1);
+  }, [sortOption]);
 
   if (!data || isLoading)
     return (

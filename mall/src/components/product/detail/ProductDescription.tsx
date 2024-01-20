@@ -21,5 +21,11 @@ export default function ProductDescription(param: param) {
       </div>
     );
 
-  return <img src={data.data.productDetailImage} alt="상품 상세 설명" />;
+  return (
+    <img
+      src={data.data.productDetailImage}
+      alt="상품 상세 설명"
+      className="w-full"
+    />
+  );
 }

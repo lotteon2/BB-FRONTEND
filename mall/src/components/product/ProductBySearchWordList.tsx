@@ -20,7 +20,7 @@ export default function ProductBySearchWordList() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["getSearchProductList"],
-    queryFn: () => searchProductList(word),
+    queryFn: () => searchProductList(word, page - 1, 24),
   });
 
   const handlePage: PaginationProps["onChange"] = (pageNumber) => {

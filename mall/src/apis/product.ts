@@ -264,7 +264,14 @@ export const registerReview = async (
 };
 
 // 상품 검색
-export const searchProductList = async (word: string) => {
-  const { data } = await defaultInstance.post("/products/search", word);
+export const searchProductList = async (
+  word: string,
+  page: number,
+  size: number
+) => {
+  const { data } = await defaultInstance.post(
+    "/products/search?page=" + page + "&size=" + size,
+    word
+  );
   return data;
 };

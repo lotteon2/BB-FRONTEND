@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pagination, PaginationProps, Select, Rate, Empty, Tag } from "antd";
 import { useNavigate } from "react-router";
 import Tag01 from "../../assets/images/tag/001.png";
@@ -68,6 +68,11 @@ export default function ProductByTagList(param: param) {
       navigate("/login");
     }
   };
+
+  useEffect(() => {
+    setPage(1);
+  }, [sortOption, categoryOption]);
+
   if (!data || isLoading)
     return (
       <div>
