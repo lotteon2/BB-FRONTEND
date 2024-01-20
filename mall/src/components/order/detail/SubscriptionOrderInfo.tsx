@@ -43,7 +43,7 @@ export default function SubscriptionOrderInfo(param: param) {
   };
 
   const handleDeliveryProduct = () => {
-    navigate("/product/detail/" + data.data.productId);
+    navigate("/subscription/product/detail/" + data.data.productId);
     setIsMall(true);
   };
 
