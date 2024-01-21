@@ -14,13 +14,13 @@ export default function SettlementTable(param: param) {
       ellipsis: true,
     },
     {
-      title: "월별 총 매출액",
+      title: "정산 금액",
       dataIndex: "totalAmountPerMonth",
       key: "totalAmountPerMonth",
       render: (record) => <p>{Number(record).toLocaleString()} 원</p>,
     },
     {
-      title: "정산 금액",
+      title: "월별 총 매출액",
       dataIndex: "settlementAmount",
       key: "settlementAmount",
       render: (record) => <p>{Number(record).toLocaleString()} 원</p>,
