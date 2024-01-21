@@ -68,7 +68,7 @@ export default function GiftCardDetailPage() {
           alt="카드 템플릿"
           className="w-full rounded-lg"
         />
-        <div className="absolute w-full h-full z-20 top-0">
+        <div className="absolute w-full h-full z-20 top-10">
           <div
             data-aos="fade-up"
             data-aos-duration="2000"
