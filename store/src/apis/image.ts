@@ -21,3 +21,15 @@ export const uploadS3Server = async (
 
   return response;
 };
+
+export const cloudOcrImage = async (url: string) => {
+  const request = {
+    imageUrl: url,
+  };
+
+  const { data } = await defaultInstance.post(
+    "/auth/stores/business-image-number",
+    request
+  );
+  return data;
+};
