@@ -24,6 +24,7 @@ import { modifyStoreWishList, modifyWishList } from "../apis/member";
 import { productWishState, storeWishState } from "../recoil/atom/member";
 import ScrollToTop from "../components/common/ScrollToTop";
 import { useEffect } from "react";
+import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
 
 export default function MainLayout() {
   const navigate = useNavigate();
@@ -169,6 +170,9 @@ export default function MainLayout() {
             <button onClick={handleWishList} title="찜한 상품">
               <FavoriteIcon />
             </button>
+            <button onClick={() => navigate("/flowers")} title="꽃도감">
+              <LocalFloristIcon />
+            </button>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               title="맨위로"
@@ -178,6 +182,9 @@ export default function MainLayout() {
           </div>
         ) : (
           <div className="fixed right-20 top-60 max-[1320px]:right-3 flex flex-col gap-3 z-20 bg-grayscale1 p-3 rounded-full border-2 shadow-xl z-30">
+            <button onClick={() => navigate("/flowers")} title="꽃도감">
+              <LocalFloristIcon />
+            </button>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               title="맨위로"

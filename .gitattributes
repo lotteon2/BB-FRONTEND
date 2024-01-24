@@ -1,0 +1,2 @@
+mall/src/components/models/peony.gltf filter=lfs diff=lfs merge=lfs -text
+mall/src/components/models/hydrangea.gltf filter=lfs diff=lfs merge=lfs -text

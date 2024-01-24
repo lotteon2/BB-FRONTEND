@@ -19,6 +19,7 @@ export interface registerRequestItemDto {
   storeManagerPhoneNumber: string;
   storeManagerBusinessNumber: string;
   requestDate: string;
+  businessNumber: string;
 }
 
 export interface storeStatusModifyDto {

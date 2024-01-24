@@ -42,6 +42,7 @@ export default function RegisterRequestList() {
       dataIndex: "storeManagerName",
       key: "storeManagerName",
       ellipsis: true,
+      width: 80,
     },
     {
       title: "사업자등록증",
@@ -50,14 +51,21 @@ export default function RegisterRequestList() {
       ellipsis: true,
       render: (record) => (
         <a href={record} download target="_blank" rel="noopener noreferrer">
-          사업자등록증
+          첨부파일
         </a>
       ),
     },
     {
-      title: "요청일시",
+      title: "사업자번호",
+      dataIndex: "businessNumber",
+      key: "businessNumber",
+      ellipsis: true,
+    },
+    {
+      title: "요청일",
       dataIndex: "requestDate",
       key: "requestDate",
+      render: (record) => <p>{record.split("T")[0]}</p>,
     },
     {
       title: (

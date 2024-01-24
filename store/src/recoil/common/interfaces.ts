@@ -16,6 +16,7 @@ export interface signupDto {
   password: string;
   name: string;
   businessNumberImage: string;
+  businessNumber: string;
 }
 
 export interface storeInfoDto {
