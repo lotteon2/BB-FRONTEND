@@ -11,7 +11,6 @@ import Daisy from "../components/models/Daisy";
 import Delphinium from "../components/models/Delphinium";
 import Lily from "../components/models/Lily";
 import Hibiscous from "../components/models/Hibiscous";
-import Peony from "../components/models/Peony";
 
 import { Button } from "antd";
 
@@ -50,12 +49,6 @@ export default function FlowersPage() {
           onClick={() => setFlower("수국")}
         >
           수국
-        </Button>
-        <Button
-          type={flower === "작약꽃" ? "primary" : "default"}
-          onClick={() => setFlower("작약꽃")}
-        >
-          작약꽃
         </Button>
         <Button
           type={flower === "장미" ? "primary" : "default"}
@@ -475,45 +468,6 @@ export default function FlowersPage() {
               </div>
               <div className="px-4 py-4 bg-primary7 rounded-lg text-grayscale1 font-light">
                 "화려함"
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : flower === "작약꽃" ? (
-        <div className="m-auto w-[900px] h-[600px] mt-10 flex flex-row gap-5 flex-wrap justify-between">
-          <div className="w-[370px]">
-            <Canvas className="canvas">
-              <OrbitControls enableZoom={false} />
-              <ambientLight intensity={3} />
-              <directionalLight position={[-2, 5, 2]} intensity={1} />
-              <Suspense fallback={null}>
-                <Peony />
-              </Suspense>
-            </Canvas>
-          </div>
-          <div className="w-[370px] h-full">
-            <p className="font-bold text-[2rem]">작약꽃(Paeony)</p>
-            <p>개화시기: 5월 ~ 6월</p>
-            <p className="font-light text-[0.9rem] mt-2">
-              꽃은 5∼6월에 줄기 끝에 1개가 피는데 크고 아름다우며 재배한 것은
-              지름 10cm 정도이다. 꽃색은 붉은색·흰색 등 다양하며 많은 원예
-              품종이 있다. 꽃받침은 5개로 녹색이고 가장자리가 밋밋하며 끝까지
-              붙어 있는데 가장 바깥쪽의 것은 잎 모양이다. 꽃잎은 10개 정도이나
-              기본종은 8∼13개이고 달걀을 거꾸로 세운 듯한 모양이며 길이 5cm
-              정도이다. 수술은 매우 많고 노란색이며 암술은 3∼5개로 암술머리가
-              뒤로 젖혀지고 달걀 모양의 씨방에는 털이 없거나 약간 있다. 열매는
-              달걀 모양으로 끝이 갈고리 모양으로 굽으며 내봉선을 따라 갈라지고
-              종자는 구형이다.
-            </p>
-            <div className="flex flex-row gap-2 mt-5 flex-wrap">
-              <div className="px-4 py-4 bg-primary7 rounded-lg text-grayscale1 font-light">
-                "사랑의 고백"
-              </div>
-              <div className="px-4 py-4 bg-primary7 rounded-lg text-grayscale1 font-light">
-                "행복한 사랑"
-              </div>
-              <div className="px-4 py-4 bg-primary7 rounded-lg text-grayscale1 font-light">
-                "부끄러움"
               </div>
             </div>
           </div>
