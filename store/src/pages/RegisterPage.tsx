@@ -13,7 +13,7 @@ import {
 import { SuccessToast } from "../components/common/toast/SuccessToast";
 import { FailToast } from "../components/common/toast/FailToast";
 import { signupDto } from "../recoil/common/interfaces";
-import { getImageUrl, uploadS3Server } from "../apis/image";
+import { cloudOcrImage, getImageUrl, uploadS3Server } from "../apis/image";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -28,13 +28,16 @@ export default function RegisterPage() {
   const [image, setImage] = useState<File>();
   const [url, setUrl] = useState<string>("");
   const [businessNumberImage, setBusinessNumberImage] = useState<string>("");
-  const defaultValues = {
+  const [businessNumber, setBusinessNumber] = useState<string>("");
+
+  const [defaultValues, setDefaultValues] = useState({
     email: "",
     emailCode: "",
     password: "",
     name: "",
     businessNumberImage: "",
-  };
+    businessNumber: "",
+  });
   const email_pattern =
     /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])+.[a-zA-Z]+$/i;
   const blank_pattern = "/^s+|s+$/g";
@@ -88,7 +91,7 @@ export default function RegisterPage() {
       !password.match(word_pattern) &&
       name !== "" &&
       !name.match(blank_pattern) &&
-      businessNumberImage !== ""
+      businessNumber !== ""
     ) {
       const signupDto = {
         email: email,
@@ -96,6 +99,7 @@ export default function RegisterPage() {
         password: password,
         name: name,
         businessNumberImage: businessNumberImage,
+        businessNumber: businessNumber,
       };
 
       signupMutation.mutate(signupDto);
@@ -215,6 +219,24 @@ export default function RegisterPage() {
     {
       onSuccess: () => {
         setBusinessNumberImage(url.split("?")[0]);
+        ocrMutation.mutate(url.split("?")[0]);
+      },
+      onError: () => {
+        FailToast(null);
+      },
+    }
+  );
+
+  const ocrMutation = useMutation(
+    ["ocrImage"],
+    (url: string) => cloudOcrImage(url),
+    {
+      onSuccess: (data) => {
+        setBusinessNumber(data.data);
+        setDefaultValues((prev) => ({
+          ...prev,
+          businessNumber: data.data,
+        }));
       },
       onError: () => {
         FailToast(null);
@@ -248,6 +270,11 @@ export default function RegisterPage() {
     // eslint-disable-next-line
   }, [url]);
 
+  const [form] = Form.useForm();
+  useEffect(() => {
+    form.setFieldsValue(defaultValues);
+  }, [form, defaultValues]);
+
   return (
     <div className="relative top-32 left-[550px] w-[800px] h-[600px] bg-grayscale1 shadow-lg z-10 rounded-lg">
       <p className="relative top-[-40px] logo text-8xl text-primary1 text-center">
@@ -256,6 +283,7 @@ export default function RegisterPage() {
       <Form
         name="registerForm"
         initialValues={defaultValues}
+        form={form}
         autoComplete="off"
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 10 }}
@@ -372,6 +400,23 @@ export default function RegisterPage() {
             />
           </div>
         </Form.Item>
+        <Form.Item
+          name="businessNumber"
+          label="사업자 번호"
+          rules={[
+            {
+              required: true,
+              message: "사업자 번호를 입력해주세요",
+            },
+          ]}
+        >
+          <div>
+            <Input
+              value={businessNumber}
+              onChange={(e) => setBusinessNumber(e.target.value)}
+            />
+          </div>
+        </Form.Item>
         <Button
           type="primary"
           htmlType="submit"
@@ -414,7 +459,7 @@ export default function RegisterPage() {
           ""
         )}
       </div>
-      <div className="flex flex-row gap-3 justify-end mt-10 mr-5">
+      <div className="flex flex-row gap-3 justify-end mt-3 mr-5">
         <span className="font-light text-grayscale4">
           이미 계정이 있으신가요?
         </span>

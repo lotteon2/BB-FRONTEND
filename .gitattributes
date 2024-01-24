@@ -1,0 +1,10 @@
+mall/src/components/models/peony.gltf filter=lfs diff=lfs merge=lfs -text
+mall/src/components/models/hydrangea.gltf filter=lfs diff=lfs merge=lfs -text
+mall/src/components/models/carnation.gltf filter=lfs diff=lfs merge=lfs -text
+mall/src/components/models/daisy.gltf filter=lfs diff=lfs merge=lfs -text
+mall/src/components/models/delphinium.gltf filter=lfs diff=lfs merge=lfs -text
+mall/src/components/models/lavender.gltf filter=lfs diff=lfs merge=lfs -text
+mall/src/components/models/lily.gltf filter=lfs diff=lfs merge=lfs -text
+mall/src/components/models/rose.gltf filter=lfs diff=lfs merge=lfs -text
+mall/src/components/models/sunflower.gltf filter=lfs diff=lfs merge=lfs -text
+mall/src/components/models/tulip.gltf filter=lfs diff=lfs merge=lfs -text

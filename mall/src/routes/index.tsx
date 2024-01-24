@@ -26,6 +26,7 @@ import DefaultLayout from "../layouts/DefaultLayout";
 import PaymentApprovePage from "../pages/PaymentApprovePage";
 import FailPage from "../pages/FailPage";
 import ProductBySearchWordList from "../components/product/ProductBySearchWordList";
+import FlowersPage from "../pages/FlowersPage";
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,7 @@ const router = createBrowserRouter([
       },
       { path: "success", element: <SuccessPage /> },
       { path: "fail", element: <FailPage /> },
+      { path: "flowers", element: <FlowersPage /> },
     ],
   },
   {

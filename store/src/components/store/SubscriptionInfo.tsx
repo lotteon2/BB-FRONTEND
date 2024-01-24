@@ -61,7 +61,7 @@ export default function SubscriptionInfo() {
               <p className="text-[2rem] font-bold">{data.data.productName}</p>
               <p className="text-grayscale5">{data.data.productSummary}</p>
               <p className="text-primary1 font-bold text-[1.4rem]">
-                {data.data.productPrice}원
+                {data.data.productPrice.toLocaleString()}원
               </p>
               <div>
                 <Rate
